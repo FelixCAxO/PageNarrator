@@ -1,0 +1,49 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R 5 0 R] /Count 2 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 7 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 170 >>
+stream
+BT
+/F1 16 Tf 1 0 0 1 54 750 Tm (Introduction to System Architecture) Tj
+/F1 12 Tf 1 0 0 1 54 700 Tm (Standard portrait narrative describing core client components.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 792 612] /Resources << /Font << /F1 7 0 R >> >> /Contents 6 0 R >>
+endobj
+6 0 obj
+<< /Length 198 >>
+stream
+BT
+/F1 16 Tf 1 0 0 1 54 550 Tm (Wide System Topology Diagram and Component Interconnects) Tj
+/F1 12 Tf 1 0 0 1 54 500 Tm (Detailed subsystem breakdown spanning the wide landscape visual area.) Tj
+ET
+endstream
+endobj
+7 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 8
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000121 00000 n 
+0000000247 00000 n 
+0000000468 00000 n 
+0000000594 00000 n 
+0000000843 00000 n 
+trailer
+<< /Size 8 /Root 1 0 R >>
+startxref
+940
+%%EOF

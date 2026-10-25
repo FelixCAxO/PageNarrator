@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "voices": ["af_heart", "af_aoede", "af_bella", "af_kore", "af_nicole", "af_sarah", "am_fenrir", "am_michael", "am_puck", "bf_emma"],
+  "validation": [
+    {"id": "validation-selection", "category": "selection", "text": "Please read the selected sentence."},
+    {"id": "validation-paragraph", "category": "paragraph", "text": "The library opens early on Tuesday. Readers arrive with questions, notebooks, and a little time to spare. A quiet explanation can make a difficult topic easier to follow. When the paragraph ends, the next thought should begin without losing a word."},
+    {"id": "validation-numbers", "category": "numbers", "text": "The meeting starts at 09:15 on April 12, 2027. Three tickets cost $42.60."},
+    {"id": "validation-abbreviations", "category": "abbreviations", "text": "Dr. Jones met Prof. Green near St. James Street. The appointment was at 2 p.m."},
+    {"id": "validation-technical", "category": "technical", "text": "A browser stores the model locally. WebAssembly executes CPU instructions, while WebGPU submits work to the graphics processor."},
+    {"id": "validation-punctuation", "category": "punctuation", "text": "She asked, “Ready?” He replied: yes! Pause here; then continue—carefully."},
+    {"id": "validation-article-transition", "category": "article-transition", "text": "The article explains the result.\n\nNext, we consider the evidence behind that result."},
+    {"id": "validation-pdf-transition", "category": "pdf-transition", "text": "The first page describes the procedure.\n\nThe following page lists its limitations."}
+  ],
+  "test": [
+    {"id": "test-selection", "category": "selection", "text": "Listen to this brief passage."},
+    {"id": "test-paragraph", "category": "paragraph", "text": "After the rain stopped, the garden became quiet again. Water remained on the leaves, and a bird settled beside the path. The reader paused to look outside before returning to the final sentence. Every detail belongs in the narration, even when the passage crosses a section boundary."},
+    {"id": "test-numbers", "category": "numbers", "text": "At 18:45, the display showed 21.5 degrees. The invoice total was £87.30 in 2028."},
+    {"id": "test-abbreviations", "category": "abbreviations", "text": "Mrs. Taylor spoke with Dr. Brown on Wednesday. See Fig. 3 and pp. 14–16 for details."},
+    {"id": "test-technical", "category": "technical", "text": "The API returns a JSON document over HTTPS. A GPU buffer holds tensor data until the inference call finishes."},
+    {"id": "test-punctuation", "category": "punctuation", "text": "“Wait… is that correct?” she asked. (Check twice.) Then read on: one, two, three!"},
+    {"id": "test-article-transition", "category": "article-transition", "text": "This section presents the observation.\n\nA new section explains what it means."},
+    {"id": "test-pdf-transition", "category": "pdf-transition", "text": "The page ends with an important conclusion.\n\nOn the next page, the discussion continues."}
+  ]
+}

@@ -1,0 +1,150 @@
+{
+  "provenance": "Owned PageNarrator UI status crop, frozen original recognition pixels; independent original1280px screenshot glyph masks were recorded before this geometry repair. No third-party code/model or new OCR inference.",
+  "sourceSha256": "60dd1e54a65913802de065058277656f5d4f99c462c4ea57b27fc1a6874c2ccd",
+  "pngSha256": "74c78d2f719fef02c069fea0d8b0d963146971e5c3c5db80d3f99a5e4e6157a7",
+  "width": 378,
+  "height": 69,
+  "frame": {
+    "top": 20,
+    "bottom": 49,
+    "stepWidth": 8.166666666666666
+  },
+  "words": [
+    {
+      "text": "Page",
+      "confidence": 99.99510645866394,
+      "bbox": {
+        "x0": 18.166666666666664,
+        "y0": 10,
+        "x1": 67.16666666666666,
+        "y1": 59
+      }
+    },
+    {
+      "text": "1",
+      "confidence": 99.15326237678528,
+      "bbox": {
+        "x0": 83.5,
+        "y0": 10,
+        "x1": 91.66666666666667,
+        "y1": 59
+      }
+    },
+    {
+      "text": "of",
+      "confidence": 99.99319911003113,
+      "bbox": {
+        "x0": 99.83333333333333,
+        "y0": 10,
+        "x1": 116.16666666666667,
+        "y1": 59
+      }
+    },
+    {
+      "text": "2",
+      "confidence": 99.82911944389343,
+      "bbox": {
+        "x0": 124.33333333333333,
+        "y0": 10,
+        "x1": 132.5,
+        "y1": 59
+      }
+    },
+    {
+      "text": "·",
+      "confidence": 77.10595726966858,
+      "bbox": {
+        "x0": 140.66666666666666,
+        "y0": 10,
+        "x1": 148.83333333333334,
+        "y1": 59
+      }
+    },
+    {
+      "text": "1",
+      "confidence": 92.07064509391785,
+      "bbox": {
+        "x0": 157,
+        "y0": 10,
+        "x1": 165.16666666666666,
+        "y1": 59
+      }
+    },
+    {
+      "text": "page",
+      "confidence": 99.95867013931274,
+      "bbox": {
+        "x0": 173.33333333333334,
+        "y0": 10,
+        "x1": 206,
+        "y1": 59
+      }
+    },
+    {
+      "text": "after",
+      "confidence": 99.86972451210022,
+      "bbox": {
+        "x0": 222.33333333333334,
+        "y0": 10,
+        "x1": 263.16666666666663,
+        "y1": 59
+      }
+    },
+    {
+      "text": "this",
+      "confidence": 99.88927394151688,
+      "bbox": {
+        "x0": 271.3333333333333,
+        "y0": 10,
+        "x1": 304,
+        "y1": 59
+      }
+    },
+    {
+      "text": "page",
+      "confidence": 89.78499323129654,
+      "bbox": {
+        "x0": 312.1666666666667,
+        "y0": 10,
+        "x1": 361.1666666666667,
+        "y1": 59
+      }
+    }
+  ],
+  "gold": [
+    {
+      "word": "1",
+      "index": 5,
+      "rect": [
+        147,
+        25,
+        155,
+        44
+      ],
+      "other": [
+        163,
+        25,
+        175,
+        47
+      ],
+      "ink": 37
+    },
+    {
+      "word": "·",
+      "index": 4,
+      "rect": [
+        135,
+        32,
+        141,
+        40
+      ],
+      "other": [
+        147,
+        25,
+        155,
+        44
+      ],
+      "ink": 4
+    }
+  ]
+}

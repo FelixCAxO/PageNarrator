@@ -1,0 +1,25 @@
+Static English pronunciation data used by PageNarrator's original phonemizer
+
+US dictionary: CMUdict, cmusphinx/cmudict revision
+74790861f652b15e4ac49015a90074ad62a27690.
+Copyright Carnegie Mellon University. The original copyright, redistribution
+conditions and disclaimer are included unchanged in CMUdict-LICENSE.txt.
+Source: https://github.com/cmusphinx/cmudict/tree/74790861f652b15e4ac49015a90074ad62a27690
+
+UK dictionary: open-dict-data/ipa-dict data/en_UK.txt, revision
+43c3570eb3553bdd19fccd2bd0091534889af023.
+The upstream credits attribute these eSpeak-generated transcriptions to
+ipacards, Melissa Boiko (formerly published as leoboiko/Leonardo Boiko).
+This dataset is GPL-3.0, conservatively treated as GPL-3.0-only; the general
+MIT label of the ipa-dict repository does not replace this dataset license.
+The full GNU GPL version 3 is included in GPL-3.0.txt.
+Sources and original credits:
+https://github.com/open-dict-data/ipa-dict/tree/43c3570eb3553bdd19fccd2bd0091534889af023#credits
+https://github.com/melissaboiko/ipacards/blob/master/deck_description.md
+
+The matching source package retains the pinned raw dictionaries, original
+notices and credits, source hashes and an original data converter. The
+converted pronunciations contain literal words and phoneme IDs; omitted
+records and pronunciation alternatives are recorded in the source manifest.
+PageNarrator's C++ lookup, normalization and grapheme rules are original
+GPL-3.0-or-later code. These retained lexical records are third-party data.

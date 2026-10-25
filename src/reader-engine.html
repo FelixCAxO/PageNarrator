@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PageNarrator reader engine</title>
+    <link rel="icon" type="image/png" href="../icons/icon-32.png" />
+    <link rel="stylesheet" href="./reader-engine.css" />
+  </head>
+  <body hidden aria-hidden="true">
+    <main class="app-shell">
+      <section id="app-panel" class="panel" aria-label="PageNarrator reader engine">
+        <div class="expanded-view">
+          <header class="header">
+            <div class="brand">
+              <h1>PageNarrator</h1>
+              <p id="panel-subtitle" class="subtitle">Read this page aloud</p>
+            </div>
+          </header>
+
+
+          <div class="panel-view idle-view" data-view="idle">
+            <p id="status" class="status-text" aria-live="polite">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="status-label">Ready to read</span>
+            </p>
+
+            <section id="extension-access-guidance" class="access-guidance" aria-label="Grant page access" hidden>
+              <img id="extension-access-guidance-icon" alt="PageNarrator extension icon" width="32" height="32" />
+              <div>
+                <h2>Open PageNarrator from the page</h2>
+                <p>Click the PageNarrator extension icon while the page is active, then choose Read page.</p>
+              </div>
+            </section>
+
+            <section id="model-setup" class="model-setup" hidden>
+              <div class="model-setup__top">
+                <div>
+                  <h2 id="setup-title">Preparing voice</h2>
+                  <p>
+                    Missing voice files download on first use. Speech runs locally.
+                  </p>
+                </div>
+                <span id="setup-progress-label">0%</span>
+              </div>
+
+              <div class="progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                <div id="setup-progress-bar" class="progress__bar"></div>
+              </div>
+
+              <div class="model-setup__meta">
+                <span id="setup-detail">Preparing local voice; missing files download from Hugging Face...</span>
+                <span id="setup-eta">Estimating time...</span>
+              </div>
+            </section>
+            <section id="error-notice" class="access-guidance error-notice" aria-label="Recovery steps" hidden>
+              <div>
+                <h2 id="error-title">Needs attention</h2>
+                <p id="error-message"></p>
+                <p id="error-action"></p>
+                <div id="error-actions" class="error-actions" hidden>
+                  <button id="error-primary-action" class="secondaryButton" type="button" hidden></button>
+                  <button id="error-secondary-action" class="secondaryButton" type="button" hidden></button>
+                </div>
+                <details id="error-details" hidden>
+                  <summary>Details</summary>
+                  <code id="error-code"></code>
+                </details>
+              </div>
+            </section>
+            <p id="voice-ready" class="voice-ready" hidden>Voice ready</p>
+
+            <section id="resume-prompt" class="resume-prompt" aria-label="Resume reading" hidden>
+              <div>
+                <p id="resume-title" class="resume-prompt__title">Resume at saved position</p>
+                <p id="resume-detail" class="resume-prompt__detail">Saved reading position</p>
+                <p id="resume-excerpt" class="resume-prompt__excerpt"></p>
+              </div>
+              <div class="resume-prompt__actions">
+                <button id="resume-read-btn" class="secondaryButton" type="button">Resume</button>
+                <button id="resume-start-over-btn" class="secondaryButton" type="button">Start over</button>
+              </div>
+            </section>
+
+            <section id="code-suggestion" class="code-suggestion" aria-label="Reading suggestion" hidden>
+              <div>
+                <p id="code-suggestion-title" class="code-suggestion__title">Skip code snippets?</p>
+                <p id="code-suggestion-detail" class="code-suggestion__detail">This page has many code snippets.</p>
+              </div>
+              <button id="code-suggestion-accept" class="secondaryButton" type="button">Skip code</button>
+            </section>
+
+            <section class="card detected" aria-label="Detected article">
+              <p class="section-label">Detected article</p>
+              <h2 id="article-title" role="status" aria-label="No page loaded">No page loaded</h2>
+              <p id="article-meta" class="article-meta">Open an article, then read the page</p>
+              <p id="article-mode" class="article-mode">Reading: Article only</p>
+              <div class="preview-copy">
+                <p class="section-label">Starts with</p>
+                <p id="article-text">Text appears when reading starts.</p>
+              </div>
+            </section>
+          </div>
+
+          <section class="player-shell" aria-label="Reading player">
+          <div class="panel-view reading-view" data-view="reading">
+            <section class="player-strip" aria-label="Reading progress">
+              <div class="player-strip__main">
+                <div id="play-indicator" class="play-indicator">
+                  <span class="bar" aria-hidden="true"></span>
+                  <span class="bar" aria-hidden="true"></span>
+                  <span class="bar" aria-hidden="true"></span>
+                  <span id="reading-state-label" aria-live="polite">Reading</span>
+                </div>
+                <h2 id="reading-article-title" class="article-title">No page loaded</h2>
+              </div>
+              <div id="reading-progress" class="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden aria-hidden="true">
+                <div class="reading-progress__track">
+                  <div id="reading-progress-bar" class="reading-progress__bar"></div>
+                </div>
+                <div class="reading-progress__stats">
+                  <span id="reading-progress-label">0% complete</span>
+                  <span id="reading-remaining-label">0 chunks left</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <div class="controls-row">
+            <button id="read-btn" class="primaryButton" type="button" data-label="Read page" data-funnel-event="full_page_read_started"></button>
+            <button id="read-selected-btn" class="secondaryButton" type="button" data-label="Read selected" data-funnel-event="selected_text_read_started">Read selected</button>
+            <button id="prev-btn" class="secondaryButton" type="button" data-label="Back" title="Previous section">Back</button>
+            <button id="stop-btn" class="secondaryButton" type="button" data-label="Stop"></button>
+            <button id="next-btn" class="secondaryButton" type="button" data-label="Next">Next</button>
+          </div>
+
+          <section id="onboarding-banner" class="resume-prompt onboarding-banner" role="status" hidden>
+            <div>
+              <p id="onboarding-title" class="resume-prompt__title" data-i18n="onboardingQuickWinTitle">Read a selected passage</p>
+              <p id="onboarding-body" class="resume-prompt__detail" data-i18n="onboardingQuickWinBody">Select two sentences on the page, then choose Read selected.</p>
+            </div>
+            <div class="resume-prompt__actions">
+              <button id="onboarding-primary-btn" class="secondaryButton" type="button" data-i18n="onboardingQuickWinCta">Read selected</button>
+              <button id="onboarding-dismiss-btn" class="secondaryButton" type="button" data-i18n="onboardingDismiss">Skip</button>
+            </div>
+          </section>
+
+          </section>
+
+          <section id="pdf-page-nav" class="pdf-page-nav" aria-label="PDF page navigation" hidden>
+            <button id="pdf-page-first-btn" class="pdf-page-nav__button" type="button">First</button>
+            <label class="pdf-page-jump-field">
+              <span>Page</span>
+              <input id="pdf-page-jump-input" type="number" min="1" value="1" inputmode="numeric" />
+            </label>
+            <button id="pdf-page-jump-btn" class="pdf-page-nav__button" type="button">Go</button>
+            <button id="pdf-page-skip-btn" class="pdf-page-nav__button" type="button" aria-label="Skip current PDF page">Skip</button>
+          </section>
+
+          <section class="voice-choice" aria-label="Choose voice model">
+            <label class="field">
+              <span>Voice model</span>
+              <select id="tts-engine-select" aria-describedby="voice-model-help"><option value="kokoro">Kokoro (default)</option><option value="omnivoice">OmniVoice (experimental)</option></select>
+            </label>
+            <p id="voice-model-help" class="language-status" role="status">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+          </section>
+
+          <details id="reader-settings" class="controls settings-section" aria-label="Reader settings">
+            <summary>
+              <span>Voice settings</span>
+              <span id="voice-settings-summary" class="summary-chip">Heart · English · 1.00x</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="controls__body">
+              <label class="field">
+                <span>Language</span>
+                <select id="language-select"></select>
+              </label>
+              <p id="language-status" class="language-status" aria-live="polite">Language will be detected when reading starts.</p>
+              <label class="field">
+                <span>Voice</span>
+                <select id="voice-select"></select>
+              </label>
+              <div id="omnivoice-settings" hidden>
+                <label class="field"><span>Voice type</span><select id="omnivoice-gender"><option value="female">Female</option><option value="male">Male</option></select></label>
+          <label class="field"><span>Voice variation <output id="omnivoice-variation-out" for="omnivoice-variation">1 / 10</output></span><input id="omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
+          <p class="field-help">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
+                <label class="field"><span><input id="omnivoice-whisper" type="checkbox" /> Whisper</span></label>
+              </div>
+              <label class="field">
+                <span>Playback speed <output id="speed-out">1.00x</output></span>
+                <input id="speed" type="range" min="0.5" max="3.0" step="0.05" value="1.0" />
+              </label>
+              <p class="language-status">Saved automatically. Voice changes apply to the next section while reading.</p>
+              <p id="tts-backend-status" class="language-status" aria-live="polite">Voice processing: checked when reading starts.</p>
+              <details id="kokoro-requirements">
+                <summary>Device requirements</summary>
+                <p class="language-status"><strong>Recommended:</strong> a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.</p>
+                <p class="language-status">Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.</p>
+              </details>
+            </div>
+          </details>
+
+          <details id="advanced-tools-panel" class="controls settings-section" data-advanced-only aria-label="Advanced settings">
+            <summary>
+              <span>Advanced settings</span>
+              <span class="summary-chip">Timing, cleanup, voices</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="controls__body advanced-tools-panel__body">
+          <details id="section-pause-settings" class="controls settings-section" data-advanced-only aria-label="Section pauses">
+            <summary>
+              <span>Section pauses</span>
+              <span id="section-pause-summary" class="summary-chip">Normal</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </summary>
+            <div class="controls__body">
+              <label class="field">
+                <span>Pause between sections <output id="section-pause-out">Normal</output></span>
+                <input id="section-pause" type="range" min="-5" max="5" step="0.1" value="0" />
+              </label>
+            </div>
+          </details>
+
+          <details id="highlight-settings" class="controls settings-section highlight-settings" data-advanced-only aria-label="Highlight style">
+            <summary>
+              <span>Highlight style</span>
+              <span id="highlight-settings-summary" class="summary-chip">Custom</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="controls__body">
+              <div class="highlight-settings__grid">
+                <label class="field color-field">
+                  <span>Read area</span>
+                  <input id="highlight-area-color" type="color" value="#ffdd57" />
+                </label>
+                <label class="field">
+                  <span>Area opacity <output id="highlight-area-opacity-out">10%</output></span>
+                  <input id="highlight-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" />
+                </label>
+                <label class="field color-field">
+                  <span>Current word</span>
+                  <input id="highlight-word-color" type="color" value="#ffdd57" />
+                </label>
+                <label class="field">
+                  <span>Word opacity <output id="highlight-word-opacity-out">38%</output></span>
+                  <input id="highlight-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" />
+                </label>
+              </div>
+            </div>
+          </details>
+
+          <details id="skip-code-settings" class="controls settings-section" data-advanced-only aria-label="Reading cleanup">
+            <summary>
+              <span>Reading cleanup</span>
+              <span id="skip-code-summary" class="summary-chip">Off</span>
+              <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </summary>
+            <div class="controls__body">
+              <label class="toggle-field">
+                <span>Skip code snippets</span>
+                <input id="skip-code-snippets" type="checkbox" />
+              </label>
+            </div>
+          </details>
+
+
+
+            </div>
+          </details>
+
+          <section id="simple-reading-summary" class="simple-reading-summary" data-simple-only aria-label="Queue and transcript summary" hidden>
+            <div>
+              <span class="section-label">Queue &amp; transcript</span>
+              <p>Current section, transcript search, and jump controls are available in Advanced mode.</p>
+            </div>
+            <button id="simple-reading-browse" class="secondaryButton" type="button">Browse</button>
+          </section>
+
+          <details class="card transcript-card" data-advanced-only aria-label="Full transcript">
+            <summary class="section-heading">
+              <span class="section-label">Transcript</span>
+              <span id="transcript-count">0 paragraphs</span>
+            </summary>
+            <div id="transcript-text" class="transcript-text">Transcript appears when text loads.</div>
+          </details>
+
+          <details id="queue-card" class="card queue-card" data-advanced-only aria-label="Reading queue">
+            <summary class="section-heading">
+              <span class="section-label">Reading queue</span>
+              <span id="queue-count">0 sections</span>
+            </summary>
+            <div id="queue-nav" class="queue-nav" aria-label="Queue navigation" hidden>
+              <button id="queue-first-btn" class="queue-nav__button" type="button">First</button>
+              <label class="queue-jump-field">
+                <span>Section</span>
+                <input id="queue-jump-input" type="number" min="1" value="1" inputmode="numeric" />
+              </label>
+              <button id="queue-jump-btn" class="queue-nav__button" type="button">Go</button>
+              <button id="queue-last-btn" class="queue-nav__button" type="button">Last</button>
+            </div>
+            <label class="queue-search-field">
+              <span>Find section</span>
+              <input id="queue-search-input" type="search" placeholder="Search transcript or page..." />
+            </label>
+            <ol id="reading-queue" class="reading-queue"></ol>
+          </details>
+
+          <section id="review-prompt" class="resume-prompt review-prompt" role="status" hidden>
+            <div>
+              <p id="review-prompt-title" class="resume-prompt__title" data-i18n="reviewPromptTitle">Rate PageNarrator</p>
+              <p id="review-prompt-body" class="resume-prompt__detail" data-i18n="reviewPromptBody">Your review helps other readers choose.</p>
+            </div>
+            <div class="button-actions">
+              <button id="review-never-btn" class="secondaryButton" type="button" data-i18n="reviewNever">Never</button>
+              <button id="review-later-btn" class="secondaryButton" type="button" data-i18n="reviewLater">Later</button>
+              <button id="review-review-btn" class="secondaryButton" type="button" data-i18n="reviewReview">Review</button>
+            </div>
+          </section>
+
+        </div>
+
+      </section>
+    </main>
+
+    <script type="module" src="./reader-engine.js"></script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+{
+  "modelId": "PaddlePaddle/latin_PP-OCRv5_mobile_rec_onnx",
+  "revision": "89d3a50e2c27e2e7cceeab0e944c25c807d5db4f",
+  "licenseDeclaredByModel": "Apache-2.0",
+  "candidateOnly": true,
+  "productionSelection": "unchanged",
+  "files": [
+    {
+      "path": "inference.onnx",
+      "bytes": 8042023,
+      "sha256": "7888113072263cb471b93f66dd5e2ad70548dc526fa1ace760d0d973dd121498"
+    },
+    {
+      "path": "README.md",
+      "bytes": 28,
+      "sha256": "98b45ea81164d1e1a1dd82255207053b15cd6c69d922a1c5cf3387ce604d4b74"
+    },
+    {
+      "path": "inference.yml",
+      "bytes": 6817,
+      "sha256": "0bbe984570f597af3638e50bdf2e8276f3ab26a61966096538b3b0d1849f5c84"
+    }
+  ],
+  "derivedAlphabet": {
+    "path": "alphabet.json",
+    "bytes": 4299,
+    "sha256": "4ceed77d5579a6a49592eb049e07af703309823a2119220492a4f5145f7e90df",
+    "modification": "Extracted literal836character dictionary, including64duplicateclasses, with CTC blank and space; learned model unchanged."
+  }
+}

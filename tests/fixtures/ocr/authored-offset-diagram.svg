@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+<rect width="1200" height="600" fill="white"/>
+<g stroke="#071827" stroke-width="3">
+<rect x="36" y="24" width="144" height="552" rx="8" fill="#284b63"/>
+<rect x="256" y="24" width="284" height="552" rx="8" fill="#46546a"/>
+<rect x="790" y="24" width="374" height="552" rx="8" fill="#315b50"/>
+</g>
+<g fill="white" font-family="sans-serif" font-size="24">
+<text x="48" y="72">Sensor</text><text x="48" y="112">A7</text>
+<text x="275" y="72">Current</text><text x="275" y="120">0.42 m/s</text>
+<text x="808" y="72">Difference</text><text x="808" y="120">-0.08</text>
+<text x="275" y="520">Collect samples.</text><text x="808" y="520">Review drift.</text>
+</g>
+<g fill="none" stroke="#d9e4ee" stroke-width="4">
+<path d="M65 180 L145 220 L65 260 L145 300 L65 340 L145 380 L65 420"/>
+<path d="M280 200 H510 M280 280 H510 M280 360 H510 M280 440 H510"/>
+<path d="M815 400 L875 330 L935 350 L995 240 L1055 275 L1130 175"/>
+</g>
+</svg>

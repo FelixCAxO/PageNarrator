@@ -1,0 +1,257 @@
+{
+  "scope": "Original authoredT.81entropy/IDCTfixtures; no private source content.",
+  "records": [
+    {
+      "id": "dc-only",
+      "input": {
+        "path": "dc-only.jpg",
+        "bytes": 333,
+        "sha256": "2e9e4e3f2e21b2baa4004eebdf49ad36a52ceff2b9d4b744b26366e7f51451a8"
+      },
+      "expected": {
+        "path": "dc-only.expected",
+        "bytes": 256,
+        "sha256": "57b54595c92281cd811f90063b7c27188683529146ee7660bc94809704eef0e8"
+      },
+      "width": 8,
+      "height": 8,
+      "sampling": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "scanOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "restartInterval": 0,
+      "stuffedBytes": 0,
+      "rawSampleBound": 1
+    },
+    {
+      "id": "ac-and-stuffing",
+      "input": {
+        "path": "ac-and-stuffing.jpg",
+        "bytes": 343,
+        "sha256": "757965a68f3900ac73f4d82cfaac43893ae7be44227015b2a837d5b7ee8d47e6"
+      },
+      "expected": {
+        "path": "ac-and-stuffing.expected",
+        "bytes": 256,
+        "sha256": "6e43110d4bb7b807698c23172d35deabd04c98f3575d0d660c3be261e7256481"
+      },
+      "width": 8,
+      "height": 8,
+      "sampling": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "scanOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "restartInterval": 0,
+      "stuffedBytes": 1,
+      "rawSampleBound": 1
+    },
+    {
+      "id": "restart-reset",
+      "input": {
+        "path": "restart-reset.jpg",
+        "bytes": 402,
+        "sha256": "618033e25a911bc8055f1aa07d51950743d2602f58ec81f01c13f4fa4a1bcefd"
+      },
+      "expected": {
+        "path": "restart-reset.expected",
+        "bytes": 1536,
+        "sha256": "6bcc9a8b8c883f91a418fd1780fd51d257f759ea834e97b45f937af27a6ede6f"
+      },
+      "width": 24,
+      "height": 16,
+      "sampling": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "scanOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "restartInterval": 1,
+      "stuffedBytes": 0,
+      "rawSampleBound": 1
+    },
+    {
+      "id": "odd-crop",
+      "input": {
+        "path": "odd-crop.jpg",
+        "bytes": 362,
+        "sha256": "2c4773bb70190701197737462c8724c363ed0005847a27ccf94ee54050771619"
+      },
+      "expected": {
+        "path": "odd-crop.expected",
+        "bytes": 324,
+        "sha256": "fbfc1cf0307c7289088e7c76dfeb89764fe60cfbee758da993eab8ad678e1162"
+      },
+      "width": 9,
+      "height": 9,
+      "sampling": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "scanOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "restartInterval": 0,
+      "stuffedBytes": 0,
+      "rawSampleBound": 1
+    },
+    {
+      "id": "reordered-scan",
+      "input": {
+        "path": "reordered-scan.jpg",
+        "bytes": 343,
+        "sha256": "aac2972a64ac0af0482f0575857ffb6cf58c43f36ca426c8898826206c35e5ce"
+      },
+      "expected": {
+        "path": "reordered-scan.expected",
+        "bytes": 512,
+        "sha256": "d62d3e979974e4c285093c7eafad1e4ddc7c323fad9c1dbcf20aef075678dbd5"
+      },
+      "width": 16,
+      "height": 8,
+      "sampling": [
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ]
+      ],
+      "scanOrder": [
+        3,
+        0,
+        2,
+        1
+      ],
+      "restartInterval": 0,
+      "stuffedBytes": 0,
+      "rawSampleBound": 1
+    },
+    {
+      "id": "subsample-rows",
+      "input": {
+        "path": "subsample-rows.jpg",
+        "bytes": 525,
+        "sha256": "1e72acb958cb6c5999a7693a1d7f79fdd0fd35cc97b7710f658954fdbbc7b3e0"
+      },
+      "expected": {
+        "path": "subsample-rows.expected",
+        "bytes": 4620,
+        "sha256": "4822b89b1f45c78a866cca10fa43a58abc48724b1e1ef7e2b52f6ea188c132d3"
+      },
+      "width": 33,
+      "height": 35,
+      "sampling": [
+        [
+          2,
+          2
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "scanOrder": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "restartInterval": 0,
+      "stuffedBytes": 0,
+      "rawSampleBound": 1
+    }
+  ]
+}

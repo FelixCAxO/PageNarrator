@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "referenceProtocolRevision": 5,
+  "benchmarkId": "private-library-v1-20261024",
+  "seed": "PageNarrator private library reference 2026-10-24 v1",
+  "documents": 30,
+  "pagesPerDocument": 3,
+  "candidatePagesPerDocument": 12,
+  "maximumSourceBytes": 134217728,
+  "pageSelection": "SHA-256 rank of seed/document SHA/page; pages 4 through pageCount-3, excluding the five previously exposed sample indices (1, rounded15%, rounded50%, rounded85%, last). This is page holdout within a previously consumed library, not unseen-document evidence.",
+  "referenceEligibility": "Three to six substantial, unique complete-word checkpoints in consistent PDFMiner layout and raw PDF.js order. Native-text positives require independently resolvable Unicode in target and three context pages; single-character PDFMiner undefined-CID placeholders are reference-unresolved, not malformed or successful OCR. Duplicate normalized references, known resource-cap violations and enumerated independent malformed-image diagnostics are excluded with retained reasons. Use the same frozen hash-ranked reserve order; never replace a page based on a product score. Reference revisions preserve prior gold and failed product reports with source-position/codestream evidence for each correction.",
+  "checkpoints": 5,
+  "minimumReferenceCharacters": 240,
+  "minimumAnchorCharacters": 24,
+  "minimumAnchorLetterCharacters": 12,
+  "maximumAnchorCharacters": 140,
+  "furniture": "Use all independently captured candidate/context pages from each book, including three preceding and three following pages for every hash-ranked candidate. Capture forward witnesses in a separate bounded reference invocation without increasing the per-invocation page/resource caps. Positive Unicode eligibility still covers the target and original three preceding narration-context pages. A forbidden-narration assertion requires at least three occurrences at consistent normalized coordinates in the outer 16% bands, at least 1.8 line heights of separation from inward text, and no body collision. Positive checkpoint admissibility is conservative: a complete marginal span recurring at the same place on two independently captured pages is ambiguous as body and is excluded from checkpoint selection, without asserting it is forbidden narration. Prove changing numeric edge labels with three constant printed-number/page-index offset witnesses before separating them from a running header. Compare complete letter-number spans across independent layout/word segmentation and retain source spelling. The page-wide five-checkpoint roster and automatic product thresholds remain unchanged. This independent 16% candidate band is not the product's 10% band and may add negative checks outside it.",
+  "normalization": "NFKD/lowercase letter-number tokens; discard combining marks and punctuation for independent agreement. Checkpoints retain verbatim complete-word source spans. Trim only a dangling word fragment at a line boundary using original preceding-line context. When independent layout containers interleave a formula, source word geometry may prove the nearest preceding line in the same text region at normal line spacing; another column or distant line is not continuation evidence. Never guess whether a hyphenated continuation is a joined word or a true compound, and never match arbitrary prefixes. The unchanged authored fixtures retain explicit soft-wrap assertions. Do not use PageNarrator narration, page-model ordering, suppression or legacy oracle speech.",
+  "references": [
+    "pdfplumber 0.11.9 / pdfminer.six 20251230 layout and word coordinates",
+    "standalone PDF.js raw getTextContent",
+    "Poppler original-page preview"
+  ],
+  "productThresholds": {
+    "pages": 100,
+    "readingOrder": 0.95,
+    "maximumNarrationErrors": 10,
+    "internalChunkGrounding": 0.98,
+    "internalWordAlignment": 0.95,
+    "imageOnlyRouting": 1
+  },
+  "reviewPolicy": "Human/listening reviews waived by the maintainer on 2026-10-24; no human score or review is generated.",
+  "routingControls": [
+    {
+      "id": "library-f5ee4f5c-bf16-484d-9306-96c599a93983",
+      "categories": [
+        "native-routing-control"
+      ],
+      "expectedCode": "scanned_pdf_unsupported"
+    },
+    {
+      "id": "library-3cf6b483-b885-4aea-a460-7a821f244982",
+      "categories": [
+        "native-routing-control"
+      ],
+      "expectedCode": "pdf_corrupt"
+    }
+  ]
+}

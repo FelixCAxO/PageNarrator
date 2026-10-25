@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PageNarrator</title>
+    <link rel="icon" type="image/png" href="../icons/icon-32.png" />
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <main class="popup-shell" aria-label="PageNarrator player">
+      <header>
+        <h1>PageNarrator</h1>
+        <p id="popup-status" class="header-status" role="status">Ready to read</p>
+      </header>
+
+      <p id="popup-error" class="popup-error" role="alert" hidden></p>
+
+      <section class="voice-choice" aria-label="Choose voice model">
+        <label class="field">
+          <span>Voice model</span>
+          <select id="popup-tts-engine" aria-describedby="popup-voice-model-help"><option value="kokoro">Kokoro (default)</option><option value="omnivoice">OmniVoice (experimental)</option></select>
+        </label>
+        <p id="popup-voice-model-help" class="field-help" role="status">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+      </section>
+
+      <details id="popup-settings" class="settings">
+        <summary>
+          <span>Voice settings</span>
+          <span id="popup-settings-summary">Heart voice · 1.00x</span>
+        </summary>
+
+        <div class="settings-body">
+          <label class="field">
+            <span>Language</span>
+            <select id="popup-language"></select>
+          </label>
+
+          <label class="field">
+            <span>Voice</span>
+            <select id="popup-voice">
+              <option value="">Loading voices…</option>
+            </select>
+          </label>
+
+          <div id="popup-omnivoice-settings" hidden>
+            <label class="field"><span>Voice type</span><select id="popup-omnivoice-gender"><option value="female">Female</option><option value="male">Male</option></select></label>
+            <label class="field"><span>Voice variation <output id="popup-omnivoice-variation-out" for="popup-omnivoice-variation">1 / 10</output></span><input id="popup-omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
+            <p class="field-help">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
+            <label class="toggle"><input id="popup-omnivoice-whisper" type="checkbox" /><span>Whisper</span></label>
+          </div>
+
+          <label class="field">
+            <span>Playback speed <output id="popup-speed-out">1.00x</output></span>
+            <input id="popup-speed" type="range" min="0.5" max="3.0" step="0.05" value="1.0" />
+          </label>
+          <p class="field-help">Saved automatically. Voice changes apply to the next section while reading.</p>
+        </div>
+      </details>
+
+      <section id="popup-setup" class="player-status" aria-labelledby="popup-setup-title" hidden>
+        <h2 id="popup-setup-title">Prepare local voice</h2>
+        <p id="popup-setup-detail">Missing voice files download from Hugging Face before setup.</p>
+        <progress id="popup-setup-progress" max="100" value="0" hidden></progress>
+        <div class="two-actions">
+          <button id="popup-setup-start" class="primary" type="button">Prepare voice</button>
+          <button id="popup-setup-skip" type="button">Skip</button>
+        </div>
+      </section>
+
+      <section id="popup-player" class="player-status" aria-label="Now reading" hidden>
+        <h2 id="popup-player-title">Current page</h2>
+        <p id="popup-progress" class="player-progress">Preparing…</p>
+        <div class="player-controls">
+          <button id="popup-previous" type="button" title="Previous section">Back</button>
+          <button id="popup-toggle" class="primary" type="button">Pause</button>
+          <button id="popup-stop" type="button">Stop</button>
+          <button id="popup-next" type="button">Next</button>
+        </div>
+      </section>
+
+      <div id="popup-idle-actions" class="actions">
+        <p id="popup-privacy-notice" class="privacy-notice">Built-in Kokoro voices run locally. OmniVoice does too. Missing voice files download from Hugging Face. Narrated text stays on this device. Settings, page URLs, titles, reading position, and a short text excerpt stay local. <a href="https://pagenarrator.com/privacy" target="_blank" rel="noreferrer">Privacy details</a>.</p>
+        <button id="start-reading" class="primary" type="button" disabled>Read page</button>
+        <button id="read-selected" type="button" disabled>Read selected</button>
+      </div>
+
+      <details id="popup-advanced" class="settings">
+        <summary><span>Advanced settings</span><span>Timing, cleanup, highlights</span></summary>
+        <div class="settings-body">
+          <label class="field"><span>Pause between sections <output id="popup-section-pause-out">Normal</output></span><input id="popup-section-pause" type="range" min="-5" max="5" step="0.1" value="0" /></label>
+          <label class="field"><span>Performance</span><select id="popup-performance-profile"><option value="auto">Auto</option><option value="quality">High quality</option><option value="balanced">Balanced</option><option value="lowPower">Battery saver</option></select></label>
+          <label class="field"><span>Processing</span><select id="popup-backend-preference"><option value="auto">Auto</option><option value="webgpu">WebGPU</option><option value="wasm">CPU / WebAssembly</option></select></label>
+          <label class="toggle"><input id="popup-idle-release" type="checkbox" checked /><span>Release voice memory when idle</span></label>
+          <label class="toggle"><input id="popup-skip-code" type="checkbox" /><span>Skip code snippets</span></label>
+          <div class="color-grid">
+            <label class="field"><span>Area color</span><input id="popup-area-color" type="color" value="#ffdd57" /></label>
+            <label class="field"><span>Word color</span><input id="popup-word-color" type="color" value="#ffdd57" /></label>
+          </div>
+          <label class="field"><span>Area opacity <output id="popup-area-opacity-out">10%</output></span><input id="popup-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" /></label>
+          <label class="field"><span>Word opacity <output id="popup-word-opacity-out">38%</output></span><input id="popup-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" /></label>
+          <p id="popup-hardware-status" class="field-help">Processing shown after reading starts.</p>
+        </div>
+      </details>
+
+
+
+      <details id="popup-transcript-card" class="settings" hidden>
+        <summary><span>Transcript</span><span id="popup-transcript-count">Available when reading starts</span></summary>
+        <div id="popup-transcript" class="scroll-panel">Transcript appears when text loads.</div>
+      </details>
+
+      <details id="popup-queue-card" class="settings" hidden>
+        <summary><span>Reading queue</span><span id="popup-queue-count">Available when reading starts</span></summary>
+        <div class="settings-body">
+          <input id="popup-queue-search" type="search" placeholder="Search sections" aria-label="Search sections" />
+          <div class="queue-nav"><button id="popup-queue-first" type="button">First</button><input id="popup-queue-jump" type="number" min="1" value="1" required aria-label="Section number" /><button id="popup-queue-go" type="button">Go</button><button id="popup-queue-last" type="button">Last</button></div>
+          <p id="popup-queue-empty" class="field-help" role="status" hidden>No matching sections. Try another search.</p>
+          <ul id="popup-queue" class="compact-list"></ul>
+        </div>
+      </details>
+    </main>
+
+    <script type="module" src="./popup.js"></script>
+  </body>
+</html>

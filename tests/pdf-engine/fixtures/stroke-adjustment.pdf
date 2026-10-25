@@ -1,0 +1,43 @@
+%PDF-1.7
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /Contents 4 0 R /MediaBox [0 0 400 320] /Resources << /ExtGState << /G 6 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 402  >>
+stream
+/G gs 0 w 20.2 20.2 m 220.2 20.2 l S
+0.1 w 20.2 34.2 m 220.2 34.2 l S
+0.49 w 20.2 48.2 m 220.2 48.2 l S
+0.51 w 20.2 62.2 m 220.2 62.2 l S
+1 w 20.2 76.2 m 220.2 76.2 l S
+1.49 w 20.2 90.2 m 220.2 90.2 l S
+1.5 w 20.2 104.2 m 220.2 104.2 l S
+2.6 w 20.2 118.2 m 220.2 118.2 l S q .8 .6 -.6 .8 240 180 cm .49 w [4 2] .25 d 0 0 m 120 0 l 120 50 l S Q q 1 0 0 1 20 220 cm 1.49 w 0 0 m 30 60 80 -20 140 40 c S Q
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+6 0 obj
+<< /SA true >>
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000178 00000 n 
+0000000308 00000 n 
+0000000762 00000 n 
+0000000859 00000 n 
+trailer
+<< /Size 7 /Root 1 0 R >>
+startxref
+889
+%%EOF

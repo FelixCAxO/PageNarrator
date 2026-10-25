@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Playback controls long article</title>
+  </head>
+  <body>
+    <main>
+      <article>
+        <h1>Playback controls long article</h1>
+        <p>
+          PageNarrator reads long technical pages while the user checks references, moves between tabs, and decides whether to pause or stop.
+          This fixture keeps silent test speech active long enough for playback controls to remain visible after reading begins.
+          The passage describes a browser extension that extracts article text, prepares audio, highlights words, updates progress, and keeps state synchronized with the toolbar player.
+          It uses deliberately ordinary prose so the extraction path remains the same one used by real pages instead of a synthetic command channel.
+          The reader should be able to pause narration in the middle of this paragraph, resume from that point, and then stop playback without waiting for a natural finish.
+          A stable test needs enough spoken words to exercise those transitions while Chrome is running several extension projects at once.
+          The words here are plain ASCII and intentionally varied so tokenization, highlighting, and queue reporting continue to follow the normal article flow.
+        </p>
+        <p>
+          The second paragraph gives the read loop additional work after the first control interaction.
+          It mentions permissions, extracted sections, local storage, voice preparation, and the visible status label because those surfaces all participate in the same end-to-end path.
+          When the stop button is pressed, the toolbar player should cancel the current playback, hide secondary controls, and return to a ready state for another read.
+        </p>
+      </article>
+    </main>
+  </body>
+</html>

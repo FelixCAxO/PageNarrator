@@ -1,0 +1,207 @@
+:root {
+  --bg: #171a20;
+  --surface: #242933;
+  --text: #f5f7fa;
+  --muted: #aab3c0;
+  color-scheme: dark;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+}
+
+.viewer-header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 20px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(23, 26, 32, 0.94);
+  padding: 12px 20px;
+  backdrop-filter: blur(10px);
+}
+
+.viewer-header > div:first-child {
+  min-width: 0;
+  max-width: min(520px, 100%);
+}
+
+.viewer-header h1 {
+  margin: 0;
+  line-height: 28px;
+  padding-left: 36px;
+  background: url("../website/public/assets/pagenarrator-icon.png") left center / 28px 28px no-repeat;
+  overflow: hidden;
+  font-size: 16px;
+  letter-spacing: 0;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.viewer-header p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.pdf-toolbar,
+.toolbar-group,
+.page-field {
+  display: inline-flex;
+  align-items: center;
+}
+
+.pdf-toolbar {
+  min-width: min(100%, 620px);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.toolbar-group {
+  min-height: 34px;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 6px;
+  padding: 3px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.page-toolbar {
+  padding: 3px 8px;
+}
+
+.page-field {
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.page-field input {
+  width: 72px;
+  height: 28px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 4px;
+  background: rgba(17, 21, 27, 0.92);
+  color: var(--text);
+  font: inherit;
+  text-align: center;
+}
+
+.page-count,
+.pdf-toolbar output {
+  min-width: 48px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.pdf-toolbar button {
+  min-width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 4px;
+  padding: 0 8px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.pdf-toolbar button:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.pdf-toolbar :focus-visible {
+  outline: 2px solid #6ee7b7;
+  outline-offset: 2px;
+}
+
+.pdf-toolbar button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pdf-toolbar button[aria-pressed="true"] {
+  background: var(--text);
+  color: #11151b;
+}
+
+.pdf-pages {
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  padding: 20px;
+}
+
+.pdf-page {
+  position: relative;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
+}
+
+.pdf-page canvas {
+  display: block;
+}
+
+.textLayer {
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  line-height: 1;
+  text-align: initial;
+  transform-origin: 0 0;
+}
+
+.textLayer :is(span, br) {
+  position: absolute;
+  color: transparent;
+  cursor: text;
+  transform-origin: 0% 0%;
+  white-space: pre;
+}
+
+.textLayer[data-main-rotation="90"] {
+  transform: rotate(90deg) translateY(-100%);
+}
+
+.textLayer[data-main-rotation="180"] {
+  transform: rotate(180deg) translate(-100%, -100%);
+}
+
+.textLayer[data-main-rotation="270"] {
+  transform: rotate(270deg) translateX(-100%);
+}
+
+.textLayer > :not(.markedContent),
+.textLayer .markedContent span:not(.markedContent) {
+  z-index: 1;
+  --font-height: 0;
+  --scale-x: 1;
+  --rotate: 0deg;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+
+.textLayer .markedContent {
+  display: contents;
+}

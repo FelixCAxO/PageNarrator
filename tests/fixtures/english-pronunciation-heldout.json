@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "scope": "Manually specified pronunciation development acceptance, frozen before this probe. Not evidence that training data excludes these words. British broad-vowel variants are explicit; no claim of exact eSpeak parity.",
+  "cases": [
+    { "word": "cat", "us": ["kˈæt"], "uk": ["kˈat", "kˈæt"] },
+    { "word": "dog", "us": ["dˈɔːɡ", "dˈɑːɡ"], "uk": ["dˈɒɡ"] },
+    { "word": "ship", "us": ["ʃˈɪp"], "uk": ["ʃˈɪp"] },
+    { "word": "think", "us": ["θˈɪŋk"], "uk": ["θˈɪŋk"] },
+    { "word": "window", "us": ["wˈɪndoʊ"], "uk": ["wˈɪndəʊ"] },
+    { "word": "music", "us": ["mjˈuːzɪk"], "uk": ["mjˈuːzɪk"] },
+    { "word": "computer", "us": ["kəmpjˈuːtɚ"], "uk": ["kəmpjˈuːtə"] },
+    { "word": "through", "us": ["θɹˈuː"], "uk": ["θɹˈuː"] },
+    { "word": "enough", "us": ["ɪnˈʌf", "ənˈʌf"], "uk": ["ɪnˈʌf", "ənˈʌf"] },
+    { "word": "garden", "us": ["ɡˈɑːɹdən"], "uk": ["ɡˈɑːdən"] },
+    { "word": "paper", "us": ["pˈeɪpɚ"], "uk": ["pˈeɪpə"] },
+    { "word": "quiet", "us": ["kwˈaɪət"], "uk": ["kwˈaɪət"] },
+    { "word": "camera", "us": ["kˈæmɚə", "kˈæmɹə"], "uk": ["kˈaməɹə", "kˈamɹə", "kˈæməɹə", "kˈæmɹə"] },
+    { "word": "judge", "us": ["dʒˈʌdʒ"], "uk": ["dʒˈʌdʒ"] },
+    { "word": "measure", "us": ["mˈɛʒɚ"], "uk": ["mˈɛʒə"] },
+    { "word": "church", "us": ["tʃˈɜːɹtʃ"], "uk": ["tʃˈɜːtʃ", "tʃˈɜːtʃ"] }
+  ],
+  "oov": [
+    { "word": "glorp", "us": ["ɡlˈɔːɹp"], "uk": ["ɡlˈɔːp"] },
+    { "word": "wug", "us": ["wˈʌɡ"], "uk": ["wˈʌɡ"] },
+    { "word": "wugs", "us": ["wˈʌɡz"], "uk": ["wˈʌɡz"] },
+    { "word": "tazzle", "us": ["tˈæzəl"], "uk": ["tˈæzəl", "tˈazəl"] }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "python": "3.10.11",
+  "pypdf": "6.16.2",
+  "mupdf": "1.28.0",
+  "unicodeVersion": "3.2.0",
+  "scope": "Independent AES256/R6 writer and reader; explicit prepared bytes avoid relying on its string normalization.",
+  "entries": [
+    {
+      "id": "mapping",
+      "file": "mapping.pdf",
+      "bytes": 1737,
+      "sha256": "f07d21877cdd2178f4f725c3ad9bf20eec0c47827cbca403c060ba02af83ce73",
+      "password": "I\u00adX",
+      "equivalents": [
+        "IX",
+        "\u2168"
+      ],
+      "preparedBytesHex": "4958",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    },
+    {
+      "id": "spaces",
+      "file": "spaces.pdf",
+      "bytes": 1737,
+      "sha256": "a7bf211a68862d5746c75167c2fba119ca5719f8843fc097790a3b32dcefbba3",
+      "password": "pa\u00a0\u00aa",
+      "equivalents": [
+        "pa a",
+        "pa\u1680a",
+        "p\u200ba a"
+      ],
+      "preparedBytesHex": "70612061",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    },
+    {
+      "id": "canonical",
+      "file": "canonical.pdf",
+      "bytes": 1737,
+      "sha256": "3ed2d0282a0c518e309c7da5f23a9ae0b9e86b8ebee1734d4822daea68bcea5c",
+      "password": "A\u030arup\ufb03",
+      "equivalents": [
+        "\u00c5rupffi",
+        "\u212brupffi"
+      ],
+      "preparedBytesHex": "c385727570666669",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    },
+    {
+      "id": "rtl",
+      "file": "rtl.pdf",
+      "bytes": 1737,
+      "sha256": "e804f07366d99ebe6cbaf9c3d85d2a42373102f9009c3c23596d50e869570dce",
+      "password": "\u06271\u0627",
+      "equivalents": [],
+      "preparedBytesHex": "d8a731d8a7",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    },
+    {
+      "id": "historical-cjk",
+      "file": "historical-cjk.pdf",
+      "bytes": 1737,
+      "sha256": "1a4b6fdbf5eb4c9bb9afbdfe4dde90058b1e86a1600119f386dad846877adc42",
+      "password": "\ud87e\udc68",
+      "equivalents": [
+        "\ud844\udf6a"
+      ],
+      "preparedBytesHex": "f0a18daa",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    },
+    {
+      "id": "truncate-bytes",
+      "file": "truncate-bytes.pdf",
+      "bytes": 1737,
+      "sha256": "2c88454d3e9507a9ed280175cd2b49086dd49e10cb574ef185cc54e0cbb3b95e",
+      "password": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\u00e9Z",
+      "equivalents": [
+        "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\u00e9different"
+      ],
+      "preparedBytesHex": "414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141414141c3",
+      "owner": "\u212b-owner",
+      "ownerPreparedBytesHex": "c3852d6f776e6572",
+      "independentReadPassed": true
+    }
+  ]
+}

@@ -1,0 +1,1810 @@
+[
+  {
+    "id": "fill-gray",
+    "kind": "d1",
+    "operator": "1 g",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(255,255,255)",
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "1 g",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "stroke-gray",
+    "kind": "d1",
+    "operator": "1 G",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": "rgb(255,255,255)",
+      "semanticColor": "1 G",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "fill-rgb",
+    "kind": "d1",
+    "operator": "1 0 0 rg",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "1 0 0 rg",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "stroke-rgb",
+    "kind": "d1",
+    "operator": "1 0 0 RG",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": "rgb(255,0,0)",
+      "semanticColor": "1 0 0 RG",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "fill-cmyk",
+    "kind": "d1",
+    "operator": "0 1 1 0 k",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": null,
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "0 1 1 0 k",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false,
+      "qualification": "CMYK source components are canonical; exact old profile-converted RGB is unexecuted and not asserted."
+    }
+  },
+  {
+    "id": "stroke-cmyk",
+    "kind": "d1",
+    "operator": "0 1 1 0 K",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": null,
+      "semanticColor": "0 1 1 0 K",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false,
+      "qualification": "CMYK source components are canonical; exact old profile-converted RGB is unexecuted and not asserted."
+    }
+  },
+  {
+    "id": "fill-space",
+    "kind": "d1",
+    "operator": "/Rgb cs",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(0,0,0)",
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "/Rgb cs",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "stroke-space",
+    "kind": "d1",
+    "operator": "/Rgb CS",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": "rgb(0,0,0)",
+      "semanticColor": "/Rgb CS",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "fill-sc",
+    "kind": "d1",
+    "operator": "1 0 0 sc",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "1 0 0 sc",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "stroke-sc",
+    "kind": "d1",
+    "operator": "1 0 0 SC",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": "rgb(255,0,0)",
+      "semanticColor": "1 0 0 SC",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "fill-scn",
+    "kind": "d1",
+    "operator": "1 0 0 scn",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(0,128,0)",
+      "semanticColor": "1 0 0 scn",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "stroke-scn",
+    "kind": "d1",
+    "operator": "1 0 0 SCN",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "source-color-state-change",
+      "firstFill": "rgb(51,102,204)",
+      "firstStroke": "rgb(255,0,0)",
+      "semanticColor": "1 0 0 SCN",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "shading-paint",
+    "kind": "d1",
+    "operator": "/Shade sh",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "extra-shading-command",
+      "additionalShadings": 1,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "rendering-intent-control",
+    "kind": "d1",
+    "operator": "/RelativeColorimetric ri",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "already-no-visible-effect",
+      "expectedPaints": [
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        },
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        },
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        }
+      ],
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "pattern-fill-ignored",
+    "kind": "d1",
+    "operator": "/Pattern cs /P0 scn",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-pattern-color-before-paint",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "pattern-stroke-ignored",
+    "kind": "d1",
+    "operator": "/Pattern CS /P0 SCN",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-pattern-color-before-paint",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-TR",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/TR << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "TR",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-TR2",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/TR2 << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "TR2",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-HT",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/HT << /HalftoneType 1 /Frequency 60 /Angle 45 /SpotFunction /Round >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "HT",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-BG",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/BG << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "BG",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-BG2",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/BG2 << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "BG2",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-UCR",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/UCR << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "UCR",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-UCR2",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/UCR2 << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >> /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "UCR2",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-OP",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/OP true /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "OP",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-op",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/op true /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unsupported-color-state-before-paint",
+      "key": "op",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "gstate-OPM",
+    "kind": "d1",
+    "operator": "/ColorFx gs",
+    "gstate": "/OPM 1 /LW 3 /ca .6 /CA .7 /D [[2 1] 0] /SA false",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 3,
+        "fillAlpha": 0.6,
+        "strokeAlpha": 0.7,
+        "dash": [
+          2,
+          1
+        ]
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "already-ignored-overprint-mode-control",
+      "key": "OPM",
+      "nonColorFieldsStillApply": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "form-inherits-d1-policy",
+    "kind": "d1",
+    "operator": "/Form Do",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 1,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "form-first-paint-changes-color",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(255,0,0)",
+      "remainingPaintsUnchanged": true,
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "nested-graphics-state-control",
+    "kind": "d1",
+    "operator": "q 1 0 0 rg 1 0 0 RG Q",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "already-restored-before-paint",
+      "expectedPaints": [
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        },
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        },
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        }
+      ],
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d1-tr3-remains-invisible",
+    "kind": "d1",
+    "operator": "1 0 0 rg 1 0 0 RG",
+    "gstate": "",
+    "mode": 3,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 0,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "already-invisible-selectable",
+      "expectedPaints": [
+        {
+          "fill": "rgb(51,102,204)",
+          "stroke": "rgb(0,128,0)",
+          "lineWidth": 1,
+          "fillAlpha": 1,
+          "strokeAlpha": 1,
+          "dash": []
+        }
+      ],
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d0-colored-remains-colored",
+    "kind": "d0",
+    "operator": "1 0 0 rg 1 0 0 RG",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(255,0,0)",
+        "stroke": "rgb(255,0,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-d0-colored",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(255,0,0)",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d0-named-color-remains-colored",
+    "kind": "d0",
+    "operator": "/Rgb cs 1 0 0 scn /Rgb CS 1 0 0 SCN",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(255,0,0)",
+        "stroke": "rgb(255,0,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-d0-colored",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(255,0,0)",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "ordinary-color-remains-colored",
+    "kind": "ordinary",
+    "operator": "1 0 0 rg 1 0 0 RG",
+    "gstate": "",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": null,
+    "expectedPaints": [
+      {
+        "fill": "rgb(255,0,0)",
+        "stroke": "rgb(255,0,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 0,
+    "expectedClipCount": 0,
+    "expectedItem": null,
+    "oldSourceExpectation": {
+      "kind": "unchanged-ordinary-colored",
+      "firstFill": "rgb(255,0,0)",
+      "firstStroke": "rgb(255,0,0)",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d0-gstate-TR2-still-rejected",
+    "kind": "d0",
+    "operator": "/ColorFx gs",
+    "gstate": "/TR2 << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >>",
+    "mode": 0,
+    "expectedError": "pdf_unsupported",
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": null,
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "TR2",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d0-gstate-OP-still-rejected",
+    "kind": "d0",
+    "operator": "/ColorFx gs",
+    "gstate": "/OP true",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "OP",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "d0-gstate-op-still-rejected",
+    "kind": "d0",
+    "operator": "/ColorFx gs",
+    "gstate": "/op true",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      },
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "op",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "ordinary-gstate-TR2-still-rejected",
+    "kind": "ordinary",
+    "operator": "/ColorFx gs",
+    "gstate": "/TR2 << /FunctionType 2 /Domain [0 1] /C0 [0] /C1 [1] /N 1 >>",
+    "mode": 0,
+    "expectedError": "pdf_unsupported",
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": null,
+    "expectedGlyphTransforms": 1,
+    "expectedClipCount": 0,
+    "expectedItem": {
+      "text": "A",
+      "width": 7.2,
+      "height": 12
+    },
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "TR2",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "ordinary-gstate-OP-still-rejected",
+    "kind": "ordinary",
+    "operator": "/ColorFx gs",
+    "gstate": "/OP true",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 0,
+    "expectedClipCount": 0,
+    "expectedItem": null,
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "OP",
+      "rgbaMeasured": false
+    }
+  },
+  {
+    "id": "ordinary-gstate-op-still-rejected",
+    "kind": "ordinary",
+    "operator": "/ColorFx gs",
+    "gstate": "/op true",
+    "mode": 0,
+    "expectedError": null,
+    "oldExpectedError": "pdf_unsupported",
+    "expectedPaints": [
+      {
+        "fill": "rgb(51,102,204)",
+        "stroke": "rgb(0,128,0)",
+        "lineWidth": 1,
+        "fillAlpha": 1,
+        "strokeAlpha": 1,
+        "dash": []
+      }
+    ],
+    "expectedGlyphTransforms": 0,
+    "expectedClipCount": 0,
+    "expectedItem": null,
+    "oldSourceExpectation": {
+      "kind": "unchanged-unsupported-color-state",
+      "key": "op",
+      "rgbaMeasured": false
+    }
+  }
+]

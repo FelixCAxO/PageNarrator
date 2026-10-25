@@ -1,0 +1,3 @@
+Font Awesome Free 5.15.4, Copyright Fonticons, Inc. Declarative name/Unicode/style/label metadata retains the MIT terms for non-font, non-icon files; see Font-Awesome-LICENSE.txt. No SVG paths, icon artwork, font programs or executable code are retained. Brand names identify source-document symbols and imply no endorsement.
+MarVoSym 3.10 (CTAN package 2.2a): named Letter symbol and non-Unicode Microsoft symbol-cmap facts, retained under SIL OFL 1.1; see MarVoSym-OFL.txt. No MarVoSym font program is retained. U+FFFC explicitly represents its identified non-Unicode inline object, not an invented Unicode letter.
+Original importer and interpretation code are GPL-3.0-or-later.

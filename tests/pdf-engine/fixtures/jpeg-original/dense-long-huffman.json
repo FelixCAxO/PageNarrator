@@ -1,0 +1,26 @@
+{
+  "scope": "Original sole16-bit canonical Huffman codes, all63 AC coefficients populated at category10, reordered scan. Independent direct2D IDCT, no external decoder code. Bounded diagnostic, no performance acceptance.",
+  "width": 8,
+  "height": 8,
+  "scanOrder": [
+    3,
+    1,
+    0,
+    2
+  ],
+  "blocks": 4,
+  "symbols": 256,
+  "maximumCodeLength": 16,
+  "codedBits": 6616,
+  "maximumAbsoluteSampleDifference": 1,
+  "input": {
+    "path": "dense-long-huffman.jpg",
+    "bytes": 978,
+    "sha256": "9cbbeceb8e80e908b8183d5d7faea0bcde5dc3d121d9acb25a55ef70900a28f2"
+  },
+  "expected": {
+    "path": "dense-long-huffman.expected",
+    "bytes": 256,
+    "sha256": "e7101183a03027fe8b7689602ed8d38a7d0e4e15f3d9885f42e7811f954a79ea"
+  }
+}

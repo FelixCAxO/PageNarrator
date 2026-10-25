@@ -1,0 +1,48 @@
+{
+  "version": "1.0.0",
+  "authorizedBy": "user",
+  "authorizedOn": "2026-10-24",
+  "waivedGateIds": [
+    "physical-hardware",
+    "human-listening-reviews"
+  ],
+  "reason": "The maintainer waived physical hardware testing and human/listening reviews for v1.0.0.",
+  "scope": "These two waivers record checks as not performed, never passed or verified, and establish no hardware performance or listening quality. The separately recorded accepted limitation retains its failed/unqualified numerical evidence; all other software, numerical, OCR and PDF checks remain required.",
+  "acceptedLimitations": [
+    {
+      "limitationId": "kokoro-duration-pcm-reference-parity",
+      "version": "1.0.0",
+      "status": "accepted-limitation",
+      "verification": "failed-unqualified",
+      "authorizedBy": "user",
+      "authorizedOn": "2026-10-25",
+      "reason": "The maintainer accepted the recorded Kokoro duration/PCM reference-parity limitation for v1.0.0.",
+      "scope": "Recorded duration and PCM reference-parity failures remain failed/unqualified, never passed or not performed. Preserve the failed diagnostics and numerical thresholds. Source/model integrity, finite/signal checks, operator numerical bounds, software functional checks and OCR/PDF checks remain required. This acceptance does not extend to future versions or authorize production arithmetic changes."
+    }
+  ],
+  "additionalReleases": [
+    {
+      "version": "1.0.1",
+      "authorizedBy": "user",
+      "authorizedOn": "2026-10-25",
+      "waivedGateIds": [
+        "physical-hardware",
+        "human-listening-reviews"
+      ],
+      "reason": "The maintainer explicitly extended the disclosed v1.0.0 exceptions to the v1.0.1 maintenance release.",
+      "scope": "Physical hardware and human/listening reviews remain not performed, never passed or verified. Only v1.0.1 is covered; v1.0.2 and later require fresh evidence or a new explicit decision. Other software, source/model integrity, numerical operator, OCR and PDF checks remain required.",
+      "acceptedLimitations": [
+        {
+          "limitationId": "kokoro-duration-pcm-reference-parity",
+          "version": "1.0.1",
+          "status": "accepted-limitation",
+          "verification": "failed-unqualified",
+          "authorizedBy": "user",
+          "authorizedOn": "2026-10-25",
+          "reason": "The maintainer explicitly accepted the unchanged Kokoro duration/PCM reference-parity limitation for v1.0.1.",
+          "scope": "Recorded duration and PCM reference-parity failures remain failed/unqualified, never passed or not performed. Preserve the failed diagnostics and numerical thresholds. Source/model integrity, finite/signal checks, operator numerical bounds, software functional checks and OCR/PDF checks remain required. This acceptance does not extend to v1.0.2 or later and does not authorize production arithmetic changes."
+        }
+      ]
+    }
+  ]
+}

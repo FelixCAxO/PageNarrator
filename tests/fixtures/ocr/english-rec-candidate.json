@@ -1,0 +1,32 @@
+{
+  "modelId": "PaddlePaddle/en_PP-OCRv5_mobile_rec_onnx",
+  "revision": "3fafbc3b5dcf93dd72add9f48368be8a3a2cd33b",
+  "licenseDeclaredByModel": "Apache-2.0",
+  "candidateOnly": true,
+  "productionSelection": "unchanged",
+  "files": [
+    {
+      "path": "inference.onnx",
+      "bytes": 7848423,
+      "sha256": "b5f833dfc5d0eb71da397b4efa06ebeee9b431b690a47d6af40d77d8eabc557f"
+    },
+    {
+      "path": "README.md",
+      "bytes": 28,
+      "sha256": "98b45ea81164d1e1a1dd82255207053b15cd6c69d922a1c5cf3387ce604d4b74",
+      "gitBlobSha1": "154df8298fab5ecf322016157858e08cd1bccbe1"
+    },
+    {
+      "path": "inference.yml",
+      "bytes": 3964,
+      "sha256": "27e91d0582f40168aa218303c76e184bc78fa7a5d105aad0cfbad8458b441067",
+      "gitBlobSha1": "91a401a7220881921c249b92852a96f9dbf2132a"
+    }
+  ],
+  "derivedAlphabet": {
+    "path": "alphabet.json",
+    "bytes": 2299,
+    "sha256": "ef84489f927fb92b64714c7f110404e5bfb83c4067bd609fe4c41d5f23e25659",
+    "modification": "Extracted literal436character dictionary with CTC blank and space; learned model unchanged."
+  }
+}

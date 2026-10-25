@@ -1,0 +1,38 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 375 >>
+stream
+BT
+/F1 16 Tf 1 0 0 1 54 750 Tm (Chapter 1: The Evolution of Neural Speech) Tj
+/F1 36 Tf 1 0 0 1 48 660 Tm ("I) Tj
+/F1 12 Tf 1 0 0 1 88 685 Tm (In the beginning of neural synthesis research,) Tj
+/F1 12 Tf 1 0 0 1 88 668 Tm (models required massive server clusters to run.) Tj
+/F1 12 Tf 1 0 0 1 54 640 Tm (Today, lightweight models run completely inside client browsers.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000667 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+764
+%%EOF

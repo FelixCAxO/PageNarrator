@@ -1,0 +1,10 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "pagenarrator-support-mailbox",
+  "main": "./support-mailbox.js",
+  "compatibility_date": "2026-05-04",
+  "observability": {
+    "enabled": true,
+    "head_sampling_rate": 1
+  }
+}

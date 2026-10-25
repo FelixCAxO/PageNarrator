@@ -1,0 +1,9 @@
+{
+  "renderer": "MuPDF",
+  "version": "1.28.0",
+  "sourceSha256": "21f54b0c9a67aaec92fab9b18dd10ee45ae45f2d3fc1aa3db2f77cbd26a403e5",
+  "pngSha256": "eddcb704a509f016243ad78844ccc19064032f3c985b249dfe0e02c99b98804a",
+  "width": 612,
+  "height": 792,
+  "reason": "PDF.js approximates non-isolated groups; use an independent raster."
+}

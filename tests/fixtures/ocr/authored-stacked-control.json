@@ -1,0 +1,195 @@
+{
+  "schema": "pagenarrator-authored-stacked-glyph-control-v1",
+  "license": "GPL-3.0-or-later",
+  "copyright": "Copyright 2026 Felix Olsson. Original PageNarrator text, pixels and geometry.",
+  "producer": "scripts/generate-ocr-stacked-control.mjs",
+  "scope": "Synthetic source-bound refinement and unchanged word/confidence regression. No tracing or inference; not fresh real OCR quality evidence.",
+  "image": {
+    "width": 112,
+    "height": 108,
+    "mode": "RGBA",
+    "background": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "ink": [
+      0,
+      0,
+      0,
+      255
+    ]
+  },
+  "authoredRectangles": {
+    "own": [
+      [
+        30,
+        22,
+        50,
+        26
+      ],
+      [
+        30,
+        26,
+        34,
+        31
+      ],
+      [
+        30,
+        31,
+        50,
+        35
+      ],
+      [
+        46,
+        35,
+        50,
+        38
+      ],
+      [
+        30,
+        38,
+        50,
+        42
+      ],
+      [
+        30,
+        55,
+        50,
+        59
+      ],
+      [
+        30,
+        59,
+        34,
+        64
+      ],
+      [
+        30,
+        64,
+        50,
+        68
+      ],
+      [
+        46,
+        68,
+        50,
+        71
+      ],
+      [
+        30,
+        71,
+        50,
+        75
+      ]
+    ],
+    "neighbor": [
+      [
+        104,
+        15,
+        108,
+        92
+      ],
+      [
+        78,
+        15,
+        104,
+        19
+      ],
+      [
+        78,
+        46,
+        104,
+        50
+      ],
+      [
+        78,
+        88,
+        104,
+        92
+      ]
+    ]
+  },
+  "expectationDerivation": {
+    "ownInkUnion": [
+      30,
+      22,
+      50,
+      75
+    ],
+    "visibleInkPadding": 1,
+    "expectedBounds": [
+      29,
+      21,
+      51,
+      76
+    ],
+    "initialSearch": [
+      10,
+      11,
+      96,
+      93
+    ],
+    "neighbor": "All three ladder teeth touch the initial right search edge. Its full component is detached 28 pixels from established ink, so it must not extend this source word.",
+    "ownPixelCount": "2*(20*4+4*5+20*4+4*3+20*4)=544",
+    "neighborPixelCount": "4*77+3*26*4=620",
+    "masks": "Row-major uint8 0/1 values for black source pixels inside each half-open rectangle; SHA covers every foreground/background mask byte.",
+    "observation": "Expected bounds/masks come from this authored drawing, never from recording refinePdfOcrWordBounds output."
+  },
+  "fixture": {
+    "file": "authored-stacked-glyphs.png",
+    "pngSha256": "d11e7c0e40706d305b7f8691d3e5d4430c2146f6f7f8ccebc13fa4bf358fa3fb",
+    "pixelSha256": "bfc20a14f5ff98351787c6b9da2bd2bd285ea00a9aae26c9381be903e0992074",
+    "provenance": "Original PageNarrator five-bar stacked glyphs and detached ladder on a white canvas. Synthetic development/source-ownership geometry, not OCR output or an image-quality sample.",
+    "words": [
+      {
+        "text": "S",
+        "confidence": 61.25,
+        "bbox": {
+          "x0": 26,
+          "y0": 12,
+          "x1": 56,
+          "y1": 92
+        }
+      }
+    ],
+    "frame": {
+      "top": 12,
+      "bottom": 92,
+      "left": 0,
+      "right": 112,
+      "stepWidth": 11
+    },
+    "expected": [
+      {
+        "x0": 29,
+        "y0": 21,
+        "x1": 51,
+        "y1": 76
+      }
+    ],
+    "own": {
+      "rect": [
+        30,
+        22,
+        50,
+        75
+      ],
+      "threshold": 180,
+      "foregroundPixels": 544,
+      "maskSha256": "270987a6a0d74805f7bac7f1a874dbc00b9d98aa48338d18a64b7f211971da89"
+    },
+    "neighbor": {
+      "rect": [
+        78,
+        15,
+        108,
+        92
+      ],
+      "threshold": 180,
+      "foregroundPixels": 620,
+      "maskSha256": "8553e7cb5518bf9d5fb136055fa8cb9b0b6c12f155e802dae448ec415f38b4c8"
+    }
+  }
+}

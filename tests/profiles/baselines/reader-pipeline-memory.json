@@ -1,0 +1,56 @@
+{
+  "paragraphCount": 600,
+  "reports": [
+    {
+      "name": "create-jsdom-document",
+      "beforeBytes": 39257448,
+      "afterBytes": 47285360,
+      "deltaBytes": 8027912,
+      "durationMs": 77.35580000000004,
+      "source": "process.memoryUsage",
+      "rssBeforeBytes": 142577664,
+      "rssAfterBytes": 165355520,
+      "rssDeltaBytes": 22777856
+    },
+    {
+      "name": "build-reading-model",
+      "beforeBytes": 47128272,
+      "afterBytes": 54767080,
+      "deltaBytes": 7638808,
+      "durationMs": 203.35530000000006,
+      "source": "process.memoryUsage",
+      "rssBeforeBytes": 165576704,
+      "rssAfterBytes": 179482624,
+      "rssDeltaBytes": 13905920
+    },
+    {
+      "name": "render-speech-chunks",
+      "beforeBytes": 54644424,
+      "afterBytes": 53415440,
+      "deltaBytes": -1228984,
+      "durationMs": 1001.9085000000001,
+      "source": "process.memoryUsage",
+      "rssBeforeBytes": 178831360,
+      "rssAfterBytes": 203161600,
+      "rssDeltaBytes": 24330240
+    },
+    {
+      "name": "chunk-for-tts",
+      "beforeBytes": 53253296,
+      "afterBytes": 53784784,
+      "deltaBytes": 531488,
+      "durationMs": 7.081900000000132,
+      "source": "process.memoryUsage",
+      "rssBeforeBytes": 203939840,
+      "rssAfterBytes": 203956224,
+      "rssDeltaBytes": 16384
+    }
+  ],
+  "summary": {
+    "totalDeltaBytes": 14527336,
+    "largestIncrease": {
+      "name": "create-jsdom-document",
+      "deltaBytes": 8027912
+    }
+  }
+}

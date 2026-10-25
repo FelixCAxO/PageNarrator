@@ -1,0 +1,38 @@
+{
+  "onboardingQuickWinTitle": {
+    "message": "Read a selected passage"
+  },
+  "onboardingQuickWinBody": {
+    "message": "Select two sentences on the page, then choose Read selected."
+  },
+  "onboardingQuickWinCta": {
+    "message": "Read selected"
+  },
+  "onboardingFullPageTitle": {
+    "message": "Read the page"
+  },
+  "onboardingFullPageBody": {
+    "message": "Choose Read page to start reading."
+  },
+  "onboardingFullPageCta": {
+    "message": "Read full page"
+  },
+  "onboardingDismiss": {
+    "message": "Skip"
+  },
+  "reviewPromptTitle": {
+    "message": "Rate PageNarrator"
+  },
+  "reviewPromptBody": {
+    "message": "Your review helps other readers choose."
+  },
+  "reviewNever": {
+    "message": "Never"
+  },
+  "reviewLater": {
+    "message": "Later"
+  },
+  "reviewReview": {
+    "message": "Review"
+  }
+}

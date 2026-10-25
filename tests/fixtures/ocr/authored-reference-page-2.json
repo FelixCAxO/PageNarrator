@@ -1,0 +1,27 @@
+{
+  "page": 2,
+  "referenceStatus": "authored",
+  "scope": "Original synthetic reference-schema control; no photographed page or OCR result.",
+  "regions": [
+    {
+      "kind": "prose",
+      "rect": [
+        0.16,
+        0.12,
+        0.64,
+        0.26
+      ],
+      "text": "Record two measurements before closing the panel."
+    },
+    {
+      "kind": "caption",
+      "rect": [
+        0.18,
+        0.62,
+        0.58,
+        0.08
+      ],
+      "text": "Panel B: sample count 7."
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "abi": 1,
+  "compiler": "Zig 0.15.2 (Clang C++)",
+  "flags": [
+    "c++",
+    "-target",
+    "wasm32-freestanding",
+    "-std=c++20",
+    "-O3",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-builtin",
+    "-nostdlib",
+    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_initialize,--export=pn_lookup,--export=pn_g2p,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=33554432,--strip-all"
+  ],
+  "sourceSha256": "ef4345434f1075cf523d8256689ddcd911554612d3d35fd905d51d39c42f0288",
+  "wasmSha256": "480ac523ef81b10867df57113884b47f14256f84eaea4060dcf2340cee0d93dc",
+  "imports": []
+}

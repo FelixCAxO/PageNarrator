@@ -1,0 +1,10 @@
+{
+  "schema": 1,
+  "frozenAt": "2026-10-16",
+  "scope": "Development corpus frozen before original OmniVoice main-graph speech evaluation. Human listening and independent held-out quality remain required.",
+  "cases": [
+    { "id": "english", "text": "The garden gate is open. Please bring the blue book.", "lang": "en", "instruct": "", "speed": 1, "seed": 42, "numStep": 24 },
+    { "id": "swedish", "text": "Vi läser en bok tillsammans. Solen skiner över sjön.", "lang": "sv", "instruct": "", "speed": 1, "seed": 42, "numStep": 24 },
+    { "id": "arabic", "text": "صباح الخير. نقرأ كتابا جديدا اليوم.", "lang": "arb", "instruct": "", "speed": 1, "seed": 42, "numStep": 24 }
+  ]
+}

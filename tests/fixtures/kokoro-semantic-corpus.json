@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "purpose": "Development speech acceptance cases frozen before generation; not proof of model-training independence or human listening quality.",
+  "gates": {
+    "minimumRms": 0.001,
+    "maximumDurationRelativeDifference": 0.1,
+    "maximumDurationAbsoluteDifferenceSeconds": 0.1,
+    "maximumWordErrorRate": 0.25,
+    "maximumWordErrorRateIncrease": 0.05,
+    "requireExpectedFinalThreeWords": true,
+    "pcmAbsoluteTolerance": 0.0003,
+    "pcmRelativeTolerance": 0.003
+  },
+  "cases": [
+    { "id": "us-neutral", "voice": "af_heart", "speed": 1, "mode": "batch", "text": "The afternoon light fell across the quiet room." },
+    { "id": "us-fast", "voice": "am_michael", "speed": 1.25, "mode": "batch", "text": "The browser keeps the next sentence ready while this one plays." },
+    { "id": "us-numbers", "voice": "af_heart", "speed": 1, "mode": "batch", "text": "Doctor Smith paid $12.50 on Friday." },
+    { "id": "uk-neutral", "voice": "bf_emma", "speed": 1, "mode": "batch", "text": "The garden path leads past the old stone house." },
+    { "id": "uk-slow", "voice": "bf_emma", "speed": 0.85, "mode": "batch", "text": "Please read the final sentence slowly, then stop." },
+    { "id": "us-stream", "voice": "af_heart", "speed": 1, "mode": "stream", "text": "First, read the whole page.  Then pause before the next section.\n" }
+  ]
+}

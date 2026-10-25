@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "scope": "Fresh manually authored utterances frozen after the v2 fixes and before evaluating these utterances. Gold and first results are immutable. New sentence combinations and OOV items are development acceptance, not a claim of dictionary/training disjointness, full grammar coverage or exact eSpeak parity.",
+  "cases": [
+    { "id": "completed-and-future-read", "text": "After she had read the letter, we will read the reply.", "category": "context", "anchors": [{ "word": "read", "occurrence": 0, "us": ["ɹˈɛd"], "uk": ["ɹˈɛd"] }, { "word": "read", "occurrence": 1, "us": ["ɹˈiːd"], "uk": ["ɹˈiːd"] }] },
+    { "id": "past-auxiliary-infinitive", "text": "Did you read that story last week?", "category": "context", "anchors": [{ "word": "read", "us": ["ɹˈiːd"], "uk": ["ɹˈiːd"] }] },
+    { "id": "modal-and-determiner-record", "text": "We should record another record today.", "category": "context", "anchors": [{ "word": "record", "occurrence": 0, "us": ["ɹɪkˈɔːɹd", "ɹəkˈɔːɹd"], "uk": ["ɹɪkˈɔːd"] }, { "word": "record", "occurrence": 1, "us": ["ɹˈɛkɚd"], "uk": ["ɹˈɛkɔːd"] }] },
+    { "id": "question-and-distance-close", "text": "Could you close this case? The station is close to the square.", "category": "context", "anchors": [{ "word": "close", "occurrence": 0, "us": ["klˈoʊz"], "uk": ["klˈəʊz"] }, { "word": "close", "occurrence": 1, "us": ["klˈoʊs"], "uk": ["klˈəʊs"] }] },
+    { "id": "new-unvoiced-oov-plural", "text": "A vemp and two vemps wait beside the wall.", "category": "oov", "anchors": [{ "word": "vemp", "us": ["vˈɛmp"], "uk": ["vˈɛmp"] }, { "word": "vemps", "us": ["vˈɛmps"], "uk": ["vˈɛmps"] }] },
+    { "id": "new-er-oov-plural", "text": "One flinter and three flinters returned.", "category": "oov", "anchors": [{ "word": "flinter", "us": ["flˈɪntɚ"], "uk": ["flˈɪntə", "flˈɪntɐ"] }, { "word": "flinters", "us": ["flˈɪntɚz"], "uk": ["flˈɪntəz", "flˈɪntɐz"] }] },
+    { "id": "new-money-and-ordinal", "text": "Pay €1.05 for the 2nd map.", "category": "normalization", "words": ["pay", "one", "euro", "and", "five", "cents", "for", "the", "second", "map", "."] },
+    { "id": "new-clock-and-percent", "text": "At 7:05, the page shows 0.04%.", "category": "normalization", "words": ["at", "seven", "oh", "five", ",", "the", "page", "shows", "zero", "point", "zero", "four", "percent", "."] },
+    { "id": "new-date-and-initialism", "text": "Save the 2030-02-28 PDF.", "category": "normalization", "words": ["save", "the", "february", "twenty", "eighth", "two", "thousand", "thirty", "pee", "dee", "ef", "."] },
+    { "id": "new-punctuation-contractions", "text": "“It's ready!” she said; don't pause... Continue?", "category": "punctuation", "punctuation": ["!", ";", "...", "?"] }
+  ]
+}

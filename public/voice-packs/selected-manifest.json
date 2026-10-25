@@ -1,0 +1,96 @@
+{
+  "createdFor": "PageNarrator on-demand commercial-ready voice catalog",
+  "policy": "Only runtime-ready voices with source licensing cleared for commercial use are listed here. Model and selected voice data download from a pinned Hugging Face revision on first use and are cached for offline reuse. Executable runtimes ship with the extension.",
+  "models": [
+    {
+      "id": "af_heart",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_heart",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "af_aoede",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_aoede",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "af_bella",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_bella",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "af_kore",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_kore",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "af_nicole",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_nicole",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "af_sarah",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "af_sarah",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "am_fenrir",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "am_fenrir",
+      "gender": "male",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "am_michael",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "am_michael",
+      "gender": "male",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "am_puck",
+      "language": "American English",
+      "engine": "kokoro",
+      "voice": "am_puck",
+      "gender": "male",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    },
+    {
+      "id": "bf_emma",
+      "language": "British English",
+      "engine": "kokoro",
+      "voice": "bf_emma",
+      "gender": "female",
+      "license": "Apache-2.0",
+      "licenseUrl": "https://huggingface.co/hexgrad/Kokoro-82M"
+    }
+  ]
+}

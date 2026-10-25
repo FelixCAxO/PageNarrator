@@ -1,0 +1,25 @@
+{
+  "abi": 1,
+  "compiler": "Zig0.15.2 (Clang C++)",
+  "flags": [
+    "c++",
+    "-target",
+    "wasm32-freestanding",
+    "-std=c++20",
+    "-O3",
+    "-msimd128",
+    "-ffp-contract=off",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-builtin",
+    "-nostdlib",
+    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all,--export=pn_tess_tables,--export=pn_tess_seed,--export=pn_tess_conv,--export=pn_tess_pool,--export=pn_tess_lstm,--export=pn_tess_affine"
+  ],
+  "sources": {
+    "ocr-lstm-engine.cpp": "b2a9d8f29f96e9bfd7a4d072f9bb93c5e4dc289de4648b1e700e917cd0504559",
+    "ocr-engine.cpp": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+    "engine.cpp": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616"
+  },
+  "wasmSha256": "19d70d02da9c35ad9002a10e691d766d15975520c099125ee3dc26dc9fc9aaca",
+  "imports": []
+}

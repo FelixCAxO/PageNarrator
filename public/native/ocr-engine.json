@@ -1,0 +1,22 @@
+{
+  "abi": 1,
+  "compiler": "Zig 0.15.2 (Clang C++)",
+  "flags": [
+    "c++",
+    "-target",
+    "wasm32-freestanding",
+    "-std=c++20",
+    "-O3",
+    "-msimd128",
+    "-ffp-contract=off",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-builtin",
+    "-nostdlib",
+    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all"
+  ],
+  "sourceSha256": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+  "sharedSourceSha256": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616",
+  "wasmSha256": "c6a66b4280a899dc5e0a0a0c0d99128cb0ac59ce16f9c443af3b2f3643618d45",
+  "imports": []
+}

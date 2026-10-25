@@ -1,0 +1,83 @@
+[
+  {
+    "file": "uvdoc.onnx",
+    "bytes": 31684160,
+    "sha256": "f8618468c558ac6ed7e79afdea73700a975e3d47af8e7af771be94120b5f95e2",
+    "source": {
+      "name": "PaddlePaddle/UVDoc_onnx",
+      "revision": "3bcf535371727d11e783101f79a504c68848aae3",
+      "license": "apache-2.0",
+      "downloadedAt": "2026-09-08T06:31:17.493Z"
+    },
+    "modification": "Exposed existing deformation grid as an additional output."
+  },
+  {
+    "file": "tiny-det.onnx",
+    "bytes": 1780590,
+    "sha256": "193bab7a04fca699a6c82e6abb5b81bdb28177f0abd4062552b04908dafb19f8",
+    "source": {
+      "name": "PaddlePaddle/PP-OCRv6_tiny_det_onnx",
+      "revision": "2ba1506c0380b8f0b03dd142459aac66d4421f6c",
+      "license": "apache-2.0",
+      "files": [
+        {
+          "file": "inference.onnx",
+          "bytes": 1780590,
+          "sha256": "193bab7a04fca699a6c82e6abb5b81bdb28177f0abd4062552b04908dafb19f8"
+        },
+        {
+          "file": "inference.yml",
+          "bytes": 883,
+          "sha256": "3ac018be6f97499a08faa3bbdeb33640968d9307f6736d152902747a9f259593"
+        }
+      ]
+    },
+    "modification": "Unmodified model."
+  },
+  {
+    "file": "small-rec.onnx",
+    "bytes": 21159441,
+    "sha256": "c3a4550768b962131ed08dde81e73e2258f2c1d32a0e2ecb0fd80a223c6252f5",
+    "source": {
+      "name": "PaddlePaddle/PP-OCRv6_small_rec_onnx",
+      "revision": "b8f84f0b80c529de40b4fbb3544b84fa7233a513",
+      "license": "apache-2.0",
+      "files": [
+        {
+          "file": "inference.onnx",
+          "bytes": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634"
+        },
+        {
+          "file": "inference.yml",
+          "bytes": 150579,
+          "sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+        }
+      ]
+    },
+    "modification": "Added ArgMax, ReduceMax and scalar Gather of space-class probability outputs; learned weights unchanged."
+  },
+  {
+    "file": "small-rec-alphabet.json",
+    "bytes": 112373,
+    "sha256": "b50d01361bea9087ccb896a6381c1a8334e2af14ae0f1036571bd06cdc3832bf",
+    "source": {
+      "name": "PaddlePaddle/PP-OCRv6_small_rec_onnx",
+      "revision": "b8f84f0b80c529de40b4fbb3544b84fa7233a513",
+      "license": "apache-2.0",
+      "files": [
+        {
+          "file": "inference.onnx",
+          "bytes": 21159378,
+          "sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634"
+        },
+        {
+          "file": "inference.yml",
+          "bytes": 150579,
+          "sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+        }
+      ]
+    },
+    "modification": "Extracted dictionary with CTC blank and space."
+  }
+]

@@ -1,0 +1,61 @@
+{
+  "fast": [
+    "npm run check:repo-structure",
+    "npm run lint",
+    "npm run test:benchmarks",
+    "npm run test:ci",
+    "npm run test:profiles",
+    "npm run typecheck",
+    "npm run test:pdf-corpus",
+    "npm run build"
+  ],
+  "integration": [
+    "npm run verify:fast",
+    "node scripts/assert-release-package.mjs dist",
+    "npm run test:e2e",
+    "npx playwright test tests/e2e/popup-read.e2e.js --project=extension --repeat-each=2 --workers=1 --output=artifacts/integration-repeat",
+    "npm run test:e2e:real-model -- --workers=1 --output=artifacts/integration-real-model"
+  ],
+  "release": [
+    "npm run check:repo-structure",
+    "npm run lint",
+    "npm run test:benchmarks",
+    "npm run audit:runtime",
+    "npm test",
+    "npm run test:host-layout",
+    "npm run test:profiles",
+    "npm run typecheck",
+    "npm run typecheck:boundaries",
+    "npm run test:pdf-corpus",
+    "npm run test:pdf-acceptance",
+    "node scripts/verify-kokoro-numerics.mjs",
+    "npm run build",
+    "node scripts/assert-release-package.mjs dist",
+    "npm run test:e2e",
+    "npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model",
+    "npm run test:live:no-build",
+    "npm run probe:tts:lower-spec:no-build",
+    "npm run probe:tts:lower-spec-pdf:no-build",
+    {
+      "command": "npm run requirements:tts -- --fail-on-non-pass",
+      "gateId": "physical-hardware"
+    },
+    "npm run test:cws-media",
+    "npm run check:reader-engine-composition"
+  ],
+  "manual-live": [
+    "npm run build",
+    "npm run test:live:no-build",
+    "npm run probe:tts:lower-spec:no-build",
+    "npm run probe:tts:lower-spec-pdf:no-build",
+    "npm run requirements:tts"
+  ],
+  "artifact": [
+    "npm run build",
+    "node scripts/run-verification-gate.mjs --release-evidence"
+  ],
+  "weak-hardware": [
+    "npm run build",
+    "npm run probe:weak-hardware:no-build"
+  ]
+}

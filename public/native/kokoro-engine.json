@@ -1,0 +1,25 @@
+{
+  "abi": 1,
+  "compiler": "Zig 0.15.2 (Clang C++)",
+  "flags": [
+    "c++",
+    "-target",
+    "wasm32-freestanding",
+    "-std=c++20",
+    "-O3",
+    "-msimd128",
+    "-ffp-contract=off",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-builtin",
+    "-nostdlib",
+    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=pn_kokoro_unary,--export=pn_kokoro_layer_norm,--export=pn_kokoro_lstm,--export=pn_kokoro_stft,--export=pn_kokoro_snake,--export=pn_kokoro_cumsum,--export=pn_kokoro_scatter,--export=pn_kokoro_conv_transpose,--export=pn_kokoro_dynamic_quantize,--export=pn_kokoro_dequantize,--export=pn_kokoro_matmul_integer,--export=pn_kokoro_conv_integer,--export=pn_kokoro_dynamic_lstm,--export=pn_kokoro_cast,--export=pn_kokoro_compare,--export=pn_kokoro_where,--export=pn_kokoro_pad,--export=pn_kokoro_gather,--export=pn_kokoro_integer_binary,--export=pn_kokoro_range,--export=pn_kokoro_fill,--export=pn_kokoro_power,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all"
+  ],
+  "sourceSha256": {
+    "native/kokoro-engine.cpp": "102d593d8cec711af6be8d765bfb635788358223dc9dd105330446c67e39b278",
+    "native/ocr-engine.cpp": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+    "native/engine.cpp": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616"
+  },
+  "wasmSha256": "5f7404738e609373e235ca8de15afe582c34aeca379b31da9d5a8786f1d4d71d",
+  "imports": []
+}

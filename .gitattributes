@@ -1,0 +1,24 @@
+* text=auto eol=lf
+tests/fixtures/engines/*.f32 -text
+*.wasm binary
+*.onnx binary
+*.bin binary
+*.png binary
+*.jpg binary
+*.webp binary
+*.ico binary
+*.gz binary
+*.pdf binary
+website/public/assets/home-*.css text eol=lf
+# Hash-pinned third-party data and notices retain upstream bytes and whitespace.
+vendor/pdf-cmaps/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/pdf-data/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/pdf-glyphs/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/pdf-unicode/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/pdf-symbols/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/pronunciation/** -text whitespace=-blank-at-eol,-blank-at-eof
+vendor/ocr-data/** -text whitespace=-blank-at-eol,-blank-at-eof
+public/assets/ocr/english-lstm-COPYING.txt -text whitespace=-blank-at-eol,-blank-at-eof
+public/legal/Font-Awesome-LICENSE.txt -text whitespace=-blank-at-eol,-blank-at-eof
+public/legal/MarVoSym-OFL.txt -text whitespace=-blank-at-eol,-blank-at-eof
+public/legal/PDF-Symbols-NOTICE.txt -text whitespace=-blank-at-eol,-blank-at-eof

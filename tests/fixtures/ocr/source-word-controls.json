@@ -1,0 +1,661 @@
+{
+  "scope": "Original owned PageNarrator app screenshots; frozen source/CTC counterexamples. Actual glyph source windows independently inspected before this repair; no third-party executable code or external holdout content.",
+  "fixtures": [
+    {
+      "file": "source-word-key.png",
+      "pngSha256": "c3f679211826957e70e1f7e797df63909d8710d7f67cf77ededce241ae5685c8",
+      "pixelSha256": "67899fe01459afa443000e73d52e43af4dfd7ac66845d05bf2c8197d8dee36a3",
+      "sourceCapture": "ocr-edge-row-crops-source-geometry.json",
+      "sourceCaptureSha256": "3ad04e8e03cf30882739cfa74e75f40f737811c44c2b70c0fb548002851a78ab",
+      "words": [
+        {
+          "text": "Key",
+          "confidence": 99.99685684839885,
+          "bbox": {
+            "x0": 25,
+            "y0": 10,
+            "x1": 70,
+            "y1": 55
+          }
+        },
+        {
+          "text": "observation:",
+          "confidence": 99.99677042166392,
+          "bbox": {
+            "x0": 92.5,
+            "y0": 10,
+            "x1": 265,
+            "y1": 55
+          }
+        },
+        {
+          "text": "synchronized",
+          "confidence": 99.99801317850749,
+          "bbox": {
+            "x0": 280,
+            "y0": 10,
+            "x1": 445,
+            "y1": 55
+          }
+        },
+        {
+          "text": "highlighting",
+          "confidence": 99.99893804391225,
+          "bbox": {
+            "x0": 460,
+            "y0": 10,
+            "x1": 602.5,
+            "y1": 55
+          }
+        },
+        {
+          "text": "is",
+          "confidence": 99.99663233757019,
+          "bbox": {
+            "x0": 617.5,
+            "y0": 10,
+            "x1": 640,
+            "y1": 55
+          }
+        },
+        {
+          "text": "most",
+          "confidence": 99.99904036521912,
+          "bbox": {
+            "x0": 655,
+            "y0": 10,
+            "x1": 715,
+            "y1": 55
+          }
+        },
+        {
+          "text": "useful",
+          "confidence": 99.997478723526,
+          "bbox": {
+            "x0": 730,
+            "y0": 10,
+            "x1": 805,
+            "y1": 55
+          }
+        },
+        {
+          "text": "when",
+          "confidence": 99.99939501285553,
+          "bbox": {
+            "x0": 820,
+            "y0": 10,
+            "x1": 880,
+            "y1": 55
+          }
+        },
+        {
+          "text": "the",
+          "confidence": 99.9995470046997,
+          "bbox": {
+            "x0": 895,
+            "y0": 10,
+            "x1": 925,
+            "y1": 55
+          }
+        },
+        {
+          "text": "listener",
+          "confidence": 99.99906122684479,
+          "bbox": {
+            "x0": 940,
+            "y0": 10,
+            "x1": 1037.5,
+            "y1": 55
+          }
+        }
+      ],
+      "frame": {
+        "top": 18,
+        "bottom": 49,
+        "stepWidth": 7.5
+      },
+      "gold": {
+        "index": 0,
+        "word": "Key",
+        "rect": [
+          20,
+          17,
+          73,
+          49
+        ],
+        "threshold": 120,
+        "light": true,
+        "foregroundPixels": 614,
+        "maskSha256": "e045c732db8d57adebc7d1842c2d3abe24cf853023f20e15dde9466478e3aac7"
+      }
+    },
+    {
+      "file": "source-word-selected.png",
+      "pngSha256": "bf6027ed8a6506438394248bcbc1a88d1cb15d21f35ccbd678361b912410e9c6",
+      "pixelSha256": "1f629d0b0ba097173b4422b910e1ef0ae800ee3e0cd9530f2e9f1ebc292ab375",
+      "sourceCapture": "ocr-edge-row-crops-source-geometry.json",
+      "sourceCaptureSha256": "3ad04e8e03cf30882739cfa74e75f40f737811c44c2b70c0fb548002851a78ab",
+      "words": [
+        {
+          "text": "Read",
+          "confidence": 99.99666810035706,
+          "bbox": {
+            "x0": 25.333333333333336,
+            "y0": 10,
+            "x1": 71.33333333333334,
+            "y1": 56
+          }
+        },
+        {
+          "text": "selected",
+          "confidence": 99.99401196837425,
+          "bbox": {
+            "x0": 86.66666666666667,
+            "y0": 10,
+            "x1": 163.33333333333334,
+            "y1": 56
+          }
+        }
+      ],
+      "frame": {
+        "top": 20,
+        "bottom": 46,
+        "stepWidth": 7.666666666666667
+      },
+      "gold": {
+        "index": 1,
+        "word": "selected",
+        "rect": [
+          77,
+          25,
+          161,
+          43
+        ],
+        "threshold": 120,
+        "light": true,
+        "foregroundPixels": 694,
+        "maskSha256": "914aa37fda4be5d9f1b6972661d5f61e9cfd5dd56e2f7f54eb2af227f553d1f9"
+      }
+    },
+    {
+      "file": "source-word-cpu.png",
+      "pngSha256": "4ac7ade2c142cf18693664f6a2919806b0a08a3b454042aa41f79b940099e527",
+      "pixelSha256": "5211aedb615ff343a8e4e86668689b6c402d829d9461d5d21cd210bbf8b3d9c0",
+      "sourceCapture": "ocr-edge-row-crops-source-geometry.json",
+      "sourceCaptureSha256": "3ad04e8e03cf30882739cfa74e75f40f737811c44c2b70c0fb548002851a78ab",
+      "words": [
+        {
+          "text": "Hardware",
+          "confidence": 99.9946653842926,
+          "bbox": {
+            "x0": 24.666666666666664,
+            "y0": 10,
+            "x1": 112.66666666666667,
+            "y1": 54
+          }
+        },
+        {
+          "text": "path:",
+          "confidence": 99.99706745147705,
+          "bbox": {
+            "x0": 120,
+            "y0": 10,
+            "x1": 164,
+            "y1": 54
+          }
+        },
+        {
+          "text": "CPU",
+          "confidence": 99.81903235117595,
+          "bbox": {
+            "x0": 178.66666666666666,
+            "y0": 10,
+            "x1": 208,
+            "y1": 54
+          }
+        },
+        {
+          "text": "/",
+          "confidence": 99.9893307685852,
+          "bbox": {
+            "x0": 215.33333333333334,
+            "y0": 10,
+            "x1": 222.66666666666666,
+            "y1": 54
+          }
+        },
+        {
+          "text": "WebAssembly.",
+          "confidence": 99.99442746241887,
+          "bbox": {
+            "x0": 237.33333333333334,
+            "y0": 10,
+            "x1": 369.3333333333333,
+            "y1": 54
+          }
+        },
+        {
+          "text": "Speech",
+          "confidence": 99.56854383150737,
+          "bbox": {
+            "x0": 376.6666666666667,
+            "y0": 10,
+            "x1": 442.6666666666667,
+            "y1": 54
+          }
+        },
+        {
+          "text": "is",
+          "confidence": 99.99098777770996,
+          "bbox": {
+            "x0": 457.3333333333333,
+            "y0": 10,
+            "x1": 472,
+            "y1": 54
+          }
+        }
+      ],
+      "frame": {
+        "top": 20,
+        "bottom": 47,
+        "stepWidth": 7.333333333333333
+      },
+      "gold": {
+        "index": 2,
+        "word": "CPU",
+        "rect": [
+          166,
+          24,
+          210,
+          42
+        ],
+        "threshold": 120,
+        "light": true,
+        "foregroundPixels": 82,
+        "maskSha256": "2845f6b6988e1fae736e285971aa908163acd490b99a39c76439fa5db3dacbf2"
+      }
+    },
+    {
+      "file": "source-word-and.png",
+      "pngSha256": "f092e8861c7a328bb31f471c6937c3e1cb544205c7746b39c75ef549a97f1f57",
+      "pixelSha256": "3dc44fbae47bfa8fa6993cc53610267707471152064ffe82af5787b5136e944e",
+      "sourceCapture": "ocr-edge-row-crops-source-geometry.json",
+      "sourceCaptureSha256": "3ad04e8e03cf30882739cfa74e75f40f737811c44c2b70c0fb548002851a78ab",
+      "words": [
+        {
+          "text": "Long",
+          "confidence": 99.99916851520538,
+          "bbox": {
+            "x0": 24.666666666666664,
+            "y0": 10,
+            "x1": 83.33333333333333,
+            "y1": 54
+          }
+        },
+        {
+          "text": "reading",
+          "confidence": 99.99881131308419,
+          "bbox": {
+            "x0": 98,
+            "y0": 10,
+            "x1": 193.33333333333334,
+            "y1": 54
+          }
+        },
+        {
+          "text": "sessions",
+          "confidence": 99.99838918447495,
+          "bbox": {
+            "x0": 208,
+            "y0": 10,
+            "x1": 318,
+            "y1": 54
+          }
+        },
+        {
+          "text": "often",
+          "confidence": 99.99911308288574,
+          "bbox": {
+            "x0": 332.6666666666667,
+            "y0": 10,
+            "x1": 391.3333333333333,
+            "y1": 54
+          }
+        },
+        {
+          "text": "involve",
+          "confidence": 99.99618019376483,
+          "bbox": {
+            "x0": 406,
+            "y0": 10,
+            "x1": 494,
+            "y1": 54
+          }
+        },
+        {
+          "text": "switching",
+          "confidence": 99.99945561091106,
+          "bbox": {
+            "x0": 508.6666666666667,
+            "y0": 10,
+            "x1": 626,
+            "y1": 54
+          }
+        },
+        {
+          "text": "between",
+          "confidence": 99.99890838350568,
+          "bbox": {
+            "x0": 640.6666666666666,
+            "y0": 10,
+            "x1": 743.3333333333334,
+            "y1": 54
+          }
+        },
+        {
+          "text": "a",
+          "confidence": 99.98478889465332,
+          "bbox": {
+            "x0": 765.3333333333334,
+            "y0": 10,
+            "x1": 772.6666666666666,
+            "y1": 54
+          }
+        },
+        {
+          "text": "page,",
+          "confidence": 99.99623537063599,
+          "bbox": {
+            "x0": 787.3333333333334,
+            "y0": 10,
+            "x1": 860.6666666666666,
+            "y1": 54
+          }
+        },
+        {
+          "text": "notes,",
+          "confidence": 99.99678333600362,
+          "bbox": {
+            "x0": 875.3333333333334,
+            "y0": 10,
+            "x1": 948.6666666666666,
+            "y1": 54
+          }
+        },
+        {
+          "text": "and",
+          "confidence": 99.99945958455403,
+          "bbox": {
+            "x0": 963.3333333333334,
+            "y0": 10,
+            "x1": 1000,
+            "y1": 54
+          }
+        },
+        {
+          "text": "source",
+          "confidence": 99.99926487604777,
+          "bbox": {
+            "x0": 1022,
+            "y0": 10,
+            "x1": 1102.6666666666667,
+            "y1": 54
+          }
+        }
+      ],
+      "frame": {
+        "top": 18,
+        "bottom": 48,
+        "stepWidth": 7.333333333333333
+      },
+      "gold": {
+        "index": 10,
+        "word": "and",
+        "rect": [
+          956,
+          17,
+          1005,
+          42
+        ],
+        "threshold": 120,
+        "light": true,
+        "foregroundPixels": 310,
+        "maskSha256": "f2d77a63e1114d976c3f454ee9345e352f9a17f06f16d4bf44775a11ee91e0d4"
+      }
+    },
+    {
+      "file": "source-word-speed.png",
+      "pngSha256": "4b13e0dee4e0ec8e8ec6bcc1052b9058526eed41e22cc35029c33af699c406e4",
+      "pixelSha256": "2ac7be2e19b280930b7943679b7cae0280da9b847af4ad1d17bde807bcacf992",
+      "sourceCapture": "ocr-edge-row-crops-ownership.json",
+      "sourceCaptureSha256": "25110c0a0869fdb532107505462beb335d4a0fe2e8537f7e98bf4fa27d741d3d",
+      "words": [
+        {
+          "text": "Heart",
+          "confidence": 99.98776316642761,
+          "bbox": {
+            "x0": 26.333333333333332,
+            "y0": 10,
+            "x1": 83.5,
+            "y1": 59
+          }
+        },
+        {
+          "text": "voice",
+          "confidence": 99.97826337814331,
+          "bbox": {
+            "x0": 91.66666666666667,
+            "y0": 10,
+            "x1": 140.66666666666666,
+            "y1": 59
+          }
+        },
+        {
+          "text": "·",
+          "confidence": 86.02450489997864,
+          "bbox": {
+            "x0": 148.83333333333334,
+            "y0": 10,
+            "x1": 157,
+            "y1": 59
+          }
+        },
+        {
+          "text": "1.00x",
+          "confidence": 99.9359929561615,
+          "bbox": {
+            "x0": 165.16666666666666,
+            "y0": 10,
+            "x1": 222.33333333333334,
+            "y1": 59
+          }
+        }
+      ],
+      "frame": {
+        "top": 20,
+        "bottom": 49,
+        "stepWidth": 8.166666666666666
+      },
+      "gold": {
+        "index": 3,
+        "word": "1.00x",
+        "rect": [
+          160,
+          25,
+          213,
+          45
+        ],
+        "threshold": 120,
+        "light": true,
+        "foregroundPixels": 102,
+        "maskSha256": "88c4a4b2a1a8a48b645a9854e3578294fbfe3aa81bfd62d7815dd578bfc9dac7"
+      }
+    },
+    {
+      "file": "source-word-on.png",
+      "pngSha256": "579d193a0828ba0d39ffd09867299859288a7be5d53c724dbed9b610cdccb295",
+      "pixelSha256": "86cbe1b4b916caf7c3c53771a23df09cbfd0ebc2871d146d6bec48550f13ba1c",
+      "sourceCapture": "ocr-edge-row-crops-tab-edge.json",
+      "sourceCaptureSha256": "c130ecbb21d3bf8b4663e3659039a478964801a57501a13b14c4b37cb0bfdfe1",
+      "words": [
+        {
+          "text": "stay",
+          "confidence": 99.99752044677734,
+          "bbox": {
+            "x0": 17,
+            "y0": 10,
+            "x1": 52,
+            "y1": 52
+          }
+        },
+        {
+          "text": "on",
+          "confidence": 99.9975860118866,
+          "bbox": {
+            "x0": 66,
+            "y0": 10,
+            "x1": 80,
+            "y1": 52
+          }
+        },
+        {
+          "text": "this",
+          "confidence": 99.9974250793457,
+          "bbox": {
+            "x0": 87,
+            "y0": 10,
+            "x1": 122,
+            "y1": 52
+          }
+        },
+        {
+          "text": "device.",
+          "confidence": 99.96974979128156,
+          "bbox": {
+            "x0": 129,
+            "y0": 10,
+            "x1": 192,
+            "y1": 52
+          }
+        },
+        {
+          "text": "Resume",
+          "confidence": 99.99541640281677,
+          "bbox": {
+            "x0": 206,
+            "y0": 10,
+            "x1": 276,
+            "y1": 52
+          }
+        },
+        {
+          "text": "also",
+          "confidence": 99.99643862247467,
+          "bbox": {
+            "x0": 283,
+            "y0": 10,
+            "x1": 318,
+            "y1": 52
+          }
+        },
+        {
+          "text": "saves",
+          "confidence": 99.99729871749878,
+          "bbox": {
+            "x0": 332,
+            "y0": 10,
+            "x1": 381,
+            "y1": 52
+          }
+        },
+        {
+          "text": "a",
+          "confidence": 99.98342990875244,
+          "bbox": {
+            "x0": 388,
+            "y0": 10,
+            "x1": 395,
+            "y1": 52
+          }
+        },
+        {
+          "text": "short",
+          "confidence": 99.9979043006897,
+          "bbox": {
+            "x0": 409,
+            "y0": 10,
+            "x1": 451,
+            "y1": 52
+          }
+        },
+        {
+          "text": "text",
+          "confidence": 99.93939846754074,
+          "bbox": {
+            "x0": 458,
+            "y0": 10,
+            "x1": 493,
+            "y1": 52
+          }
+        }
+      ],
+      "frame": {
+        "top": 20,
+        "bottom": 42,
+        "stepWidth": 7
+      },
+      "gold": {
+        "index": 1,
+        "word": "on",
+        "rect": [
+          58,
+          23,
+          82,
+          37
+        ],
+        "threshold": 80,
+        "light": true,
+        "foregroundPixels": 122,
+        "maskSha256": "981628dc882f68e23a3f11fae11b2e0780e6ddfa598ffcffc0652744b6438744"
+      }
+    },
+    {
+      "file": "source-word-overview.png",
+      "pngSha256": "bc55cfc0e8efd45a21e2f458a359f9a5c5415ef5c8ddeab796ba04d58af0960c",
+      "pixelSha256": "5493131045016c806d7ce7cbdc76af8fde628ece8a27dd0444cb87951bdb66f0",
+      "sourceCapture": "ocr-edge-row-crops-tab-edge.json",
+      "sourceCaptureSha256": "c130ecbb21d3bf8b4663e3659039a478964801a57501a13b14c4b37cb0bfdfe1",
+      "words": [
+        {
+          "text": "Overview",
+          "confidence": 99.99135807156563,
+          "bbox": {
+            "x0": 35,
+            "y0": 10,
+            "x1": 176.66666666666666,
+            "y1": 60
+          }
+        }
+      ],
+      "frame": {
+        "top": 16,
+        "bottom": 50,
+        "stepWidth": 8.333333333333334
+      },
+      "gold": {
+        "index": 0,
+        "word": "Overview",
+        "rect": [
+          18,
+          16,
+          187,
+          47
+        ],
+        "threshold": 180,
+        "light": true,
+        "foregroundPixels": 1231,
+        "maskSha256": "4aafe4ba9552a8fda272afcd4f638d263564c24a001d254239d81c90e3ef2abe"
+      }
+    }
+  ]
+}

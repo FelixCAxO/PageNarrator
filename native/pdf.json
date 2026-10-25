@@ -1,0 +1,31 @@
+{
+  "abi": 1,
+  "compiler": "Zig 0.15.2 (Clang C++)",
+  "flags": [
+    "c++",
+    "-target",
+    "wasm32-freestanding",
+    "-std=c++20",
+    "-O3",
+    "-fno-exceptions",
+    "-fno-rtti",
+    "-fno-builtin",
+    "-nostdlib",
+    "-Wl,-z,stack-size=131072,--no-entry,--export=pn_pdf_alloc,--export=pn_pdf_init,--export=pn_pdf_repair_flags,--export=pn_pdf_resolve,--export=pn_pdf_parse_content,--export=pn_pdf_node,--export=pn_pdf_error,--export=pn_pdf_abi_version,--export=pn_pdf_mark,--export=pn_pdf_rewind,--export=pn_pdf_pending_xref,--export=pn_pdf_supply_xref,--export=pn_pdf_object_stream,--export=pn_pdf_supply_objects,--export=pn_t1_glyph,--export=pn_cff_width,--export=pn_pdf_lzw,--export=pn_pdf_jpeg,--export=pn_pdf_fax,--export=pn_pdf_mq_bits,--export=pn_jbig2_generic,--export=pn_jbig2_refine,--export=pn_jbig2_halftone,--export=pn_jbig2_arith_size,--export=pn_jbig2_arith_start,--export=pn_jbig2_arith_integer,--export=pn_jbig2_arith_id,--export=pn_jbig2_arith_generic,--export=pn_jbig2_arith_refine,--export=pn_pdf_md5,--export=pn_pdf_rc4,--export=pn_pdf_aes_decrypt,--export=pn_pdf_set_crypt,--export=pn_pdf_clear_crypt,--export=pn_pdf_jpx_block,--export=pn_pdf_jpx_block_segments,--export=pn_pdf_jpx_inverse53,--export=pn_pdf_jpx_inverse97,--export=pn_pdf_inline_length,--export=pn_cff_glyph,--export=pn_ttf_glyph,--export-memory,--initial-memory=8388608,--max-memory=268435456,--strip-all"
+  ],
+  "sourceSha256": "d6f3d046a004ff0fdfefb43a35974839f149a26ce68c3c2238505ae34e0005e6",
+  "fontSourceSha256": "a99f203ea0af5ab8c4ba4da8f97fd9793641b0a8dc2233863627339f3860e955",
+  "codecSourceSha256": "51761d264c4be2fe14e89665bbfe3bfd4897c345caa6bb305632ed2f88a0053c",
+  "jpegSourceSha256": "3caf6fb084f4a8d5729e7eeb7fde1695fd303d2fd43e006359dd375905fc1f48",
+  "faxSourceSha256": "01bfe3a5a99185ab2686891d7fd0c1f320ccde409edccdf5555ab63608ded1bf",
+  "jbigSourceSha256": "a318cb53b745edbe617f8d82e525c7e957cb836c802244e5dabb1192589fe29f",
+  "mqSourceSha256": "5b676198defae5b1d067edeb6940cc930938102b518b2a2d7f0e8db84201cdc6",
+  "cryptoSourceSha256": "9fc828d21924e56d183c52491a6c1353ea91b65084bf16adf13edd3d0d2a588c",
+  "cryptoHeaderSha256": "0587379d9176134a42bc834ac0f4b706b615217b5c6de4b61e7ff2f440a3b812",
+  "jpxSourceSha256": "9b55888f3c83cc95730f373ae2136cc016ad89d2e347a2b83c3df08d5e3bc331",
+  "inlineSourceSha256": "807d99fbf800f8db8608afebe0b7f5e6aa8138cfd3cdff37c165b447b20247ba",
+  "cffPathSourceSha256": "270ce7999629733ddfe7d2e55642d8a134a564104b55dfbab60ff429aa16eba4",
+  "ttfPathSourceSha256": "d647d1ea64dfe455ba125472565382bd514a28677332d2dd69d28924e9aff625",
+  "wasmSha256": "288d4afcde4f47cb130ba4f98e15c8dc6f7c68347fec93df7c335abb6f5f3293",
+  "imports": []
+}

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "frozenAtUtc": "2026-10-16T18:46:12Z",
+  "scope": "New manually specified contextual/OOV/normalization acceptance sentences. Frozen before running the original phonemizer on these sentences; ordinary dictionary words may occur in retained lexical data. Both dialects must use allowed Kokoro phones and preserve all punctuation and normalized word order. This does not establish exact eSpeak parity.",
+  "cases": [
+    { "id": "past-and-present-read", "text": "I read the note yesterday; I will read it again.", "category": "context", "anchors": [{ "word": "read", "occurrence": 0, "us": ["ɹˈɛd"], "uk": ["ɹˈɛd"] }, { "word": "read", "occurrence": 1, "us": ["ɹˈiːd"], "uk": ["ɹˈiːd"] }] },
+    { "id": "verb-and-noun-record", "text": "Please record the record before lunch.", "category": "context", "anchors": [{ "word": "record", "occurrence": 0, "us": ["ɹɪkˈɔːɹd"], "uk": ["ɹɪkˈɔːd"] }, { "word": "record", "occurrence": 1, "us": ["ɹˈɛkɚd", "ɹˈɛkɔːɹd"], "uk": ["ɹˈɛkɔːd"] }] },
+    { "id": "verb-and-adjective-close", "text": "Close the gate; the house is close to the road.", "category": "context", "anchors": [{ "word": "close", "occurrence": 0, "us": ["klˈoʊz"], "uk": ["klˈəʊz"] }, { "word": "close", "occurrence": 1, "us": ["klˈoʊs"], "uk": ["klˈəʊs"] }] },
+    { "id": "novel-short-vowels", "text": "A plim and a dax stood beside the box.", "category": "oov", "anchors": [{ "word": "plim", "us": ["plˈɪm"], "uk": ["plˈɪm"] }, { "word": "dax", "us": ["dˈæks"], "uk": ["dˈæks", "dˈaks"] }] },
+    { "id": "novel-morphology", "text": "The plims were plimming beside three nusters.", "category": "oov", "anchors": [{ "word": "plims", "us": ["plˈɪmz"], "uk": ["plˈɪmz"] }, { "word": "plimming", "us": ["plˈɪmɪŋ"], "uk": ["plˈɪmɪŋ"] }, { "word": "nusters", "us": ["nˈʌstɚz"], "uk": ["nˈʌstəz", "nˈʌstɐz"] }] },
+    { "id": "money-pounds", "text": "The fee is £3.25.", "category": "normalization", "words": ["the", "fee", "is", "three", "pounds", "and", "twenty", "five", "pence", "."] },
+    { "id": "percent-decimal", "text": "The chance rose from 4% to 12.5%.", "category": "normalization", "words": ["the", "chance", "rose", "from", "four", "percent", "to", "twelve", "point", "five", "percent", "."] },
+    { "id": "cardinal-and-ordinal", "text": "The 21st box holds 804 pages.", "category": "normalization", "words": ["the", "twenty", "first", "box", "holds", "eight", "hundred", "four", "pages", "."], "wordsUk": ["the", "twenty", "first", "box", "holds", "eight", "hundred", "and", "four", "pages", "."] },
+    { "id": "letters-and-plurals", "text": "An HTML file and two URLs need OCR.", "category": "normalization", "words": ["an", "aitch", "tee", "em", "el", "file", "and", "two", "you", "are", "els", "need", "oh", "see", "are", "."] },
+    { "id": "punctuation-and-contractions", "text": "“Don't rush,” she said—then paused. Ready? Yes!", "category": "punctuation", "punctuation": [",", ".", "?", "!"] }
+  ]
+}

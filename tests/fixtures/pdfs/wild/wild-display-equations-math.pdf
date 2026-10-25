@@ -1,0 +1,41 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 638 >>
+stream
+BT
+/F1 16 Tf 1 0 0 1 54 750 Tm (Mathematical Objective Formulation) Tj
+/F1 12 Tf 1 0 0 1 54 710 Tm (The total loss function balances reconstruction accuracy and adversarial regularization:) Tj
+/F1 12 Tf 1 0 0 1 180 670 Tm (L_total = alpha * L_rec + beta * L_adv) Tj
+/F1 11 Tf 1 0 0 1 530 670 Tm (\(1\)) Tj
+/F1 12 Tf 1 0 0 1 54 630 Tm (where alpha and beta denote hyperparameter weights chosen empirically.) Tj
+/F1 12 Tf 1 0 0 1 180 590 Tm (grad_theta = nabla_theta * E[log D\(x\)]) Tj
+/F1 11 Tf 1 0 0 1 520 590 Tm (\(2.1\)) Tj
+/F1 12 Tf 1 0 0 1 54 550 Tm (Training converges steadily when the learning rate is scheduled adaptively.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000000930 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1027
+%%EOF

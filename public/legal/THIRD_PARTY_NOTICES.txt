@@ -1,0 +1,156 @@
+PageNarrator - Third-Party Notices
+
+Copyright (c) 2026 Felix Olsson.
+PageNarrator's own code is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later version.
+PageNarrator is distributed without any warranty; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See GPL-3.0.txt for the full license. Third-party components retain their own
+copyright and license notices below.
+
+Original browser implementation and retained third-party material
+
+PageNarrator OmniVoice browser bridge (new implementation)
+Copyright 2026 Felix Olsson.
+Algorithm reference: k2-fsa/OmniVoice, Copyright 2026 Xiaomi Corp. (Han Zhu).
+Source: https://github.com/k2-fsa/OmniVoice
+Reference revision: 08be0b4ccbac3e13e374e86fbfead4b4cac343e2
+Implementation license: GPL-3.0-or-later (see GPL-3.0.txt).
+Algorithm reference and adapted upstream material: Apache License 2.0
+(see Apache-2.0.txt).
+New JavaScript implementation of prompt preparation, multilingual duration estimation,
+guided iterative unmasking and ONNX decoding with cancellation/resource cleanup.
+Language IDs/names and Unicode script weights are adapted from the same licensed reference.
+The former vendored OmniVoice bridge is not included.
+See vendor/omnivoice/PROVENANCE.md for references and browser-specific changes.
+
+On-demand voice models
+
+OmniVoice fp16 B=1 KV ONNX conversion (experimental)
+Source: https://huggingface.co/MarkShark2/omnivoice-onnx-kv-b1-fp16
+Revision: 0111dd42766f32e6ebb91434ded76f0e697d834a
+Model metadata license: Apache License 2.0.
+Downloaded model/tokenizer data are cached on first use; narration runs locally.
+
+Kokoro-82M
+Source: https://huggingface.co/hexgrad/Kokoro-82M
+License: Apache License 2.0
+
+Kokoro-82M v1.0 ONNX conversion and English voice files
+Source: https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX
+License: Apache License 2.0
+
+Kokoro model data and selected English voice files are downloaded without
+modification from revision 1939ad2a8e416c0acfeecc08a694d14ef25f2231 on first use.
+PageNarrator's original executable runtime is bundled with the extension. A guarded exact-zero
+phase correction creates a separate in-memory graph; cached model/weight bytes
+remain unchanged.
+
+The full Apache License 2.0 is included in Apache-2.0.txt. PageNarrator's own code
+is GPL-3.0-or-later; the full license is included in GPL-3.0.txt. The retained
+UK pronunciation records remain GPL-3.0-only, which constrains conveyance of
+the combined distribution to GPL version 3. Individual data notices follow.
+
+Bundled OCR neural models (Apache License 2.0)
+PaddlePaddle/UVDoc_onnx
+Source: https://huggingface.co/PaddlePaddle/UVDoc_onnx
+Revision: 3bcf535371727d11e783101f79a504c68848aae3
+Modified to expose the existing deformation grid as an additional output.
+
+PaddlePaddle/PP-OCRv6_tiny_det_onnx
+Source: https://huggingface.co/PaddlePaddle/PP-OCRv6_tiny_det_onnx
+Revision: 2ba1506c0380b8f0b03dd142459aac66d4421f6c
+Model redistributed without modification.
+
+PaddlePaddle/PP-OCRv6_small_rec_onnx
+Source: https://huggingface.co/PaddlePaddle/PP-OCRv6_small_rec_onnx
+Revision: b8f84f0b80c529de40b4fbb3544b84fa7233a513
+Modified to return compact ArgMax labels and ReduceMax scores; weights unchanged.
+The recognition alphabet is extracted from the model configuration.
+Shipped file hashes and provenance are recorded in assets/ocr/models.json.
+
+Static English pronunciation dictionaries
+CMUdict revision 74790861f652b15e4ac49015a90074ad62a27690:
+Carnegie Mellon University's permissive redistribution license.
+See CMUdict-LICENSE.txt and Pronunciation-DATA-NOTICE.txt.
+ipa-dict UK revision 43c3570eb3553bdd19fccd2bd0091534889af023:
+GPL-3.0-only (conservative interpretation of the dataset's specific notice).
+Upstream credits: ipacards, Melissa Boiko (formerly leoboiko/Leonardo Boiko),
+with eSpeak-generated static lexical transcriptions. Full license: GPL-3.0.txt.
+These records do not contain an executable rule interpreter or dictionary program.
+
+Retained PDF base fonts and color profile
+The owned assets/pdf-data/manifest.json pins ten Foxit/PDFium font files,
+four Liberation Sans font files and the CGATS001Compat-v2-micro ICC profile.
+The original PDFium BSD-style notice is in standard_fonts/LICENSE_FOXIT;
+Liberation's SIL Open Font License 1.1 is in standard_fonts/LICENSE_LIBERATION;
+the profile's CC0 1.0 statement is in iccs/LICENSE, all under assets/pdf-data/.
+Fonts and profile bytes are unchanged data; PDF parsing, font handling,
+image decoding and color execution are PageNarrator's own implementation.
+
+Retained Adobe Standard 14 font metrics
+Four unmodified Helvetica AFM data files retain their Adobe copyright notices.
+The accompanying Adobe permission is in
+assets/pdf-data/standard14_metrics/LICENSE_ADOBE_AFM.txt.
+The manifest and standard14_metrics/SOURCE.json pin the original data,
+source revision and permission excerpt. PageNarrator reads glyph advances
+with its own bounded parser; no upstream font runtime is included.
+
+Retained English LSTM OCR learned data
+Source: https://github.com/tesseract-ocr/tessdata/tree/590567f20dc044f6948a8e2c61afc714c360ad0e
+License: Apache License 2.0. Only learned matrices, scales and character recoder
+data are retained for PageNarrator's original independent line recognition.
+The imported learned-data manifest identifies the exact original bytes,
+transformation, weights hash and both notice files. Original notice and full
+license: assets/ocr/english-lstm-COPYING.txt and english-lstm-LICENSE.txt.
+No upstream executor is part of this new learned-data implementation.
+
+Adobe textual PDF character mappings
+Sources: https://github.com/adobe-type-tools/cmap-resources/tree/f5cf3bca7fdfeaceb77aa82847e974f2306c20b4
+https://github.com/adobe-type-tools/mapping-resources-pdf/tree/2dd5e53fb74a01718b9dfd448a0d1cce6fff2aa5
+Copyright Adobe. Redistribution is subject to the original BSD-style notices
+included unchanged in Adobe-CMap-Resources-LICENSE.txt and
+Adobe-PDF-Mapping-LICENSE.txt. The source data manifest pins each mapping by
+immutable source revision, Git blob, byte count and SHA-256.
+PageNarrator parses these declarative records using its original bounded parser.
+
+Adobe glyph-name and ITC Zapf Dingbats character mappings
+Source: https://github.com/adobe-type-tools/agl-aglfn/tree/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6
+Copyright Adobe. The original BSD-3-Clause notice is included unchanged in
+Adobe-Glyph-List-LICENSE.txt. The source package retains the data manifest,
+immutable source URLs/hashes and original importer for 4,281 AGL and 201
+Dingbats name-to-Unicode records. These are font character data; the PDF
+glyph-name parser and executable font handling are PageNarrator's own code.
+
+Unicode 3.2 normalization and IETF stringprep tables for PDF passwords
+Sources: https://www.unicode.org/Public/3.2-Update/UnicodeData-3.2.0.txt
+https://www.unicode.org/Public/3.2-Update/CompositionExclusions-3.2.0.txt
+https://www.rfc-editor.org/rfc/rfc3454.txt
+The original Unicode-3.0 license and IETF copyright/permission statement are
+included unchanged in Unicode-LICENSE.txt and IETF-Stringprep-NOTICE.txt.
+The source package preserves reformatted normative data, pinned upstream source
+URLs/hashes and an original importer.
+PageNarrator implements normalization and revision 6 PDF password preparation
+with original code; the retained tables contain no upstream executable runtime.
+
+Font-scoped PDF symbol character data
+Font Awesome Free 5.15.4, Copyright Fonticons, Inc.
+Source: https://github.com/FortAwesome/Font-Awesome/tree/7d3d774145ac38663f6d1effc6def0334b68ab7e
+Only declarative name, Unicode, style and label metadata is retained under the
+MIT terms for non-font, non-icon files. No icon artwork, font programs or
+upstream executable code is included. See Font-Awesome-LICENSE.txt.
+MarVoSym 3.10: one documented non-Unicode Letter symbol mapping fact is retained
+under SIL Open Font License 1.1. See MarVoSym-OFL.txt and PDF-Symbols-NOTICE.txt.
+The source package retains exact source/output hashes and the original importer
+under vendor/pdf-symbols. Recognized nontext objects preserve selectable source
+geometry and are identified separately from ordinary narration text.
+
+Vite browser module loading helpers
+The build includes Vite's module-preload polyfill and dynamic-import preload helper.
+Source: https://github.com/vitejs/vite/tree/v7.3.7
+Copyright (c) 2019-present, VoidZero Inc. and Vite contributors.
+License: MIT; the full core notice is included in Vite-MIT.txt.
+These build-generated browser helpers are separate from the replaced speech,
+inference, document and OCR engines. Installed development dependencies are not
+included in the extension.

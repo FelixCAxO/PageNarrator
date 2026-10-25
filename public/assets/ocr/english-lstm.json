@@ -1,0 +1,562 @@
+{
+  "schema": "pagenarrator-english-lstm-v1",
+  "candidateOnly": false,
+  "productionSelection": "independent-line-verification",
+  "source": {
+    "model": "tesseract-ocr/tessdata/eng.traineddata",
+    "revision": "590567f20dc044f6948a8e2c61afc714c360ad0e",
+    "sha256": "daa0c97d651c19fba3b25e81317cd697e9908c8208090c94c3905381c23fc047",
+    "bytes": 23466654,
+    "gitBlobSha1": "f4744c201359d02ced6914c77f0de68ee9bbdd74",
+    "license": "Apache-2.0",
+    "upstream": "https://github.com/tesseract-ocr/tessdata/blob/590567f20dc044f6948a8e2c61afc714c360ad0e/eng.traineddata",
+    "licenseUrl": "https://github.com/tesseract-ocr/tessdata/blob/590567f20dc044f6948a8e2c61afc714c360ad0e/COPYING",
+    "retainedMirror": "@tesseract.js-data/eng@1.0.0/4.0.0/eng.traineddata.gz",
+    "transformation": "Learned LSTM int8 matrices and character recoder only; scales rounded to float32; no DAWG dictionaries, legacy classifier or executable code."
+  },
+  "weights": {
+    "path": "english-lstm.bin",
+    "bytes": 1473804,
+    "sha256": "ab437a3f500394377ad7da98c77d3d8477eb2423697b0e3849afbc3f5593c53a"
+  },
+  "network": {
+    "type": "Series",
+    "inputs": 36,
+    "outputs": 111,
+    "weightCount": 1461007,
+    "name": "Series",
+    "flags": 192,
+    "children": [
+      {
+        "type": "Input",
+        "inputs": 36,
+        "outputs": 1,
+        "weightCount": 0,
+        "name": "Input",
+        "flags": 192,
+        "shape": [
+          1,
+          36,
+          0,
+          1,
+          0
+        ]
+      },
+      {
+        "type": "Series",
+        "inputs": 1,
+        "outputs": 16,
+        "weightCount": 160,
+        "name": "ConvSeries",
+        "flags": 192,
+        "children": [
+          {
+            "type": "Convolve",
+            "inputs": 1,
+            "outputs": 9,
+            "weightCount": 0,
+            "name": "Convolve",
+            "flags": 192,
+            "window": [
+              1,
+              1
+            ]
+          },
+          {
+            "type": "Tanh",
+            "inputs": 9,
+            "outputs": 16,
+            "weightCount": 160,
+            "name": "ConvNL",
+            "flags": 192,
+            "matrix": {
+              "rows": 16,
+              "columns": 10,
+              "weights": {
+                "type": "int8",
+                "offset": 0,
+                "bytes": 160
+              },
+              "scales": {
+                "type": "float32",
+                "offset": 160,
+                "bytes": 64
+              },
+              "mode": 133
+            }
+          }
+        ]
+      },
+      {
+        "type": "Maxpool",
+        "inputs": 16,
+        "outputs": 16,
+        "weightCount": 0,
+        "name": "Maxpool",
+        "flags": 192,
+        "window": [
+          3,
+          3
+        ]
+      },
+      {
+        "type": "XYTranspose",
+        "inputs": 16,
+        "outputs": 64,
+        "weightCount": 20736,
+        "name": "XYTransLSTM",
+        "flags": 192,
+        "children": [
+          {
+            "type": "SummLSTM",
+            "inputs": 16,
+            "outputs": 64,
+            "weightCount": 20736,
+            "name": "Lfys64",
+            "flags": 192,
+            "sourceSize": 80,
+            "gates": [
+              {
+                "rows": 64,
+                "columns": 81,
+                "weights": {
+                  "type": "int8",
+                  "offset": 224,
+                  "bytes": 5184
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 5408,
+                  "bytes": 256
+                },
+                "mode": 133
+              },
+              {
+                "rows": 64,
+                "columns": 81,
+                "weights": {
+                  "type": "int8",
+                  "offset": 5664,
+                  "bytes": 5184
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 10848,
+                  "bytes": 256
+                },
+                "mode": 133
+              },
+              {
+                "rows": 64,
+                "columns": 81,
+                "weights": {
+                  "type": "int8",
+                  "offset": 11104,
+                  "bytes": 5184
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 16288,
+                  "bytes": 256
+                },
+                "mode": 133
+              },
+              {
+                "rows": 64,
+                "columns": 81,
+                "weights": {
+                  "type": "int8",
+                  "offset": 16544,
+                  "bytes": 5184
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 21728,
+                  "bytes": 256
+                },
+                "mode": 133
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "LSTM",
+        "inputs": 64,
+        "outputs": 96,
+        "weightCount": 61824,
+        "name": "Lfx96",
+        "flags": 192,
+        "sourceSize": 160,
+        "gates": [
+          {
+            "rows": 96,
+            "columns": 161,
+            "weights": {
+              "type": "int8",
+              "offset": 21984,
+              "bytes": 15456
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 37440,
+              "bytes": 384
+            },
+            "mode": 133
+          },
+          {
+            "rows": 96,
+            "columns": 161,
+            "weights": {
+              "type": "int8",
+              "offset": 37824,
+              "bytes": 15456
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 53280,
+              "bytes": 384
+            },
+            "mode": 133
+          },
+          {
+            "rows": 96,
+            "columns": 161,
+            "weights": {
+              "type": "int8",
+              "offset": 53664,
+              "bytes": 15456
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 69120,
+              "bytes": 384
+            },
+            "mode": 133
+          },
+          {
+            "rows": 96,
+            "columns": 161,
+            "weights": {
+              "type": "int8",
+              "offset": 69504,
+              "bytes": 15456
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 84960,
+              "bytes": 384
+            },
+            "mode": 133
+          }
+        ]
+      },
+      {
+        "type": "RTLReversed",
+        "inputs": 96,
+        "outputs": 96,
+        "weightCount": 74112,
+        "name": "RevLSTM",
+        "flags": 192,
+        "children": [
+          {
+            "type": "LSTM",
+            "inputs": 96,
+            "outputs": 96,
+            "weightCount": 74112,
+            "name": "Lrx96",
+            "flags": 192,
+            "sourceSize": 192,
+            "gates": [
+              {
+                "rows": 96,
+                "columns": 193,
+                "weights": {
+                  "type": "int8",
+                  "offset": 85344,
+                  "bytes": 18528
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 103872,
+                  "bytes": 384
+                },
+                "mode": 133
+              },
+              {
+                "rows": 96,
+                "columns": 193,
+                "weights": {
+                  "type": "int8",
+                  "offset": 104256,
+                  "bytes": 18528
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 122784,
+                  "bytes": 384
+                },
+                "mode": 133
+              },
+              {
+                "rows": 96,
+                "columns": 193,
+                "weights": {
+                  "type": "int8",
+                  "offset": 123168,
+                  "bytes": 18528
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 141696,
+                  "bytes": 384
+                },
+                "mode": 133
+              },
+              {
+                "rows": 96,
+                "columns": 193,
+                "weights": {
+                  "type": "int8",
+                  "offset": 142080,
+                  "bytes": 18528
+                },
+                "scales": {
+                  "type": "float32",
+                  "offset": 160608,
+                  "bytes": 384
+                },
+                "mode": 133
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "LSTM",
+        "inputs": 96,
+        "outputs": 512,
+        "weightCount": 1247232,
+        "name": "Lfx512",
+        "flags": 192,
+        "sourceSize": 608,
+        "gates": [
+          {
+            "rows": 512,
+            "columns": 609,
+            "weights": {
+              "type": "int8",
+              "offset": 160992,
+              "bytes": 311808
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 472800,
+              "bytes": 2048
+            },
+            "mode": 133
+          },
+          {
+            "rows": 512,
+            "columns": 609,
+            "weights": {
+              "type": "int8",
+              "offset": 474848,
+              "bytes": 311808
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 786656,
+              "bytes": 2048
+            },
+            "mode": 133
+          },
+          {
+            "rows": 512,
+            "columns": 609,
+            "weights": {
+              "type": "int8",
+              "offset": 788704,
+              "bytes": 311808
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 1100512,
+              "bytes": 2048
+            },
+            "mode": 133
+          },
+          {
+            "rows": 512,
+            "columns": 609,
+            "weights": {
+              "type": "int8",
+              "offset": 1102560,
+              "bytes": 311808
+            },
+            "scales": {
+              "type": "float32",
+              "offset": 1414368,
+              "bytes": 2048
+            },
+            "mode": 133
+          }
+        ]
+      },
+      {
+        "type": "Softmax",
+        "inputs": 512,
+        "outputs": 111,
+        "weightCount": 56943,
+        "name": "Output",
+        "flags": 192,
+        "matrix": {
+          "rows": 111,
+          "columns": 513,
+          "weights": {
+            "type": "int8",
+            "offset": 1416416,
+            "bytes": 56943
+          },
+          "scales": {
+            "type": "float32",
+            "offset": 1473360,
+            "bytes": 444
+          },
+          "mode": 133
+        }
+      }
+    ]
+  },
+  "spec": "[1,36,0,1Ct3,3,16Mp3,3Lfys64Lfx96Lrx96Lfx512O1c1]",
+  "blank": 110,
+  "trainingFlags": 65,
+  "trainingIteration": 814100,
+  "sampleIteration": 814136,
+  "alphabet": [
+    " ",
+    "C",
+    "H",
+    "E",
+    "S",
+    "-",
+    "R",
+    "I",
+    "K",
+    "N",
+    "G",
+    "B",
+    "8",
+    "5",
+    "F",
+    ",",
+    "(",
+    "/",
+    "L",
+    "T",
+    ")",
+    "O",
+    "Y",
+    ".",
+    "D",
+    "A",
+    "M",
+    "U",
+    "P",
+    "[",
+    "]",
+    "9",
+    "7",
+    "0",
+    "1",
+    "4",
+    "2",
+    "W",
+    "3",
+    "<",
+    ">",
+    "\"",
+    "V",
+    "X",
+    "'",
+    "~",
+    "!",
+    "J",
+    "Q",
+    "Z",
+    "+",
+    "@",
+    "&",
+    "’",
+    "=",
+    "_",
+    "€",
+    "™",
+    "“",
+    "|",
+    "?",
+    ":",
+    "6",
+    "{",
+    "}",
+    "$",
+    ";",
+    "\\",
+    "—",
+    "”",
+    "*",
+    "#",
+    "»",
+    "®",
+    "%",
+    "£",
+    "«",
+    "°",
+    "©",
+    "§",
+    "¥",
+    "¢",
+    "‘",
+    "i",
+    "n",
+    "c",
+    "u",
+    "l",
+    "a",
+    "t",
+    "e",
+    "m",
+    "o",
+    "s",
+    "g",
+    "h",
+    "b",
+    "z",
+    "v",
+    "q",
+    "f",
+    "r",
+    "w",
+    "p",
+    "d",
+    "k",
+    "x",
+    "y",
+    "j",
+    "é",
+    ""
+  ],
+  "version": "4.00.00alpha:eng:synth20170629:[1,36,0,1Ct3,3,16Mp3,3Lfys64Lfx96Lrx96Lfx512O1c1]",
+  "licenseFiles": [
+    {
+      "path": "english-lstm-COPYING.txt",
+      "bytes": 691,
+      "sha256": "85c31da65107d18490666cc8e3af6373b5303fb57f82b97119d47ad219896800"
+    },
+    {
+      "path": "english-lstm-LICENSE.txt",
+      "bytes": 11357,
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4"
+    }
+  ]
+}

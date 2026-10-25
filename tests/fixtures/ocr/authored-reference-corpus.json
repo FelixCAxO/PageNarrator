@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "sourceKind": "authored-schema-control-no-recognition",
+  "provenance": "Original PageNarrator synthetic short text and rectangular regions under GPL-3.0-or-later.",
+  "scope": "Two-page JSON schema/hash integrity control only. No held-out/development recognizer score or quality threshold.",
+  "pages": [
+    {
+      "page": 1,
+      "referenceFile": "authored-reference-page-1.json",
+      "referenceStatus": "authored",
+      "referenceSha256": "fa490e587218c0b6b6d61bd09e3fe8b87859e0c2684c52f12a847db0e96d7aeb"
+    },
+    {
+      "page": 2,
+      "referenceFile": "authored-reference-page-2.json",
+      "referenceStatus": "authored",
+      "referenceSha256": "13fe741eff915a9eb38c856a59752c58b89be4f8013fa8f08198aba654201dbb"
+    }
+  ]
+}

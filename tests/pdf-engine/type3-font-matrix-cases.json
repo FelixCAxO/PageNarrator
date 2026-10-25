@@ -1,0 +1,1792 @@
+[
+  {
+    "id": "default-matrix-control",
+    "matrix": [
+      0.001,
+      0,
+      0,
+      0.001,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.012,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    },
+    "expected": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.012,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    }
+  },
+  {
+    "id": "double-scale",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          68.4,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "anisotropic-x",
+    "matrix": [
+      0.003,
+      0,
+      0,
+      0.001,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.036,
+          0.0,
+          0.0,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.036,
+          0.0,
+          0.0,
+          0.012,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    },
+    "expected": {
+      "signedTotalAdvance": 43.2,
+      "perGlyphAdvances": [
+        21.6,
+        21.6
+      ],
+      "itemWidth": 43.2,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.036,
+          0.0,
+          0.0,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.036,
+          0.0,
+          0.0,
+          0.012,
+          75.6,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    }
+  },
+  {
+    "id": "anisotropic-y-control",
+    "matrix": [
+      0.001,
+      0,
+      0,
+      0.003,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.036,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.036,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.1,
+      "fontDescent": -0.6
+    },
+    "expected": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.036,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.0,
+          0.0,
+          0.036,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.1,
+      "fontDescent": -0.6
+    }
+  },
+  {
+    "id": "sheared-font",
+    "matrix": [
+      0.002,
+      0.0005,
+      0.001,
+      0.003,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.006,
+          0.012,
+          0.036,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.006,
+          0.012,
+          0.036,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.1,
+      "fontDescent": -0.6
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.006,
+          0.012,
+          0.036,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.006,
+          0.012,
+          0.036,
+          68.4,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.1,
+      "fontDescent": -0.6
+    }
+  },
+  {
+    "id": "quarter-turn-horizontal-projection",
+    "matrix": [
+      0,
+      0.002,
+      -0.002,
+      0,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          700.0
+        ],
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0,
+      "fontDescent": 0
+    },
+    "expected": {
+      "signedTotalAdvance": 0.0,
+      "perGlyphAdvances": [
+        0.0,
+        0.0
+      ],
+      "itemWidth": 0.0,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          700.0
+        ],
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          700.0
+        ]
+      ],
+      "fontAscent": 0,
+      "fontDescent": 0
+    }
+  },
+  {
+    "id": "angled-linear-control",
+    "matrix": [
+      0.001,
+      0.001,
+      -0.001,
+      0.001,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.012,
+          -0.012,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.012,
+          -0.012,
+          0.012,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    },
+    "expected": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.012,
+          0.012,
+          -0.012,
+          0.012,
+          54.0,
+          700.0
+        ],
+        [
+          0.012,
+          0.012,
+          -0.012,
+          0.012,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 0.7000000000000001,
+      "fontDescent": -0.2
+    }
+  },
+  {
+    "id": "negative-horizontal-projection",
+    "matrix": [
+      -0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          -0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          -0.024,
+          0.0,
+          0.0,
+          0.024,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": -28.8,
+      "perGlyphAdvances": [
+        -14.4,
+        -14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          -0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          -0.024,
+          0.0,
+          0.0,
+          0.024,
+          39.6,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "translated-glyph-origin-not-displacement",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0.2,
+      -0.1
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          56.4,
+          698.8
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          63.6,
+          698.8
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          56.4,
+          698.8
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          70.8,
+          698.8
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "character-word-spacing-and-horizontal-scale",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 0.8,
+    "charSpacing": 1.5,
+    "wordSpacing": 3,
+    "text": " A",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 12.96,
+      "perGlyphAdvances": [
+        6.0,
+        6.96
+      ],
+      "itemWidth": 12.96,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        9.6,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0192,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.0192,
+          0.0,
+          0.0,
+          0.024,
+          60.0,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 21.12,
+      "perGlyphAdvances": [
+        8.4,
+        12.72
+      ],
+      "itemWidth": 21.12,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        9.6,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0192,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.0192,
+          0.0,
+          0.0,
+          0.024,
+          62.4,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "tj-adjustment-stays-in-text-units",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 100,
+    "expectedOld": {
+      "signedTotalAdvance": 13.2,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 13.2,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          60.0,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 27.6,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 27.6,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          67.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "rotated-text-matrix",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      0,
+      1,
+      -1,
+      0,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        0.0,
+        12.0,
+        -12.0,
+        0.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          700.0
+        ],
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          707.2
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        0.0,
+        12.0,
+        -12.0,
+        0.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          700.0
+        ],
+        [
+          0.0,
+          0.024,
+          -0.024,
+          0.0,
+          54.0,
+          714.4
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "rotated-scaled-page-ctm",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      0,
+      2,
+      -2,
+      0,
+      10,
+      20
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 24.0,
+      "itemTransform": [
+        0.0,
+        24.0,
+        -24.0,
+        0.0,
+        -1390.0,
+        128.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.048,
+          -0.048,
+          0.0,
+          -1390.0,
+          128.0
+        ],
+        [
+          0.0,
+          0.048,
+          -0.048,
+          0.0,
+          -1390.0,
+          142.4
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 57.6,
+      "itemHeight": 24.0,
+      "itemTransform": [
+        0.0,
+        24.0,
+        -24.0,
+        0.0,
+        -1390.0,
+        128.0
+      ],
+      "glyphMatrices": [
+        [
+          0.0,
+          0.048,
+          -0.048,
+          0.0,
+          -1390.0,
+          128.0
+        ],
+        [
+          0.0,
+          0.048,
+          -0.048,
+          0.0,
+          -1390.0,
+          156.8
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "negative-font-size",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": -12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": -14.4,
+      "perGlyphAdvances": [
+        -7.2,
+        -7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        -12.0,
+        0.0,
+        0.0,
+        -12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          -0.024,
+          0.0,
+          0.0,
+          -0.024,
+          54.0,
+          700.0
+        ],
+        [
+          -0.024,
+          0.0,
+          0.0,
+          -0.024,
+          46.8,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": -28.8,
+      "perGlyphAdvances": [
+        -14.4,
+        -14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        -12.0,
+        0.0,
+        0.0,
+        -12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          -0.024,
+          0.0,
+          0.0,
+          -0.024,
+          54.0,
+          700.0
+        ],
+        [
+          -0.024,
+          0.0,
+          0.0,
+          -0.024,
+          39.6,
+          700.0
+        ]
+      ],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "invisible-tr3-still-advances",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      0,
+      -200,
+      600,
+      700
+    ],
+    "mode": 3,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [],
+      "fontAscent": 1.4000000000000001,
+      "fontDescent": -0.4
+    }
+  },
+  {
+    "id": "fontbbox-does-not-change-displacement",
+    "matrix": [
+      0.002,
+      0,
+      0,
+      0.002,
+      0,
+      0
+    ],
+    "fontSize": 12,
+    "hScale": 1,
+    "charSpacing": 0,
+    "wordSpacing": 0,
+    "text": "AA",
+    "textMatrix": [
+      1,
+      0,
+      0,
+      1,
+      54,
+      700
+    ],
+    "ctm": [
+      1,
+      0,
+      0,
+      1,
+      0,
+      0
+    ],
+    "bbox": [
+      -100,
+      -200,
+      900,
+      1200
+    ],
+    "mode": 0,
+    "tj": 0,
+    "expectedOld": {
+      "signedTotalAdvance": 14.4,
+      "perGlyphAdvances": [
+        7.2,
+        7.2
+      ],
+      "itemWidth": 14.4,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          61.2,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.4,
+      "fontDescent": -0.4
+    },
+    "expected": {
+      "signedTotalAdvance": 28.8,
+      "perGlyphAdvances": [
+        14.4,
+        14.4
+      ],
+      "itemWidth": 28.8,
+      "itemHeight": 12.0,
+      "itemTransform": [
+        12.0,
+        0.0,
+        0.0,
+        12.0,
+        54.0,
+        700.0
+      ],
+      "glyphMatrices": [
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          54.0,
+          700.0
+        ],
+        [
+          0.024,
+          0.0,
+          0.0,
+          0.024,
+          68.4,
+          700.0
+        ]
+      ],
+      "fontAscent": 2.4,
+      "fontDescent": -0.4
+    }
+  }
+]

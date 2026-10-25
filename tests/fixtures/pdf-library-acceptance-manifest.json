@@ -1,0 +1,570 @@
+{
+  "schemaVersion": 2,
+  "benchmarkId": "private-library-v1-20261024",
+  "gold": {
+    "bytes": 270942,
+    "sha256": "c528b5f58f5704acbf82fc562c95eaa6714965923f094a03da73295973c37251"
+  },
+  "privateManifest": {
+    "bytes": 32230,
+    "sha256": "6bb4f033b8bc2139cd716a0cb3e25348a010f0f3e0ea04bbf8a23aca76e3983d"
+  },
+  "records": [
+    {
+      "id": "library-2fb5cbe6-c6c4-4b94-b038-b7afac99fe8e",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-f3116214-74ca-4b6f-9e1f-795edca25dda",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-77ee4d3d-9c50-4ff0-bad3-e88585128872",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-1c2cd089-2c62-4fd5-961b-10252ae8a213",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-596ade4a-7159-4d3b-9478-b3babf7bff50",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-86eba668-c5ca-4bbd-b22f-189a3663c4be",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-52cd0338-79a3-44af-bd36-c6405f1c9c4b",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-b44cd75c-6066-4180-9adb-ab89df51c7f6",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-5903bb47-5a39-49e8-aada-12596a080c6b",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-bdecdd38-9b20-420b-9c7a-2728acd4c9da",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-5badc12b-88da-4dc6-aa99-6cdf7ad2f50f",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-c7eb78f9-06e8-40c6-b13b-3edec4250c18",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-8cd85296-c1f6-4baa-a7cc-18932a8657b0",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e1c8eddc-00ac-4c92-92cd-ad1b755db843",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-539a999c-587f-4738-a340-abd24caf166a",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-37962473-4794-4d37-808c-2430b0a05cb4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-8d5ce878-702f-4b65-bf81-6c8248376c40",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-efb2566d-995e-4639-8218-236433af127b",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-0b69a70b-2589-4807-ba1a-7c782820eddc",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-6e55af80-9cf2-45b6-b820-e8c7f64df8e1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-eba47249-2109-4b65-97dd-81ed678cac54",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e0d2225e-9435-4241-b8dc-a65d9825bcb4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-96a65132-1f87-43eb-9159-25ee36c2e3ba",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-2f45d96f-3266-4955-b18b-2c84a7161b0c",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-cb923937-0083-411a-bcf8-76319a2bdc24",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-73279c2a-5efd-4c21-a9d6-4942fcef4c16",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-82648a6b-26d4-454c-862d-6d81c27a3929",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-9ad52999-af66-4730-8325-562ea06917ab",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-118172fe-4c70-4b09-a5cf-1795eeddaf26",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-76ebb559-8baf-4f0a-af43-42465ba249eb",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-0dda3ec5-ecd2-40fd-a950-cd550da951e9",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-7926a34b-0a82-45d3-bc3e-05d069551474",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-dbc014fc-e386-4ff5-8c44-5181014040ac",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e8a860ec-8c44-4c8d-b650-0b0e6e8b99b1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-cadfbcfb-295d-4952-bfec-74e71a3d6f70",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-89feacc1-9673-4c81-8cea-9070e6f9bb4e",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-4748001e-beb2-4e4b-8e82-170b3fe26ca3",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-349a4597-3b3b-4e3f-910c-0d4fa95b98c1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-bada2de2-985e-4de9-946c-7c60c83e3eab",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-605da98d-94a2-4a5a-9451-bcb5fb719c68",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-3db2f083-6c4a-43c8-97a1-029fd1d1b5f1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-ec3ab936-55aa-42a0-9ec1-0bdd431bf064",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-4e1021c7-3b7b-4337-b5ce-b3a1a76e8f51",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-13615476-564c-4847-8bab-e87f5a0273d1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e8896250-c9d6-491b-a657-77ed2e25ea91",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-19b9e0ec-2da4-4fbd-b3bf-6a21227831e4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-6f612a31-cc6a-44ce-a5df-19196d8a85a4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e3db8672-f995-4236-90ee-828ef13c38b6",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-5903a986-4bb6-49b5-8612-4c2d2d70fba4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-a92b5c99-4297-4a4e-b659-1f8bf9dd6a1d",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-84ed213b-c13e-43d6-bad0-d1bd335fed87",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-297ca440-6ac2-4139-96d9-fd42d4833f66",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-656a839a-7bfe-42b4-8f13-0e4b4d829950",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-acf4dc10-62bd-4aa2-9bd0-cb61d9bc4ba1",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-f3013cd9-7754-4a04-bbd4-dc486957aa79",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-74ffb58a-4f43-4b7b-9402-2c0becd9bfff",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-41c03000-4eb6-44cd-981d-3aa83a7d841e",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-6053575a-896c-4d02-8e24-58591fde61bc",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-209d2fa7-988a-46ce-95c5-ebd9e1a92146",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-5409255a-0a40-446b-bc64-02755bbf2c65",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-b213b365-9d16-4cde-90fb-d038f8ecc13f",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-51f835f7-c936-433e-b7a2-98df8e51291b",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-e956716a-1b6b-41a2-9c01-8c5fb64bf846",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-3c4489c3-6134-48b5-8ae4-b763cef3d8a6",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-4bc63c1a-3fc1-45df-a4e5-9e7ef1d0344c",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-625fbb06-d413-4809-b650-68ba5752c6fa",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-fcc8b06e-e5e6-43f3-b66a-8aaf35dff4fc",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-c6ad5421-0c74-4667-becd-4e528226c174",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-719e4edb-d6d5-4a2c-b9a5-02c667ebc771",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-453e5d47-acdf-4e72-9593-1571856f0833",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-6ada4e70-3d7d-4755-9340-b49950725f34",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-d5e65bfa-0a1a-4b95-88f8-9ca20b1fc45d",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-02fedf83-487f-49f1-98d2-544aaafdd5b3",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-a47b8787-2c2e-483c-b3d2-0bc73510c572",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-c4d17251-4a1d-4cc3-b5a6-fad0f752d403",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-bbd9ca12-8580-43db-af65-0cc7453b2bdd",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-b092ffff-efa1-4fe4-aa9e-f3fe9a9179a4",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-ae7ae396-9b70-4b62-8197-c02ac9230e73",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-1eb4dedc-cb0d-4f7d-83a5-ab9d3649fbc0",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-daa9912d-1d4e-4c5d-80db-df328ccb4d9a",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-f2d2f948-1cc7-4365-bd02-872361242df8",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-860bc8f9-b40a-4b04-b4e1-ec571ac58ad8",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-9673754a-a7f1-400f-a14c-69c3be93ce15",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-7cdad6cf-d98f-4176-b514-f45a133891f2",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-494ac8e7-224e-4285-ace2-70613f398663",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-c7cd5f38-323d-451e-b054-9bc52e590ead",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-0294713b-47b3-480e-8be8-298752e6c057",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-079dc3c6-0bd3-494b-ae42-0f5fc3500f96",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-f8a0cf91-22fe-4a2d-8282-6edc4eed2d0a",
+      "categories": [
+        "library"
+      ]
+    },
+    {
+      "id": "library-82294ea7-baf3-4bf9-8fdd-6e3740de4288",
+      "categories": [
+        "library"
+      ]
+    }
+  ],
+  "routingControls": [
+    {
+      "id": "library-f5ee4f5c-bf16-484d-9306-96c599a93983",
+      "categories": [
+        "native-routing-control"
+      ],
+      "expectedCode": "scanned_pdf_unsupported"
+    },
+    {
+      "id": "library-3cf6b483-b885-4aea-a460-7a821f244982",
+      "categories": [
+        "native-routing-control"
+      ],
+      "expectedCode": "pdf_corrupt"
+    }
+  ]
+}

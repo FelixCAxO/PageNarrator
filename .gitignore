@@ -1,0 +1,37 @@
+# Generated output and local caches
+node_modules/
+dist/
+dist/*/
+dist-preview-*/
+releases/
+artifacts/
+.DS_Store
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+!.env.example
+.dev.vars*
+.vite/
+.wrangler/
+.chrome-for-testing/
+.chrome-preview/
+.claude/
+.agents/
+.codex/
+.superpowers/
+.cache/
+tmp/
+docs/cws-listing/debug-*.png
+voice-packs/
+test-results/
+# Only catalog metadata ships. Test weights live in .cache/kokoro/.
+!public/voice-packs/
+public/voice-packs/*
+!public/voice-packs/selected-manifest.json
+*.pem
+*.key
+*.p12
+*.private.json
+

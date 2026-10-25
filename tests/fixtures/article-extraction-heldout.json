@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "frozenAt": "2026-10-16",
+  "provenance": "Original PageNarrator test prose, GPL-3.0-or-later. Frozen before first evaluation; these are synthetic coverage cases, not independent real-site quality evidence.",
+  "cases": [
+    {
+      "id": "unicode-inline",
+      "html": "<nav>UNWANTED MENU</nav><article><h1>Notes from Malmö</h1><p>The café’s résumé includes naïve ideas and a co-authored report.</p><p>Read the <a href='/study'><strong>complete study</strong></a> before choosing tomorrow’s route.</p></article>",
+      "blocks": ["Notes from Malmö", "The café’s résumé includes naïve ideas and a co-authored report.", "Read the complete study before choosing tomorrow’s route."],
+      "alignment": true
+    },
+    {
+      "id": "linebreak-definition",
+      "html": "<main><h1>Browser terms</h1><p>Keep the first line.<br>Keep the second line, including its final word.</p><dl><dt>Buffer</dt><dd>A region of memory that stores the current samples.</dd><dt>Frame</dt><dd>A measured slice of the original signal.</dd></dl></main>",
+      "blocks": ["Browser terms", "Keep the first line. Keep the second line, including its final word.", "Buffer", "A region of memory that stores the current samples.", "Frame", "A measured slice of the original signal."],
+      "alignment": false
+    },
+    {
+      "id": "logical-rtl",
+      "html": "<main><h1>Language notes</h1><p dir='rtl'>שלום עולם. היום אנחנו קוראים ספר חדש ביחד.</p><p>The English explanation follows the source paragraph in its original position.</p></main>",
+      "blocks": ["Language notes", "שלום עולם. היום אנחנו קוראים ספר חדש ביחד.", "The English explanation follows the source paragraph in its original position."],
+      "alignment": true
+    },
+    {
+      "id": "table-cells",
+      "html": "<main><p>The following schedule preserves every cell, including the last row.</p><table><caption>Reading schedule</caption><tr><th>Stage</th><th>Time</th></tr><tr><td>Prepare</td><td>Monday</td></tr><tr><td>Review</td><td>Friday</td></tr></table><p>The closing explanation remains after the table.</p></main>",
+      "blocks": ["The following schedule preserves every cell, including the last row.", "Reading schedule", "Stage", "Time", "Prepare", "Monday", "Review", "Friday", "The closing explanation remains after the table."],
+      "alignment": true
+    },
+    {
+      "id": "quoted-prose",
+      "html": "<article><h1>Field report</h1><p>The recorder captured the complete statement at noon.</p><blockquote><p>“Please retain the quiet ending,” the researcher said.</p><p>“A pause between paragraphs belongs to the recording.”</p></blockquote><p>The report ends with an ordinary final sentence.</p></article><aside>UNWANTED PROMOTION</aside>",
+      "blocks": ["Field report", "The recorder captured the complete statement at noon.", "“Please retain the quiet ending,” the researcher said.", "“A pause between paragraphs belongs to the recording.”", "The report ends with an ordinary final sentence."],
+      "alignment": true
+    },
+    {
+      "id": "nested-hidden",
+      "html": "<style>.suppressed{display:none}.muted{visibility:hidden}.visible{visibility:visible}</style><main><h1>Visible observations</h1><section class='suppressed'><p class='visible'>UNWANTED HIDDEN</p></section><section class='muted'><p>UNWANTED INHERITED</p><p class='visible'>The visible child contributes its complete explanation to the report.</p></section><p>The final paragraph remains available after all hidden elements.</p></main>",
+      "blocks": ["Visible observations", "The visible child contributes its complete explanation to the report.", "The final paragraph remains available after all hidden elements."],
+      "alignment": false
+    }
+  ]
+}

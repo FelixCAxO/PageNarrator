@@ -1,0 +1,27 @@
+{
+  "page": 1,
+  "referenceStatus": "authored",
+  "scope": "Original synthetic reference-schema control; no photographed page or OCR result.",
+  "regions": [
+    {
+      "kind": "heading",
+      "rect": [
+        0.1,
+        0.08,
+        0.6,
+        0.1
+      ],
+      "text": "Harbor sensor notes"
+    },
+    {
+      "kind": "prose",
+      "rect": [
+        0.1,
+        0.22,
+        0.7,
+        0.25
+      ],
+      "text": "An amber marker identifies the next inspection point."
+    }
+  ]
+}

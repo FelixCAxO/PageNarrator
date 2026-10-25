@@ -1,0 +1,243 @@
+{
+  "classification": "oracle_discrepancy_verified",
+  "originalMuPDFPass": false,
+  "originalPDFiumPass": false,
+  "tolerancesChanged": false,
+  "primarySpecification": "https://opensource.adobe.com/dc-acrobat-sdk-docs/standards/pdfstandards/pdf/PDF32000_2008.pdf",
+  "section": "8.7.4.3 Table 78: BBox is a temporary clip in shading target coordinates.",
+  "reason": "Under a nonuniform CTM the target BBox maps to a parallelogram. Original MuPDF/PDFium use its device bounding rectangle; Poppler agrees with the original path and MuPDF agrees after an equivalent explicit path clip.",
+  "originalSourceSha256": "df88b54ad80282d04b8244ff1e2597d4371bd966eb97bb83eab371449992107f",
+  "equivalentExplicitClipSourceSha256": "f62c5b322c7b0edf6f61afb4786a3da2bd12cc547bbe027ce5e6af0405830d37",
+  "retainedFirstFailureScreenshotSha256": "9dbd6ace82475b9eb13c61067df32b05badebb945558fd34ffdaac6c4ee9f238",
+  "retainedFirstFailureReportSha256": "d307fd9a20e5ad128bd0f881620162302879ffc1e91905df1a082916b9ed3cd6",
+  "versions": {
+    "MuPDF": "1.28.0",
+    "Poppler": "pdftoppm version 26.07.0",
+    "PDFium": "151.0.7920.0"
+  },
+  "oracles": {
+    "originalMuPDF": {
+      "path": "axial-mupdf.png",
+      "sha256": "54cfc410138a73cfc158523138834814a6f33ac5947600bf7f4402e02325cc6c"
+    },
+    "originalPDFium": {
+      "path": "axial-pdfium.png",
+      "sha256": "407c7facfaf9abfb0f03b8cc56cdcf6c550413925ac7b6ed28970e480e75d472"
+    },
+    "originalPoppler": {
+      "path": "axial-poppler.png",
+      "sha256": "efa925009aa1cc8a7ccc23453c37c0be8b4b054f06647a7bc3f76a7e2097d1ba"
+    },
+    "explicitClipMuPDF": {
+      "path": "axial-explicitclip-mupdf.png",
+      "sha256": "2e174524234e1078865e030d4fb55d166c901b9ca1b7d86d7e119e0b74c3024d"
+    }
+  },
+  "metrics": {
+    "originalMuPDF": {
+      "fullPage": {
+        "meanError": 0.06945401348039215,
+        "changedFraction": 0.1499765625,
+        "maximumChannelError": 252
+      },
+      "transformedRegion": {
+        "meanError": 0.14074462504299964,
+        "changedFraction": 0.31273026315789476,
+        "maximumChannelError": 216
+      }
+    },
+    "originalPDFium": {
+      "fullPage": {
+        "meanError": 0.06788318014705882,
+        "changedFraction": 0.149953125,
+        "maximumChannelError": 254
+      },
+      "transformedRegion": {
+        "meanError": 0.1384331140350877,
+        "changedFraction": 0.31273026315789476,
+        "maximumChannelError": 216
+      }
+    },
+    "originalPoppler": {
+      "fullPage": {
+        "meanError": 0.0029937806372549018,
+        "changedFraction": 0.0062265625,
+        "maximumChannelError": 217
+      },
+      "transformedRegion": {
+        "meanError": 0.0028713235294117647,
+        "changedFraction": 0.009161184210526316,
+        "maximumChannelError": 206
+      }
+    },
+    "explicitClipMuPDF": {
+      "fullPage": {
+        "meanError": 0.0042344158496732025,
+        "changedFraction": 0.0016015625,
+        "maximumChannelError": 252
+      },
+      "transformedRegion": {
+        "meanError": 0.0034402089783281734,
+        "changedFraction": 0.0003618421052631579,
+        "maximumChannelError": 26
+      }
+    }
+  },
+  "points": [
+    {
+      "point": [
+        220,
+        100
+      ],
+      "own": [
+        217,
+        217,
+        217
+      ],
+      "originalMuPDF": [
+        210,
+        44,
+        63
+      ],
+      "originalPDFium": [
+        209,
+        46,
+        64
+      ],
+      "originalPoppler": [
+        217,
+        217,
+        217
+      ],
+      "explicitClipMuPDF": [
+        216,
+        216,
+        216
+      ]
+    },
+    {
+      "point": [
+        220,
+        250
+      ],
+      "own": [
+        217,
+        217,
+        217
+      ],
+      "originalMuPDF": [
+        56,
+        199,
+        63
+      ],
+      "originalPDFium": [
+        56,
+        199,
+        64
+      ],
+      "originalPoppler": [
+        217,
+        217,
+        217
+      ],
+      "explicitClipMuPDF": [
+        216,
+        216,
+        216
+      ]
+    },
+    {
+      "point": [
+        250,
+        200
+      ],
+      "own": [
+        217,
+        217,
+        217
+      ],
+      "originalMuPDF": [
+        110,
+        145,
+        63
+      ],
+      "originalPDFium": [
+        110,
+        145,
+        64
+      ],
+      "originalPoppler": [
+        217,
+        217,
+        217
+      ],
+      "explicitClipMuPDF": [
+        216,
+        216,
+        216
+      ]
+    },
+    {
+      "point": [
+        350,
+        90
+      ],
+      "own": [
+        234,
+        21,
+        64
+      ],
+      "originalMuPDF": [
+        234,
+        20,
+        63
+      ],
+      "originalPDFium": [
+        233,
+        22,
+        64
+      ],
+      "originalPoppler": [
+        234,
+        21,
+        64
+      ],
+      "explicitClipMuPDF": [
+        234,
+        20,
+        63
+      ]
+    },
+    {
+      "point": [
+        350,
+        250
+      ],
+      "own": [
+        217,
+        217,
+        217
+      ],
+      "originalMuPDF": [
+        69,
+        185,
+        63
+      ],
+      "originalPDFium": [
+        69,
+        186,
+        64
+      ],
+      "originalPoppler": [
+        217,
+        217,
+        217
+      ],
+      "explicitClipMuPDF": [
+        216,
+        216,
+        216
+      ]
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": false
+  },
+  "include": [
+    "src/app/**/*.js",
+    "src/content.js",
+    "src/lib/color-utils.js",
+    "src/lib/logger.js",
+    "src/lib/omnivoice-settings.js",
+    "src/lib/message-types.js",
+    "src/lib/playback-session.js",
+    "src/lib/runtime-message-handlers.js",
+    "src/lib/reader-engine-*-controller.js",
+    "src/lib/reader-engine-audio-playback.js",
+    "src/lib/reader-engine-chunks.js",
+    "src/lib/reader-engine-queue-renderer.js",
+    "src/lib/reader-engine-read-loop.js",
+    "src/lib/speech-audio.js",
+    "src/lib/speech-chunks.js",
+    "src/lib/speech-tokenization.js",
+    "src/lib/storage-keys.js",
+    "src/lib/progressive-segment-playback.js",
+    "src/lib/flow-recorder.js",
+    "src/lib/core/speech-audio.js",
+    "src/lib/voice-registry.js",
+    "src/reader/**/*.js",
+    "src/tts/**/*.js",
+    "src/platform/**/*.js",
+    "src/ui/**/*.js",
+    "src/types/**/*.d.ts",
+    "src/engines/*.d.ts"
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "schemaVersion": 1,
+  "scope": "Read-only metadata of frozen document fixtures. Embedded programs are retained only inside the original PDFs; no font bytes are included in this metadata or application assets.",
+  "documentCount": 30,
+  "documentsWithEmbeddedFonts": 10,
+  "records": [
+    {
+      "path": "tests/fixtures/pdfs/acceptance/caption-after-columns.pdf",
+      "sha256": "4f5163ccbac49830c30128bf45c48a1c16994fda0007e503d2afca39ae1177cb",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/citations-decorations.pdf",
+      "sha256": "1a2aecfaca72c5e763f50d30aaf6e28c9a2813cde4c43750b29abf8088d06118",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 15,
+          "fontName": "AAAAAA+SegoeUISymbol",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 28364,
+          "sha256": "61fde334787ec5d2741482e153ee0f889ab69df614fd9c664bbb356565c34b38",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2022 Microsoft Corporation. All Rights Reserved.",
+            "1": "Segoe UI Symbol",
+            "6": "SegoeUISymbol",
+            "13": {
+              "present": true,
+              "byteSha256": "86ffc62398854f912277e9bd3af35150e8bd0d85c0c72d8fac2dc748424fa57d"
+            },
+            "14": "https://docs.microsoft.com/typography/"
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/list.pdf",
+      "sha256": "9ec8f74950078de79c9ba1f441c9170d7a28353d5d1181860c1722acdad30133",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65892,
+          "sha256": "e8f383be284c716ffb1d5c0845395f853fa2e0a07751cb8b06d43a4c197ca7f1",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/ltr-two-column.pdf",
+      "sha256": "ac58634b1e0710d3c11318549248ae62ef05788797da3c83e27357faed1b0890",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/mixed-direction.pdf",
+      "sha256": "03283e9026906821d02085257d6bc3a45bd29e98fe02ff3c197c63e834f32cbd",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 52120,
+          "sha256": "d6f84fb5308e86f3197d49c0b46f05f82c78abc401c16dd64d1ddf833e0f9afa",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 70928,
+          "sha256": "ee30d74581b14e3c5bc8e5d3a8eb7dac1241d7edf87e98b10bc480655179d618",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/rtl-two-column.pdf",
+      "sha256": "cd021f251f9174bb965f9c2656679424c1337ff1faf8c4826c6fcca7d21f94ea",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 52432,
+          "sha256": "a84bd453723280a22aebf7a016835c08a8c9248963e8f7cd8d0107b82438d285",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 72048,
+          "sha256": "d40484c58268415df30aadf3c7a5d4e1c59923d75ae16363c01617678a7b8fac",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/running-content.pdf",
+      "sha256": "38cb89e09600147f8174432b5c1609f5e257cb9bca6cc132fdaa6cd986ce5626",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 16,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 20,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/split-words.pdf",
+      "sha256": "08a95f2270b1f1f94ebd8663b63b7c2c38b2d1553fe718d5486a51fdfc4f79a3",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/table.pdf",
+      "sha256": "72fba9130f7a8f876585e24f3c76f3ebd59d9adffa038293c8de298d4d400460",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/acceptance/title-single-column.pdf",
+      "sha256": "2da6fc48b9f385eb16fa6f0aa741ac2178ddf50434acf073c3ed3e71c47e8dcc",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": [
+        {
+          "object": 7,
+          "fontName": "AAAAAA+Arial-BoldMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 48644,
+          "sha256": "e69d66fd1afde3212b7f88a6a0c9a84c4ad7fd64bf69a8c14dea826902784272",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "Arial-BoldMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        },
+        {
+          "object": 11,
+          "fontName": "AAAAAA+ArialMT",
+          "format": "ttf",
+          "kind": "TrueType",
+          "bytes": 65796,
+          "sha256": "9dfa37c3b47f9cdb7d94b566e6c43a8a3f01603e1dc77e36e8171c91b00e1e68",
+          "fsType": 8,
+          "retainedNames": {
+            "0": "© 2026 The Monotype Corporation. All Rights Reserved. \r\n\r\nHebrew OpenType Layout logic copyright © 2003 & 2007, Ralph Hancock & John Hudson. This layout logic for Biblical Hebrew is open source software under the MIT License; see embedded license description for details.",
+            "1": "Arial",
+            "6": "ArialMT",
+            "13": {
+              "present": true,
+              "byteSha256": "69863b1c1f0f1b3aac205df58a42c9f857c46522c8e1f116e7d47173d518422e"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/blank-control.pdf",
+      "sha256": "abe2ca60ace835cc8c2a4f4f8ea86ecfe0c936cbc7ebf4ec59224231b17716b3",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/inline-image.pdf",
+      "sha256": "c294e4b5da71f2f4b0911fac66bafd66efaa8922900bfdccc06f6bdba8388cff",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/multi-raster.pdf",
+      "sha256": "42f8f0e2e592b98be1e172f33b90fcab19f9c62f80eb59d8d2894d7261b190df",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/raster-with-citation.pdf",
+      "sha256": "06d1fcd649cb44de9bab02c17775044273f32516453ae2d0301e519e2ce06b0f",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/raster-with-furniture.pdf",
+      "sha256": "541565038ca36870c17106d72282d668233b191d62b6ba66f7ae54f72daf8cd9",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/single-raster.pdf",
+      "sha256": "16765151504e3fd138cb1abcc942dcf0ec2765f3bff014341fa458956d2c863f",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/text-control.pdf",
+      "sha256": "771fd7d504d601701c78b36eed6f230f68d0892376bd07eb3755ad9110844e49",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/image-only/vector-control.pdf",
+      "sha256": "8ec74bae8f0b99d52c95c0b096333974cc60e87d09d32a225d0c9880f8f92cd8",
+      "producer": "ReportLab PDF Library - (opensource)",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/single-column.pdf",
+      "sha256": "69f856d5077d7e8eea9ce40415e3b91f2ce65c2fde2424dfe0cf2d3fdbf66621",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/two-column-citations.pdf",
+      "sha256": "195407d67fb0b376d6f5cd4f0a5e3d419f26f35f4ff6c30c486ada672107440e",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-cross-page-column-wrap.pdf",
+      "sha256": "48f8fba8aa234d5e02e33287e192eec7e00e18bfccabe8cf6ed8dcd1aec94bc1",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-display-equations-math.pdf",
+      "sha256": "87c8d70f4beb06dac97f93a30bdeed7f8dc98b20490343ecdd079c5210738e63",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-dropcap-quotes.pdf",
+      "sha256": "bd788ca1c69f5fe7515c472e1a407abbb2ed7ff2f9c0eb9686dba1a935a547ee",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-footnotes-sidenotes.pdf",
+      "sha256": "e6cfaeab16e0f56d871b75e3cf53afe4b7c3b93fa87038e6c4382caa9f1b75d5",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-fragmented-glyphs-kerning.pdf",
+      "sha256": "01650d00305f157c8edc2f012a71b9f3170bb446b17e351b46f49409710d337c",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-ligatures-unicode.pdf",
+      "sha256": "07aba66c4f0375b9aa7af2b3f979e4b33c728788b641febaacb8be044eadd2c7",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-multiline-table-cells.pdf",
+      "sha256": "eb5a0ddc660b78475ae993ae721884ad4d14e0a9c619459d7bb955d143423d5e",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-ocr-jitter.pdf",
+      "sha256": "6ddb3eb15c0fd52aecf06ea912a8b21e3b3025198ef4490c3294afcfad6406f9",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-rotated-page.pdf",
+      "sha256": "60c8dd4bdc9526c02c8cf9f2aaf312aed913c9696515efd3a545dea8523a23ce",
+      "producer": "",
+      "embeddedFonts": []
+    },
+    {
+      "path": "tests/fixtures/pdfs/wild/wild-spanning-abstract-2col.pdf",
+      "sha256": "883aa4d40a81fb357786dcccae02d1992fabc2460154dfaf3689b9b72026f9eb",
+      "producer": "",
+      "embeddedFonts": []
+    }
+  ]
+}

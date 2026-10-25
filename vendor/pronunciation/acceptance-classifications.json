@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "scope": "Classification of unchanged strict manual-pronunciation failures. This does not rewrite gold, turn a regression into held-out evidence, or equate all uses of IPA ɐ and ə.",
+  "originalFixtureSha256": "c96b5dcb5aecf01ef75728a7f37755653a76d707c1815c048c45b1976049a2db",
+  "ukSource": {
+    "path": "ipa-dict/data/en_UK.txt",
+    "sha256": "221394caef0cf723b4f2df81a98ac33191293257b88aed5b1fb89466d3a0dc77",
+    "revision": "43c3570eb3553bdd19fccd2bd0091534889af023",
+    "license": "Retained UK lexical records remain GPL-3.0-only; see ipa-dict/GPL-3.0.txt. Classification prose is PageNarrator GPL-3.0-or-later.",
+    "accentLabel": "The source labels en_UK as Received Pronunciation; its fixed citation-form IPA records were generated via ipacards/eSpeak, not a human recording of these words."
+  },
+  "primarySources": [
+    "https://github.com/open-dict-data/ipa-dict/tree/43c3570eb3553bdd19fccd2bd0091534889af023#credits",
+    "https://www.englishspeechservices.com/blog/strut-for-dummies/"
+  ],
+  "interpretation": "Phonetician Geoff Lindsey's original discussion and recorded examples document a lowered word-final COMMA vowel, including ɐ, within British accent variation. Each difference below is confined to the final unstressed citation vowel; stress and the preceding segment sequence are otherwise one of the original manual alternatives. These are source-faithful final-vowel variants, not lookup/converter corruption. A fixed isolated-word variant cannot establish ideal connected-speech allophony or guarantee a neural model's exact acoustic realization.",
+  "cases": [
+    { "word": "computer", "sourceLine": 11319, "sourceIpa": "kəmpjˈuːtɐ", "originalManualIpa": ["kəmpjˈuːtə"], "classification": "documented-lowered-final-comma-citation-variant", "strictOriginalGoldPass": false },
+    { "word": "paper", "sourceLine": 40278, "sourceIpa": "pˈeɪpɐ", "originalManualIpa": ["pˈeɪpə"], "classification": "documented-lowered-final-comma-citation-variant", "strictOriginalGoldPass": false },
+    { "word": "camera", "sourceLine": 7828, "sourceIpa": "kˈæmɹɐ", "originalManualIpa": ["kˈaməɹə", "kˈamɹə", "kˈæməɹə", "kˈæmɹə"], "classification": "documented-lowered-final-comma-citation-variant", "strictOriginalGoldPass": false },
+    { "word": "measure", "sourceLine": 34831, "sourceIpa": "mˈɛʒɐ", "originalManualIpa": ["mˈɛʒə"], "classification": "documented-lowered-final-comma-citation-variant", "strictOriginalGoldPass": false }
+  ],
+  "separateContextualV2Observation": {
+    "word": "record",
+    "source": "cmudict/cmudict.dict",
+    "rawRecord": "record R AH0 K AO1 R D",
+    "license": "Original CMU permissive license retained at cmudict/LICENSE",
+    "interpretation": "The US unstressed prefix ə is a retained legitimate verb variant alongside ɪ (record(3)); the v2 manual verb gold initially listed only ɪ. That narrow-vowel discrepancy does not excuse the real noun/verb stress-selection failures exposed by v2. Original v2 gold and first failure report remain unchanged."
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "executableCode": false,
+  "iconArtwork": false,
+  "fontPrograms": false,
+  "sources": {
+    "fontAwesome": {
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7d3d774145ac38663f6d1effc6def0334b68ab7e/metadata/icons.json",
+      "bytes": 3281347,
+      "sha256": "06418a234bf87362eefce00e655b838581661fe8866067b90205ec9a450d6cf7"
+    },
+    "fontAwesomeLicense": {
+      "url": "https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7d3d774145ac38663f6d1effc6def0334b68ab7e/LICENSE.txt",
+      "bytes": 1548,
+      "sha256": "e779748dfe75e84f974df3c7bc07f842011a100159158b0f1f49b2f2a5a515cb"
+    },
+    "marvosymAfm": {
+      "url": "https://ctan.math.illinois.edu/fonts/marvosym/fonts/afm/public/marvosym/marvosym.afm",
+      "bytes": 12602,
+      "sha256": "1ff6f66c58e247956ecd54d12cb703b955ed7f62f2ac803a8822a47bf3f01efe"
+    },
+    "marvosymCmap": {
+      "url": "https://ctan.math.illinois.edu/fonts/marvosym/fonts/truetype/public/marvosym/marvosym.ttf",
+      "bytes": 69792,
+      "sha256": "c40cf8aa12520f38abcf36542ce3628a01b6a4f122bbd854486ddfa8f212ce96"
+    },
+    "marvosymLicense": {
+      "url": "https://ctan.math.illinois.edu/fonts/marvosym/doc/fonts/marvosym/OFL.txt",
+      "bytes": 4727,
+      "sha256": "4132e5ff3f3382dc98e5cc41f1aa254db461d1a69bfeb5bffeeaffcb7eafed6a"
+    }
+  },
+  "counts": {
+    "fontAwesome": 1458,
+    "marvosym": 1
+  },
+  "files": [
+    {
+      "path": "mappings.json",
+      "bytes": 107430,
+      "sha256": "3616252e50bedd6af295cefeb5f52a98bae6a3e1a2959d4b907b8de171450dee"
+    },
+    {
+      "path": "Font-Awesome-LICENSE.txt",
+      "bytes": 1548,
+      "sha256": "e779748dfe75e84f974df3c7bc07f842011a100159158b0f1f49b2f2a5a515cb"
+    },
+    {
+      "path": "MarVoSym-OFL.txt",
+      "bytes": 4727,
+      "sha256": "4132e5ff3f3382dc98e5cc41f1aa254db461d1a69bfeb5bffeeaffcb7eafed6a"
+    },
+    {
+      "path": "NOTICE.txt",
+      "bytes": 681,
+      "sha256": "f1ac707bb218355d48dafffdea7664f0e5847c06671dbab26f2443f663710af0"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "schema": 1,
+  "format": "PNPRON01",
+  "sha256": "76413b784b735b26d4e5b4823512974e23a2376ea837f80fde53f4804b93df39",
+  "bytes": 6648749,
+  "counts": {
+    "us": 125112,
+    "uk": 65118,
+    "variants": 199254
+  },
+  "converterSha256": "e5cd6a085adf407b9d94b75e363d8f57debbf9da136b5f844e484b7033687594",
+  "sources": {
+    "schema": 1,
+    "sources": [
+      {
+        "id": "cmudict",
+        "revision": "74790861f652b15e4ac49015a90074ad62a27690",
+        "license": "CMU permissive license; retain original LICENSE",
+        "baseUrl": "https://raw.githubusercontent.com/cmusphinx/cmudict/74790861f652b15e4ac49015a90074ad62a27690/",
+        "files": [
+          {
+            "path": "cmudict.dict",
+            "bytes": 3618488,
+            "sha256": "81917843c7f44ce2b094ac63873c2c7a4cf802040792c455ba3ca406891c3d22"
+          },
+          {
+            "path": "cmudict.phones",
+            "bytes": 382,
+            "sha256": "ffb588a5e55684723582c7256e1d2f9fadb130011392d9e59237c76e34c2cfd6"
+          },
+          {
+            "path": "LICENSE",
+            "bytes": 1754,
+            "sha256": "bd4ce8e44170a5f9f481310ca85c51de3c4f851a65e679b40e603b143bd3542a"
+          }
+        ]
+      },
+      {
+        "id": "ipa-dict",
+        "revision": "43c3570eb3553bdd19fccd2bd0091534889af023",
+        "license": "GPL-3.0 for UK data; preserve upstream credits, not the repository's general MIT license",
+        "baseUrl": "https://raw.githubusercontent.com/open-dict-data/ipa-dict/43c3570eb3553bdd19fccd2bd0091534889af023/",
+        "files": [
+          {
+            "path": "data/en_UK.txt",
+            "bytes": 1684124,
+            "sha256": "221394caef0cf723b4f2df81a98ac33191293257b88aed5b1fb89466d3a0dc77"
+          }
+        ]
+      }
+    ]
+  },
+  "exclusions": {
+    "cmudict: leading apostrophe contraction": 15,
+    "cmudict: punctuation or non-word record": 1013,
+    "ipa-dict UK: outside Kokoro phoneme vocabulary": 1
+  }
+}

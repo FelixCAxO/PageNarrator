@@ -1,0 +1,10 @@
+{
+  "renderer": "MuPDF",
+  "version": "1.28.0",
+  "sourceSha256": "4fa62a509eb7847eb9e0ed1f53dcb4f3713d47d034db2b8331200e3627000373",
+  "pngSha256": "4fd96e31b5d53924899f1fd9a9a0706d7a9247a84ea288615d6c82710f6067e8",
+  "width": 400,
+  "height": 320,
+  "saFlagChangesPixels": false,
+  "reason": "MuPDF ignores SA in this control; raster is a visual diagnostic, not SA execution acceptance."
+}

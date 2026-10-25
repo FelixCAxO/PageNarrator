@@ -1,0 +1,126 @@
+{
+  "method": "One native X11 display capture per image; crop top 80 pixels, convert to RGB. No screenshot composition, resizing, or UI layout overrides.",
+  "environment": "Isolated Playwright 1.60.0 / Chromium 148.0.7778.96 / linux / Xvfb / Openbox.",
+  "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
+  "version": "1.0.1",
+  "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
+  "capturedAt": "2026-10-25T19:34:43.687Z",
+  "nodeVersion": "v22.23.3",
+  "inputPackage": {
+    "fileCount": 305,
+    "bytes": 74092178,
+    "sha256": "ea0e5b766c817381c4a6b678904d240cd2622d3099fc67f9c973db05b47429b9"
+  },
+  "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
+  "sourceSha256": {
+    "src/popup.html": "090e5db0056d1522362237a33d12696a6169a9b2cc47aac802bb3e2a664dcf37",
+    "src/popup.css": "d532d8b8d0e680c61c77aacebb37fcd31732ca8e6485383aeb6a4704a6b99384",
+    "src/popup.js": "40cd8b0345bc97ecd94357ed8f3c5891fe5638d785cf83ac14f89c2a5e964a6a",
+    "src/pdf-viewer.html": "78450161f71390f40f863daabd9c9bd969bce67d8f5dc2647e2d62c637b7ed10",
+    "src/pdf-viewer.css": "61a1f284630bdffc11e2bc84c68e9029d8f6d9239d457ee741d56b201273be06",
+    "src/pdf-viewer.js": "884beb0c663f0548c6a09a3021de5ef57a23a81bc121d8a4f30500f6385e6312",
+    "website/public/cws-demo.html": "223d3307c0e9835420599b960752ad4d1250c0db5ae8ea0a7c27f75c02d94bd2",
+    "scripts/capture-current-product-media.mjs": "2a23e1d4174cb0ef19aecefe80c36fe27eaf4c09ff5cbf441d1867addf2f79cc"
+  },
+  "brandIconSha256": "6c24e1381eb7ecc01f93ba369a764bb33ea3d037635d04c7e97c9ce63048803c",
+  "width": 1280,
+  "height": 800,
+  "images": [
+    {
+      "name": "screenshot-01-toolbar-player-idle.png",
+      "sha256": "f540b020da7b6447a82e4c533639aea3269367c93016c617ec9ddc42bee55984",
+      "rawCaptureSha256": "ed54effd83eb0fd9ceb6165e634657a6f9e25df5c9a89b892830c6a6efdcf16e",
+      "nativePixelsUnchanged": true,
+      "state": {
+        "status": "Ready to read",
+        "advancedOpen": false,
+        "visibleControls": [
+          "popup-tts-engine",
+          "popup-voice",
+          "popup-speed",
+          "start-reading",
+          "read-selected"
+        ]
+      }
+    },
+    {
+      "name": "screenshot-02-toolbar-player-reading.png",
+      "sha256": "43a9405cb7aee50b83e8373b6d2f515bc9350d6b9023f49297aa2693645ff65b",
+      "rawCaptureSha256": "2b0999343e49603ddfbf33d72157b2cace4d20475ac13f12596bc61e80abd838",
+      "nativePixelsUnchanged": true,
+      "state": {
+        "status": "Reading",
+        "advancedOpen": false,
+        "visibleControls": [
+          "popup-tts-engine",
+          "popup-voice",
+          "popup-speed",
+          "popup-previous",
+          "popup-toggle",
+          "popup-stop",
+          "popup-next",
+          "popup-section-pause"
+        ]
+      }
+    },
+    {
+      "name": "screenshot-03-toolbar-player-settings.png",
+      "sha256": "50befd17762b8dab40d35dcebf361455eea34ba7b47c3578e630c931ec451398",
+      "rawCaptureSha256": "69143a6e0180352711312b70aa4af4b3dc33acb9eef0a9e380e18c2ff1378bd7",
+      "nativePixelsUnchanged": true,
+      "state": {
+        "status": "Paused",
+        "advancedOpen": true,
+        "visibleControls": [
+          "popup-section-pause",
+          "popup-performance-profile",
+          "popup-backend-preference",
+          "popup-idle-release",
+          "popup-skip-code",
+          "popup-area-color",
+          "popup-word-color",
+          "popup-area-opacity",
+          "popup-word-opacity"
+        ]
+      }
+    },
+    {
+      "name": "screenshot-04-toolbar-player-pdf.png",
+      "sha256": "2ed9c5be5f485ea5d5ddd88098c9440e9bba0bf98510ab6f466179c01a2145d2",
+      "rawCaptureSha256": "619170e91d971a0be6c3b861c5193f9e0f13b02a5a2d806b3d3a60c0dc3bbce3",
+      "nativePixelsUnchanged": true,
+      "state": {
+        "status": "Reading",
+        "advancedOpen": false,
+        "visibleControls": [
+          "popup-tts-engine",
+          "popup-voice",
+          "popup-speed",
+          "popup-previous",
+          "popup-toggle",
+          "popup-stop",
+          "popup-next",
+          "popup-section-pause"
+        ]
+      }
+    },
+    {
+      "name": "screenshot-05-omnivoice-controls.png",
+      "sha256": "6691da52d182348e17c7648669ff8c835d183f7d226f13e874ad30c318cc5e10",
+      "rawCaptureSha256": "02209070ebb0e453a200302c113c4ba0c72ab9b833c1aedc07ef801b66581273",
+      "nativePixelsUnchanged": true,
+      "state": {
+        "status": "Ready to read",
+        "advancedOpen": false,
+        "visibleControls": [
+          "popup-language",
+          "popup-omnivoice-gender",
+          "popup-omnivoice-variation",
+          "popup-omnivoice-whisper",
+          "popup-speed",
+          "start-reading"
+        ]
+      }
+    }
+  ]
+}

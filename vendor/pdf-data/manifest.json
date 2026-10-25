@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 1,
+  "executableCode": false,
+  "files": [
+    {
+      "path": "standard_fonts/FoxitDingbats.pfb",
+      "role": "font",
+      "bytes": 29513,
+      "sha256": "845c752392b6c914fb989c75a08b7792b88f542d2499042ef2889f8c814a16ed",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitDingbats.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitFixed.pfb",
+      "role": "font",
+      "bytes": 17597,
+      "sha256": "b6c8fe53f134b8b6d4578cd2d544df4cee9624c4efa8d51a560fb40ea296101b",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitFixed.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitFixedBold.pfb",
+      "role": "font",
+      "bytes": 18055,
+      "sha256": "f1b7159702973f54fc86254ea38bcf3712b2a736eb3a0995751e9f4bb45ad603",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitFixedBold.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitFixedBoldItalic.pfb",
+      "role": "font",
+      "bytes": 19151,
+      "sha256": "8a000945843bd31add06aee63bf9fd41b7578b4f3242a4b7cd46349ad9d24d4d",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitFixedBoldItalic.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitFixedItalic.pfb",
+      "role": "font",
+      "bytes": 18746,
+      "sha256": "5007faf8320fa1fcc08b8894b356ad976f60b992ba29ee5272578bbdebaf3876",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitFixedItalic.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitSerif.pfb",
+      "role": "font",
+      "bytes": 19469,
+      "sha256": "4f57d2b9d884af8f907bf22df6019b52d86cbf6214fdbd02b1ae05472a543f35",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitSerif.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitSerifBold.pfb",
+      "role": "font",
+      "bytes": 19395,
+      "sha256": "0bdf4b04e964139818d51eda03d566ba999fc3ba2421b1c6c51f9dc969022e80",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitSerifBold.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitSerifBoldItalic.pfb",
+      "role": "font",
+      "bytes": 20733,
+      "sha256": "a406cac82583bf98175cb62c87ed5e95c45fbb34eece63a10b0a13e793cb2e10",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitSerifBoldItalic.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitSerifItalic.pfb",
+      "role": "font",
+      "bytes": 21227,
+      "sha256": "610ae0687198045c4db5d1a6650fd5e92536631706382eb8b72e38df578d0ae9",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitSerifItalic.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/FoxitSymbol.pfb",
+      "role": "font",
+      "bytes": 16729,
+      "sha256": "47967d055530e7357088a08403115425643ec2cdfd6201ba8af0fbd7116c1539",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/FoxitSymbol.pfb",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/LICENSE_FOXIT",
+      "role": "license",
+      "bytes": 1553,
+      "sha256": "b578cdd2345840ada550bd12519533812320d5f1d21cf4c1c7e1b1b0a31c98b7",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LICENSE_FOXIT",
+      "license": "standard_fonts/LICENSE_FOXIT"
+    },
+    {
+      "path": "standard_fonts/LICENSE_LIBERATION",
+      "role": "license",
+      "bytes": 4414,
+      "sha256": "93fed46019c38bbe566b479d22148e2e8a1e85ada614accb0211c37b2c61c19b",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LICENSE_LIBERATION",
+      "license": "standard_fonts/LICENSE_LIBERATION"
+    },
+    {
+      "path": "standard_fonts/LiberationSans-Bold.ttf",
+      "role": "font",
+      "bytes": 137052,
+      "sha256": "361c61b82d575c5c35fd9157fda8b0194bcfcd0d88ea8521a4fb5dd53d33dddc",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LiberationSans-Bold.ttf",
+      "license": "standard_fonts/LICENSE_LIBERATION"
+    },
+    {
+      "path": "standard_fonts/LiberationSans-BoldItalic.ttf",
+      "role": "font",
+      "bytes": 135124,
+      "sha256": "a224075ac17495ad0a3af3bc0a419ac0704a8b3fd1095456201fb9b095fc281d",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LiberationSans-BoldItalic.ttf",
+      "license": "standard_fonts/LICENSE_LIBERATION"
+    },
+    {
+      "path": "standard_fonts/LiberationSans-Italic.ttf",
+      "role": "font",
+      "bytes": 162036,
+      "sha256": "832b4406dbef23628800d3aaad21048534ac84d7e3ad955be83b8172ed8ef512",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LiberationSans-Italic.ttf",
+      "license": "standard_fonts/LICENSE_LIBERATION"
+    },
+    {
+      "path": "standard_fonts/LiberationSans-Regular.ttf",
+      "role": "font",
+      "bytes": 139512,
+      "sha256": "f8ace1f892b2bd9dc1792ba7f097fa7588f84fed48321480e04de5390828221f",
+      "source": "pdfjs-dist@6.2.108/standard_fonts/LiberationSans-Regular.ttf",
+      "license": "standard_fonts/LICENSE_LIBERATION"
+    },
+    {
+      "path": "iccs/CGATS001Compat-v2-micro.icc",
+      "role": "color-profile",
+      "bytes": 8464,
+      "sha256": "73e1ba37d2bad5bab2a964f40a9eed96209666efc067c3322626214bbef234a0",
+      "source": "pdfjs-dist@6.2.108/iccs/CGATS001Compat-v2-micro.icc",
+      "license": "iccs/LICENSE"
+    },
+    {
+      "path": "iccs/LICENSE",
+      "role": "license",
+      "bytes": 6553,
+      "sha256": "286e4fd7b447330b2c88e23890e3cd0a9d38cb398d4a59cb247f578ccbda3213",
+      "source": "pdfjs-dist@6.2.108/iccs/LICENSE",
+      "license": "iccs/LICENSE"
+    },
+    {
+      "path": "standard14_metrics/Helvetica.afm",
+      "role": "font-metrics",
+      "bytes": 77343,
+      "sha256": "5654761eab868ccb3080122accf13b4fb79edf37af09e1c57a881c35c334ee03",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica.afm",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "standard14_metrics/Helvetica-Bold.afm",
+      "role": "font-metrics",
+      "bytes": 72096,
+      "sha256": "59ac93091bc7e76eb6baf60210526a4df88fe107dd5e13eb0ae70c9fc6d91fb9",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-Bold.afm",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "standard14_metrics/Helvetica-Oblique.afm",
+      "role": "font-metrics",
+      "bytes": 77443,
+      "sha256": "8c00ac46ca5963df22d4fc1153ea1246c8778475820378640c8d54d4fd3a46fe",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-Oblique.afm",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "standard14_metrics/Helvetica-BoldOblique.afm",
+      "role": "font-metrics",
+      "bytes": 72192,
+      "sha256": "1f848276efd76c0e5020ef98ccb459005f5a022f56cb8579e52c98e33ffab03b",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-BoldOblique.afm",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "standard14_metrics/LICENSE_ADOBE_AFM.txt",
+      "role": "license",
+      "bytes": 577,
+      "sha256": "f09628f95cdb1c81312e29d3c57ece55ac1b7e66b9c9b29db55ab81ca9f52b79",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/LICENSE.txt",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "standard14_metrics/SOURCE.json",
+      "role": "source-manifest",
+      "bytes": 2914,
+      "sha256": "cd3c99adcc0151f80184058cd76228167f2ff601f9f0a1c220a7db54ad7076bb",
+      "source": "PageNarrator data provenance for https://github.com/apache/pdfbox@e314c402afd4cac4d60d6d16dbe6525d83637ba8",
+      "license": "standard14_metrics/LICENSE_ADOBE_AFM.txt"
+    }
+  ]
+}

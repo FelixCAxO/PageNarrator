@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "executableCode": false,
+  "repository": "https://github.com/apache/pdfbox",
+  "commit": "e314c402afd4cac4d60d6d16dbe6525d83637ba8",
+  "files": [
+    {
+      "path": "Helvetica.afm",
+      "role": "font-metrics",
+      "bytes": 77343,
+      "sha256": "5654761eab868ccb3080122accf13b4fb79edf37af09e1c57a881c35c334ee03",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica.afm",
+      "license": "LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "Helvetica-Bold.afm",
+      "role": "font-metrics",
+      "bytes": 72096,
+      "sha256": "59ac93091bc7e76eb6baf60210526a4df88fe107dd5e13eb0ae70c9fc6d91fb9",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-Bold.afm",
+      "license": "LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "Helvetica-Oblique.afm",
+      "role": "font-metrics",
+      "bytes": 77443,
+      "sha256": "8c00ac46ca5963df22d4fc1153ea1246c8778475820378640c8d54d4fd3a46fe",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-Oblique.afm",
+      "license": "LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "Helvetica-BoldOblique.afm",
+      "role": "font-metrics",
+      "bytes": 72192,
+      "sha256": "1f848276efd76c0e5020ef98ccb459005f5a022f56cb8579e52c98e33ffab03b",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/pdfbox/src/main/resources/org/apache/pdfbox/resources/afm/Helvetica-BoldOblique.afm",
+      "license": "LICENSE_ADOBE_AFM.txt"
+    },
+    {
+      "path": "LICENSE_ADOBE_AFM.txt",
+      "role": "license",
+      "bytes": 577,
+      "sha256": "f09628f95cdb1c81312e29d3c57ece55ac1b7e66b9c9b29db55ab81ca9f52b79",
+      "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/LICENSE.txt",
+      "license": "LICENSE_ADOBE_AFM.txt"
+    }
+  ],
+  "upstreamLicense": {
+    "bytes": 18741,
+    "sha256": "1301d8415a4868d82aeeec594849cf7679f1ead4636a9603dc46875f5713157e",
+    "source": "https://raw.githubusercontent.com/apache/pdfbox/e314c402afd4cac4d60d6d16dbe6525d83637ba8/LICENSE.txt"
+  },
+  "adobePermissionExcerpt": {
+    "source": "APACHE-PDFBOX-SOURCE-LICENSE.txt",
+    "startByte": 13192,
+    "endByte": 13769,
+    "sha256": "f09628f95cdb1c81312e29d3c57ece55ac1b7e66b9c9b29db55ab81ca9f52b79"
+  },
+  "scope": "Four unmodified canonical Helvetica advance-metric data files. All AFM copyright comments retained; exact Adobe permission excerpt is an unmodified byte range. Full upstream license is external provenance, not shipped unrelated notices. No upstream executable source."
+}

@@ -1,0 +1,49 @@
+{
+  "schema": "pagenarrator-original-ocr-development-fixtures-v1",
+  "license": "GPL-3.0-or-later",
+  "copyright": "Copyright 2026 Felix Olsson. Original authored PageNarrator control source, text and geometry.",
+  "scope": "Synthetic development/unit controls only; no new real dataset, OCR output, prior mask, quality acceptance or transcription claim.",
+  "producer": "scripts/generate-original-ocr-fixtures.mjs",
+  "rendering": {
+    "packing": "Sharp encodes directly authored raw RGBA; no font or input-image dependency.",
+    "diagram": "Original SVG geometry/text. Platform font rasterization is used only by tests; no font binary is copied."
+  },
+  "files": [
+    {
+      "name": "authored-packing.png",
+      "bytes": 69952,
+      "sha256": "c6a215fdd9f33690c77471c6f51908fd1a4684a3ae1001fc644d8d5f5d5ba594",
+      "role": "Synthetic exact-pixel packing control; odd width/tails, RGB distinction, bands and transparent hidden RGB."
+    },
+    {
+      "name": "authored-line-fragments.json",
+      "bytes": 24239,
+      "sha256": "26d90c73b2ae87ce3e906ef23a7567388947899aacd8b716880437a20efe436e",
+      "role": "Synthetic 21 fragments, 11 rows and 100 words, with exactly 10 detached continuations."
+    },
+    {
+      "name": "authored-offset-diagram.svg",
+      "bytes": 1018,
+      "sha256": "c53d2b38b755e72848df659252816b11fa05617d1e15d8b5435ac9f0d747890a",
+      "role": "Original synthetic three-panel diagram with offset white gaps and m/s/-0.08 text; not traced rating artwork."
+    },
+    {
+      "name": "authored-reference-page-1.json",
+      "bytes": 498,
+      "sha256": "fa490e587218c0b6b6d61bd09e3fe8b87859e0c2684c52f12a847db0e96d7aeb",
+      "role": "Original text/normalized-region metadata, not real-image quality gold."
+    },
+    {
+      "name": "authored-reference-page-2.json",
+      "bytes": 504,
+      "sha256": "13fe741eff915a9eb38c856a59752c58b89be4f8013fa8f08198aba654201dbb",
+      "role": "Original text/normalized-region metadata, not real-image quality gold."
+    },
+    {
+      "name": "authored-reference-corpus.json",
+      "bytes": 763,
+      "sha256": "70bec9a19d5efe77f59970df75a43361cb3182b58a8bc088113ecd3465896f71",
+      "role": "Two original reference files/hash manifest; no old book excerpts."
+    }
+  ]
+}

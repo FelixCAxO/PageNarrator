@@ -1,0 +1,5148 @@
+[
+  {
+    "source": "cmudict",
+    "word": "'bout",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'cause",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'course",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'cuse",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'em",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'frisco",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'gain",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'kay",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'m",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'n",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'round",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'s",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'til",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'tis",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "'twas",
+    "reason": "leading apostrophe contraction"
+  },
+  {
+    "source": "cmudict",
+    "word": "a.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "a.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "a.d.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "a.m.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "a.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "accountants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "achilles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "activists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "actors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "adams'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "addidas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "administrations'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "administrators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ads'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "adults'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "adults'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "advertisers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "advisers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "affiliates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "agencies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "agents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "agers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "aides'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "airlines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "airways'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "al.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "al.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "allegis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "allies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "alsbrooks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "americans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "americas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ames'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "amusements'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "analysts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ancestors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "andrews'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "angeles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "angels'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "animals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "applicants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "arabs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "arbitragers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "arbitrators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "arkansas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "artists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "askers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "assets'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "associates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "associates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "astronauts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "athletes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "atlantis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "atlantis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "attendants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "attorneys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "auditors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "aunts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "aunts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "authorities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "authors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "automakers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "b.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "b.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "b.c.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "b.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "babies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bancshares'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bankers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "banks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "barclays'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "barclays'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "barings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bears'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "beatles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "beers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bein'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bells'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "belzbergs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "berles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "beschloss'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bills'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "birds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bishops'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "blacks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bliss'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "blues'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bojangles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bondholders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bonds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "books'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "boomers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "boris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "borrowers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "boss'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bosses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bottlers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "boys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "braves'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "breeders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brewers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bridesmaids'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "britons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "broadcasters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brokerages'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brokerages'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brokers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brooks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "brothers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "browns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bryans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bucs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "builders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "bulls'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "burns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "business'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "business'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "businesses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "buyers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "byers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "c.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "c.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "c.d.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "c.o.d.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "c.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "caesars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "camps'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "canadians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "candidates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cardinals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cards'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "carmakers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "carriers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cascades'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cedras'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cedras'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cells'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "celtics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "centers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "centers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chains'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chambers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "characters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "charities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "charles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "charles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chatz'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chavis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chavis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chemicals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chiapas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chickens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chiefs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "childrens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "chris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "christmas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "churches'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "citicorps'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "citizens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "claimants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "claus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "clerks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "clients'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cliffs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "climbers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "clintons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "clones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cnn.com",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "co.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "co.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "colleagues'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "collectors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "colleges'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "collins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "columbus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "comin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "committees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "communications'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "communists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "companies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "competitors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "computers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "concerns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "congress'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "congress'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "conn.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "conn.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "conservatives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "constituents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "consultants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "consumers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "containers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "contractors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "contras'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "controllers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "controls'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cookin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "copperfields'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corestates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corp.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corp.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corp.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corp.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corporations'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "corps'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "correspondents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cortens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cosmonauts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "countries'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "courts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cowboys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cowlings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cr.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "creditors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "criminals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "critics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "croatians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "cubs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "currencies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "curtis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "customers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "d.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "d.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "d.c.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "d.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dallas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dancers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dancin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dataproducts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dataproducts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "daughters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "davis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "davis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dax'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "days'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dealers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "debentures'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "debtors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "defendants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "delegates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "democrats'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dentists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dentists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "depositors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "designers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "developers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "devils'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dickens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dimitrius'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dinkins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dios'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "diplomats'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "directors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "directors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "directors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dissidents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "distillers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "distributors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "divisions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "doctors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dodgers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dogs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "doin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dollars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dolphins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "donors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "donuts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dospasos'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "douglas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dr.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dr.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dreamworks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "drivers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "drugs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ducks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dukakis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dukakis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dunkin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dynamics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "dynamics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "e.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "e.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "e.g.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "e.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "eads'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "earnings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "economists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "economists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "editors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "edwards'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "elders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "electricians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "electronics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "elephants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "elvis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "emirates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "emirates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "employees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "employers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "employers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "endotronics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "enemies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "engineers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "engines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "enterprises'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "enterprises'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "entities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "environmentalists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "environmentalists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "equities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "etc.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "europeans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "evans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "everglades'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "evers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "examiners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "exchanges'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "executives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "experts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "exporters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "express'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "eyes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "f.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "f.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "factors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "families'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "farmers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "farms'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fathers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "feelin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fields'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fighters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fightin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "firms'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fleiss'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "fleiss'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "flowers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "folks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "foods'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "forbes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "forces'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "foreigners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "foreigners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "foreigners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "foreigners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "founders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "framers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "franchisees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "francis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "francis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "friends'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "friends'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "funds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "futures'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "g.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "g.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "g.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "games'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "gates'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "gerdes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "germans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "gettin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "giants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "girls'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "givin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "gladys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "goin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "governments'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "governments'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "governors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "grandparents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "graphics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "greens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "groups'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "growers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "guerrillas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "guests'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "guys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "h.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "h.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hafts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hafts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hamas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hammas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hangin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "harris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "havin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hawkins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "helms'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "herbalists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "herbalists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hills'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "holders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "holdings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "holvis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "homeowners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "homes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hopkins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "horses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hospitals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hostages'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hotels'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hours'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "houses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hughes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hughes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "hunts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "husbands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "i.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "i.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "i.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ickes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ickes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ilalis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "illinois'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "imax'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "immigrants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "importers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "imports'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "in.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "in.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inc.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inc.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inc.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inches'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inches'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "indians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "individuals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "industrials'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "industries'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "infants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "insiders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "inspectors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "institutes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "institutions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "instruments'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "insurers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "insurgents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "investigators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "investments'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "investments'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "investors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "iranians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "islands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "israelis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "issuers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "issues'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "j.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "j.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jacobs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jacques'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jacques'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "james'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jan.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jan.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jefferies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jesus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jets'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jews'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jobs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "journalists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jr.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "judges'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "juries'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "jurors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "justices'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "k.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "k.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kansans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kansas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kennedys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "keyes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kids'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "knicks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "koppers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "koreans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "koreans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "koreans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kotsonis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "kotsonis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "l.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "l.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "l.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "laboratories'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "labs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ladies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lakes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lakotas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lambs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lawmakers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lawyers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "leaders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "leagues'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "legislators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lenders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lewis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "liberals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "liners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lips'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "livin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lloyds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "loans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lobbyists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lookin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "losers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lotus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "louis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "louis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "louis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lovers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ltd.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "lucas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "luntz'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "m.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "m.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "m.d.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "m.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "machines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "machinists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "magazines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "maids'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "majors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "makers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "makin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "managements'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "managers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "manufacturers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marash'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marcos'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marcos'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marcoses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marketers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "markets'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "marlins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mass.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mass.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "massachusetts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "masters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "materials'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mavs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mays'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mcdougals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "means'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mechanics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "members'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "memories'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "merchants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "messrs.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "messrs.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "metals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mets'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "microsystems'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "milkens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mills'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "minerals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "minerals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "miners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ministers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "minutes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "missiles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "models'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "molpus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "months'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "morris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mothers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "motors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mr.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mrs.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ms.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "mssrs.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "multifoods'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "musicians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "n.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "n.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "n.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "natchez'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nations'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nazis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "negotiators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "neighbors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "neighbours'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "netherlands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "networks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "news'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "newspapers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nicholas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nicholas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nichols'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nights'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "niners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nineties'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "non-smokers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nonsmokers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "notes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nothin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "npr.org",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nuns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nurses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "nurses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "o'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "o.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "o.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "o.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "o.s'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "oaks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "officers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "officials'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ol'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "olympics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "olympus'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "onassis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "onassis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "operations'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "operators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "opponents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "options'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "orioles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "orleans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "others'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "outsiders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "owners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "p.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "p.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "p.m.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "p.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "palestinians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "panels'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "panthers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "papers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "parents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "paris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "paris'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "parks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "participants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "parties'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "parties'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "partners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "partnerships'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "parts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "passengers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "patients'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "payers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "payin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peakes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peaks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peasants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pecanins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peoples'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peratis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peratis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "peres'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "performers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "perkins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ph.d.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "philippines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "philips'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "phillips'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "physicians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "physics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pickens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pictures'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pilots'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pipelines'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "plaintiffs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "plaintiffs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "planes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "planners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "plans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "plants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "players'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "playin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "policyholders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "politicians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "politics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "powerpcs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "powers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "predecessors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "presidents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "press'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "princess'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "prisoners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "prisoners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "producers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "productions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "productions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "productions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "products'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "products'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "prof.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "prof.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "professionals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "professors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "programs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "projects'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "projects'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "properties'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pros'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "prosecutors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "protesters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "publications'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "publishers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "purchasers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "pyrenees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "q.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "q.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "q.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "quarters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "questions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "r.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "r.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "r.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "raiders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "railroads'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rales'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rangers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ratepayers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "readers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reagans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reagans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rebels'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "recipients'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "records'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "redskins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reebs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reesjones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reesjones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reeves'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "refiners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reformers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "refugees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "regulators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reiders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rep.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reporters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reports'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reports'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "representatives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "representatives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "republicans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "republicans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "researchers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "residents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "resorts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "resources'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "respondents'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "restaurants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "restaurants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "retailers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "retirees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "returns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "returns'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reuters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "reynolds'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "richards'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rickles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rickles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rieders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rights'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rintels'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "riots'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rivals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "roberts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "robins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "robinsons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rockin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rogers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rollin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rollins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ross'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "royals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "runnin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "russians'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "rutgers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "s.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "s.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sabatistas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sachs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sailors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "saints'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sales'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "salinas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "salinas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sampras'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sanctions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sandinistas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "saudis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "saudis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "saunders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "savings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sayin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "schneiders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "schools'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sciences'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "scientists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "seagrams'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sears'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "secretaries'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "securities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "seles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "selies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sellers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "senators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "serbs'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "series'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "servants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "services'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "services'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sessions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "settlers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shareholders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shares'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ships'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shootin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shoppers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shorts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shortz'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "shows'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "siders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sides'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "simmons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "simpsons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sims'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "singin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sittin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "skins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "smokers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "smugglers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "smugglers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "snipers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "socialists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "soldiers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "somethin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sources'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "soviets'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "specialists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "species'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "speculators'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sports'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "standin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "starin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "states'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stations'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "statistics'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "steelmakers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "steelworkers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stephanopoulos'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "steppin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stevens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stockbrokers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stockholders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stocks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stones'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "stores'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "strikers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "strikes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "students'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "studios'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "subjects'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "subjects'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "subscribers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "subsidiaries'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "superpowers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "superregionals'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "supervisors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "suppliers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "surgeons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "suspects'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "sweatin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "syders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "systems'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "t.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "t.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "t.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "takin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "talkin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "taxes'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "taxpayers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "teachers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "teams'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "teamsters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "technologies'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "telecommunications'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "telesis'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tellin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tenants'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "terrorists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tests'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "texas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "texas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "therapists'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thieves'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "things'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thinkin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "this'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thomas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thomas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thrifts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "thrifts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tigers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "times'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tories'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "towers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "toys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "traders'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "trails'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "trailways'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "travelers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "troopers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "troops'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "truckers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "trucks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "trustees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "trusts'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tryin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tsongas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tsongas'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "tums'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "twins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.k.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.n.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.s.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.s.a.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "u.s.c.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "underwriters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "unions'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "unisys'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "units'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "universities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "users'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "utilities'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "v.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "v.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "v.a.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "v.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "vacationers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "values'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "vehicles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "vendors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "ventures'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "veterans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "veterans'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "victims'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "viewers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "visitors'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "voters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "vs.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "w.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "w.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "w.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "waitin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "waldenbooks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wales'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "walkin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "walters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wardens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wars'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "watchin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "watkins'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "weapons'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "weeks'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "weintz'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "welles'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wetlands'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wholesalers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "williams'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wings'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "winners'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "witness'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "witnesses'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "wives'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "womens'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "words'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "workers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "workin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "works'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "writers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "x.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "x.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "x.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "x.ers",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "x.s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "y.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "y.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "yankees'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "years'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "yellin'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "youngsters'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "younkers'",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "z.",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "cmudict",
+    "word": "z.'s",
+    "reason": "punctuation or non-word record"
+  },
+  {
+    "source": "ipa-dict UK",
+    "word": "llanos",
+    "phones": "ɬænˈəʊz",
+    "reason": "outside Kokoro phoneme vocabulary"
+  }
+]

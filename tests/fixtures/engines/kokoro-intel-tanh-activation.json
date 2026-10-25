@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "provenance": "Original activation output from the pinned retained Kokoro model on Intel Xe-LPG; actual finite input to activation_11 Tanh. No third-party executable code.",
+  "modelSha256": "8fbea51ea711f2af382e88c833d9e288c6dc82ce5e98421ea61c058ce21a34cb",
+  "correctedSha256": "f416552a1dea5eb0d4e59fe933647120e2fa2c0005113a646b5c1198145e6a8c",
+  "inputIds": [
+    0,
+    43,
+    0
+  ],
+  "shape": [
+    1,
+    3,
+    2048
+  ],
+  "sha256": "4a41eea9be672049e8dd24bd258244e48f1148358cb5fcb8522ced50d2efc983",
+  "elements": 6144,
+  "bytes": 24576,
+  "tolerance": {
+    "float32Absolute": 0.00001,
+    "float16Absolute": 0.0005
+  },
+  "sourceNode": "/encoder/bert/encoder/albert_layer_groups.0/albert_layers.0/activation_11/Mul_2_output_0",
+  "license": "Apache-2.0 model; PageNarrator-generated activation evidence"
+}

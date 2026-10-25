@@ -1,0 +1,15 @@
+import { TUNING_CONFIG } from './tuning-config.js';
+
+export const WORD_HIGHLIGHT_LEAD_SECONDS = TUNING_CONFIG.playback.wordHighlightLeadSeconds;
+export const SECTION_EARLY_ADVANCE_TAIL_SECONDS = TUNING_CONFIG.playback.sectionEarlyAdvanceTailSeconds;
+export const AUDIO_ENDED_GAP_THRESHOLD_SECONDS = TUNING_CONFIG.playback.audioEndedGapThresholdSeconds;
+export const AUDIO_ENDED_GAP_MAX_DELAY_MS = TUNING_CONFIG.playback.audioEndedGapMaxDelayMs;
+export const HIGHLIGHT_PLAN_RESYNC_DRIFT_SECONDS = TUNING_CONFIG.playback.highlightPlanResyncDriftSeconds;
+export const DEFAULT_AUDIO_WATCHDOG_DELAY_MS = TUNING_CONFIG.playback.defaultAudioWatchdogDelayMs;
+export const FAST_PLAYBACK_AUDIO_WATCHDOG_BUFFER_MS = TUNING_CONFIG.playback.fastPlaybackWatchdogBufferMs;
+export const NORMAL_PLAYBACK_AUDIO_WATCHDOG_BUFFER_MS = TUNING_CONFIG.playback.normalPlaybackWatchdogBufferMs;
+export const STREAM_SYNTHESIS_TIMEOUT_MS = TUNING_CONFIG.playback.streamSynthesisTimeoutMs;
+export const PDF_VIEWER_MESSAGE_TIMEOUT_MS = TUNING_CONFIG.playback.pdfViewerMessageTimeoutMs;
+export const PDF_RENDER_UNLOAD_DELAY_MS = TUNING_CONFIG.playback.pdfRenderUnloadDelayMs;
+export const BROWSER_SPEECH_BOUNDARY_TIMEOUT_MS = TUNING_CONFIG.playback.browserSpeechBoundaryTimeoutMs;
+export const PLAYBACK_SETTINGS_WRITE_DEBOUNCE_MS = TUNING_CONFIG.playback.playbackSettingsWriteDebounceMs;

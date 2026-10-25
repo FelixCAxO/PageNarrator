@@ -1,0 +1,40 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "strict": true,
+    "noImplicitAny": true
+  },
+  "include": [
+    "src/reader/**/*.js",
+    "src/tts/**/*.js",
+    "src/platform/**/*.js",
+    "src/ui/**/*.js",
+    "src/lib/core/**/*.js",
+    "src/types/**/*.d.ts",
+    "src/engines/*.d.ts"
+  ],
+  "exclude": [
+    "src/reader/extraction/content-extraction.js",
+    "src/reader/highlighting/content-highlight.js",
+    "src/reader/read-runner.js",
+    "src/tts/runtime/backend-policy.js",
+    "src/tts/tts-service.js",
+    "src/tts/omnivoice/tts.js",
+    "src/tts/voices/language-voice-options.js",
+    "src/tts/voices/voice-registry.js",
+    "src/platform/chrome/reader-engine-chrome-adapter.js",
+    "src/platform/storage/settings-store.js",
+    "src/ui/reader-engine/elements/pdf-elements.js",
+    "src/ui/reader-engine/elements/player-elements.js",
+    "src/ui/reader-engine/elements/recovery-elements.js",
+    "src/ui/reader-engine/elements/settings-elements.js",
+    "src/ui/reader-engine/reader-engine-controller.js",
+    "src/lib/core/article-extraction.js",
+    "src/lib/core/reading-model.js",
+    "src/lib/core/reader-engine-message-router.js",
+    "src/lib/core/reader-engine-read-orchestrator.js",
+    "src/lib/core/speech-audio.js",
+    "src/lib/core/speech-playback.js",
+    "src/lib/core/text-noise-filter.js"
+  ]
+}

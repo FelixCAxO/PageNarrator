@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "executableCode": false,
+  "license": "BSD-3-Clause",
+  "sourceCommit": "4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6",
+  "sources": [
+    {
+      "path": "glyphlist.txt",
+      "bytes": 78060,
+      "sha256": "a3b2f61ced9f3644cc0d4ecde5c59df34ca286c689d9484a43a710a81c466789",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6/glyphlist.txt"
+    },
+    {
+      "path": "zapfdingbats.txt",
+      "bytes": 3879,
+      "sha256": "f6394e3cb8a447e84a1dad75d4baaf2aa7f45dc104faf369f4720e1a774ef2dc",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6/zapfdingbats.txt"
+    },
+    {
+      "path": "LICENSE.md",
+      "bytes": 1404,
+      "sha256": "58147d341e7a34aa2196862395a34d2fd95716c41d5ed26efb59ab0e12f92089",
+      "url": "https://raw.githubusercontent.com/adobe-type-tools/agl-aglfn/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6/LICENSE.md"
+    }
+  ],
+  "transformation": "Original parser reformats semicolon-delimited normative name/scalar mappings as JSON. No source implementation is retained.",
+  "entries": {
+    "agl": 4281,
+    "dingbats": 201
+  },
+  "files": [
+    {
+      "path": "mappings.json",
+      "role": "font-character-mappings",
+      "bytes": 89435,
+      "sha256": "9153c39a2341723ab4fb965a264d348944f55aa36dfd0e7036de09fef8c6d626",
+      "license": "LICENSE.md"
+    },
+    {
+      "path": "LICENSE.md",
+      "role": "notice",
+      "bytes": 1404,
+      "sha256": "58147d341e7a34aa2196862395a34d2fd95716c41d5ed26efb59ab0e12f92089",
+      "license": "BSD-3-Clause"
+    }
+  ]
+}

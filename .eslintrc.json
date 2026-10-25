@@ -1,0 +1,66 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "es2022": true,
+    "node": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2022,
+    "sourceType": "module",
+    "project": "./tsconfig.eslint.json"
+  },
+  "plugins": [
+    "@typescript-eslint",
+    "import"
+  ],
+  "settings": {
+    "import/ignore": ["^cloudflare:"]
+  },
+  "ignorePatterns": [
+    ".chrome-for-testing/",
+    ".chrome-preview/",
+    ".claude/",
+    ".agents/",
+    ".codex/",
+    ".superpowers/",
+    ".cache/",
+    ".wrangler/",
+    "artifacts/",
+    "dist*/",
+    "node_modules/",
+    "releases/",
+    "tmp/",
+    "test-results/",
+    "voice-packs/",
+    "vendor/phonemizer/espeak.mjs",
+    "website/public/"
+  ],
+  "overrides": [
+    {
+      "files": ["src/**/*.js"],
+      "excludedFiles": ["src/lib/logger.js"],
+      "rules": {
+        "no-console": "error"
+      }
+    }
+  ],
+  "rules": {
+    "no-empty": ["error", { "allowEmptyCatch": false }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "varsIgnorePattern": "^_", "ignoreRestSiblings": true }],
+    "@typescript-eslint/no-floating-promises": "error",
+    "import/no-unresolved": ["error", { "ignore": ["^cloudflare:", "^kokoro-js$", "^vitest/config$"] }],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.property.name='catch'] > ArrowFunctionExpression > BlockStatement[body.length=0]",
+        "message": "Promise catch handlers must report, return, or delegate errors instead of using an empty handler."
+      },
+      {
+        "selector": "CallExpression[callee.property.name='catch'] > FunctionExpression > BlockStatement[body.length=0]",
+        "message": "Promise catch handlers must report, return, or delegate errors instead of using an empty handler."
+      }
+    ]
+  }
+}

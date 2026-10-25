@@ -1,0 +1,52 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 5 0 R >> >> /Contents 4 0 R >>
+endobj
+4 0 obj
+<< /Length 1360 >>
+stream
+BT
+/F1 18 Tf 1 0 0 1 54 750 Tm (Robust Neural Text-to-Speech under Pathological Conditions) Tj
+/F1 10 Tf 1 0 0 1 150 720 Tm (Alex Rivera, Morgan Vance, and Jordan Lee) Tj
+/F1 9 Tf 1 0 0 1 130 705 Tm (Department of Computer Science, University of Cambridge) Tj
+/F1 12 Tf 1 0 0 1 54 675 Tm (Abstract) Tj
+/F1 10 Tf 1 0 0 1 54 655 Tm (This paper presents a resilient speech extraction architecture) Tj
+/F1 10 Tf 1 0 0 1 54 642 Tm (designed to process complex multi-column documents with spanning summaries.) Tj
+/F1 12 Tf 1 0 0 1 54 610 Tm (1. Introduction) Tj
+/F1 10 Tf 1 0 0 1 54 590 Tm (Document layout modeling in web readers) Tj
+/F1 10 Tf 1 0 0 1 54 576 Tm (must handle varied visual hierarchies.) Tj
+/F1 10 Tf 1 0 0 1 54 556 Tm (Column splitting ensures continuous flow) Tj
+/F1 10 Tf 1 0 0 1 54 542 Tm (across distinct text blocks.) Tj
+/F1 12 Tf 1 0 0 1 320 610 Tm (2. Architecture) Tj
+/F1 10 Tf 1 0 0 1 320 590 Tm (Our parser decomposes visual geometry) Tj
+/F1 10 Tf 1 0 0 1 320 576 Tm (into coherent semantic regions.) Tj
+/F1 10 Tf 1 0 0 1 320 556 Tm (Extracted lines are normalized before) Tj
+/F1 10 Tf 1 0 0 1 320 542 Tm (acoustic phonemization.) Tj
+/F1 12 Tf 1 0 0 1 54 500 Tm (References) Tj
+/F1 10 Tf 1 0 0 1 54 480 Tm (1. Vaswani et al. Attention is all you need. 2017.) Tj
+/F1 8 Tf 1 0 0 1 54 20 Tm (Copyright © 2026 IEEE. All rights reserved.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000001653 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1750
+%%EOF

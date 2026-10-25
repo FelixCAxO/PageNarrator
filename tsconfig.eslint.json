@@ -1,0 +1,27 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "noResolve": false
+  },
+  "include": [
+    "src/**/*.js",
+    "scripts/**/*.mjs",
+    "tests/**/*.js",
+    "tests/**/*.mjs",
+    "vite.config.js",
+    "vendor/phonemizer/index.js",
+    "vitest.live.config.js",
+    "vitest.profiles.config.js",
+    "playwright.config.js",
+    "website/**/*.js"
+  ],
+  "exclude": [
+    "dist*/**",
+    "node_modules/**",
+    "releases/**",
+    "website/public/**"
+  ]
+}

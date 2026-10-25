@@ -1,0 +1,153 @@
+{
+  "scope": "One original authored synthetic stacked-glyph/neighbor geometry control plus one owned PageNarrator Listening UI screenshot. Word text/confidence and source-ink ownership regressions only; neither is fresh real OCR quality or general transcription evidence.",
+  "fixtures": [
+    {
+      "file": "authored-stacked-glyphs.png",
+      "pngSha256": "d11e7c0e40706d305b7f8691d3e5d4430c2146f6f7f8ccebc13fa4bf358fa3fb",
+      "pixelSha256": "bfc20a14f5ff98351787c6b9da2bd2bd285ea00a9aae26c9381be903e0992074",
+      "provenance": "Original PageNarrator five-bar stacked glyphs and detached ladder on a white canvas. Synthetic development/source-ownership geometry, not OCR output or an image-quality sample.",
+      "words": [
+        {
+          "text": "S",
+          "confidence": 61.25,
+          "bbox": {
+            "x0": 26,
+            "y0": 12,
+            "x1": 56,
+            "y1": 92
+          }
+        }
+      ],
+      "frame": {
+        "top": 12,
+        "bottom": 92,
+        "left": 0,
+        "right": 112,
+        "stepWidth": 11
+      },
+      "expected": [
+        {
+          "x0": 29,
+          "y0": 21,
+          "x1": 51,
+          "y1": 76
+        }
+      ],
+      "own": {
+        "rect": [
+          30,
+          22,
+          50,
+          75
+        ],
+        "threshold": 180,
+        "foregroundPixels": 544,
+        "maskSha256": "270987a6a0d74805f7bac7f1a874dbc00b9d98aa48338d18a64b7f211971da89"
+      },
+      "neighbor": {
+        "rect": [
+          78,
+          15,
+          108,
+          92
+        ],
+        "threshold": 180,
+        "foregroundPixels": 620,
+        "maskSha256": "8553e7cb5518bf9d5fb136055fa8cb9b0b6c12f155e802dae448ec415f38b4c8"
+      }
+    },
+    {
+      "file": "source-word-context-listening.png",
+      "pngSha256": "775234289e0458e2fe5f745244bab4a10219b99baf02bbfe7eeae7411e8cbb2a",
+      "pixelSha256": "903b8feb9a5592d22e5334ae7beec9ffa91d24a696f2616948e61225a10f15b8",
+      "sourceCapture": "ocr-edge-row-crops-source-extent.json",
+      "sourceCaptureSha256": "5095373d874877675b1dba5bbd8bd93b5c8752d6b8a9b01662cfd12e4027344b",
+      "words": [
+        {
+          "text": "Listening",
+          "confidence": 99.99863174226549,
+          "bbox": {
+            "x0": 34.66666666666667,
+            "y0": 10,
+            "x1": 330.6666666666667,
+            "y1": 84
+          }
+        },
+        {
+          "text": "to",
+          "confidence": 99.99798536300659,
+          "bbox": {
+            "x0": 380,
+            "y0": 10,
+            "x1": 429.3333333333333,
+            "y1": 84
+          }
+        },
+        {
+          "text": "Long",
+          "confidence": 99.99746382236481,
+          "bbox": {
+            "x0": 478.6666666666667,
+            "y0": 10,
+            "x1": 639,
+            "y1": 84
+          }
+        },
+        {
+          "text": "Do",
+          "confidence": 93.19406151771545,
+          "bbox": {
+            "x0": 688.3333333333334,
+            "y0": 10,
+            "x1": 750,
+            "y1": 84
+          }
+        }
+      ],
+      "frame": {
+        "top": 10,
+        "bottom": 84,
+        "left": 0,
+        "right": 761,
+        "stepWidth": 12.333333333333334
+      },
+      "expected": [
+        {
+          "x0": 9,
+          "y0": 12,
+          "x1": 303,
+          "y1": 75
+        },
+        {
+          "x0": 367,
+          "y0": 20,
+          "x1": 435,
+          "y1": 71
+        },
+        {
+          "x0": 459,
+          "y0": 12,
+          "x1": 604,
+          "y1": 70
+        },
+        {
+          "x0": 668,
+          "y0": 10,
+          "x1": 725,
+          "y1": 68
+        }
+      ],
+      "own": {
+        "rect": [
+          10,
+          12,
+          64,
+          75
+        ],
+        "threshold": 180,
+        "foregroundPixels": 926,
+        "maskSha256": "c792683df183d112c028934f3789b7ed8f3238dfe92469282628eebee8f40e84"
+      }
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "purpose": "Frozen after the first human smoothness rejection, before any evaluation of this connected-prose corpus. Diagnostic development controls, not untouched release acceptance.",
+  "gates": {
+    "minimumRms": 0.001,
+    "maximumDurationRelativeDifference": 0.1,
+    "maximumDurationAbsoluteDifferenceSeconds": 0.1,
+    "maximumWordErrorRate": 0.25,
+    "maximumWordErrorRateIncrease": 0.05,
+    "requireExpectedFinalThreeWords": true,
+    "pcmAbsoluteTolerance": 0.0003,
+    "pcmRelativeTolerance": 0.003
+  },
+  "cases": [
+    {
+      "id": "heart-connected",
+      "voice": "af_heart",
+      "speed": 1,
+      "mode": "batch",
+      "text": "On a quiet morning, the reader settled beside the window and opened the next chapter, leaving enough time to follow each thought. The story moved from a simple question to a thoughtful answer; then, after a short pause, it returned to the idea that mattered most."
+    },
+    {
+      "id": "emma-connected",
+      "voice": "bf_emma",
+      "speed": 1,
+      "mode": "batch",
+      "text": "On a quiet morning, the reader settled beside the window and opened the next chapter, leaving enough time to follow each thought. The story moved from a simple question to a thoughtful answer; then, after a short pause, it returned to the idea that mattered most."
+    }
+  ]
+}

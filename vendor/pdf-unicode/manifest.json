@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "executableCode": false,
+  "unicodeVersion": "3.2.0",
+  "scope": "Only PDF revision6 password preparation. Original normalization and stringprep code consumes reformatted normative data; no upstream implementation is retained.",
+  "normalization": "Unicode3.2 decomposition/composition facts, with canonical blocking clarified by Unicode PR29; no later character mappings.",
+  "profile": "RFC4013, using only the required RFC3454 scalar-range tables.",
+  "sources": [
+    {
+      "path": "UnicodeData-3.2.0.txt",
+      "bytes": 836989,
+      "sha256": "5e444028b6e76d96f9dc509609c5e3222bf609056f35e5fcde7e6fb8a58cd446",
+      "url": "https://www.unicode.org/Public/3.2-Update/UnicodeData-3.2.0.txt"
+    },
+    {
+      "path": "CompositionExclusions-3.2.0.txt",
+      "bytes": 7457,
+      "sha256": "1d3a450d0f39902710df4972ac4a60ec31fbcb54ffd4d53cd812fc1200c732cb",
+      "url": "https://www.unicode.org/Public/3.2-Update/CompositionExclusions-3.2.0.txt"
+    },
+    {
+      "path": "rfc3454.txt",
+      "bytes": 138684,
+      "sha256": "eb722fa698fb7e8823b835d9fd263e4cdb8f1c7b0d234edf7f0e3bd2ccbb2c79",
+      "url": "https://www.rfc-editor.org/rfc/rfc3454.txt"
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1995,
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "url": "https://www.unicode.org/license.txt"
+    }
+  ],
+  "files": [
+    {
+      "path": "saslprep.json",
+      "bytes": 115875,
+      "sha256": "d754f4e5c16dc99208ef528164b81cc9346bccbf7d3d57a65102ed2edd8660e6",
+      "role": "unicode-normalization-and-stringprep-data",
+      "license": [
+        "LICENSE.txt",
+        "RFC3454-NOTICE.txt"
+      ]
+    },
+    {
+      "path": "LICENSE.txt",
+      "bytes": 1995,
+      "sha256": "e7a93b009565cfce55919a381437ac4db883e9da2126fa28b91d12732bc53d96",
+      "role": "notice",
+      "license": "Unicode-3.0"
+    },
+    {
+      "path": "RFC3454-NOTICE.txt",
+      "bytes": 1476,
+      "sha256": "475ba3686069755d12800946f4b1e426d711e4573ad86813d5f03ce038c2e1da",
+      "role": "notice",
+      "license": "LicenseRef-IETF-Stringprep-Notice"
+    }
+  ]
+}
