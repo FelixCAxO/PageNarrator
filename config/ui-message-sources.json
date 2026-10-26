@@ -833,95 +833,119 @@
       "src/lib\\reader-engine-voice-settings-controller.js:262"
     ]
   },
-  "ui_ad24ebab": {
-    "source": "Voice quality adjusted after $1.",
+  "ui_b835b751": {
+    "source": "slow model loading",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:267"
+      "src/lib\\reader-engine-voice-settings-controller.js:268"
+    ]
+  },
+  "ui_4f078920": {
+    "source": "slow initial speech generation",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:269"
+    ]
+  },
+  "ui_007bbfcb": {
+    "source": "slow section transitions",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:270"
+    ]
+  },
+  "ui_794a03d4": {
+    "source": "Voice quality was adjusted. Reason: $1.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:272"
+    ]
+  },
+  "ui_8f5010a5": {
+    "source": "the selected processing method",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:273"
     ]
   },
   "ui_aa682200": {
     "source": "Voice processing: GPU (WebGPU) with CPU-friendly settings.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:290"
+      "src/lib\\reader-engine-voice-settings-controller.js:297"
     ]
   },
   "ui_3411bb9b": {
     "source": "Voice processing: GPU (WebGPU).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:291"
+      "src/lib\\reader-engine-voice-settings-controller.js:298"
     ]
   },
   "ui_078077a9": {
     "source": "Voice processing: CPU only (WebAssembly) because WebGPU is unavailable.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:294"
+      "src/lib\\reader-engine-voice-settings-controller.js:301"
     ]
   },
   "ui_9e335d53": {
     "source": "Voice processing: CPU only (WebAssembly).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:295"
+      "src/lib\\reader-engine-voice-settings-controller.js:302"
     ]
   },
   "ui_8646aeef": {
     "source": "Voice processing: system voice (browser or operating system).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:297"
+      "src/lib\\reader-engine-voice-settings-controller.js:304"
     ]
   },
   "ui_815f1834": {
     "source": "Voice processing: checked when reading starts.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:299",
+      "src/lib\\reader-engine-voice-settings-controller.js:306",
       "src/reader-engine.html"
     ]
   },
   "ui_19f02581": {
     "source": "Using experimental OmniVoice on WebGPU.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:431"
+      "src/lib\\reader-engine-voice-settings-controller.js:438"
     ]
   },
   "ui_f7c3a723": {
     "source": "Model files download from Hugging Face; speech stays on this device.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:431"
+      "src/lib\\reader-engine-voice-settings-controller.js:438"
     ]
   },
   "ui_411e02b2": {
     "source": "Choose Kokoro if WebGPU is unavailable.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:431"
+      "src/lib\\reader-engine-voice-settings-controller.js:438"
     ]
   },
   "ui_3581ebdf": {
     "source": "Using Kokoro $1 voice.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:433"
+      "src/lib\\reader-engine-voice-settings-controller.js:440"
     ]
   },
   "ui_b6f3e0b5": {
     "source": "Missing voice files download from Hugging Face when you prepare or read.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:433"
+      "src/lib\\reader-engine-voice-settings-controller.js:440"
     ]
   },
   "ui_6813181e": {
     "source": "Speech runs on this device; cached files can be reused offline unless cleared.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:433"
+      "src/lib\\reader-engine-voice-settings-controller.js:440"
     ]
   },
   "ui_95b6ef87": {
     "source": "Experimental quality: $1.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:434"
+      "src/lib\\reader-engine-voice-settings-controller.js:441"
     ]
   },
   "ui_3c2745dc": {
     "source": "No $1 voice is available.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:435"
+      "src/lib\\reader-engine-voice-settings-controller.js:442"
     ]
   },
   "ui_b7e3509c": {

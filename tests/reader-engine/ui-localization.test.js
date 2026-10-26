@@ -1,8 +1,12 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-import { readFileSync } from 'node:fs';
+import { readFileSync, cpSync, mkdtempSync, rmSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { localizeDocument, t, languageName } from '../../src/lib/i18n.js';
+import { localizeDocument, t, languageName, messageKey } from '../../src/lib/i18n.js';
 import { validateTranslatedCatalog } from '../../scripts/prepare-translations.mjs';
 import { VOICE_ENGINE_HELP } from '../../src/lib/omnivoice-settings.js';
 
@@ -13,6 +17,44 @@ const sources = readJson('config/ui-message-sources.json');
 const locales = rollout.languages.flatMap(language => language.locales);
 
 describe('packaged UI translations', () => {
+  it('rebuilds every reviewed locale offline without drafting artifacts or a translation model', () => {
+    const directory = mkdtempSync(join(tmpdir(), 'pagenarrator-reviewed-locales-'));
+    try {
+      cpSync(new URL('../../config', import.meta.url), join(directory, 'config'), { recursive: true });
+      cpSync(new URL('../../_locales/en', import.meta.url), join(directory, '_locales/en'), { recursive: true });
+      execFileSync(process.execPath, [fileURLToPath(new URL('../../scripts/install-ui-translations.mjs', import.meta.url))], { cwd: directory });
+      for (const locale of locales) {
+        expect(JSON.parse(readFileSync(join(directory, '_locales', locale, 'messages.json'), 'utf8'))).toEqual(readJson(`_locales/${locale}/messages.json`));
+      }
+    } finally {
+      if (!directory.startsWith(join(tmpdir(), 'pagenarrator-reviewed-locales-'))) throw new Error('Unexpected test directory');
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it('keeps reviewed controls and recovery instructions from regressing to ambiguous draft wording', () => {
+    const text = (locale, english) => readJson(`_locales/${locale}/messages.json`)[messageKey(english)].message;
+    expect(text('sv', 'Sign in')).toBe('Logga in');
+    expect(text('nl', 'min')).toBe('min');
+    expect(text('ja', 'Free storage')).toBe('空き容量を確保');
+    expect(text('ko', 'No text is selected.')).toBe('선택된 텍스트가 없습니다.');
+    const caption = text('sv', 'Read page');
+    expect(text('sv', 'Open the page, click the PageNarrator icon, then choose Read page.')).toContain(caption);
+    const unverified = { en: 'unverified', de: 'nicht auf realen Geräten überprüft', pl: 'nie zostały potwierdzone', it: 'non sono state verificate', cs: 'nebyly ověřeny',
+      pt_BR: 'não foram verificadas', pt_PT: 'não foram verificadas', sv: 'inte verifierats', da: 'ikke verificeret', fi: 'ei ole varmennettu', ro: 'nu au fost verificate',
+      sk: 'neboli overené', et: 'pole füüsilistel seadmetel kontrollitud', bg: 'не са проверени', zh_CN: '尚未', ru: 'не проверены', ko: '검증되지 않았습니다',
+      tr: 'doğrulanmamıştır', th: 'ยังไม่ได้ตรวจสอบ', uk: 'не перевірені', vi: 'chưa được kiểm chứng', id: 'belum diverifikasi', es: 'no se han verificado',
+      fr: 'n’ont pas été vérifiés', nl: 'niet op fysieke apparaten geverifieerd', ja: '検証されていません' };
+    for (const locale of locales) {
+      const catalog = readJson(`_locales/${locale}/messages.json`);
+      const hardware = catalog[messageKey('Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.')].message;
+      expect(hardware).toContain('120');
+      expect(hardware).toContain('Kokoro');
+      expect(hardware).toContain('CPU');
+      expect(hardware, `${locale}: hardware caveat`).toContain(unverified[locale]);
+    }
+  });
+
   it.each(locales)('%s contains complete messages and intact substitutions', locale => {
     const catalog = readJson(`_locales/${locale}/messages.json`);
     expect(Object.keys(catalog).sort()).toEqual(Object.keys(source).sort());

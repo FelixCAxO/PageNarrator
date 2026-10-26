@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "Citiți cu voce tare pagini web și PDF-uri cu voce locală pe dispozitiv și evidențiere sincronizată."
+    "message": "Ascultă pagini web și PDF-uri cu voci locale și evidențiere sincronizată a textului."
   },
   "actionTitle": {
     "message": "Ascultă această pagină"
@@ -33,10 +33,10 @@
     "message": "Limba nu a putut fi identificată cu certitudine."
   },
   "onboardingQuickWinTitle": {
-    "message": "Citiți un pasaj selectat"
+    "message": "Citește selecția"
   },
   "onboardingQuickWinBody": {
-    "message": "Selectați două propoziții pe pagină, apoi selectați Citește selecția."
+    "message": "Selectează două propoziții pe pagină și alege „Citește selecția”."
   },
   "onboardingQuickWinCta": {
     "message": "Citește selecția"
@@ -45,7 +45,7 @@
     "message": "Citește pagina"
   },
   "onboardingFullPageBody": {
-    "message": "Selectaţi Pagina de citire pentru a începe citirea."
+    "message": "Alege „Citește pagina” pentru a începe citirea."
   },
   "onboardingFullPageCta": {
     "message": "Citește întreaga pagină"
@@ -57,7 +57,7 @@
     "message": "Evaluează PageNarrator"
   },
   "reviewPromptBody": {
-    "message": "Recenzia ta îi ajută pe ceilalți cititori să aleagă."
+    "message": "Recenzia ta îi ajută pe alți cititori să aleagă."
   },
   "reviewNever": {
     "message": "Niciodată"
@@ -69,7 +69,7 @@
     "message": "Evaluează"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ pagină încărcată",
+    "message": "Pagini încărcate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ pagini încărcate",
+    "message": "Pagini încărcate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,13 +85,13 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Încărcarea documentelor..."
+    "message": "Se încarcă documentul…"
   },
   "ui_ffb67f19": {
-    "message": "Încărcare PDF ..."
+    "message": "Se încarcă PDF-ul…"
   },
   "ui_abc76c7c": {
-    "message": "Redeschidere PDF ..."
+    "message": "Se redeschide PDF-ul…"
   },
   "ui_824a0948": {
     "message": "Pagina $arg1$ din $arg2$",
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Lucrând..."
+    "message": "Se procesează…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ voturi",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Voce"
   },
   "ui_85d257a6": {
-    "message": "Procesare: WebGPU (dedicată GPU)"
+    "message": "Procesare: WebGPU (GPU dedicat)"
   },
   "ui_ea65fbf2": {
-    "message": "Procesare: WebGPU (integrat GPU)"
+    "message": "Procesare: WebGPU (GPU integrat)"
   },
   "ui_4e4b8680": {
-    "message": "Etichetă: WebGPU"
+    "message": "Procesare: WebGPU"
   },
   "ui_7d6c19ce": {
     "message": "Procesare: CPU / WebAssembly (mai lent)"
   },
   "ui_5c338a74": {
-    "message": "Procesarea afișată după începerea lecturii."
+    "message": "Metoda de procesare apare la începutul citirii."
   },
   "ui_c513493a": {
-    "message": "Pregătirea vocii locale... $arg1$%",
+    "message": "Se pregătește vocea… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Pregătirea vocală a eșuat. încercați din nou."
+    "message": "Vocea nu a putut fi pregătită. Încearcă din nou."
   },
   "ui_523c0c96": {
-    "message": "Descărcați fișierele vocale lipsă de la Hugging Face înainte de setare."
+    "message": "Fișierele vocale lipsă se descarcă de pe Hugging Face la pregătire sau citire."
   },
   "ui_8036af59": {
     "message": "Reîncearcă"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Disponibil când începe citirea"
+    "message": "Textul apare la începutul citirii."
   },
   "ui_1d9bdb7f": {
-    "message": "Transcript apare atunci când textul se încarcă."
+    "message": "Textul apare la începutul citirii."
   },
   "ui_fe92f855": {
-    "message": "Pagina actuală"
+    "message": "Pagina curentă"
   },
   "ui_bf0c7feb": {
-    "message": "Pregătirea..."
+    "message": "Se procesează…"
   },
   "ui_3d77a20f": {
-    "message": "Pregătirea vocii... $arg1$%",
+    "message": "Se pregătește vocea… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Pregătit de citire"
   },
   "ui_9283b625": {
-    "message": "Pregătirea vocii..."
+    "message": "Se pregătește vocea"
   },
   "ui_5ee7339b": {
     "message": "Se citește"
@@ -214,22 +214,22 @@
     "message": "Necesită atenție"
   },
   "ui_4d1cf041": {
-    "message": "Femeia americană"
+    "message": "Engleză americană, feminină"
   },
   "ui_faf95838": {
-    "message": "bărbat american"
+    "message": "Engleză americană, masculină"
   },
   "ui_f3768d40": {
-    "message": "Femeia britanică"
+    "message": "Engleză britanică, feminină"
   },
   "ui_4139054c": {
-    "message": "Alegeți o voce în limba engleză Kokoro."
+    "message": "Alege o voce Kokoro în engleză. Kokoro nu acceptă alte limbi."
   },
   "ui_c0c171d2": {
-    "message": "Nu a putut finaliza această acțiune."
+    "message": "Acțiunea nu a putut fi finalizată."
   },
   "ui_02e8a8a4": {
-    "message": "Recunoașterea textului de pe pagina $arg1$ ...",
+    "message": "Se recunoaște textul de pe pagina $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ pagină după această pagină",
+    "message": "Pagini rămase după aceasta: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ pagini după această pagină",
+    "message": "Pagini rămase după aceasta: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Mai rapid"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s mai lentă",
+    "message": "Cu $arg1$ s mai lent",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Citește: $arg1$",
+    "message": "Se citește: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Citiți textul selectat"
+    "message": "Citește selecția"
   },
   "ui_865bf5ae": {
     "message": "Citește selecția"
@@ -284,10 +284,10 @@
     "message": "Încearcă din nou"
   },
   "ui_1dbc8cae": {
-    "message": "Acordarea accesului site-ului"
+    "message": "Permite accesul"
   },
   "ui_450f715d": {
-    "message": "Citiți secțiunea $arg1$",
+    "message": "Citește secțiunea $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Reproducerea audio a eșuat."
+    "message": "Redarea audio a eșuat."
   },
   "ui_248b7c43": {
-    "message": "Nu a putut detecta textul articolului"
+    "message": "Nu s-a găsit text de articol care să poată fi citit."
   },
   "ui_48ca3593": {
     "message": "Textul de pe pagina PDF $arg1$ nu a putut fi extras",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Pagina nu este încărcată"
+    "message": "Nicio pagină încărcată"
   },
   "ui_8bdfb3a1": {
-    "message": "Textul apare atunci când începe citirea."
+    "message": "Textul apare la începutul citirii."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ h $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Citiți această pagină cu voce tare"
+    "message": "Citește pagina"
   },
   "ui_758bbc44": {
     "message": "Citește pagina"
   },
   "ui_a174ecb1": {
-    "message": "0% completă"
+    "message": "0% finalizat"
   },
   "ui_e527eba2": {
-    "message": "Pregătirea vocii - $arg1$%$arg2$",
+    "message": "Se pregătește vocea… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Pregătirea vocii..."
+    "message": "Se pregătește vocea"
   },
   "ui_78d44090": {
-    "message": "Opriți citirea curentă"
+    "message": "Se oprește..."
   },
   "ui_98847cfb": {
-    "message": "Opriți citirea..."
+    "message": "Se oprește..."
   },
   "ui_e100f46d": {
     "message": "Se oprește..."
@@ -372,7 +372,7 @@
     "message": "Oprește"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% completă",
+    "message": "$arg1$% finalizat",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Încheierea lecturii"
+    "message": "Terminat"
   },
   "ui_2f0dcc5d": {
     "message": "Citește din nou"
   },
   "ui_329cfb9e": {
-    "message": "100% completă"
+    "message": "100% finalizat"
   },
   "ui_76fc465e": {
-    "message": "Ceva a mers prost"
+    "message": "A apărut o eroare"
   },
   "ui_0d4b0da7": {
-    "message": "Citirea textului selectat"
+    "message": "Se citește: Text selectat"
   },
   "ui_242bb2e3": {
-    "message": "Citirea textului selectat..."
+    "message": "Se citește: Text selectat"
   },
   "ui_10905ea3": {
-    "message": "Pregătirea textului selectat"
+    "message": "Se pregătește: Text selectat…"
   },
   "ui_a2df426f": {
-    "message": "Textul selectat este oprit"
+    "message": "În pauză"
   },
   "ui_915b9541": {
-    "message": "Citește pagina curentă"
+    "message": "Se citește: Pagina curentă"
   },
   "ui_50880cb0": {
-    "message": "Pagina de lectură..."
+    "message": "Se citește: Pagina curentă"
   },
   "ui_e8bf303d": {
-    "message": "Pregătirea paginii curente"
+    "message": "Se pregătește: Pagina curentă…"
   },
   "ui_59ad3c41": {
-    "message": "Pregătirea vocii"
+    "message": "Se pregătește vocea"
   },
   "ui_af82140f": {
-    "message": "lectură pauză"
+    "message": "În pauză"
   },
   "ui_1ede4e42": {
-    "message": "Vocea gata"
+    "message": "Vocea este gata"
   },
   "ui_63338bd9": {
-    "message": "Setarea vocală a eșuat"
+    "message": "Configurarea vocii a eșuat"
   },
   "ui_cedd5bba": {
-    "message": "Modelul a eșuat."
+    "message": "Modelul nu a putut fi configurat."
   },
   "ui_a7f38d4e": {
-    "message": "Pregătirea vocii locale; descărcarea fișierelor lipsă de la Hugging Face."
+    "message": "Se pregătește vocea… Fișierele vocale lipsă se descarcă de pe Hugging Face la pregătire sau citire."
   },
   "ui_430dc39d": {
-    "message": "Estimarea timpului..."
+    "message": "Se estimează timpul…"
   },
   "ui_06a382b7": {
-    "message": "Deschideți un articol, apoi citiți pagina"
+    "message": "Deschide un articol și pornește citirea paginii."
   },
   "ui_37bc7086": {
     "message": "Cuvinte: $arg1$",
@@ -453,10 +453,10 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Mină"
+    "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 secțiuni"
+    "message": "Secțiuni: 0"
   },
   "ui_2d292516": {
     "message": "Secțiunea $arg1$ din $arg2$",
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "Textul selectat"
+    "message": "Text selectat"
   },
   "ui_8212a19a": {
-    "message": "PDF documente"
+    "message": "Document PDF"
   },
   "ui_cb3b43ef": {
-    "message": "Pagina completă"
+    "message": "Pagina întreagă"
   },
   "ui_e13844b5": {
-    "message": "Articolul numai"
+    "message": "Doar articolul"
   },
   "ui_6cae863f": {
     "message": "Cuvinte rămase: $arg1$",
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · primul $arg2$ a fost afișat",
+    "message": "$arg1$ · se afișează primele $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ Afișat",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ din $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - Cache pentru data viitoare",
+    "message": "$arg1$ – salvată pentru data viitoare",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Modelul vocii"
+    "message": "Model vocal"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Verificat $arg1$. Pregătirea vocii...",
+    "message": "✓ $arg1$ · Se pregătește vocea",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Descărcați fișiere vocale: $arg1$",
+    "message": "Se descarcă fișierele vocale: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Descărcare $arg1$: $arg2$",
+    "message": "Se descarcă: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "Setarea GPU a eșuat. Reîncărcarea cu CPU/WebAssembly..."
+    "message": "Configurarea GPU a eșuat. Se reîncearcă folosind CPU/WebAssembly…"
   },
   "ui_f0fc3524": {
-    "message": "Descarcă $arg1$",
+    "message": "Se descarcă: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Pregătirea $arg1$ ...",
+    "message": "Se pregătește: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Verificarea GPU pentru suport..."
+    "message": "Se verifică suportul GPU…"
   },
   "ui_a1f035db": {
-    "message": "Verificarea cache-ului browserului"
+    "message": "Se verifică memoria cache a browserului…"
   },
   "ui_412b5f0e": {
-    "message": "Instalare unică"
+    "message": "Configurare inițială"
   },
   "ui_91d30309": {
-    "message": "Nu a putut pregăti vocea solicitată."
+    "message": "Vocea solicitată nu a putut fi pregătită."
   },
   "ui_b9775b3a": {
-    "message": "Experimental - calitatea nu este validată"
+    "message": "Experimental – calitate neverificată"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - ajustat",
+    "message": "$arg1$ – ajustat",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Calitatea sunetului ajustată după $arg1$.",
+  "ui_b835b751": {
+    "message": "încărcarea lentă a modelului"
+  },
+  "ui_4f078920": {
+    "message": "generarea inițială lentă a vorbirii"
+  },
+  "ui_007bbfcb": {
+    "message": "tranziții lente între secțiuni"
+  },
+  "ui_794a03d4": {
+    "message": "Calitatea vocii a fost ajustată. Motiv: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "metoda de procesare selectată"
   },
   "ui_aa682200": {
-    "message": "Procesare vocală: GPU (WebGPU) cu setări prietenoase cu CPU."
+    "message": "Procesare: GPU (WebGPU) · setări cu solicitare redusă a CPU"
   },
   "ui_3411bb9b": {
-    "message": "Procesor de procesare vocală: GPU (WebGPU)"
+    "message": "Procesare: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Procesare vocală: numai CPU (WebAssembly) deoarece WebGPU nu este disponibil."
+    "message": "Procesare: CPU (WebAssembly) · WebGPU indisponibil"
   },
   "ui_9e335d53": {
-    "message": "Procesare vocală: numai CPU (WebAssembly)"
+    "message": "Procesare: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Procesarea vocii: voce de sistem (browser sau sistem de operare)."
+    "message": "Procesare: voce de sistem (browser sau sistem de operare)"
   },
   "ui_815f1834": {
-    "message": "Procesarea vocii: verificată atunci când începe citirea."
+    "message": "Metoda de procesare apare la începutul citirii."
   },
   "ui_19f02581": {
     "message": "Se utilizează OmniVoice experimental prin WebGPU."
@@ -749,7 +761,7 @@
     "message": "Vorbirea este generată pe acest dispozitiv. Fișierele din cache pot fi reutilizate offline până când sunt șterse."
   },
   "ui_95b6ef87": {
-    "message": "Calitate experimentală: $arg1$",
+    "message": "Experimental – calitate neverificată ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Numărul de vot $arg1$ este disponibil.",
+    "message": "Nu este disponibilă o voce pentru limba: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Snippets de cod Skip?"
+    "message": "Omite fragmentele de cod"
   },
   "ui_9d9f28af": {
-    "message": "Această pagină are multe fragmente de cod. Skip aproximativ $arg1$ min de cod pentru o povestire mai lină.",
+    "message": "Pagina conține multe fragmente de cod. Omite aproximativ $arg1$ min de cod pentru o citire mai cursivă.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Această pagină are multe fragmente de cod. Skip aproximativ $arg1$ minute de cod pentru o povestire mai lină.",
+    "message": "Pagina conține multe fragmente de cod. Omite aproximativ $arg1$ min de cod pentru o citire mai cursivă.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 secțiune preîncărcată"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ secțiuni preîncărcate",
+    "message": "Secțiuni preîncărcate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progresivă playback"
+    "message": "redare progresivă activată"
   },
   "ui_4ddd1cf4": {
-    "message": "Progresivă playback off"
+    "message": "redare progresivă dezactivată"
   },
   "ui_95c9f0ef": {
-    "message": "Browser-ul automat se oprește"
+    "message": "comutarea automată la vocea browserului dezactivată"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$ bucăți de caractere, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ caractere · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Nu am putut accesa această pagină."
+    "message": "Această pagină nu a putut fi accesată."
   },
   "ui_be75ad01": {
-    "message": "Operațiunea Best-effort readerEngine a eșuat."
+    "message": "Acțiunea nu a putut fi finalizată."
   },
   "ui_eb6988d3": {
-    "message": "Nu se poate încărca poziția de resetare"
+    "message": "Poziția salvată nu a putut fi încărcată"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator nu a reușit să inițieze."
+    "message": "PageNarrator nu a putut porni."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator jucători"
+    "message": "Player PageNarrator"
   },
   "ui_9d65bbdb": {
-    "message": "Alegeți modelul vocal"
+    "message": "Model vocal"
   },
   "ui_e6334598": {
     "message": "Model vocal"
@@ -872,7 +884,7 @@
     "message": "Limbă"
   },
   "ui_2070a9f8": {
-    "message": "Voci încărcate..."
+    "message": "Se încarcă vocile…"
   },
   "ui_c39c8623": {
     "message": "Tip de voce"
@@ -887,7 +899,7 @@
     "message": "Variantă vocală"
   },
   "ui_16383585": {
-    "message": "Selectaţi o variaţie vocală. Schimbările se aplică în secţiunea următoare. Setaţi ritmul cu viteza de redare."
+    "message": "Alege o variantă de voce. Modificările se aplică de la secțiunea următoare. Reglează ritmul cu „Viteză de redare”."
   },
   "ui_d975568d": {
     "message": "Șoaptă"
@@ -896,19 +908,19 @@
     "message": "Viteză de redare"
   },
   "ui_c58a3963": {
-    "message": "Se salvează automat.Modificările vocale se aplică secțiunii următoare în timp ce citiți."
+    "message": "Se salvează automat. În timpul citirii, schimbările de voce se aplică de la secțiunea următoare."
   },
   "ui_71365cb1": {
-    "message": "Pregătiți vocea locală"
+    "message": "Pregătește vocea locală"
   },
   "ui_c197c7e2": {
     "message": "Omite"
   },
   "ui_dad1a20b": {
-    "message": "Acum citesc"
+    "message": "Se citește"
   },
   "ui_30ea6e2f": {
-    "message": "secțiunea anterioară"
+    "message": "Secțiunea anterioară"
   },
   "ui_c2954bc2": {
     "message": "Înapoi"
@@ -941,16 +953,16 @@
     "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Eliberarea memoriei vocale atunci când idle"
+    "message": "Eliberează memoria vocii când nu este folosită"
   },
   "ui_231b3e4b": {
     "message": "Omite fragmentele de cod"
   },
   "ui_456ac053": {
-    "message": "Zona de culoare"
+    "message": "Culoarea zonei"
   },
   "ui_10cd7856": {
-    "message": "Cuvânt de culoare"
+    "message": "Culoarea cuvântului"
   },
   "ui_1e4dbab9": {
     "message": "Opacitatea zonei"
@@ -965,13 +977,13 @@
     "message": "Coadă de citire"
   },
   "ui_a106cd77": {
-    "message": "Secțiuni de căutare"
+    "message": "Caută în secțiuni"
   },
   "ui_ee3d49e1": {
     "message": "Prima"
   },
   "ui_30035f15": {
-    "message": "Numărul secţiunii"
+    "message": "Numărul secțiunii"
   },
   "ui_41d0c56b": {
     "message": "Mergi"
@@ -980,142 +992,142 @@
     "message": "Ultima"
   },
   "ui_bd9126df": {
-    "message": "Nu se potrivesc secțiuni. încercați o altă căutare."
+    "message": "Nicio secțiune potrivită. Încearcă altă căutare."
   },
   "ui_620574c4": {
-    "message": "PageNarrator Motorul de citire"
+    "message": "Player PageNarrator"
   },
   "ui_c5fbc06e": {
-    "message": "Accesați pagina"
+    "message": "Permite accesul"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator icon de extensie"
+    "message": "Pictograma extensiei PageNarrator"
   },
   "ui_5a3d9c47": {
-    "message": "Deschide PageNarrator de pe pagina"
+    "message": "Deschide PageNarrator din pagină"
   },
   "ui_94a4b160": {
-    "message": "Faceți clic pe pictograma extensie PageNarrator în timp ce pagina este activă, apoi selectați Pagina de citire."
+    "message": "Deschide pagina, apasă pictograma PageNarrator și alege „Citește pagina”."
   },
   "ui_4be7c01e": {
-    "message": "Descărcați fișierele vocale lipsă la prima utilizare."
+    "message": "Fișierele vocale lipsă se descarcă de pe Hugging Face la pregătire sau citire. Vorbirea este generată pe acest dispozitiv. Fișierele din cache pot fi reutilizate offline până când sunt șterse."
   },
   "ui_3d04a00a": {
-    "message": "Pregătirea vocii locale; descărcarea fișierelor lipsă de la Hugging Face..."
+    "message": "Se pregătește vocea… Fișierele vocale lipsă se descarcă de pe Hugging Face la pregătire sau citire."
   },
   "ui_048ca959": {
-    "message": "Etapele de recuperare"
+    "message": "Pași pentru remediere"
   },
   "ui_0ec24245": {
     "message": "Detalii"
   },
   "ui_4ff448da": {
-    "message": "Reînnoirea lecturii"
+    "message": "Reia citirea"
   },
   "ui_cb2eed93": {
-    "message": "Reîncepeți la poziția salvată"
+    "message": "Reia din poziția salvată"
   },
   "ui_ded3954b": {
-    "message": "Poziția de lectură salvată"
+    "message": "Poziție de citire salvată"
   },
   "ui_24299867": {
     "message": "Reia de la început"
   },
   "ui_d71c7401": {
-    "message": "Propunere de lectură"
+    "message": "Sugestie de citire"
   },
   "ui_d5c02828": {
-    "message": "Această pagină are multe fragmente de cod."
+    "message": "Această pagină conține multe fragmente de cod."
   },
   "ui_336b89fb": {
     "message": "Omite codul"
   },
   "ui_299fab6d": {
-    "message": "Articol descoperit"
+    "message": "Articol detectat"
   },
   "ui_a9898369": {
-    "message": "Etichetă: numai articol"
+    "message": "Se citește: Doar articolul"
   },
   "ui_3065e144": {
     "message": "Începe cu"
   },
   "ui_7ac012cc": {
-    "message": "Jucător de lectură"
+    "message": "Player PageNarrator"
   },
   "ui_8edce20a": {
-    "message": "Citirea progresului"
+    "message": "Progresul citirii"
   },
   "ui_949ea37c": {
-    "message": "0 bucăți rămase"
+    "message": "Fragmente rămase: 0"
   },
   "ui_1250127e": {
-    "message": "PDF pagină de navigare"
+    "message": "Comenzi PDF"
   },
   "ui_e83d9196": {
     "message": "Pagină"
   },
   "ui_27ba99fc": {
-    "message": "Skip pagina curentă PDF"
+    "message": "Omite pagina PDF curentă"
   },
   "ui_dbd1ad47": {
-    "message": "Setări cititor"
+    "message": "Setări de citire"
   },
   "ui_1a27bec5": {
-    "message": "Limbajul va fi detectat atunci când începe citirea."
+    "message": "Limba va fi detectată la începutul citirii."
   },
   "ui_52ff662d": {
-    "message": "Cerințe de dispozitiv"
+    "message": "Cerințe de sistem"
   },
   "ui_fd02dfc2": {
     "message": "Recomandat:"
   },
   "ui_b0555d92": {
-    "message": "o serie dedicată NVIDIA RTX 30 GPU sau mai nouă, cu 8 GB + VRAM și 8 GB + RAM de sistem."
+    "message": "un GPU NVIDIA dedicat din seria RTX 30 sau mai nou, cu cel puțin 8 GB VRAM și 8 GB RAM de sistem."
   },
   "ui_0d393abc": {
-    "message": "Utilizați Chromium 120 sau mai nou. Kokoro are o cădere mai lentă CPU. nivelurile fizice ale hardware-ului nu sunt verificate."
+    "message": "Folosește Chromium 120 sau mai nou. Kokoro are un mod alternativ mai lent pe CPU. Categoriile hardware nu au fost verificate pe dispozitive fizice."
   },
   "ui_f31ba722": {
-    "message": "Timing, curățenie, voci"
+    "message": "Pauze, curățarea textului, voci"
   },
   "ui_a879e367": {
-    "message": "Secţiunea pauză"
+    "message": "Pauză între secțiuni"
   },
   "ui_07e1c336": {
-    "message": "Stilul evidențiat"
+    "message": "Stil de evidențiere"
   },
   "ui_9525b78e": {
     "message": "Personalizat"
   },
   "ui_e0955632": {
-    "message": "Citește zona"
+    "message": "Zona de citire"
   },
   "ui_90571eca": {
-    "message": "Cuvânt curent"
+    "message": "Cuvântul curent"
   },
   "ui_ea585567": {
-    "message": "Citește curățenie"
+    "message": "Curățarea textului"
   },
   "ui_0dc6b4aa": {
     "message": "Dezactivat"
   },
   "ui_d6fbffc9": {
-    "message": "Coada și transcrierea rezumatului"
+    "message": "Coadă și text"
   },
   "ui_21fd85e4": {
-    "message": "Cuvânt cheie & transcript"
+    "message": "Coadă și text"
   },
   "ui_d6c98891": {
-    "message": "Secțiunea curentă, căutarea transcripției și controlele de salt sunt disponibile în modul avansat."
+    "message": "Secțiunea curentă, căutarea în text și comenzile de salt sunt disponibile în modul avansat."
   },
   "ui_0eac1f07": {
     "message": "Răsfoiește"
   },
   "ui_44d76dee": {
-    "message": "Transcriere completă"
+    "message": "Textul complet"
   },
   "ui_ab5783a6": {
-    "message": "0 articole"
+    "message": "Paragrafe: 0"
   },
   "ui_d58a5a9a": {
     "message": "Navigare în coadă"
@@ -1124,34 +1136,34 @@
     "message": "Secțiune"
   },
   "ui_03205ed1": {
-    "message": "Găsiți secțiunea"
+    "message": "Găsește secțiunea"
   },
   "ui_27654275": {
-    "message": "Caută transcript sau pagină..."
+    "message": "Caută în text sau în pagină…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF articole despre"
+    "message": "Comenzi PDF"
   },
   "ui_88828491": {
     "message": "Pagina 1 din 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom în afara"
+    "message": "Micșorează"
   },
   "ui_a3583899": {
-    "message": "Zoom în"
+    "message": "Mărește"
   },
   "ui_2b3553eb": {
-    "message": "Rotație stânga"
+    "message": "Rotește la stânga"
   },
   "ui_2eaecb74": {
-    "message": "Rotă dreapta"
+    "message": "Rotește la dreapta"
   },
   "ui_b6ab6b07": {
-    "message": "Fă modă"
+    "message": "Mod de încadrare"
   },
   "ui_69acd800": {
     "message": "Potrivește la lățime"
@@ -1160,31 +1172,31 @@
     "message": "Potrivește pagina"
   },
   "ui_9f9cf525": {
-    "message": "PDF pagini"
+    "message": "Pagini PDF"
   },
   "ui_ab32ceb0": {
     "message": "Experimental. 646 de intrări de limbă; calitatea variază. Necesită WebGPU cu fp16 și descărcări de aproximativ 1,35 GB. Alege o voce, o variantă sau șoapta."
   },
   "ui_ab4a698f": {
-    "message": "Deschis de pe pagina"
+    "message": "Deschide pagina"
   },
   "ui_68fbfc28": {
-    "message": "Chrome nu a acordat acces la fila activă."
+    "message": "Chrome nu a permis accesul la fila activă."
   },
   "ui_67aad8a8": {
-    "message": "Deschideți pagina, faceți clic pe pictograma PageNarrator și apoi selectați Pagina de citire."
+    "message": "Deschide pagina, apasă pictograma PageNarrator și alege „Citește pagina”."
   },
   "ui_724c0e56": {
-    "message": "Deschis de pe pagină"
+    "message": "Deschide pagina"
   },
   "ui_4f96b3e0": {
-    "message": "Paginile Chrome protejate nu pot fi citite.Deschideți o pagină web sau PDF."
+    "message": "Paginile protejate din Chrome nu pot fi citite. Deschide o pagină web sau un PDF."
   },
   "ui_0cddc760": {
-    "message": "Pagina deschisă"
+    "message": "Deschide pagina"
   },
   "ui_30274c11": {
-    "message": "Accesul la pagină necesar"
+    "message": "Este necesar accesul la pagină"
   },
   "ui_ce6d1fa8": {
     "message": "PageNarrator are nevoie de acces la acest site."
@@ -1193,99 +1205,99 @@
     "message": "Permite accesul la site din pictograma PageNarrator, apoi încearcă din nou."
   },
   "ui_57906b45": {
-    "message": "Accesul acordat"
+    "message": "Permite accesul"
   },
   "ui_b48f6457": {
-    "message": "Free browser de stocare, apoi retry."
+    "message": "Eliberează spațiu de stocare în browser, apoi încearcă din nou."
   },
   "ui_75eca5ea": {
-    "message": "Depozitarea gratuită"
+    "message": "Eliberează spațiu"
   },
   "ui_99e92621": {
-    "message": "Alegeți o voce pentru limba acestei pagini."
+    "message": "Alege o voce pentru limba acestei pagini."
   },
   "ui_997f787a": {
-    "message": "Alegeți vocea"
+    "message": "Alege vocea"
   },
   "ui_50a8c46f": {
-    "message": "Fila activă închisă înainte de a putea începe citirea."
+    "message": "Fila activă s-a închis înainte să înceapă citirea."
   },
   "ui_e64862ef": {
-    "message": "Fila este închisă. Redeschideți pagina și retriviți."
+    "message": "Fila s-a închis. Redeschide pagina și încearcă din nou."
   },
   "ui_39f600ae": {
     "message": "Niciun text selectat"
   },
   "ui_79f7dfca": {
-    "message": "Textul nu este selectat."
+    "message": "Nu este selectat niciun text."
   },
   "ui_b7a079b0": {
-    "message": "Selectaţi textul"
+    "message": "Selectează text"
   },
   "ui_522bcc26": {
-    "message": "Selectați textul pe care doriți să-l auziți, apoi selectați Citește selecția."
+    "message": "Selectează textul pe care vrei să-l asculți și alege „Citește selecția”."
   },
   "ui_580dc44e": {
-    "message": "Recunoașterea textului necesară"
+    "message": "Este necesară recunoașterea textului"
   },
   "ui_ce175449": {
-    "message": "Unele din textele PDF nu au putut fi citite în mod fiabil."
+    "message": "O parte din textul PDF-ului nu a putut fi citită corect."
   },
   "ui_f7c03bfe": {
-    "message": "Utilizarea unui text bazat pe PDF"
+    "message": "Folosește un PDF cu text"
   },
   "ui_cde1ae87": {
-    "message": "Utilizați recunoașterea textului (OCR) sau un PDF cu un strat complet de text."
+    "message": "Folosește recunoașterea textului (OCR) sau un PDF cu un strat de text complet."
   },
   "ui_281501a3": {
-    "message": "Completați numărul CAPTCHA de pe pagină, apoi resetați."
+    "message": "Rezolvă CAPTCHA pe pagină, apoi încearcă din nou."
   },
   "ui_d1c2931f": {
-    "message": "Conectați-vă la site și apoi retry."
+    "message": "Conectează-te la site, apoi încearcă din nou."
   },
   "ui_744be623": {
-    "message": "Semnează în"
+    "message": "Conectează-te"
   },
   "ui_3c4b4f30": {
-    "message": "Articol necunoscut găsit"
+    "message": "Nu s-a găsit niciun articol lizibil"
   },
   "ui_fb499b08": {
-    "message": "Nu s-a găsit niciun text de articol lizibil."
+    "message": "Nu s-a găsit text de articol care să poată fi citit."
   },
   "ui_a1fad21c": {
-    "message": "Încercați o altă pagină"
+    "message": "Încearcă altă pagină"
   },
   "ui_b0ddc925": {
-    "message": "Selectați un pasaj și selectați Citește selecția sau deschideți un alt articol."
+    "message": "Selectează un pasaj și alege „Citește selecția” sau deschide alt articol."
   },
   "ui_d20c5459": {
-    "message": "Vocea nu a terminat încărcarea."
+    "message": "Încărcarea vocii nu s-a finalizat."
   },
   "ui_eee6a1ad": {
-    "message": "Selectaţi Pregătiţi voce pentru a reseta setarea."
+    "message": "Alege „Pregătește vocea” pentru a reîncerca configurarea."
   },
   "ui_eab3cf34": {
-    "message": "Generația de discursuri eșuează"
+    "message": "Generarea vorbirii a eșuat"
   },
   "ui_4cad964d": {
-    "message": "Generarea vorbirii s-a oprit înainte ca audio-ul să fie gata."
+    "message": "Generarea vorbirii s-a oprit înainte ca sunetul să fie gata."
   },
   "ui_2519f9e6": {
-    "message": "Redare sau alegeți o altă voce."
+    "message": "Încearcă din nou sau alege altă voce."
   },
   "ui_1844c6fe": {
-    "message": "Știri despre PDF"
+    "message": "PDF neacceptat"
   },
   "ui_4a8aceae": {
-    "message": "Acest PDF este deteriorat sau nu este suportat."
+    "message": "Acest PDF este deteriorat sau nu este acceptat."
   },
   "ui_5679bf2f": {
-    "message": "Încercați un alt PDF"
+    "message": "Încearcă alt PDF"
   },
   "ui_b8183083": {
-    "message": "Nu a putut descărca PDF. Verificați link-ul și conexiunea dvs."
+    "message": "PDF-ul nu a putut fi descărcat. Verifică linkul și conexiunea."
   },
   "ui_ce24479d": {
-    "message": "Nu a putut deschide acest PDF."
+    "message": "Acest PDF nu a putut fi deschis."
   }
 }

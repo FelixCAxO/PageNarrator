@@ -1,9 +1,9 @@
 {
   "extensionDescription": {
-    "message": "Lugege veebisaite ja PDF-faile valjusti kohalike seadmes olevate häälte ja sünkroonitud esiletõstmise abil."
+    "message": "Kuula veebilehti ja PDF-e kohalike häälte ning sünkroonse teksti esiletõstmisega."
   },
   "actionTitle": {
-    "message": "Kuula seda lehekülge"
+    "message": "Kuula seda lehte"
   },
   "languageSuggestionOmniVoice": {
     "message": "Tuvastatud keel: $language$. Kokoro toetab inglise keelt. Selle teksti ettelugemiseks vali hääleseadetes OmniVoice ja $language$.",
@@ -33,10 +33,10 @@
     "message": "Keelt ei õnnestunud kindlalt tuvastada."
   },
   "onboardingQuickWinTitle": {
-    "message": "Loe valitud teekonda"
+    "message": "Loe valik ette"
   },
   "onboardingQuickWinBody": {
-    "message": "Valige lehel kaks lauset ja seejärel valige Loe valitud."
+    "message": "Märgi lehel kaks lauset ja vali „Loe valik ette“."
   },
   "onboardingQuickWinCta": {
     "message": "Loe valik ette"
@@ -45,7 +45,7 @@
     "message": "Loe leht ette"
   },
   "onboardingFullPageBody": {
-    "message": "Valige lugemise alustamiseks Loe lehekülg."
+    "message": "Ettelugemise alustamiseks vali „Loe leht ette“."
   },
   "onboardingFullPageCta": {
     "message": "Loe kogu leht ette"
@@ -57,7 +57,7 @@
     "message": "Hinda PageNarratorit"
   },
   "reviewPromptBody": {
-    "message": "Teie ülevaade aitab teistel lugejatel valida."
+    "message": "Sinu arvustus aitab teistel lugejatel valida."
   },
   "reviewNever": {
     "message": "Mitte kunagi"
@@ -69,7 +69,7 @@
     "message": "Hinda"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ lehekülge laaditud",
+    "message": "Laaditud lehti: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ lehekülge laaditud",
+    "message": "Laaditud lehti: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,16 +85,16 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Dokumendi laadimine..."
+    "message": "Dokumendi laadimine…"
   },
   "ui_ffb67f19": {
-    "message": "Laadimine PDF ..."
+    "message": "PDF-i laadimine…"
   },
   "ui_abc76c7c": {
-    "message": "Uuesti avatud PDF ..."
+    "message": "PDF-i uuesti avamine…"
   },
   "ui_824a0948": {
-    "message": "Lehekülg $arg1$ / $arg2$",
+    "message": "Leht $arg1$/$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Töötades..."
+    "message": "Töötlemine…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ hääl",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Hääl"
   },
   "ui_85d257a6": {
-    "message": "Töötlemine: WebGPU (pühendatud GPU)"
+    "message": "Töötlus: WebGPU (eraldiseisev GPU)"
   },
   "ui_ea65fbf2": {
-    "message": "Töötlemine: WebGPU (integreeritud GPU)"
+    "message": "Töötlus: WebGPU (integreeritud GPU)"
   },
   "ui_4e4b8680": {
-    "message": "Töötlemine: WebGPU"
+    "message": "Töötlus: WebGPU"
   },
   "ui_7d6c19ce": {
-    "message": "Töötlemine: CPU / WebAssembly (aeglasem)"
+    "message": "Töötlus: CPU / WebAssembly (aeglasem)"
   },
   "ui_5c338a74": {
-    "message": "Töötlemine näidatud pärast lugemist algab."
+    "message": "Töötlusviis kuvatakse ettelugemise alguses."
   },
   "ui_c513493a": {
-    "message": "Kohaliku hääle ettevalmistamine... $arg1$%",
+    "message": "Hääle ettevalmistamine… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Heli ettevalmistus ebaõnnestus. proovige uuesti."
+    "message": "Häält ei saanud ette valmistada. Proovi uuesti."
   },
   "ui_523c0c96": {
-    "message": "Puuduvad häälfailid allalaadimine Hugging Face enne seadistamist."
+    "message": "Puuduvad häälefailid laaditakse alla Hugging Face’ist hääle ettevalmistamisel või ettelugemisel."
   },
   "ui_8036af59": {
     "message": "Proovi uuesti"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Saadaval, kui lugemine algab"
+    "message": "Tekst ilmub ettelugemise alguses."
   },
   "ui_1d9bdb7f": {
-    "message": "Transkript ilmub, kui tekst laaditakse."
+    "message": "Tekst ilmub ettelugemise alguses."
   },
   "ui_fe92f855": {
-    "message": "Praegune lehekülg"
+    "message": "Praegune leht"
   },
   "ui_bf0c7feb": {
-    "message": "Ettevalmistus..."
+    "message": "Töötlemine…"
   },
   "ui_3d77a20f": {
-    "message": "Hääle ettevalmistamine... $arg1$%",
+    "message": "Hääle ettevalmistamine… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -193,13 +193,13 @@
     "message": "Jätka"
   },
   "ui_44f9bf2d": {
-    "message": "Peata"
+    "message": "Paus"
   },
   "ui_f3de41d3": {
     "message": "Valmis ette lugema"
   },
   "ui_9283b625": {
-    "message": "Hääle ettevalmistamine..."
+    "message": "Hääle ettevalmistamine"
   },
   "ui_5ee7339b": {
     "message": "Ettelugemine"
@@ -214,22 +214,22 @@
     "message": "Vajab tähelepanu"
   },
   "ui_4d1cf041": {
-    "message": "Ameerika tüdrukud"
+    "message": "Ameerika inglise keel, naishääl"
   },
   "ui_faf95838": {
-    "message": "Ameerika mees"
+    "message": "Ameerika inglise keel, meeshääl"
   },
   "ui_f3768d40": {
-    "message": "Briti tüdrukud"
+    "message": "Briti inglise keel, naishääl"
   },
   "ui_4139054c": {
-    "message": "Valige inglise Kokoro hääl. teisi keeli ei toeta."
+    "message": "Vali ingliskeelne Kokoro hääl. Kokoro ei toeta teisi keeli."
   },
   "ui_c0c171d2": {
-    "message": "Ma ei suutnud seda tegevust lõpetada."
+    "message": "Seda toimingut ei saanud lõpule viia."
   },
   "ui_02e8a8a4": {
-    "message": "Kirjeldus leheküljel $arg1$ ...",
+    "message": "Teksti tuvastamine lehel $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ lehekülg pärast seda lehekülge",
+    "message": "Lehti pärast seda lehte: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ lehekülge pärast seda lehekülge",
+    "message": "Lehti pärast seda lehte: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Kiiremini"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s aeglasem",
+    "message": "$arg1$ s aeglasemalt",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Lugemine: $arg1$",
+    "message": "Ettelugemine: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Loe valitud teksti"
+    "message": "Loe valik ette"
   },
   "ui_865bf5ae": {
     "message": "Loe valik ette"
@@ -284,10 +284,10 @@
     "message": "Proovi uuesti"
   },
   "ui_1dbc8cae": {
-    "message": "Grant veebilehe juurdepääs"
+    "message": "Luba juurdepääs"
   },
   "ui_450f715d": {
-    "message": "Loe artiklit $arg1$",
+    "message": "Loe jaotis $arg1$ ette",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio playback ebaõnnestus."
+    "message": "Heli esitamine ebaõnnestus."
   },
   "ui_248b7c43": {
-    "message": "Ei suutnud leida artikli teksti"
+    "message": "Artiklist ei leitud loetavat teksti."
   },
   "ui_48ca3593": {
     "message": "PDF-i lehelt $arg1$ ei õnnestunud teksti eraldada",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Lehekülg pole laaditud"
+    "message": "Ühtegi lehte pole laaditud"
   },
   "ui_8bdfb3a1": {
-    "message": "Tekst ilmub, kui lugemine algab."
+    "message": "Tekst ilmub ettelugemise alguses."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ h $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Loe seda lehekülge valjusti"
+    "message": "Loe leht ette"
   },
   "ui_758bbc44": {
     "message": "Loe leht ette"
   },
   "ui_a174ecb1": {
-    "message": "0% täielik"
+    "message": "Valmis 0%"
   },
   "ui_e527eba2": {
-    "message": "Kõne ettevalmistamine - $arg1$%$arg2$",
+    "message": "Hääle ettevalmistamine… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,22 +357,22 @@
     }
   },
   "ui_365406c5": {
-    "message": "Hääle ettevalmistamine..."
+    "message": "Hääle ettevalmistamine"
   },
   "ui_78d44090": {
-    "message": "Praeguse lugemise peatamine"
+    "message": "Peatamine..."
   },
   "ui_98847cfb": {
-    "message": "Lõpetage lugemine..."
+    "message": "Peatamine..."
   },
   "ui_e100f46d": {
     "message": "Peatamine..."
   },
   "ui_4b7f7705": {
-    "message": "Lõpeta"
+    "message": "Peata"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% täielik",
+    "message": "Valmis $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Lõpetatud lugemine"
+    "message": "Valmis"
   },
   "ui_2f0dcc5d": {
     "message": "Loe uuesti"
   },
   "ui_329cfb9e": {
-    "message": "100% täielik"
+    "message": "Valmis 100%"
   },
   "ui_76fc465e": {
     "message": "Midagi läks valesti"
   },
   "ui_0d4b0da7": {
-    "message": "Valitud teksti lugemine"
+    "message": "Ettelugemine: Valitud tekst"
   },
   "ui_242bb2e3": {
-    "message": "Valitud teksti lugemine..."
+    "message": "Ettelugemine: Valitud tekst"
   },
   "ui_10905ea3": {
-    "message": "Valitud teksti koostamine"
+    "message": "Ettevalmistamine: Valitud tekst…"
   },
   "ui_a2df426f": {
-    "message": "Valitud tekst pausi"
+    "message": "Peatatud"
   },
   "ui_915b9541": {
-    "message": "Praeguse lehekülje lugemine"
+    "message": "Ettelugemine: Praegune leht"
   },
   "ui_50880cb0": {
-    "message": "Loe lehekülge..."
+    "message": "Ettelugemine: Praegune leht"
   },
   "ui_e8bf303d": {
-    "message": "Praeguse lehekülje koostamine"
+    "message": "Ettevalmistamine: Praegune leht…"
   },
   "ui_59ad3c41": {
-    "message": "Hääle valmistamine"
+    "message": "Hääle ettevalmistamine"
   },
   "ui_af82140f": {
-    "message": "Pausi lugemine"
+    "message": "Peatatud"
   },
   "ui_1ede4e42": {
-    "message": "Hääl valmis"
+    "message": "Hääl on valmis"
   },
   "ui_63338bd9": {
-    "message": "Heli seadistus ebaõnnestus"
+    "message": "Hääle seadistamine ebaõnnestus"
   },
   "ui_cedd5bba": {
-    "message": "Modelleerimine ebaõnnestus."
+    "message": "Mudeli seadistamine ebaõnnestus."
   },
   "ui_a7f38d4e": {
-    "message": "Kohaliku hääle ettevalmistamine; puuduvad failid allalaadimiseks Hugging Face."
+    "message": "Hääle ettevalmistamine… Puuduvad häälefailid laaditakse alla Hugging Face’ist hääle ettevalmistamisel või ettelugemisel."
   },
   "ui_430dc39d": {
-    "message": "Aega hinnatakse..."
+    "message": "Aja hindamine…"
   },
   "ui_06a382b7": {
-    "message": "Avage artikkel, seejärel lugege lehte"
+    "message": "Ava artikkel ja alusta lehe ettelugemist."
   },
   "ui_37bc7086": {
     "message": "Sõnu: $arg1$",
@@ -453,13 +453,13 @@
     }
   },
   "ui_c98f4557": {
-    "message": "minu kohta"
+    "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 osakonda"
+    "message": "Jaotisi: 0"
   },
   "ui_2d292516": {
-    "message": "§ $arg1$ ja $arg2$",
+    "message": "Jaotis $arg1$/$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -481,13 +481,13 @@
     "message": "Valitud tekst"
   },
   "ui_8212a19a": {
-    "message": "PDF dokumendid"
+    "message": "PDF-dokument"
   },
   "ui_cb3b43ef": {
-    "message": "Täisleht"
+    "message": "Kogu leht"
   },
   "ui_e13844b5": {
-    "message": "Artikkel ainult"
+    "message": "Ainult artikkel"
   },
   "ui_6cae863f": {
     "message": "Sõnu jäänud: $arg1$",
@@ -533,7 +533,7 @@
     }
   },
   "ui_0290cbb9": {
-    "message": "Lehekülg $arg1$",
+    "message": "Leht $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · esmakordselt näidatud $arg2$",
+    "message": "$arg1$ · näidatakse esimest $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ näidatud",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ või $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - vahemälu järgmine kord",
+    "message": "$arg1$ – salvestatud järgmiseks korraks",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Hääl mudel"
+    "message": "Häälemudel"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Kinnitatud $arg1$. ettevalmistamine hääl ...",
+    "message": "✓ $arg1$ · Hääle ettevalmistamine",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Lae alla häälfailid: $arg1$",
+    "message": "Häälefailide allalaadimine: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Allalaadimine $arg1$: $arg2$",
+    "message": "Allalaadimine: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU seadistamine ebaõnnestus. Taastamine CPU/WebAssembly..."
+    "message": "GPU seadistamine ebaõnnestus. Uus katse CPU/WebAssembly abil…"
   },
   "ui_f0fc3524": {
-    "message": "Allalaadimine $arg1$ ...",
+    "message": "Allalaadimine: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Ettevalmistus $arg1$ ...",
+    "message": "Ettevalmistamine: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Kontrollige GPU toetust."
+    "message": "GPU toe kontrollimine…"
   },
   "ui_a1f035db": {
-    "message": "Kontrollige brauseri vahemälu."
+    "message": "Brauseri vahemälu kontrollimine…"
   },
   "ui_412b5f0e": {
-    "message": "Ühekordne paigaldamine"
+    "message": "Ühekordne seadistus"
   },
   "ui_91d30309": {
-    "message": "Ei suutnud nõutud häält ette valmistada."
+    "message": "Valitud häält ei saanud ette valmistada."
   },
   "ui_b9775b3a": {
-    "message": "Eksperimentaalne - kvaliteet ei ole kinnitatud"
+    "message": "Katsetusjärgus – kvaliteet kontrollimata"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - kohandatud",
+    "message": "$arg1$ – kohandatud",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Heli kvaliteet on reguleeritud pärast $arg1$.",
+  "ui_b835b751": {
+    "message": "mudeli aeglane laadimine"
+  },
+  "ui_4f078920": {
+    "message": "kõne esmane loomine on aeglane"
+  },
+  "ui_007bbfcb": {
+    "message": "aeglased üleminekud jaotiste vahel"
+  },
+  "ui_794a03d4": {
+    "message": "Hääle kvaliteeti kohandati. Põhjus: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "valitud töötlusviis"
   },
   "ui_aa682200": {
-    "message": "Hääletöötlus: GPU (WebGPU) koos CPU-sõbralike seadetega."
+    "message": "Töötlus: GPU (WebGPU) · CPU-d säästvad seaded"
   },
   "ui_3411bb9b": {
-    "message": "Heli töötlemine: GPU (WebGPU)"
+    "message": "Töötlus: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Heli töötlemine: ainult protsessor (WebAssembly), sest WebGPU ei ole saadaval."
+    "message": "Töötlus: CPU (WebAssembly) · WebGPU pole saadaval"
   },
   "ui_9e335d53": {
-    "message": "Heli töötlemine: ainult protsessor (WebAssembly)"
+    "message": "Töötlus: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Heli töötlemine: süsteemi hääl (brauser või operatsioonisüsteem)."
+    "message": "Töötlus: süsteemi hääl (brauser või operatsioonisüsteem)"
   },
   "ui_815f1834": {
-    "message": "Heli töötlemine: kontrollitakse lugemise alguses."
+    "message": "Töötlusviis kuvatakse ettelugemise alguses."
   },
   "ui_19f02581": {
     "message": "Kasutusel on eksperimentaalne OmniVoice koos WebGPU-ga."
@@ -749,7 +761,7 @@
     "message": "Kõne luuakse selles seadmes. Vahemällu salvestatud faile saab kasutada võrguühenduseta, kuni need kustutatakse."
   },
   "ui_95b6ef87": {
-    "message": "Katse kvaliteet: $arg1$",
+    "message": "Katsetusjärgus – kvaliteet kontrollimata ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Hääl nr $arg1$ on saadaval.",
+    "message": "Valitud keelele pole häält: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip koodi snippets?"
+    "message": "Jäta koodilõigud vahele"
   },
   "ui_9d9f28af": {
-    "message": "Sellel lehel on palju koodi väljavõtteid. ületage umbes $arg1$ min koodi sujuvamaks jutustamiseks.",
+    "message": "Lehel on palju koodi. Sujuvamaks ettelugemiseks jäta vahele umbes $arg1$ min koodi.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Sellel lehel on palju koodi väljavõtteid. ületage umbes $arg1$ minutit koodi sujuvamaks jutustamiseks.",
+    "message": "Lehel on palju koodi. Sujuvamaks ettelugemiseks jäta vahele umbes $arg1$ min koodi.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 jaotis eellaaditud"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ eellaaditud sektsioonid",
+    "message": "Eellaaditud jaotisi: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressiivne playback"
+    "message": "järkjärguline esitus sees"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressiivne playback välja"
+    "message": "järkjärguline esitus väljas"
   },
   "ui_95c9f0ef": {
-    "message": "Automaatne brauseri hääl lülitub välja"
+    "message": "automaatne brauseri häälele lülitumine väljas"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$ märgi tükid, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ märki · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Ei pääsenud sellele lehele."
+    "message": "Sellele lehele ei saanud juurde pääseda."
   },
   "ui_be75ad01": {
-    "message": "Best-effort readerEngine operatsioon ebaõnnestus."
+    "message": "Seda toimingut ei saanud lõpule viia."
   },
   "ui_eb6988d3": {
-    "message": "Ei suutnud laadida taastavat positsiooni"
+    "message": "Salvestatud lugemiskohta ei saanud laadida"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator ei suutnud sisse lülitada."
+    "message": "PageNarratorit ei saanud käivitada."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator mängija"
+    "message": "PageNarratori mängija"
   },
   "ui_9d65bbdb": {
-    "message": "Valige hääl mudel"
+    "message": "Häälemudel"
   },
   "ui_e6334598": {
     "message": "Häälemudel"
@@ -872,7 +884,7 @@
     "message": "Keel"
   },
   "ui_2070a9f8": {
-    "message": "Laadige hääled..."
+    "message": "Häälte laadimine…"
   },
   "ui_c39c8623": {
     "message": "Hääle tüüp"
@@ -887,7 +899,7 @@
     "message": "Hääle variant"
   },
   "ui_16383585": {
-    "message": "Valige häälvariatsioon. Muudatused kehtivad järgmises jaos. Määrake tempo taasesitamise kiirusega."
+    "message": "Vali hääle variant. Muudatused rakenduvad järgmisest jaotisest. Tempot saad muuta seadega „Taasesituse kiirus“."
   },
   "ui_d975568d": {
     "message": "Sosin"
@@ -896,19 +908,19 @@
     "message": "Taasesituse kiirus"
   },
   "ui_c58a3963": {
-    "message": "Automaatselt salvestatud Heli muudatused kehtivad järgmisele jaotisele lugemise ajal."
+    "message": "Salvestatakse automaatselt. Ettelugemise ajal rakenduvad häälemuudatused järgmisest jaotisest."
   },
   "ui_71365cb1": {
-    "message": "Valmistage kohalik hääl"
+    "message": "Valmista kohalik hääl ette"
   },
   "ui_c197c7e2": {
     "message": "Jäta vahele"
   },
   "ui_dad1a20b": {
-    "message": "Nüüd lugemine"
+    "message": "Ettelugemine"
   },
   "ui_30ea6e2f": {
-    "message": "Eelmine osa"
+    "message": "Eelmine jaotis"
   },
   "ui_c2954bc2": {
     "message": "Tagasi"
@@ -929,7 +941,7 @@
     "message": "Pausid, teksti puhastamine, esiletõstmine"
   },
   "ui_67231237": {
-    "message": "Vaheaeg sektsioonide vahel"
+    "message": "Paus jaotiste vahel"
   },
   "ui_8f517045": {
     "message": "Jõudlus"
@@ -938,16 +950,16 @@
     "message": "Töötlus"
   },
   "ui_bec07b52": {
-    "message": "CPU või WebAssembly"
+    "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Vabastage häälmälu, kui olete idle"
+    "message": "Vabasta jõudeolekus hääle kasutatav mälu"
   },
   "ui_231b3e4b": {
     "message": "Jäta koodilõigud vahele"
   },
   "ui_456ac053": {
-    "message": "Värvipiirkond"
+    "message": "Lugemisala värv"
   },
   "ui_10cd7856": {
     "message": "Sõna värv"
@@ -965,13 +977,13 @@
     "message": "Lugemisjärjekord"
   },
   "ui_a106cd77": {
-    "message": "Otsingu osad"
+    "message": "Otsi jaotistest"
   },
   "ui_ee3d49e1": {
     "message": "Esimene"
   },
   "ui_30035f15": {
-    "message": "Osakonna number"
+    "message": "Jaotise number"
   },
   "ui_41d0c56b": {
     "message": "Mine"
@@ -980,88 +992,88 @@
     "message": "Viimane"
   },
   "ui_bd9126df": {
-    "message": "Puuduvad vastavad jaotised. proovige teist otsingut."
+    "message": "Sobivaid jaotisi ei leitud. Proovi teist otsingut."
   },
   "ui_620574c4": {
-    "message": "PageNarrator lugeja mootor"
+    "message": "PageNarratori mängija"
   },
   "ui_c5fbc06e": {
-    "message": "Grant lehekülje juurdepääs"
+    "message": "Luba juurdepääs"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator laiendus ikoon"
+    "message": "PageNarratori laienduse ikoon"
   },
   "ui_5a3d9c47": {
-    "message": "Avage PageNarrator leheküljelt"
+    "message": "Ava PageNarrator lehelt"
   },
   "ui_94a4b160": {
-    "message": "Klõpsake PageNarrator laiendiku ikooni, kui leht on aktiivne, ja seejärel valige Loe lehte."
+    "message": "Ava leht, klõpsa PageNarratori ikoonil ja vali „Loe leht ette“."
   },
   "ui_4be7c01e": {
-    "message": "Puuduvad häälfailid laaditakse alla esimesel kasutamisel."
+    "message": "Puuduvad häälefailid laaditakse alla Hugging Face’ist hääle ettevalmistamisel või ettelugemisel. Kõne luuakse selles seadmes. Vahemällu salvestatud faile saab kasutada võrguühenduseta, kuni need kustutatakse."
   },
   "ui_3d04a00a": {
-    "message": "Ettevalmistamine kohaliku hääl; puuduvad failid allalaadimine Hugging Face..."
+    "message": "Hääle ettevalmistamine… Puuduvad häälefailid laaditakse alla Hugging Face’ist hääle ettevalmistamisel või ettelugemisel."
   },
   "ui_048ca959": {
-    "message": "Taastamise sammud"
+    "message": "Probleemi lahendamine"
   },
   "ui_0ec24245": {
     "message": "Üksikasjad"
   },
   "ui_4ff448da": {
-    "message": "Jätka lugemist"
+    "message": "Jätka ettelugemist"
   },
   "ui_cb2eed93": {
-    "message": "Jätkake salvestatud asendis"
+    "message": "Jätka salvestatud kohast"
   },
   "ui_ded3954b": {
-    "message": "Salvestage lugemise positsioon"
+    "message": "Salvestatud lugemiskoht"
   },
   "ui_24299867": {
     "message": "Alusta uuesti"
   },
   "ui_d71c7401": {
-    "message": "Lugemise ettepanek"
+    "message": "Lugemissoovitus"
   },
   "ui_d5c02828": {
-    "message": "Sellel lehel on palju koodipunkte."
+    "message": "Sellel lehel on palju koodilõike."
   },
   "ui_336b89fb": {
     "message": "Jäta kood vahele"
   },
   "ui_299fab6d": {
-    "message": "Avastatud artikkel"
+    "message": "Tuvastatud artikkel"
   },
   "ui_a9898369": {
-    "message": "Lugemine: Artikkel ainult"
+    "message": "Ettelugemine: Ainult artikkel"
   },
   "ui_3065e144": {
-    "message": "Algab koos"
+    "message": "Algab tekstiga"
   },
   "ui_7ac012cc": {
-    "message": "Lugemise mängija"
+    "message": "PageNarratori mängija"
   },
   "ui_8edce20a": {
-    "message": "Loe edusamme"
+    "message": "Lugemise edenemine"
   },
   "ui_949ea37c": {
-    "message": "0 punkti jäänud"
+    "message": "Osi jäänud: 0"
   },
   "ui_1250127e": {
-    "message": "PDF lehekülje navigeerimine"
+    "message": "PDF-i juhtnupud"
   },
   "ui_e83d9196": {
     "message": "Leht"
   },
   "ui_27ba99fc": {
-    "message": "Skip praegune PDF leht"
+    "message": "Jäta praegune PDF-leht vahele"
   },
   "ui_dbd1ad47": {
-    "message": "Lugeja seaded"
+    "message": "Lugemisseaded"
   },
   "ui_1a27bec5": {
-    "message": "Keel tuvastatakse, kui lugemine algab."
+    "message": "Keel tuvastatakse ettelugemise alguses."
   },
   "ui_52ff662d": {
     "message": "Seadme nõuded"
@@ -1070,88 +1082,88 @@
     "message": "Soovitatav:"
   },
   "ui_b0555d92": {
-    "message": "spetsiaalne NVIDIA RTX 30 seeria GPU või uuem, 8 GB + VRAM ja 8 GB + süsteemi RAM."
+    "message": "eraldiseisev NVIDIA RTX 30 seeria või uuem GPU, vähemalt 8 GB VRAM-i ja 8 GB süsteemimälu."
   },
   "ui_0d393abc": {
-    "message": "Kasutage Chromium 120 või uuemat. Kokoro on aeglasem CPU tagasilöök."
+    "message": "Kasuta Chromium 120 või uuemat. Kokorol on aeglasem CPU-varurežiim. Riistvaraklasse pole füüsilistel seadmetel kontrollitud."
   },
   "ui_f31ba722": {
-    "message": "Aegumine, puhastamine ja hääled"
+    "message": "Pausid, teksti puhastamine, hääled"
   },
   "ui_a879e367": {
-    "message": "Pausi sektsioon"
+    "message": "Paus jaotiste vahel"
   },
   "ui_07e1c336": {
-    "message": "Tähtsündinud stiil"
+    "message": "Esiletõstmise stiil"
   },
   "ui_9525b78e": {
     "message": "Kohandatud"
   },
   "ui_e0955632": {
-    "message": "Loe piirkonda"
+    "message": "Lugemisala"
   },
   "ui_90571eca": {
     "message": "Praegune sõna"
   },
   "ui_ea585567": {
-    "message": "Puhastamise lugemine"
+    "message": "Teksti puhastamine"
   },
   "ui_0dc6b4aa": {
     "message": "Väljas"
   },
   "ui_d6fbffc9": {
-    "message": "Järjekord ja transkript kokkuvõte"
+    "message": "Järjekord ja tekst"
   },
   "ui_21fd85e4": {
-    "message": "Ülevaade & transkript"
+    "message": "Järjekord ja tekst"
   },
   "ui_d6c98891": {
-    "message": "Praegune sektsioon, transkriptotsing ja hüppekontrollid on saadaval täiustatud režiimis."
+    "message": "Praegune jaotis, tekstiotsing ja hüppenupud on saadaval täpsemas režiimis."
   },
   "ui_0eac1f07": {
     "message": "Sirvi"
   },
   "ui_44d76dee": {
-    "message": "Täielik transkript"
+    "message": "Kogu tekst"
   },
   "ui_ab5783a6": {
-    "message": "0 punkti"
+    "message": "Lõike: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Navigeerimise järjekord"
+    "message": "Järjekorras liikumine"
   },
   "ui_2d877b6c": {
     "message": "Jaotis"
   },
   "ui_03205ed1": {
-    "message": "Leia sektsioon"
+    "message": "Leia jaotis"
   },
   "ui_27654275": {
-    "message": "Otsing transkript või lehekülg ..."
+    "message": "Otsi tekstist või lehelt…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF kontrolli"
+    "message": "PDF-i juhtnupud"
   },
   "ui_88828491": {
-    "message": "Lehekülg 1 / 1"
+    "message": "Leht 1/1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom välja"
+    "message": "Vähenda"
   },
   "ui_a3583899": {
-    "message": "Zoom sisse"
+    "message": "Suurenda"
   },
   "ui_2b3553eb": {
-    "message": "rotatsioon vasakule"
+    "message": "Pööra vasakule"
   },
   "ui_2eaecb74": {
-    "message": "Pöörake õigesti"
+    "message": "Pööra paremale"
   },
   "ui_b6ab6b07": {
-    "message": "Õige mood"
+    "message": "Sobitusrežiim"
   },
   "ui_69acd800": {
     "message": "Mahuta laiusesse"
@@ -1160,31 +1172,31 @@
     "message": "Mahuta leht"
   },
   "ui_9f9cf525": {
-    "message": "PDF lehekülge"
+    "message": "PDF-i lehed"
   },
   "ui_ab32ceb0": {
     "message": "Katsetusjärgus. 646 keelekirjet; kvaliteet varieerub. Vajab fp16 toega WebGPU-d ja umbes 1,35 GB allalaadimist. Vali hääl, variant või sosistamine."
   },
   "ui_ab4a698f": {
-    "message": "Avatud leheküljelt"
+    "message": "Ava leht"
   },
   "ui_68fbfc28": {
-    "message": "Chrome ei andnud juurdepääsu aktiivsele vahekaardile."
+    "message": "Chrome ei lubanud juurdepääsu aktiivsele vahelehele."
   },
   "ui_67aad8a8": {
-    "message": "Avage leht, klõpsake ikoonil PageNarrator ja seejärel valige Loe lehte."
+    "message": "Ava leht, klõpsa PageNarratori ikoonil ja vali „Loe leht ette“."
   },
   "ui_724c0e56": {
-    "message": "Avatud leheküljelt"
+    "message": "Ava leht"
   },
   "ui_4f96b3e0": {
-    "message": "Chrome'i kaitstud lehekülgi ei saa lugeda. avage veebisait või PDF."
+    "message": "Kaitstud Chrome’i lehti ei saa ette lugeda. Ava veebileht või PDF."
   },
   "ui_0cddc760": {
-    "message": "Avatud lehekülg"
+    "message": "Ava leht"
   },
   "ui_30274c11": {
-    "message": "Vajalik lehekülje juurdepääs"
+    "message": "Vajalik on juurdepääs lehele"
   },
   "ui_ce6d1fa8": {
     "message": "PageNarrator vajab juurdepääsu sellele saidile."
@@ -1193,99 +1205,99 @@
     "message": "Luba saidile juurdepääs PageNarratori ikooni kaudu ja proovi uuesti."
   },
   "ui_57906b45": {
-    "message": "Grant juurdepääs"
+    "message": "Luba juurdepääs"
   },
   "ui_b48f6457": {
-    "message": "Tasuta brauseri salvestusruum, seejärel retry."
+    "message": "Vabasta brauseris salvestusruumi ja proovi uuesti."
   },
   "ui_75eca5ea": {
-    "message": "Tasuta ladustamine"
+    "message": "Vabasta salvestusruumi"
   },
   "ui_99e92621": {
-    "message": "Valige selle lehekülje keel."
+    "message": "Vali selle lehe keelt toetav hääl."
   },
   "ui_997f787a": {
     "message": "Vali hääl"
   },
   "ui_50a8c46f": {
-    "message": "Aktiivne vahekaart suleti enne lugemise alustamist."
+    "message": "Aktiivne vaheleht suleti enne ettelugemise algust."
   },
   "ui_e64862ef": {
-    "message": "Tabel suletud. avage lehekülg uuesti ja taaskäivitage."
+    "message": "Vaheleht suleti. Ava leht uuesti ja proovi veel kord."
   },
   "ui_39f600ae": {
-    "message": "Ei valitud teksti"
+    "message": "Teksti pole valitud"
   },
   "ui_79f7dfca": {
-    "message": "Tekst ei ole valitud."
+    "message": "Ühtegi teksti pole valitud."
   },
   "ui_b7a079b0": {
-    "message": "Valige tekst"
+    "message": "Vali tekst"
   },
   "ui_522bcc26": {
-    "message": "Valige tekst, mida soovite kuulda, ja seejärel valige Loe valitud."
+    "message": "Märgi tekst, mida soovid kuulata, ja vali „Loe valik ette“."
   },
   "ui_580dc44e": {
-    "message": "Teksti tunnustamine vajalik"
+    "message": "Vajalik on tekstituvastus"
   },
   "ui_ce175449": {
-    "message": "Mõned PDF teksti ei saanud lugeda usaldusväärselt."
+    "message": "Osa PDF-i tekstist ei saanud usaldusväärselt lugeda."
   },
   "ui_f7c03bfe": {
-    "message": "Kasutage tekstipõhist PDF"
+    "message": "Kasuta tekstiga PDF-i"
   },
   "ui_cde1ae87": {
-    "message": "Kasutage teksti tuvastamist (OCR) või PDF täieliku teksti kihiga."
+    "message": "Kasuta tekstituvastust (OCR) või täieliku tekstikihiga PDF-i."
   },
   "ui_281501a3": {
-    "message": "Täitke lehel CAPTCHA ja seejärel jätkake."
+    "message": "Lahenda lehel olev CAPTCHA ja proovi uuesti."
   },
   "ui_d1c2931f": {
-    "message": "Registreeruge saidile ja seejärel retry."
+    "message": "Logi saidile sisse ja proovi uuesti."
   },
   "ui_744be623": {
-    "message": "Märgi sisse"
+    "message": "Logi sisse"
   },
   "ui_3c4b4f30": {
-    "message": "Ei leitud loetavat artiklit"
+    "message": "Loetavat artiklit ei leitud"
   },
   "ui_fb499b08": {
-    "message": "Ei leitud loetavat artikli teksti."
+    "message": "Artiklist ei leitud loetavat teksti."
   },
   "ui_a1fad21c": {
-    "message": "Proovi teist lehekülge"
+    "message": "Proovi teist lehte"
   },
   "ui_b0ddc925": {
-    "message": "Valige lõik ja valige Loe valitud või avage teine artikkel."
+    "message": "Märgi tekstilõik ja vali „Loe valik ette“ või ava teine artikkel."
   },
   "ui_d20c5459": {
-    "message": "Hääl ei lõpetanud laadimist."
+    "message": "Hääle laadimine ei jõudnud lõpule."
   },
   "ui_eee6a1ad": {
-    "message": "Valige ettevalmistada hääl uuesti seadistamiseks."
+    "message": "Vali „Valmista hääl ette“, et seadistust uuesti proovida."
   },
   "ui_eab3cf34": {
-    "message": "Kõne põlvkond ebaõnnestus"
+    "message": "Kõne loomine ebaõnnestus"
   },
   "ui_4cad964d": {
-    "message": "Kõne põlvkond peatati enne, kui audio oli valmis."
+    "message": "Kõne loomine katkes enne heli valmimist."
   },
   "ui_2519f9e6": {
-    "message": "Retry või vali teine hääl."
+    "message": "Proovi uuesti või vali teine hääl."
   },
   "ui_1844c6fe": {
-    "message": "Toetamata PDF"
+    "message": "PDF pole toetatud"
   },
   "ui_4a8aceae": {
-    "message": "See PDF on kahjustatud või seda ei toeta."
+    "message": "See PDF on vigane või pole toetatud."
   },
   "ui_5679bf2f": {
-    "message": "Proovige veel PDF"
+    "message": "Proovi teist PDF-i"
   },
   "ui_b8183083": {
-    "message": "Ei saanud alla laadida PDF. kontrollige linki ja oma ühendust."
+    "message": "PDF-i ei saanud alla laadida. Kontrolli linki ja võrguühendust."
   },
   "ui_ce24479d": {
-    "message": "Ei suutnud seda PDF avada."
+    "message": "Seda PDF-i ei saanud avada."
   }
 }

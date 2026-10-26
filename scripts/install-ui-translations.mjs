@@ -17,7 +17,9 @@ function reviewedMessage(english, index) {
     || critical.composed[english]?.map(part => reviewedMessage(part, index)).join(' ');
 }
 for (const language of rollout.languages.filter(item => item.code !== 'en')) {
-  const draft = await read(`artifacts/ui-translations/drafts/${language.code}.json`);
+  let draft = {};
+  try { draft = await read(`artifacts/ui-translations/drafts/${language.code}.json`); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; }
   for (const locale of language.locales) {
     const localeIndex = reviewed.locales.indexOf(locale);
     if (localeIndex < 0) throw new Error(`Missing reviewed locale: ${locale}`);

@@ -1,9 +1,9 @@
 {
   "extensionDescription": {
-    "message": "Lees webpagina's en PDF's hardop met lokale stemmen op het apparaat en gesynchroniseerde highlights."
+    "message": "Laat webpagina’s en PDF’s voorlezen met lokale stemmen en gesynchroniseerde tekstmarkering."
   },
   "actionTitle": {
-    "message": "Luister naar deze pagina"
+    "message": "Deze pagina beluisteren"
   },
   "languageSuggestionOmniVoice": {
     "message": "Gedetecteerde taal: $language$. Kokoro ondersteunt Engels. Kies OmniVoice en $language$ in de steminstellingen om deze tekst voor te lezen.",
@@ -33,10 +33,10 @@
     "message": "De taal kon niet met zekerheid worden herkend."
   },
   "onboardingQuickWinTitle": {
-    "message": "Lees een geselecteerde passage"
+    "message": "Selectie voorlezen"
   },
   "onboardingQuickWinBody": {
-    "message": "Selecteer twee zinnen op de pagina en selecteer vervolgens Selectie voorlezen."
+    "message": "Selecteer twee zinnen op de pagina en kies ‘Selectie voorlezen’."
   },
   "onboardingQuickWinCta": {
     "message": "Selectie voorlezen"
@@ -45,7 +45,7 @@
     "message": "Pagina voorlezen"
   },
   "onboardingFullPageBody": {
-    "message": "Selecteer Lees pagina om te beginnen met lezen."
+    "message": "Kies ‘Pagina voorlezen’ om het voorlezen te starten."
   },
   "onboardingFullPageCta": {
     "message": "Hele pagina voorlezen"
@@ -57,7 +57,7 @@
     "message": "PageNarrator beoordelen"
   },
   "reviewPromptBody": {
-    "message": "Uw recensie helpt andere lezers te kiezen."
+    "message": "Je beoordeling helpt andere lezers bij hun keuze."
   },
   "reviewNever": {
     "message": "Nooit"
@@ -69,7 +69,7 @@
     "message": "Beoordelen"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ pagina geladen",
+    "message": "Geladen pagina’s: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ pagina's geladen",
+    "message": "Geladen pagina’s: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,13 +85,13 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Laden van documenten..."
+    "message": "Document laden…"
   },
   "ui_ffb67f19": {
-    "message": "Laden PDF ..."
+    "message": "PDF laden…"
   },
   "ui_abc76c7c": {
-    "message": "Opnieuw openen PDF..."
+    "message": "PDF opnieuw openen…"
   },
   "ui_824a0948": {
     "message": "Pagina $arg1$ van $arg2$",
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Werken..."
+    "message": "Bezig…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ stemmen",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,10 +119,10 @@
     "message": "Stem"
   },
   "ui_85d257a6": {
-    "message": "Verwerking: WebGPU (gedekte GPU)"
+    "message": "Verwerking: WebGPU (aparte GPU)"
   },
   "ui_ea65fbf2": {
-    "message": "Verwerking: WebGPU (geïntegreerd GPU)"
+    "message": "Verwerking: WebGPU (geïntegreerde GPU)"
   },
   "ui_4e4b8680": {
     "message": "Verwerking: WebGPU"
@@ -131,10 +131,10 @@
     "message": "Verwerking: CPU / WebAssembly (langzamer)"
   },
   "ui_5c338a74": {
-    "message": "Verwerking weergegeven na het lezen begint."
+    "message": "De verwerkingsmethode verschijnt zodra het voorlezen begint."
   },
   "ui_c513493a": {
-    "message": "Lokale stem voorbereiden... $arg1$%",
+    "message": "Stem voorbereiden… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Stemvoorbereiding mislukt. probeer het opnieuw."
+    "message": "De stem kon niet worden voorbereid. Probeer het opnieuw."
   },
   "ui_523c0c96": {
-    "message": "Ontbrekende spraakbestanden downloaden van Hugging Face voor de installatie."
+    "message": "Ontbrekende stembestanden worden gedownload van Hugging Face tijdens het voorbereiden of voorlezen."
   },
   "ui_8036af59": {
     "message": "Opnieuw proberen"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Beschikbaar wanneer het lezen begint"
+    "message": "De tekst verschijnt zodra het voorlezen begint."
   },
   "ui_1d9bdb7f": {
-    "message": "Transcript verschijnt wanneer tekst wordt geladen."
+    "message": "De tekst verschijnt zodra het voorlezen begint."
   },
   "ui_fe92f855": {
     "message": "Huidige pagina"
   },
   "ui_bf0c7feb": {
-    "message": "Voorbereiden..."
+    "message": "Bezig…"
   },
   "ui_3d77a20f": {
-    "message": "Voorbereiding van de stem... $arg1$%",
+    "message": "Stem voorbereiden… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Klaar om voor te lezen"
   },
   "ui_9283b625": {
-    "message": "Stem voorbereiden..."
+    "message": "Stem voorbereiden"
   },
   "ui_5ee7339b": {
     "message": "Bezig met voorlezen"
@@ -214,22 +214,22 @@
     "message": "Actie vereist"
   },
   "ui_4d1cf041": {
-    "message": "Amerikaanse vrouw"
+    "message": "Amerikaans Engels, vrouwelijk"
   },
   "ui_faf95838": {
-    "message": "Amerikaans mannetje"
+    "message": "Amerikaans Engels, mannelijk"
   },
   "ui_f3768d40": {
-    "message": "Britse vrouw"
+    "message": "Brits Engels, vrouwelijk"
   },
   "ui_4139054c": {
-    "message": "Kies een Engelse Kokoro stem. andere talen worden niet ondersteund."
+    "message": "Kies een Engelse Kokoro-stem. Kokoro ondersteunt geen andere talen."
   },
   "ui_c0c171d2": {
-    "message": "Deze actie kon niet voltooid worden."
+    "message": "Deze actie kon niet worden voltooid."
   },
   "ui_02e8a8a4": {
-    "message": "Tekst herkenning op pagina $arg1$...",
+    "message": "Tekst op pagina $arg1$ herkennen…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ pagina na deze pagina",
+    "message": "Resterende pagina’s na deze: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ pagina's na deze pagina",
+    "message": "Resterende pagina’s na deze: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Sneller"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s langzamer",
+    "message": "$arg1$ s langzamer",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Lees meer: $arg1$",
+    "message": "Voorlezen: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Lees de geselecteerde tekst"
+    "message": "Selectie voorlezen"
   },
   "ui_865bf5ae": {
     "message": "Selectie voorlezen"
@@ -284,10 +284,10 @@
     "message": "Opnieuw proberen"
   },
   "ui_1dbc8cae": {
-    "message": "Geef toegang tot de site"
+    "message": "Toegang toestaan"
   },
   "ui_450f715d": {
-    "message": "Lees onderdeel $arg1$",
+    "message": "Onderdeel $arg1$ voorlezen",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio playback mislukt"
+    "message": "Het afspelen van audio is mislukt."
   },
   "ui_248b7c43": {
-    "message": "Kan de tekst van het artikel niet vinden"
+    "message": "Er is geen leesbare artikeltekst gevonden."
   },
   "ui_48ca3593": {
     "message": "Kan geen tekst uit PDF-pagina $arg1$ halen",
@@ -312,10 +312,10 @@
     "message": "Geen pagina geladen"
   },
   "ui_8bdfb3a1": {
-    "message": "De tekst verschijnt wanneer het lezen begint."
+    "message": "De tekst verschijnt zodra het voorlezen begint."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ u $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,7 +337,7 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Lees deze pagina luid"
+    "message": "Pagina voorlezen"
   },
   "ui_758bbc44": {
     "message": "Pagina voorlezen"
@@ -346,7 +346,7 @@
     "message": "0% voltooid"
   },
   "ui_e527eba2": {
-    "message": "Voorbereiding van de stem - $arg1$%$arg2$",
+    "message": "Stem voorbereiden… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Stem voorbereiden..."
+    "message": "Stem voorbereiden"
   },
   "ui_78d44090": {
-    "message": "Stop de huidige lezing"
+    "message": "Bezig met stoppen..."
   },
   "ui_98847cfb": {
-    "message": "Stoppen met lezen..."
+    "message": "Bezig met stoppen..."
   },
   "ui_e100f46d": {
     "message": "Bezig met stoppen..."
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Voltooid lezen"
+    "message": "Voltooid"
   },
   "ui_2f0dcc5d": {
     "message": "Opnieuw voorlezen"
   },
   "ui_329cfb9e": {
-    "message": "100% compleet"
+    "message": "100% voltooid"
   },
   "ui_76fc465e": {
-    "message": "Iets ging fout"
+    "message": "Er is iets misgegaan"
   },
   "ui_0d4b0da7": {
-    "message": "Lees de geselecteerde tekst"
+    "message": "Voorlezen: Geselecteerde tekst"
   },
   "ui_242bb2e3": {
-    "message": "Het lezen van geselecteerde tekst..."
+    "message": "Voorlezen: Geselecteerde tekst"
   },
   "ui_10905ea3": {
-    "message": "Selecteer geselecteerde tekst"
+    "message": "Voorbereiden: Geselecteerde tekst…"
   },
   "ui_a2df426f": {
-    "message": "geselecteerde tekst gestopt"
+    "message": "Gepauzeerd"
   },
   "ui_915b9541": {
-    "message": "Lees de huidige pagina"
+    "message": "Voorlezen: Huidige pagina"
   },
   "ui_50880cb0": {
-    "message": "Leespagina..."
+    "message": "Voorlezen: Huidige pagina"
   },
   "ui_e8bf303d": {
-    "message": "Voorbereiden van de huidige pagina"
+    "message": "Voorbereiden: Huidige pagina…"
   },
   "ui_59ad3c41": {
     "message": "Stem voorbereiden"
   },
   "ui_af82140f": {
-    "message": "Lezen in pauze"
+    "message": "Gepauzeerd"
   },
   "ui_1ede4e42": {
-    "message": "Stem klaar"
+    "message": "Stem gereed"
   },
   "ui_63338bd9": {
-    "message": "Voice setup mislukt"
+    "message": "Steminstallatie mislukt"
   },
   "ui_cedd5bba": {
-    "message": "Het model instellen mislukt."
+    "message": "Het model kon niet worden ingesteld."
   },
   "ui_a7f38d4e": {
-    "message": "Lokale stem voorbereiden; ontbrekende bestanden downloaden van Hugging Face."
+    "message": "Stem voorbereiden… Ontbrekende stembestanden worden gedownload van Hugging Face tijdens het voorbereiden of voorlezen."
   },
   "ui_430dc39d": {
-    "message": "Tijd schatten..."
+    "message": "Tijd schatten…"
   },
   "ui_06a382b7": {
-    "message": "Open een artikel, lees vervolgens de pagina"
+    "message": "Open een artikel en start het voorlezen."
   },
   "ui_37bc7086": {
     "message": "Woorden: $arg1$",
@@ -453,13 +453,13 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Mijn"
+    "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 secties"
+    "message": "Secties: 0"
   },
   "ui_2d292516": {
-    "message": "Sectie $arg1$ van $arg2$",
+    "message": "Onderdeel $arg1$ van $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "geselecteerde tekst"
+    "message": "Geselecteerde tekst"
   },
   "ui_8212a19a": {
-    "message": "PDF documenten"
+    "message": "PDF-document"
   },
   "ui_cb3b43ef": {
-    "message": "Volledige pagina"
+    "message": "Hele pagina"
   },
   "ui_e13844b5": {
-    "message": "Artikelen alleen"
+    "message": "Alleen artikel"
   },
   "ui_6cae863f": {
     "message": "Resterende woorden: $arg1$",
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ getoond",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ van $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - Cache voor de volgende keer",
+    "message": "$arg1$ – opgeslagen voor de volgende keer",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Geverifieerd $arg1$.",
+    "message": "✓ $arg1$ · Stem voorbereiden",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Download van $arg1$: $arg2$",
+    "message": "Downloaden: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU installatie mislukt. Herstel met CPU/WebAssembly..."
+    "message": "GPU-installatie mislukt. Opnieuw proberen met CPU/WebAssembly…"
   },
   "ui_f0fc3524": {
-    "message": "Downloaden $arg1$",
+    "message": "Downloaden: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Voorbereiden $arg1$ ...",
+    "message": "Voorbereiden: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Controleer GPU ondersteuning."
+    "message": "GPU-ondersteuning controleren…"
   },
   "ui_a1f035db": {
-    "message": "Controleer de browser cache."
+    "message": "Browsercache controleren…"
   },
   "ui_412b5f0e": {
-    "message": "Eenmalig opzetten"
+    "message": "Eenmalige installatie"
   },
   "ui_91d30309": {
-    "message": "Kan de gewenste stem niet voorbereiden."
+    "message": "De gekozen stem kon niet worden voorbereid."
   },
   "ui_b9775b3a": {
-    "message": "Experimentele - kwaliteit niet gevalideerd"
+    "message": "Experimenteel – kwaliteit niet gecontroleerd"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - aangepast",
+    "message": "$arg1$ – aangepast",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Stemkwaliteit aangepast na $arg1$.",
+  "ui_b835b751": {
+    "message": "langzaam laden van het model"
+  },
+  "ui_4f078920": {
+    "message": "langzame eerste spraakgeneratie"
+  },
+  "ui_007bbfcb": {
+    "message": "langzame overgangen tussen onderdelen"
+  },
+  "ui_794a03d4": {
+    "message": "De stemkwaliteit is aangepast. Reden: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "de gekozen verwerkingsmethode"
   },
   "ui_aa682200": {
-    "message": "Spraakverwerking: GPU (WebGPU) met CPU-vriendelijke instellingen."
+    "message": "Verwerking: GPU (WebGPU) · instellingen die de CPU ontlasten"
   },
   "ui_3411bb9b": {
-    "message": "Stemverwerking: GPU (WebGPU)"
+    "message": "Verwerking: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Stemverwerking: alleen CPU (WebAssembly) omdat WebGPU niet beschikbaar is."
+    "message": "Verwerking: CPU (WebAssembly) · WebGPU niet beschikbaar"
   },
   "ui_9e335d53": {
-    "message": "Stemverwerking: alleen CPU (WebAssembly)"
+    "message": "Verwerking: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Stemverwerking: systeemstem (browser of besturingssysteem)"
+    "message": "Verwerking: systeemstem (browser of besturingssysteem)"
   },
   "ui_815f1834": {
-    "message": "Stemverwerking: gecontroleerd wanneer het lezen begint."
+    "message": "De verwerkingsmethode verschijnt zodra het voorlezen begint."
   },
   "ui_19f02581": {
     "message": "Experimentele OmniVoice via WebGPU is in gebruik."
@@ -749,7 +761,7 @@
     "message": "De spraak wordt op dit apparaat gegenereerd. Cachebestanden kunnen offline worden hergebruikt totdat ze worden gewist."
   },
   "ui_95b6ef87": {
-    "message": "Experimentele kwaliteit: $arg1$.",
+    "message": "Experimenteel – kwaliteit niet gecontroleerd ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Het nummer $arg1$ is beschikbaar.",
+    "message": "Geen stem beschikbaar voor de gekozen taal: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip code snippets maken?"
+    "message": "Codefragmenten overslaan"
   },
   "ui_9d9f28af": {
-    "message": "Deze pagina heeft veel code snippets. Skip ongeveer $arg1$ min van code voor een soepeler verhaal.",
+    "message": "Deze pagina bevat veel code. Sla ongeveer $arg1$ min code over om prettiger te luisteren.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Deze pagina heeft veel code snippets. Skip ongeveer $arg1$ minuten van code voor een soepeler verhaal.",
+    "message": "Deze pagina bevat veel code. Sla ongeveer $arg1$ min code over om prettiger te luisteren.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 onderdeel vooraf geladen"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ secties voorgeladen",
+    "message": "Vooraf geladen onderdelen: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressieve playback"
+    "message": "stapsgewijze weergave aan"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressieve playback uit"
+    "message": "stapsgewijze weergave uit"
   },
   "ui_95c9f0ef": {
-    "message": "Automatische browser stem schakelen"
+    "message": "automatisch overschakelen naar browserstem uit"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$-karakter stukken, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ tekens · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Ik kon deze pagina niet openen."
+    "message": "Deze pagina is niet toegankelijk."
   },
   "ui_be75ad01": {
-    "message": "Best-effort readerEngine-operatie mislukt"
+    "message": "Deze actie kon niet worden voltooid."
   },
   "ui_eb6988d3": {
-    "message": "Kan de resetpositie niet laden"
+    "message": "De opgeslagen leespositie kon niet worden geladen"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator niet geïnitieerd."
+    "message": "PageNarrator kon niet worden gestart."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator spelers"
+    "message": "PageNarrator-speler"
   },
   "ui_9d65bbdb": {
-    "message": "Kies een stemmodel"
+    "message": "Stemmodel"
   },
   "ui_e6334598": {
     "message": "Stemmodel"
@@ -872,7 +884,7 @@
     "message": "Taal"
   },
   "ui_2070a9f8": {
-    "message": "Laden van stemmen..."
+    "message": "Stemmen laden…"
   },
   "ui_c39c8623": {
     "message": "Stemtype"
@@ -887,7 +899,7 @@
     "message": "Stemvariant"
   },
   "ui_16383585": {
-    "message": "Selecteer een stemvariatie. Veranderingen zijn van toepassing op de volgende sectie. Stel het tempo in met Playback-snelheid."
+    "message": "Kies een stemvariant. Wijzigingen gelden vanaf het volgende onderdeel. Pas het tempo aan met ‘Afspeelsnelheid’."
   },
   "ui_d975568d": {
     "message": "Fluisteren"
@@ -896,19 +908,19 @@
     "message": "Afspeelsnelheid"
   },
   "ui_c58a3963": {
-    "message": "Automatisch opgeslagen.Stemwijzigingen worden toegepast op de volgende sectie tijdens het lezen."
+    "message": "Wordt automatisch opgeslagen. Tijdens het voorlezen gelden stemwijzigingen vanaf het volgende onderdeel."
   },
   "ui_71365cb1": {
-    "message": "Maak plaatselijke stem"
+    "message": "Lokale stem voorbereiden"
   },
   "ui_c197c7e2": {
     "message": "Overslaan"
   },
   "ui_dad1a20b": {
-    "message": "Nu lezen"
+    "message": "Bezig met voorlezen"
   },
   "ui_30ea6e2f": {
-    "message": "Vorige sectie"
+    "message": "Vorig onderdeel"
   },
   "ui_c2954bc2": {
     "message": "Vorige"
@@ -929,7 +941,7 @@
     "message": "Pauzes, tekstopruiming, markering"
   },
   "ui_67231237": {
-    "message": "Pauze tussen de secties"
+    "message": "Pauze tussen onderdelen"
   },
   "ui_8f517045": {
     "message": "Prestaties"
@@ -941,16 +953,16 @@
     "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Stemgeheugen vrijmaken wanneer idle"
+    "message": "Stemgeheugen vrijmaken bij inactiviteit"
   },
   "ui_231b3e4b": {
     "message": "Codefragmenten overslaan"
   },
   "ui_456ac053": {
-    "message": "Kleurgebied"
+    "message": "Kleur van leesgebied"
   },
   "ui_10cd7856": {
-    "message": "Woorden van kleur"
+    "message": "Kleur van woord"
   },
   "ui_1e4dbab9": {
     "message": "Dekking van leesgebied"
@@ -965,13 +977,13 @@
     "message": "Leeswachtrij"
   },
   "ui_a106cd77": {
-    "message": "Zoek secties"
+    "message": "Onderdelen doorzoeken"
   },
   "ui_ee3d49e1": {
     "message": "Eerste"
   },
   "ui_30035f15": {
-    "message": "Sectie nummer"
+    "message": "Onderdeelnummer"
   },
   "ui_41d0c56b": {
     "message": "Ga"
@@ -980,178 +992,178 @@
     "message": "Laatste"
   },
   "ui_bd9126df": {
-    "message": "Geen overeenkomstige secties. probeer een andere zoekopdracht."
+    "message": "Geen overeenkomende onderdelen. Probeer een andere zoekopdracht."
   },
   "ui_620574c4": {
-    "message": "PageNarrator leesmachine"
+    "message": "PageNarrator-speler"
   },
   "ui_c5fbc06e": {
-    "message": "Grant pagina toegang"
+    "message": "Toegang toestaan"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator extensie icon"
+    "message": "Pictogram van de PageNarrator-extensie"
   },
   "ui_5a3d9c47": {
-    "message": "Open PageNarrator van de pagina"
+    "message": "PageNarrator openen vanaf de pagina"
   },
   "ui_94a4b160": {
-    "message": "Klik op het pictogram van de extensie PageNarrator terwijl de pagina actief is en selecteer vervolgens Lees pagina."
+    "message": "Open de pagina, klik op het PageNarrator-pictogram en kies ‘Pagina voorlezen’."
   },
   "ui_4be7c01e": {
-    "message": "Vermiste spraakbestanden downloaden bij het eerste gebruik. spraak wordt lokaal uitgevoerd."
+    "message": "Ontbrekende stembestanden worden gedownload van Hugging Face tijdens het voorbereiden of voorlezen. De spraak wordt op dit apparaat gegenereerd. Cachebestanden kunnen offline worden hergebruikt totdat ze worden gewist."
   },
   "ui_3d04a00a": {
-    "message": "Lokale stem voorbereiden; ontbrekende bestanden downloaden van Hugging Face..."
+    "message": "Stem voorbereiden… Ontbrekende stembestanden worden gedownload van Hugging Face tijdens het voorbereiden of voorlezen."
   },
   "ui_048ca959": {
-    "message": "Herstel stappen"
+    "message": "Stappen om het op te lossen"
   },
   "ui_0ec24245": {
     "message": "Details"
   },
   "ui_4ff448da": {
-    "message": "Lees opnieuw"
+    "message": "Voorlezen hervatten"
   },
   "ui_cb2eed93": {
-    "message": "Resumeer op de opgeslagen positie"
+    "message": "Hervatten vanaf opgeslagen positie"
   },
   "ui_ded3954b": {
-    "message": "Bewaarde lezingspositie"
+    "message": "Opgeslagen leespositie"
   },
   "ui_24299867": {
     "message": "Opnieuw beginnen"
   },
   "ui_d71c7401": {
-    "message": "Lees suggestie"
+    "message": "Leessuggestie"
   },
   "ui_d5c02828": {
-    "message": "Deze pagina bevat veel code snippets."
+    "message": "Deze pagina bevat veel codefragmenten."
   },
   "ui_336b89fb": {
     "message": "Code overslaan"
   },
   "ui_299fab6d": {
-    "message": "Ontdekte artikel"
+    "message": "Herkend artikel"
   },
   "ui_a9898369": {
-    "message": "Lees: Alleen artikel"
+    "message": "Voorlezen: Alleen artikel"
   },
   "ui_3065e144": {
     "message": "Begint met"
   },
   "ui_7ac012cc": {
-    "message": "Lezen speler"
+    "message": "PageNarrator-speler"
   },
   "ui_8edce20a": {
-    "message": "Lezen vooruitgang"
+    "message": "Leesvoortgang"
   },
   "ui_949ea37c": {
-    "message": "0 stukken gebleven"
+    "message": "Resterende fragmenten: 0"
   },
   "ui_1250127e": {
-    "message": "PDF pagina navigatie"
+    "message": "PDF-bediening"
   },
   "ui_e83d9196": {
     "message": "Pagina"
   },
   "ui_27ba99fc": {
-    "message": "Skip de huidige PDF pagina"
+    "message": "Huidige PDF-pagina overslaan"
   },
   "ui_dbd1ad47": {
-    "message": "Reader instellingen"
+    "message": "Leesinstellingen"
   },
   "ui_1a27bec5": {
-    "message": "De taal wordt gedetecteerd wanneer het lezen begint."
+    "message": "De taal wordt herkend zodra het voorlezen begint."
   },
   "ui_52ff662d": {
-    "message": "Device vereisten"
+    "message": "Apparaatvereisten"
   },
   "ui_fd02dfc2": {
     "message": "Aanbevolen:"
   },
   "ui_b0555d92": {
-    "message": "een speciale NVIDIA RTX 30-serie GPU of hoger, met 8 GB + VRAM en 8 GB + systeem RAM."
+    "message": "een aparte NVIDIA-GPU uit de RTX 30-serie of nieuwer, met minstens 8 GB VRAM en 8 GB systeemgeheugen."
   },
   "ui_0d393abc": {
-    "message": "Gebruik Chromium 120 of hoger. Kokoro heeft een langzamer CPU fallback."
+    "message": "Gebruik Chromium 120 of nieuwer. Kokoro heeft een langzamere CPU-terugvalmodus. De hardwareklassen zijn niet op fysieke apparaten geverifieerd."
   },
   "ui_f31ba722": {
-    "message": "Timing, schoonmaken en stemmen"
+    "message": "Pauzes, tekstopruiming, stemmen"
   },
   "ui_a879e367": {
-    "message": "Sectie pauzes"
+    "message": "Pauze tussen onderdelen"
   },
   "ui_07e1c336": {
-    "message": "Highlight stijl"
+    "message": "Markeringsstijl"
   },
   "ui_9525b78e": {
     "message": "Aangepast"
   },
   "ui_e0955632": {
-    "message": "Lees gebied"
+    "message": "Leesgebied"
   },
   "ui_90571eca": {
-    "message": "Huidige woorden"
+    "message": "Huidig woord"
   },
   "ui_ea585567": {
-    "message": "Reiniging lezen"
+    "message": "Tekstopruiming"
   },
   "ui_0dc6b4aa": {
     "message": "Uit"
   },
   "ui_d6fbffc9": {
-    "message": "Queue en transcript samenvatting"
+    "message": "Wachtrij en tekst"
   },
   "ui_21fd85e4": {
-    "message": "Queue en transcript"
+    "message": "Wachtrij en tekst"
   },
   "ui_d6c98891": {
-    "message": "Huidige sectie, transcript zoeken en sprong controles zijn beschikbaar in de geavanceerde modus."
+    "message": "Het huidige onderdeel, tekst zoeken en de springknoppen zijn beschikbaar in de geavanceerde modus."
   },
   "ui_0eac1f07": {
     "message": "Bladeren"
   },
   "ui_44d76dee": {
-    "message": "Volledige transcriptie"
+    "message": "Volledige tekst"
   },
   "ui_ab5783a6": {
-    "message": "0 paragraaf"
+    "message": "Alinea’s: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Queue navigatie"
+    "message": "Navigeren in wachtrij"
   },
   "ui_2d877b6c": {
     "message": "Sectie"
   },
   "ui_03205ed1": {
-    "message": "Zoek sectie"
+    "message": "Onderdeel zoeken"
   },
   "ui_27654275": {
-    "message": "Zoek transcript of pagina..."
+    "message": "Tekst of pagina doorzoeken…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF controles"
+    "message": "PDF-bediening"
   },
   "ui_88828491": {
     "message": "Pagina 1 van 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom uit"
+    "message": "Uitzoomen"
   },
   "ui_a3583899": {
-    "message": "Zoom in"
+    "message": "Inzoomen"
   },
   "ui_2b3553eb": {
-    "message": "Rotatie links"
+    "message": "Linksom draaien"
   },
   "ui_2eaecb74": {
-    "message": "Rotatie rechts"
+    "message": "Rechtsom draaien"
   },
   "ui_b6ab6b07": {
-    "message": "Pas op mode"
+    "message": "Weergave aanpassen"
   },
   "ui_69acd800": {
     "message": "Aan breedte aanpassen"
@@ -1160,132 +1172,132 @@
     "message": "Aan pagina aanpassen"
   },
   "ui_9f9cf525": {
-    "message": "PDF pagina's"
+    "message": "PDF-pagina’s"
   },
   "ui_ab32ceb0": {
     "message": "Experimenteel. 646 taalvermeldingen; de kwaliteit varieert. Vereist WebGPU met fp16 en ongeveer 1,35 GB aan downloads. Kies een stem, variant of fluisterstem."
   },
   "ui_ab4a698f": {
-    "message": "Open vanaf de pagina"
+    "message": "Pagina openen"
   },
   "ui_68fbfc28": {
     "message": "Chrome heeft geen toegang tot het actieve tabblad verleend."
   },
   "ui_67aad8a8": {
-    "message": "Open de pagina, klik op het pictogram PageNarrator en selecteer vervolgens Lees pagina."
+    "message": "Open de pagina, klik op het PageNarrator-pictogram en kies ‘Pagina voorlezen’."
   },
   "ui_724c0e56": {
-    "message": "Open van pagina"
+    "message": "Pagina openen"
   },
   "ui_4f96b3e0": {
-    "message": "Beschermde Chrome-pagina's kunnen niet worden gelezen.Open een webpagina of PDF."
+    "message": "Beveiligde Chrome-pagina’s kunnen niet worden voorgelezen. Open een webpagina of PDF."
   },
   "ui_0cddc760": {
-    "message": "Open pagina"
+    "message": "Pagina openen"
   },
   "ui_30274c11": {
-    "message": "Pagina toegang vereist"
+    "message": "Toegang tot de pagina vereist"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator moet toegang tot deze site."
+    "message": "PageNarrator heeft toegang tot deze site nodig."
   },
   "ui_2b54b790": {
     "message": "Sta toegang tot de site toe via het PageNarrator-pictogram en probeer het opnieuw."
   },
   "ui_57906b45": {
-    "message": "Grant toegang"
+    "message": "Toegang toestaan"
   },
   "ui_b48f6457": {
-    "message": "Gratis browser opslag, dan retry."
+    "message": "Maak opslagruimte vrij in de browser en probeer het opnieuw."
   },
   "ui_75eca5ea": {
-    "message": "Gratis opslag"
+    "message": "Opslagruimte vrijmaken"
   },
   "ui_99e92621": {
     "message": "Kies een stem voor de taal van deze pagina."
   },
   "ui_997f787a": {
-    "message": "Kies een stem"
+    "message": "Stem kiezen"
   },
   "ui_50a8c46f": {
-    "message": "Het actieve tabblad is gesloten voordat het lezen kan beginnen."
+    "message": "Het actieve tabblad is gesloten voordat het voorlezen kon beginnen."
   },
   "ui_e64862ef": {
-    "message": "Het tabblad is gesloten. opent de pagina opnieuw en retry."
+    "message": "Het tabblad is gesloten. Open de pagina opnieuw en probeer het nogmaals."
   },
   "ui_39f600ae": {
-    "message": "Geen geselecteerde tekst"
+    "message": "Geen tekst geselecteerd"
   },
   "ui_79f7dfca": {
-    "message": "Geen tekst is geselecteerd."
+    "message": "Er is geen tekst geselecteerd."
   },
   "ui_b7a079b0": {
-    "message": "Selecteer tekst"
+    "message": "Tekst selecteren"
   },
   "ui_522bcc26": {
-    "message": "Selecteer de tekst die u wilt horen en selecteer Lees geselecteerd."
+    "message": "Selecteer de tekst die je wilt horen en kies ‘Selectie voorlezen’."
   },
   "ui_580dc44e": {
     "message": "Tekstherkenning vereist"
   },
   "ui_ce175449": {
-    "message": "Sommige PDF tekst kon niet betrouwbaar worden gelezen."
+    "message": "Een deel van de PDF-tekst kon niet betrouwbaar worden gelezen."
   },
   "ui_f7c03bfe": {
-    "message": "Gebruik een tekstgebaseerde PDF"
+    "message": "PDF met tekst gebruiken"
   },
   "ui_cde1ae87": {
     "message": "Gebruik tekstherkenning (OCR) of een PDF met een volledige tekstlaag."
   },
   "ui_281501a3": {
-    "message": "Voltooi de CAPTCHA op de pagina, vervolgens opnieuw."
+    "message": "Voltooi de CAPTCHA op de pagina en probeer het opnieuw."
   },
   "ui_d1c2931f": {
-    "message": "Log in op de site, dan retry."
+    "message": "Log in op de site en probeer het opnieuw."
   },
   "ui_744be623": {
-    "message": "Signaal in"
+    "message": "Inloggen"
   },
   "ui_3c4b4f30": {
     "message": "Geen leesbaar artikel gevonden"
   },
   "ui_fb499b08": {
-    "message": "Geen leesbare tekst gevonden."
+    "message": "Er is geen leesbare artikeltekst gevonden."
   },
   "ui_a1fad21c": {
-    "message": "Probeer een andere pagina"
+    "message": "Andere pagina proberen"
   },
   "ui_b0ddc925": {
-    "message": "Selecteer een passage en selecteer Lees geselecteerd of open een ander artikel."
+    "message": "Selecteer een passage en kies ‘Selectie voorlezen’, of open een ander artikel."
   },
   "ui_d20c5459": {
-    "message": "De stem eindigde niet met het laden."
+    "message": "Het laden van de stem is niet voltooid."
   },
   "ui_eee6a1ad": {
-    "message": "Selecteer voorbereiden van de stem om de instelling te herstellen."
+    "message": "Kies ‘Stem voorbereiden’ om de installatie opnieuw te proberen."
   },
   "ui_eab3cf34": {
-    "message": "Speechgeneratie mislukt"
+    "message": "Spraakgeneratie mislukt"
   },
   "ui_4cad964d": {
     "message": "De spraakgeneratie stopte voordat de audio klaar was."
   },
   "ui_2519f9e6": {
-    "message": "Retry, of kies een andere stem."
+    "message": "Probeer het opnieuw of kies een andere stem."
   },
   "ui_1844c6fe": {
-    "message": "Niet ondersteund PDF"
+    "message": "Niet-ondersteunde PDF"
   },
   "ui_4a8aceae": {
-    "message": "Deze PDF is beschadigd of niet ondersteund."
+    "message": "Deze PDF is beschadigd of wordt niet ondersteund."
   },
   "ui_5679bf2f": {
-    "message": "Probeer een andere PDF"
+    "message": "Andere PDF proberen"
   },
   "ui_b8183083": {
-    "message": "Kan de PDF niet downloaden. Check de link en uw verbinding."
+    "message": "De PDF kon niet worden gedownload. Controleer de link en je verbinding."
   },
   "ui_ce24479d": {
-    "message": "Kan dit niet openen PDF."
+    "message": "Deze PDF kon niet worden geopend."
   }
 }

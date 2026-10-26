@@ -1,9 +1,9 @@
 {
   "extensionDescription": {
-    "message": "用本地设备语音和同步突出功能大声阅读网页和PDF。"
+    "message": "使用设备上的本地语音朗读网页和 PDF，并同步高亮显示文本。"
   },
   "actionTitle": {
-    "message": "倾听此页面"
+    "message": "收听此页面"
   },
   "languageSuggestionOmniVoice": {
     "message": "检测到$language$。Kokoro 支持英语。请在语音设置中选择 OmniVoice 和$language$，以朗读此文本。",
@@ -33,10 +33,10 @@
     "message": "无法确定语言。"
   },
   "onboardingQuickWinTitle": {
-    "message": "阅读选择的通道"
+    "message": "朗读所选内容"
   },
   "onboardingQuickWinBody": {
-    "message": "在页面上选择两个句子,然后选择阅读选项。"
+    "message": "选择页面上的两个句子，然后选择“朗读所选内容”。"
   },
   "onboardingQuickWinCta": {
     "message": "朗读所选内容"
@@ -45,7 +45,7 @@
     "message": "朗读页面"
   },
   "onboardingFullPageBody": {
-    "message": "选择阅读页面开始阅读。"
+    "message": "选择“朗读页面”以开始朗读。"
   },
   "onboardingFullPageCta": {
     "message": "朗读整个页面"
@@ -57,7 +57,7 @@
     "message": "评价 PageNarrator"
   },
   "reviewPromptBody": {
-    "message": "你的评论帮助其他读者做出选择。"
+    "message": "您的评价能帮助其他读者作出选择。"
   },
   "reviewNever": {
     "message": "不再提示"
@@ -69,7 +69,7 @@
     "message": "评价"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ 页面加载",
+    "message": "已加载页数：$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ 页面加载",
+    "message": "已加载页数：$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,16 +85,16 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "加载文件..."
+    "message": "正在加载文档…"
   },
   "ui_ffb67f19": {
-    "message": "第PDF章 是的"
+    "message": "正在加载 PDF…"
   },
   "ui_abc76c7c": {
-    "message": "第PDF章 回来"
+    "message": "正在重新打开 PDF…"
   },
   "ui_824a0948": {
-    "message": "页面 $arg1$ 的 $arg2$",
+    "message": "第 $arg1$ 页，共 $arg2$ 页",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "工作..."
+    "message": "正在处理…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ 名单",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "语音"
   },
   "ui_85d257a6": {
-    "message": "处理:WebGPU(专用GPU)"
+    "message": "处理方式: WebGPU (独立 GPU)"
   },
   "ui_ea65fbf2": {
-    "message": "处理:WebGPU(集成GPU)"
+    "message": "处理方式: WebGPU (集成 GPU)"
   },
   "ui_4e4b8680": {
-    "message": "处理: WebGPU"
+    "message": "处理方式: WebGPU"
   },
   "ui_7d6c19ce": {
-    "message": "处理: CPU / WebAssembly (较慢)"
+    "message": "处理方式: CPU / WebAssembly (较慢)"
   },
   "ui_5c338a74": {
-    "message": "阅读开始后显示的处理。"
+    "message": "开始朗读后将显示处理方式。"
   },
   "ui_c513493a": {
-    "message": "准备本地语音... $arg1$%",
+    "message": "正在准备语音… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "语音准备失败. 再次尝试。"
+    "message": "语音准备失败。请重试。"
   },
   "ui_523c0c96": {
-    "message": "在安装之前从 Hugging Face 下载缺少的语音文件。"
+    "message": "准备语音或开始朗读时，缺少的语音文件会从 Hugging Face 下载。"
   },
   "ui_8036af59": {
     "message": "重试"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "当阅读开始时可用"
+    "message": "开始朗读时将显示文本。"
   },
   "ui_1d9bdb7f": {
-    "message": "转录在文本加载时出现。"
+    "message": "开始朗读时将显示文本。"
   },
   "ui_fe92f855": {
-    "message": "目前页面"
+    "message": "当前页面"
   },
   "ui_bf0c7feb": {
-    "message": "准备..."
+    "message": "正在处理…"
   },
   "ui_3d77a20f": {
-    "message": "准备语音... $arg1$%",
+    "message": "正在准备语音… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "准备就绪"
   },
   "ui_9283b625": {
-    "message": "准备声音..."
+    "message": "正在准备语音"
   },
   "ui_5ee7339b": {
     "message": "正在朗读"
@@ -214,22 +214,22 @@
     "message": "需要处理"
   },
   "ui_4d1cf041": {
-    "message": "美国女人"
+    "message": "美式英语，女声"
   },
   "ui_faf95838": {
-    "message": "美国男子"
+    "message": "美式英语，男声"
   },
   "ui_f3768d40": {
-    "message": "英国女性"
+    "message": "英式英语，女声"
   },
   "ui_4139054c": {
-    "message": "选择英语语音 Kokoro 其他语言不支持。"
+    "message": "请选择 Kokoro 的英语语音。Kokoro 不支持其他语言。"
   },
   "ui_c0c171d2": {
-    "message": "无法完成这一行动。"
+    "message": "无法完成此操作。"
   },
   "ui_02e8a8a4": {
-    "message": "在 $arg1$ 页面上识别文本...",
+    "message": "正在识别第 $arg1$ 页的文字…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ 此页面之后的页面",
+    "message": "本页之后还剩 $arg1$ 页",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ 页面此页面后",
+    "message": "本页之后还剩 $arg1$ 页",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "更快"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s 较慢",
+    "message": "延长 $arg1$ 秒",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "阅读: $arg1$",
+    "message": "正在朗读：$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "阅读选择的文本"
+    "message": "朗读所选内容"
   },
   "ui_865bf5ae": {
     "message": "朗读所选内容"
@@ -284,10 +284,10 @@
     "message": "重试"
   },
   "ui_1dbc8cae": {
-    "message": "提供网站访问"
+    "message": "允许访问"
   },
   "ui_450f715d": {
-    "message": "阅读第$arg1$章",
+    "message": "朗读第 $arg1$ 节",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "音频播放失败了。"
+    "message": "音频播放失败。"
   },
   "ui_248b7c43": {
-    "message": "无法检测文章文本"
+    "message": "未找到可朗读的文章正文。"
   },
   "ui_48ca3593": {
     "message": "无法提取 PDF 第 $arg1$ 页的文本",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "没有页面加载"
+    "message": "未加载页面"
   },
   "ui_8bdfb3a1": {
-    "message": "文本在阅读开始时出现。"
+    "message": "开始朗读时将显示文本。"
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$秒",
+    "message": "$arg1$ 分 $arg2$ 秒",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$小时 $arg2$米",
+    "message": "$arg1$ 小时 $arg2$ 分钟",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "读这页大声"
+    "message": "朗读页面"
   },
   "ui_758bbc44": {
     "message": "朗读页面"
   },
   "ui_a174ecb1": {
-    "message": "0% 完整"
+    "message": "已完成 0%"
   },
   "ui_e527eba2": {
-    "message": "预备语音 - $arg1$%$arg2$",
+    "message": "正在准备语音… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "准备声音..."
+    "message": "正在准备语音"
   },
   "ui_78d44090": {
-    "message": "停止当前阅读"
+    "message": "正在停止…"
   },
   "ui_98847cfb": {
-    "message": "停止阅读..."
+    "message": "正在停止…"
   },
   "ui_e100f46d": {
     "message": "正在停止…"
@@ -372,7 +372,7 @@
     "message": "停止"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% 完整",
+    "message": "已完成 $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "读完"
+    "message": "已完成"
   },
   "ui_2f0dcc5d": {
     "message": "重新朗读"
   },
   "ui_329cfb9e": {
-    "message": "100% 完整"
+    "message": "已完成 100%"
   },
   "ui_76fc465e": {
-    "message": "有些东西错了"
+    "message": "出现错误"
   },
   "ui_0d4b0da7": {
-    "message": "阅读选择的文本"
+    "message": "正在朗读：所选文本"
   },
   "ui_242bb2e3": {
-    "message": "阅读选择的文本"
+    "message": "正在朗读：所选文本"
   },
   "ui_10905ea3": {
-    "message": "准备选择的文本"
+    "message": "正在准备：所选文本…"
   },
   "ui_a2df426f": {
-    "message": "选择的文本暂停"
+    "message": "已暂停"
   },
   "ui_915b9541": {
-    "message": "阅读当前页面"
+    "message": "正在朗读：当前页面"
   },
   "ui_50880cb0": {
-    "message": "阅读页面..."
+    "message": "正在朗读：当前页面"
   },
   "ui_e8bf303d": {
-    "message": "准备当前页面"
+    "message": "正在准备：当前页面…"
   },
   "ui_59ad3c41": {
-    "message": "准备声音"
+    "message": "正在准备语音"
   },
   "ui_af82140f": {
-    "message": "阅读休息"
+    "message": "已暂停"
   },
   "ui_1ede4e42": {
-    "message": "声音准备"
+    "message": "语音已就绪"
   },
   "ui_63338bd9": {
     "message": "语音设置失败"
   },
   "ui_cedd5bba": {
-    "message": "模型设置失败了。"
+    "message": "模型设置失败。"
   },
   "ui_a7f38d4e": {
-    "message": "准备本地语音;从Hugging Face下载缺少的文件。"
+    "message": "正在准备语音… 准备语音或开始朗读时，缺少的语音文件会从 Hugging Face 下载。"
   },
   "ui_430dc39d": {
-    "message": "估计时间..."
+    "message": "正在估算时间…"
   },
   "ui_06a382b7": {
-    "message": "打开一篇文章,然后阅读页面"
+    "message": "打开文章后开始朗读页面。"
   },
   "ui_37bc7086": {
     "message": "字词数：$arg1$",
@@ -453,13 +453,13 @@
     }
   },
   "ui_c98f4557": {
-    "message": "我的"
+    "message": "分钟"
   },
   "ui_5dca8675": {
-    "message": "0 部分"
+    "message": "节数：0"
   },
   "ui_2d292516": {
-    "message": "第$arg1$ 和第$arg2$",
+    "message": "第 $arg1$ 节，共 $arg2$ 节",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "选择的文本"
+    "message": "所选文本"
   },
   "ui_8212a19a": {
-    "message": "PDF 文件"
+    "message": "PDF 文档"
   },
   "ui_cb3b43ef": {
-    "message": "完整页面"
+    "message": "整个页面"
   },
   "ui_e13844b5": {
-    "message": "只有文章"
+    "message": "仅文章正文"
   },
   "ui_6cae863f": {
     "message": "剩余字词：$arg1$",
@@ -533,7 +533,7 @@
     }
   },
   "ui_0290cbb9": {
-    "message": "页面 $arg1$",
+    "message": "页码 $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · 第一个 $arg2$ 显示",
+    "message": "$arg1$ · 显示前 $arg2$ 项",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ 显示",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ 共 $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - 下次缓存",
+    "message": "$arg1$，已缓存供下次使用",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "第$arg1$章 打电话了",
+    "message": "✓ $arg1$ · 正在准备语音",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "下载语音文件: $arg1$",
+    "message": "正在下载语音文件：$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "下载 $arg1$: $arg2$",
+    "message": "正在下载：$arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU 安装失败. 重复使用 CPU/WebAssembly..."
+    "message": "GPU 设置失败。正在改用 CPU/WebAssembly 重试…"
   },
   "ui_f0fc3524": {
-    "message": "下载 $arg1$...",
+    "message": "正在下载：$arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "第$arg1$章 准备好了",
+    "message": "正在准备：$arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "查看 GPU 支持..."
+    "message": "正在检查 GPU 支持…"
   },
   "ui_a1f035db": {
-    "message": "检查浏览器缓存..."
+    "message": "正在检查浏览器缓存…"
   },
   "ui_412b5f0e": {
-    "message": "一次性设置"
+    "message": "首次设置"
   },
   "ui_91d30309": {
-    "message": "无法准备所请求的声音。"
+    "message": "无法准备所选语音。"
   },
   "ui_b9775b3a": {
-    "message": "实验 - 质量未验证"
+    "message": "实验性功能，质量尚未验证"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - 调整",
+    "message": "$arg1$，已调整",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "语音质量在 $arg1$ 之后被调整。",
+  "ui_b835b751": {
+    "message": "模型加载缓慢"
+  },
+  "ui_4f078920": {
+    "message": "首次语音生成缓慢"
+  },
+  "ui_007bbfcb": {
+    "message": "段落切换缓慢"
+  },
+  "ui_794a03d4": {
+    "message": "已调整语音质量。原因：$arg1$。",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "所选处理方式"
   },
   "ui_aa682200": {
-    "message": "语音处理:GPU(WebGPU)与CPU友好的设置。"
+    "message": "处理方式: GPU (WebGPU) · 降低 CPU 负载的设置"
   },
   "ui_3411bb9b": {
-    "message": "语音处理:GPU(WebGPU)"
+    "message": "处理方式: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "语音处理:仅CPU(WebAssembly)因为WebGPU不可用。"
+    "message": "处理方式: CPU (WebAssembly) · WebGPU 不可用"
   },
   "ui_9e335d53": {
-    "message": "语音处理:仅CPU(WebAssembly)"
+    "message": "处理方式: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "语音处理:系统语音(浏览器或操作系统)。"
+    "message": "处理方式: 系统语音（浏览器或操作系统）"
   },
   "ui_815f1834": {
-    "message": "语音处理:在阅读开始时检查。"
+    "message": "开始朗读后将显示处理方式。"
   },
   "ui_19f02581": {
     "message": "正在通过 WebGPU 使用实验性 OmniVoice。"
@@ -749,7 +761,7 @@
     "message": "语音在此设备上生成。缓存文件可离线重复使用，除非被清除。"
   },
   "ui_95b6ef87": {
-    "message": "实验质量: $arg1$",
+    "message": "实验性功能，质量尚未验证 ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "第$arg1$号票是可用的。",
+    "message": "没有适用于所选语言的语音：$arg1$。",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "滑板代码?"
+    "message": "跳过代码片段"
   },
   "ui_9d9f28af": {
-    "message": "这个页面有许多代码片段. 跳过约 $arg1$ 分钟的代码,以便更顺利的叙述。",
+    "message": "此页面包含大量代码。跳过约 $arg1$ 分钟的代码，可让朗读更流畅。",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "这个页面有许多代码片段. 跳过约 $arg1$ 分钟的代码,以便更顺利的叙述。",
+    "message": "此页面包含大量代码。跳过约 $arg1$ 分钟的代码，可让朗读更流畅。",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "已预加载 1 个段落"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ 预加载的部分",
+    "message": "已预加载段落数：$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "渐进式播放"
+    "message": "渐进式播放已开启"
   },
   "ui_4ddd1cf4": {
-    "message": "渐进式播放离"
+    "message": "渐进式播放已关闭"
   },
   "ui_95c9f0ef": {
-    "message": "自动浏览器语音切换"
+    "message": "自动切换到浏览器语音已关闭"
   },
   "ui_c86df72a": {
-    "message": "$arg1$:$arg2$字符块,$arg3$,$arg4$,$arg5$。",
+    "message": "$arg1$: $arg2$ 字符 · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -839,19 +851,19 @@
     "message": "无法访问此页面。"
   },
   "ui_be75ad01": {
-    "message": "最努力的读者引擎操作失败了。"
+    "message": "无法完成此操作。"
   },
   "ui_eb6988d3": {
-    "message": "无法加载恢复位置"
+    "message": "无法加载已保存的朗读位置"
   },
   "ui_1b842ad5": {
-    "message": "第PageNarrator章 没想到"
+    "message": "PageNarrator 初始化失败。"
   },
   "ui_87d977c4": {
-    "message": "PageNarrator 玩家"
+    "message": "PageNarrator 播放器"
   },
   "ui_9d65bbdb": {
-    "message": "选择语音模型"
+    "message": "语音模型"
   },
   "ui_e6334598": {
     "message": "语音模型"
@@ -872,7 +884,7 @@
     "message": "语言"
   },
   "ui_2070a9f8": {
-    "message": "充电声音..."
+    "message": "正在加载语音…"
   },
   "ui_c39c8623": {
     "message": "声音类型"
@@ -887,7 +899,7 @@
     "message": "声音变体"
   },
   "ui_16383585": {
-    "message": "选择一个语音变量. 更改适用于下一个部分. 使用播放速度设置速度。"
+    "message": "选择语音变体。更改从下一节开始生效。可通过“播放速度”调整语速。"
   },
   "ui_d975568d": {
     "message": "耳语"
@@ -896,16 +908,16 @@
     "message": "播放速度"
   },
   "ui_c58a3963": {
-    "message": "自动保存. 语音更改在阅读时适用于下一节。"
+    "message": "自动保存。朗读期间的语音更改从下一节开始生效。"
   },
   "ui_71365cb1": {
-    "message": "准备当地语音"
+    "message": "准备本地语音"
   },
   "ui_c197c7e2": {
     "message": "跳过"
   },
   "ui_dad1a20b": {
-    "message": "现在阅读"
+    "message": "正在朗读"
   },
   "ui_30ea6e2f": {
     "message": "上一节"
@@ -929,7 +941,7 @@
     "message": "停顿、文本清理、高亮"
   },
   "ui_67231237": {
-    "message": "分区间的休息"
+    "message": "段落间停顿"
   },
   "ui_8f517045": {
     "message": "性能"
@@ -938,19 +950,19 @@
     "message": "处理方式"
   },
   "ui_bec07b52": {
-    "message": "第CPU / 第WebAssembly"
+    "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "空闲时释放语音记忆"
+    "message": "空闲时释放语音占用的内存"
   },
   "ui_231b3e4b": {
     "message": "跳过代码片段"
   },
   "ui_456ac053": {
-    "message": "色域"
+    "message": "区域颜色"
   },
   "ui_10cd7856": {
-    "message": "颜色字"
+    "message": "单词颜色"
   },
   "ui_1e4dbab9": {
     "message": "区域不透明度"
@@ -965,13 +977,13 @@
     "message": "朗读队列"
   },
   "ui_a106cd77": {
-    "message": "搜索部分"
+    "message": "搜索段落"
   },
   "ui_ee3d49e1": {
     "message": "首节"
   },
   "ui_30035f15": {
-    "message": "部分号码"
+    "message": "段落编号"
   },
   "ui_41d0c56b": {
     "message": "跳转"
@@ -980,76 +992,76 @@
     "message": "末节"
   },
   "ui_bd9126df": {
-    "message": "没有匹配的部分. 尝试另一个搜索。"
+    "message": "没有匹配的段落。请尝试其他搜索词。"
   },
   "ui_620574c4": {
-    "message": "PageNarrator 阅读引擎"
+    "message": "PageNarrator 播放器"
   },
   "ui_c5fbc06e": {
-    "message": "提供页面访问权限"
+    "message": "允许访问"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator 扩展图标"
+    "message": "PageNarrator 扩展程序图标"
   },
   "ui_5a3d9c47": {
-    "message": "打开 PageNarrator 从页面"
+    "message": "从页面打开 PageNarrator"
   },
   "ui_94a4b160": {
-    "message": "当页面处于活动状态时,单击 PageNarrator 扩展图标,然后选择阅读页面。"
+    "message": "打开页面，点击 PageNarrator 图标，然后选择“朗读页面”。"
   },
   "ui_4be7c01e": {
-    "message": "缺少的语音文件下载第一次使用. 语音运行本地。"
+    "message": "准备语音或开始朗读时，缺少的语音文件会从 Hugging Face 下载。 语音在此设备上生成。缓存文件可离线重复使用，除非被清除。"
   },
   "ui_3d04a00a": {
-    "message": "准备本地语音;从Hugging Face下载缺少的文件..."
+    "message": "正在准备语音… 准备语音或开始朗读时，缺少的语音文件会从 Hugging Face 下载。"
   },
   "ui_048ca959": {
-    "message": "恢复步骤"
+    "message": "解决步骤"
   },
   "ui_0ec24245": {
     "message": "详细信息"
   },
   "ui_4ff448da": {
-    "message": "继续阅读"
+    "message": "继续朗读"
   },
   "ui_cb2eed93": {
-    "message": "恢复在保存位置"
+    "message": "从已保存的位置继续"
   },
   "ui_ded3954b": {
-    "message": "保存阅读位置"
+    "message": "已保存的朗读位置"
   },
   "ui_24299867": {
     "message": "重新开始"
   },
   "ui_d71c7401": {
-    "message": "阅读建议"
+    "message": "朗读建议"
   },
   "ui_d5c02828": {
-    "message": "这个页面有许多代码片段。"
+    "message": "此页面包含大量代码片段。"
   },
   "ui_336b89fb": {
     "message": "跳过代码"
   },
   "ui_299fab6d": {
-    "message": "发现文章"
+    "message": "检测到的文章"
   },
   "ui_a9898369": {
-    "message": "标签: 只读文章"
+    "message": "正在朗读：仅文章正文"
   },
   "ui_3065e144": {
-    "message": "开始与"
+    "message": "开头内容"
   },
   "ui_7ac012cc": {
-    "message": "阅读演员"
+    "message": "PageNarrator 播放器"
   },
   "ui_8edce20a": {
-    "message": "阅读进展"
+    "message": "朗读进度"
   },
   "ui_949ea37c": {
-    "message": "0  留下"
+    "message": "剩余文本块：0"
   },
   "ui_1250127e": {
-    "message": "PDF 页面导航"
+    "message": "PDF 控件"
   },
   "ui_e83d9196": {
     "message": "页码"
@@ -1058,10 +1070,10 @@
     "message": "跳过当前 PDF 页面"
   },
   "ui_dbd1ad47": {
-    "message": "读者设置"
+    "message": "朗读设置"
   },
   "ui_1a27bec5": {
-    "message": "语言会被检测到当阅读开始。"
+    "message": "开始朗读时将自动检测语言。"
   },
   "ui_52ff662d": {
     "message": "设备要求"
@@ -1070,88 +1082,88 @@
     "message": "建议："
   },
   "ui_b0555d92": {
-    "message": "专用的 NVIDIA RTX 30 系列 GPU 或更高版本,具有 8 GB+ VRAM 和 8 GB+ 系统 RAM。"
+    "message": "NVIDIA RTX 30 系列或更新的独立 GPU，至少 8 GB 显存和 8 GB 系统内存。"
   },
   "ui_0d393abc": {
-    "message": "使用 Chromium 120 或更高版本 Kokoro 具有较慢的 CPU 倒退。"
+    "message": "请使用 Chromium 120 或更新版本。Kokoro 可回退到较慢的 CPU 模式。硬件等级尚未在真实设备上验证。"
   },
   "ui_f31ba722": {
-    "message": "时间,清理,声音"
+    "message": "停顿、文本清理、语音"
   },
   "ui_a879e367": {
-    "message": "休息区"
+    "message": "段落间停顿"
   },
   "ui_07e1c336": {
-    "message": "突出风格"
+    "message": "高亮样式"
   },
   "ui_9525b78e": {
     "message": "自定义"
   },
   "ui_e0955632": {
-    "message": "阅读区域"
+    "message": "朗读区域"
   },
   "ui_90571eca": {
-    "message": "当前词"
+    "message": "当前单词"
   },
   "ui_ea585567": {
-    "message": "阅读清洁"
+    "message": "文本清理"
   },
   "ui_0dc6b4aa": {
     "message": "关闭"
   },
   "ui_d6fbffc9": {
-    "message": "序列和转录总结"
+    "message": "队列与文本"
   },
   "ui_21fd85e4": {
-    "message": "Queue & 转录"
+    "message": "队列与文本"
   },
   "ui_d6c98891": {
-    "message": "当前部分、转录搜索和跳跃控制在高级模式中可用。"
+    "message": "高级模式提供当前段落、文本搜索和跳转控件。"
   },
   "ui_0eac1f07": {
     "message": "浏览"
   },
   "ui_44d76dee": {
-    "message": "完整翻译"
+    "message": "完整文本"
   },
   "ui_ab5783a6": {
-    "message": "0篇"
+    "message": "段落数：0"
   },
   "ui_d58a5a9a": {
-    "message": "尾巴导航"
+    "message": "朗读队列导航"
   },
   "ui_2d877b6c": {
     "message": "节"
   },
   "ui_03205ed1": {
-    "message": "查找部分"
+    "message": "查找段落"
   },
   "ui_27654275": {
-    "message": "搜索转录或页面..."
+    "message": "搜索文本或页面…"
   },
   "ui_f4154041": {
-    "message": "第PageNarrator 第PDF"
+    "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF 控制器"
+    "message": "PDF 控件"
   },
   "ui_88828491": {
-    "message": "页 1 的 1"
+    "message": "第 1 页，共 1 页"
   },
   "ui_8570fe3a": {
-    "message": "Zoom 出"
+    "message": "缩小"
   },
   "ui_a3583899": {
-    "message": "Zoom 在"
+    "message": "放大"
   },
   "ui_2b3553eb": {
-    "message": "轮回 左"
+    "message": "向左旋转"
   },
   "ui_2eaecb74": {
-    "message": "旋转正确"
+    "message": "向右旋转"
   },
   "ui_b6ab6b07": {
-    "message": "适合时尚"
+    "message": "适应模式"
   },
   "ui_69acd800": {
     "message": "适合宽度"
@@ -1166,126 +1178,126 @@
     "message": "实验性功能。包含 646 个语言条目，质量各异。需要支持 fp16 的 WebGPU，并下载约 1.35 GB 文件。可选择语音、变体或耳语。"
   },
   "ui_ab4a698f": {
-    "message": "从页面打开"
+    "message": "打开页面"
   },
   "ui_68fbfc28": {
-    "message": "Chrome 未授权访问活动卡。"
+    "message": "Chrome 未允许访问当前标签页。"
   },
   "ui_67aad8a8": {
-    "message": "打开页面,单击 PageNarrator 图标,然后选择阅读页面。"
+    "message": "打开页面，点击 PageNarrator 图标，然后选择“朗读页面”。"
   },
   "ui_724c0e56": {
-    "message": "从页面打开"
+    "message": "打开页面"
   },
   "ui_4f96b3e0": {
-    "message": "受保护的 Chrome 页面无法读取 打开网页或 PDF。"
+    "message": "无法朗读受保护的 Chrome 页面。请打开网页或 PDF。"
   },
   "ui_0cddc760": {
-    "message": "开放页面"
+    "message": "打开页面"
   },
   "ui_30274c11": {
-    "message": "页面访问需要"
+    "message": "需要页面访问权限"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator需要访问这个网站。"
+    "message": "PageNarrator 需要访问此网站。"
   },
   "ui_2b54b790": {
     "message": "通过 PageNarrator 图标允许访问此网站，然后重试。"
   },
   "ui_57906b45": {
-    "message": "准入许可"
+    "message": "允许访问"
   },
   "ui_b48f6457": {
-    "message": "免费浏览器存储,然后retry。"
+    "message": "请释放浏览器存储空间，然后重试。"
   },
   "ui_75eca5ea": {
-    "message": "免费存储"
+    "message": "释放存储空间"
   },
   "ui_99e92621": {
-    "message": "选择此页面语言的声音。"
+    "message": "请选择支持此页面语言的语音。"
   },
   "ui_997f787a": {
-    "message": "选择声音"
+    "message": "选择语音"
   },
   "ui_50a8c46f": {
-    "message": "在阅读开始之前关闭的活跃选项卡。"
+    "message": "开始朗读前，当前标签页已关闭。"
   },
   "ui_e64862ef": {
-    "message": "窗口关闭,重新打开页面并重启。"
+    "message": "标签页已关闭。请重新打开页面后重试。"
   },
   "ui_39f600ae": {
-    "message": "没有选择的文本"
+    "message": "未选择文本"
   },
   "ui_79f7dfca": {
-    "message": "没有选择的文本。"
+    "message": "尚未选择任何文本。"
   },
   "ui_b7a079b0": {
     "message": "选择文本"
   },
   "ui_522bcc26": {
-    "message": "选择您想要听到的文本,然后选择阅读选项。"
+    "message": "选择要收听的文本，然后选择“朗读所选内容”。"
   },
   "ui_580dc44e": {
-    "message": "需要的文本识别"
+    "message": "需要文字识别"
   },
   "ui_ce175449": {
-    "message": "有些PDF文本无法可靠地读取。"
+    "message": "PDF 中的部分文本无法准确读取。"
   },
   "ui_f7c03bfe": {
-    "message": "使用基于文本的 PDF"
+    "message": "使用含文本的 PDF"
   },
   "ui_cde1ae87": {
-    "message": "使用文本识别(OCR)或PDF与完整的文本层。"
+    "message": "请使用文字识别（OCR），或使用具有完整文本层的 PDF。"
   },
   "ui_281501a3": {
-    "message": "填写页面上的 CAPTCHA ,然后重复。"
+    "message": "请完成页面上的 CAPTCHA 验证，然后重试。"
   },
   "ui_d1c2931f": {
-    "message": "登录到网站,然后重复。"
+    "message": "请登录此网站，然后重试。"
   },
   "ui_744be623": {
-    "message": "标志在"
+    "message": "登录"
   },
   "ui_3c4b4f30": {
-    "message": "没有找到可读的文章"
+    "message": "未找到可朗读的文章"
   },
   "ui_fb499b08": {
-    "message": "没有找到可读的文章。"
+    "message": "未找到可朗读的文章正文。"
   },
   "ui_a1fad21c": {
-    "message": "尝试另一页"
+    "message": "尝试其他页面"
   },
   "ui_b0ddc925": {
-    "message": "选择一个段落,然后选择阅读选项,或者打开另一个文章。"
+    "message": "选择一段文本并选择“朗读所选内容”，或打开其他文章。"
   },
   "ui_d20c5459": {
-    "message": "声音没有完成装载。"
+    "message": "语音未能完成加载。"
   },
   "ui_eee6a1ad": {
-    "message": "选择准备语音来重新设置。"
+    "message": "请选择“准备语音”以重新尝试设置。"
   },
   "ui_eab3cf34": {
-    "message": "发言世代失败"
+    "message": "语音生成失败"
   },
   "ui_4cad964d": {
-    "message": "语音生成在音频准备之前停止。"
+    "message": "音频准备完成前，语音生成已停止。"
   },
   "ui_2519f9e6": {
-    "message": "重复,或者选择另一个声音。"
+    "message": "请重试，或选择其他语音。"
   },
   "ui_1844c6fe": {
-    "message": "未支持 PDF"
+    "message": "不支持的 PDF"
   },
   "ui_4a8aceae": {
-    "message": "此 PDF 已损坏或未支持。"
+    "message": "此 PDF 已损坏或不受支持。"
   },
   "ui_5679bf2f": {
-    "message": "尝试另一个 PDF"
+    "message": "尝试其他 PDF"
   },
   "ui_b8183083": {
-    "message": "无法下载 PDF 查看链接和您的连接。"
+    "message": "无法下载 PDF。请检查链接和网络连接。"
   },
   "ui_ce24479d": {
-    "message": "第PDF章 没法打开"
+    "message": "无法打开此 PDF。"
   }
 }

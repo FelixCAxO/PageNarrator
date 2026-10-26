@@ -1,12 +1,12 @@
 {
   "extensionDescription": {
-    "message": "Läs webbsidor och PDF-filer högt med lokala röster på enheten och synkroniserad markering."
+    "message": "Lyssna på webbsidor och PDF-filer med lokala röster och synkroniserad textmarkering."
   },
   "actionTitle": {
     "message": "Lyssna på den här sidan"
   },
   "languageSuggestionOmniVoice": {
-    "message": "Upptäckt språk: $language$. Kokoro stöder engelska. Välj OmniVoice och $language$ i röstinställningarna för att läsa upp texten.",
+    "message": "Identifierat språk: $language$. Kokoro stöder bara engelska. Välj OmniVoice i röstinställningarna och ställ in språket på ”$language$” för att läsa upp texten.",
     "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
     "placeholders": {
       "language": {
@@ -16,7 +16,7 @@
     }
   },
   "languageDetected": {
-    "message": "Upptäckt språk: $language$ ($percentage$ %).",
+    "message": "Identifierat språk: $language$ ($percentage$ %).",
     "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
     "placeholders": {
       "language": {
@@ -33,10 +33,10 @@
     "message": "Språket kunde inte identifieras säkert."
   },
   "onboardingQuickWinTitle": {
-    "message": "Läs en utvald passage"
+    "message": "Läs upp markeringen"
   },
   "onboardingQuickWinBody": {
-    "message": "Välj två meningar på sidan och välj sedan Läs vald."
+    "message": "Markera två meningar på sidan och välj ”Läs upp markeringen”."
   },
   "onboardingQuickWinCta": {
     "message": "Läs upp markeringen"
@@ -45,7 +45,7 @@
     "message": "Läs upp sidan"
   },
   "onboardingFullPageBody": {
-    "message": "Välj Läs sidan för att börja läsa."
+    "message": "Välj ”Läs upp sidan” för att börja lyssna."
   },
   "onboardingFullPageCta": {
     "message": "Läs upp hela sidan"
@@ -69,7 +69,7 @@
     "message": "Recensera"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ sida laddad",
+    "message": "Inlästa sidor: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ sidor laddade",
+    "message": "Inlästa sidor: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,16 +85,16 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Laddning av dokument..."
+    "message": "Läser in dokument…"
   },
   "ui_ffb67f19": {
-    "message": "Ladda ner PDF ..."
+    "message": "Läser in PDF…"
   },
   "ui_abc76c7c": {
-    "message": "Återöppnande PDF"
+    "message": "Öppnar PDF igen…"
   },
   "ui_824a0948": {
-    "message": "Sidan $arg1$ av $arg2$",
+    "message": "Sida $arg1$ av $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Arbeta..."
+    "message": "Arbetar…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ röster",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Röst"
   },
   "ui_85d257a6": {
-    "message": "Bearbetning: WebGPU (dedikerad till GPU)"
+    "message": "Bearbetning: WebGPU (dedikerad GPU)"
   },
   "ui_ea65fbf2": {
     "message": "Bearbetning: WebGPU (integrerad GPU)"
   },
   "ui_4e4b8680": {
-    "message": "Tillverkare: WebGPU"
+    "message": "Bearbetning: WebGPU"
   },
   "ui_7d6c19ce": {
     "message": "Bearbetning: CPU / WebAssembly (långsammare)"
   },
   "ui_5c338a74": {
-    "message": "Behandling som visas efter läsning börjar."
+    "message": "Bearbetningsmetoden visas när uppläsningen börjar."
   },
   "ui_c513493a": {
-    "message": "Förbereda lokal röst... $arg1$%",
+    "message": "Förbereder röst… $arg1$ %",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Röstförberedelsen misslyckades. försök igen."
+    "message": "Rösten kunde inte förberedas. Försök igen."
   },
   "ui_523c0c96": {
-    "message": "Saknade röstfiler ladda ner från Hugging Face före installation."
+    "message": "Röstfiler som saknas hämtas från Hugging Face när du förbereder rösten eller läser."
   },
   "ui_8036af59": {
     "message": "Försök igen"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Tillgänglig när läsningen börjar"
+    "message": "Texten visas när uppläsningen börjar."
   },
   "ui_1d9bdb7f": {
-    "message": "Transcript visas när texten laddas."
+    "message": "Texten visas när uppläsningen börjar."
   },
   "ui_fe92f855": {
     "message": "Aktuell sida"
   },
   "ui_bf0c7feb": {
-    "message": "Förbereda..."
+    "message": "Arbetar…"
   },
   "ui_3d77a20f": {
-    "message": "Förberedelse av röst... $arg1$%",
+    "message": "Förbereder röst… $arg1$ %",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Redo att läsa"
   },
   "ui_9283b625": {
-    "message": "Att förbereda rösten..."
+    "message": "Förbereder röst"
   },
   "ui_5ee7339b": {
     "message": "Läser"
@@ -214,22 +214,22 @@
     "message": "Behöver åtgärdas"
   },
   "ui_4d1cf041": {
-    "message": "Amerikansk kvinna"
+    "message": "Amerikansk engelska, kvinnoröst"
   },
   "ui_faf95838": {
-    "message": "Amerikanska Män"
+    "message": "Amerikansk engelska, mansröst"
   },
   "ui_f3768d40": {
-    "message": "Brittiska kvinnor"
+    "message": "Brittisk engelska, kvinnoröst"
   },
   "ui_4139054c": {
-    "message": "Välj en engelsk röst Kokoro Andra språk stöds inte."
+    "message": "Välj en engelsk Kokoro-röst. Kokoro stöder inga andra språk."
   },
   "ui_c0c171d2": {
-    "message": "kunde inte slutföra denna åtgärd."
+    "message": "Åtgärden kunde inte slutföras."
   },
   "ui_02e8a8a4": {
-    "message": "Att känna igen text på sidan $arg1$ ...",
+    "message": "Identifierar text på sida $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ sida efter den här sidan",
+    "message": "Sidor kvar efter den här: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ sidor efter den här sidan",
+    "message": "Sidor kvar efter den här: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Snabbare"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s långsammare",
+    "message": "$arg1$ s långsammare",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Läst: $arg1$",
+    "message": "Läser: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Läs den valda texten"
+    "message": "Läs upp markeringen"
   },
   "ui_865bf5ae": {
     "message": "Läs upp markeringen"
@@ -284,10 +284,10 @@
     "message": "Försök igen"
   },
   "ui_1dbc8cae": {
-    "message": "Tillgång till Grant Site"
+    "message": "Tillåt åtkomst"
   },
   "ui_450f715d": {
-    "message": "Läs avsnitt $arg1$",
+    "message": "Läs upp avsnitt $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio playback misslyckades."
+    "message": "Ljudet kunde inte spelas upp."
   },
   "ui_248b7c43": {
-    "message": "Hittade inte artikeln text"
+    "message": "Ingen läsbar artikeltext hittades."
   },
   "ui_48ca3593": {
     "message": "Det gick inte att hämta text från PDF-sida $arg1$",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Ingen sida laddad"
+    "message": "Ingen sida har lästs in"
   },
   "ui_8bdfb3a1": {
-    "message": "Texten visas när läsningen börjar."
+    "message": "Texten visas när uppläsningen börjar."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ h $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Läs den här sidan högt"
+    "message": "Läs upp sidan"
   },
   "ui_758bbc44": {
     "message": "Läs upp sidan"
   },
   "ui_a174ecb1": {
-    "message": "0 % fullständig"
+    "message": "0 % klart"
   },
   "ui_e527eba2": {
-    "message": "Förberedande röst - $arg1$%$arg2$",
+    "message": "Förbereder röst… $arg1$ %$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Att förbereda rösten..."
+    "message": "Förbereder röst"
   },
   "ui_78d44090": {
-    "message": "Stoppa aktuell läsning"
+    "message": "Stoppar..."
   },
   "ui_98847cfb": {
-    "message": "Sluta läsa..."
+    "message": "Stoppar..."
   },
   "ui_e100f46d": {
     "message": "Stoppar..."
@@ -372,7 +372,7 @@
     "message": "Stoppa"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% fullständig",
+    "message": "$arg1$ % klart",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Avslutad läsning"
+    "message": "Klart"
   },
   "ui_2f0dcc5d": {
     "message": "Läs upp igen"
   },
   "ui_329cfb9e": {
-    "message": "100% fullständig"
+    "message": "100 % klart"
   },
   "ui_76fc465e": {
     "message": "Något gick fel"
   },
   "ui_0d4b0da7": {
-    "message": "Läs den valda texten"
+    "message": "Läser: Markerad text"
   },
   "ui_242bb2e3": {
-    "message": "Läs den valda texten..."
+    "message": "Läser: Markerad text"
   },
   "ui_10905ea3": {
-    "message": "Förberedelse av vald text"
+    "message": "Förbereder: Markerad text…"
   },
   "ui_a2df426f": {
-    "message": "Utvalda texter pausade"
+    "message": "Pausad"
   },
   "ui_915b9541": {
-    "message": "Läs nuvarande sida"
+    "message": "Läser: Aktuell sida"
   },
   "ui_50880cb0": {
-    "message": "Läs sidan..."
+    "message": "Läser: Aktuell sida"
   },
   "ui_e8bf303d": {
-    "message": "Förbereda aktuell sida"
+    "message": "Förbereder: Aktuell sida…"
   },
   "ui_59ad3c41": {
-    "message": "Förbereda rösten"
+    "message": "Förbereder röst"
   },
   "ui_af82140f": {
-    "message": "Läsa pauser"
+    "message": "Pausad"
   },
   "ui_1ede4e42": {
-    "message": "Rösten redo"
+    "message": "Rösten är klar"
   },
   "ui_63338bd9": {
-    "message": "Röstinställning misslyckades"
+    "message": "Röstinstallationen misslyckades"
   },
   "ui_cedd5bba": {
-    "message": "Modellen har misslyckats."
+    "message": "Modellen kunde inte installeras."
   },
   "ui_a7f38d4e": {
-    "message": "Förbereda lokal röst; saknade filer ladda ner från Hugging Face."
+    "message": "Förbereder röst… Röstfiler som saknas hämtas från Hugging Face när du förbereder rösten eller läser."
   },
   "ui_430dc39d": {
-    "message": "Att uppskatta tiden..."
+    "message": "Beräknar tid…"
   },
   "ui_06a382b7": {
-    "message": "Öppna en artikel och läs sedan sidan"
+    "message": "Öppna en artikel och starta uppläsningen."
   },
   "ui_37bc7086": {
     "message": "Ord: $arg1$",
@@ -453,10 +453,10 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Min är"
+    "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 avsnitt"
+    "message": "Avsnitt: 0"
   },
   "ui_2d292516": {
     "message": "Avsnitt $arg1$ av $arg2$",
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "Välj text"
+    "message": "Markerad text"
   },
   "ui_8212a19a": {
-    "message": "PDF dokument"
+    "message": "PDF-dokument"
   },
   "ui_cb3b43ef": {
-    "message": "Fullständig sida"
+    "message": "Hela sidan"
   },
   "ui_e13844b5": {
-    "message": "Endast artikel"
+    "message": "Endast artikeln"
   },
   "ui_6cae863f": {
     "message": "Ord kvar: $arg1$",
@@ -533,7 +533,7 @@
     }
   },
   "ui_0290cbb9": {
-    "message": "Hemsida $arg1$",
+    "message": "Sida $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · först $arg2$ visades",
+    "message": "$arg1$ · visar de första $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ visade",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ av $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - cachas nästa gång",
+    "message": "$arg1$ – sparad till nästa gång",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "röstmodell"
+    "message": "Röstmodell"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Verified $arg1$. Förberedelse av röst ...",
+    "message": "✓ $arg1$ · Förbereder röst",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Hämta röstfiler: $arg1$",
+    "message": "Hämtar röstfiler: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Hämta $arg1$: $arg2$",
+    "message": "Hämtar: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU installationen misslyckades. Återställning med CPU/WebAssembly..."
+    "message": "GPU-installationen misslyckades. Försöker med CPU/WebAssembly…"
   },
   "ui_f0fc3524": {
-    "message": "Ladda ner $arg1$ ...",
+    "message": "Hämtar: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Förbered $arg1$ ...",
+    "message": "Förbereder: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Kontrollera GPU stöd ..."
+    "message": "Kontrollerar GPU-stöd…"
   },
   "ui_a1f035db": {
-    "message": "Kontrollera webbläsarens cache."
+    "message": "Kontrollerar webbläsarens cache…"
   },
   "ui_412b5f0e": {
-    "message": "Enstaka inställningar"
+    "message": "Engångsinstallation"
   },
   "ui_91d30309": {
-    "message": "Kan inte förbereda den begärda rösten."
+    "message": "Den valda rösten kunde inte förberedas."
   },
   "ui_b9775b3a": {
-    "message": "Experimentell - kvalitet inte validerad"
+    "message": "Experimentellt – kvaliteten är inte verifierad"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - anpassad",
+    "message": "$arg1$ – anpassad",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Röstkvalitet justerad efter $arg1$.",
+  "ui_b835b751": {
+    "message": "långsam modellinläsning"
+  },
+  "ui_4f078920": {
+    "message": "långsam första talgenerering"
+  },
+  "ui_007bbfcb": {
+    "message": "långsamma övergångar mellan avsnitt"
+  },
+  "ui_794a03d4": {
+    "message": "Röstkvaliteten har anpassats. Orsak: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "vald bearbetningsmetod"
   },
   "ui_aa682200": {
-    "message": "Röstbearbetning: GPU (WebGPU) med CPU-vänliga inställningar."
+    "message": "Bearbetning: GPU (WebGPU) · inställningar som avlastar CPU"
   },
   "ui_3411bb9b": {
-    "message": "Röstbearbetning: GPU (WebGPU)"
+    "message": "Bearbetning: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Röstbehandling: Endast CPU (WebAssembly) eftersom WebGPU inte är tillgänglig."
+    "message": "Bearbetning: CPU (WebAssembly) · WebGPU är inte tillgängligt"
   },
   "ui_9e335d53": {
-    "message": "Röstbehandling: Endast CPU (WebAssembly)"
+    "message": "Bearbetning: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Röstbehandling: System röst (webbläsare eller operativsystem)."
+    "message": "Bearbetning: systemröst (webbläsare eller operativsystem)"
   },
   "ui_815f1834": {
-    "message": "Röstbearbetning: kontrolleras när läsningen börjar."
+    "message": "Bearbetningsmetoden visas när uppläsningen börjar."
   },
   "ui_19f02581": {
     "message": "Använder experimentella OmniVoice med WebGPU."
@@ -749,7 +761,7 @@
     "message": "Talet skapas på den här enheten. Cachade filer kan återanvändas offline så länge de inte rensas."
   },
   "ui_95b6ef87": {
-    "message": "Experimentell kvalitet: $arg1$",
+    "message": "Experimentellt – kvaliteten är inte verifierad ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Nr $arg1$ röst är tillgänglig.",
+    "message": "Ingen röst finns för det valda språket: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip code snippets för dig?"
+    "message": "Hoppa över kodavsnitt"
   },
   "ui_9d9f28af": {
-    "message": "Den här sidan har många kodfragment. hoppa över cirka $arg1$ min av kod för en smidigare berättelse.",
+    "message": "Den här sidan innehåller många kodavsnitt. Hoppa över cirka $arg1$ min kod för en smidigare uppläsning.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Denna sida har många kodavsnitt. Hoppa över cirka $arg1$ min kod för en smidigare berättelse.",
+    "message": "Den här sidan innehåller många kodavsnitt. Hoppa över cirka $arg1$ min kod för en smidigare uppläsning.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 avsnitt förladdat"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ avsnitt förinstallerade",
+    "message": "Förladdade avsnitt: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressiv playback på"
+    "message": "stegvis uppspelning på"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressiv playback av"
+    "message": "stegvis uppspelning av"
   },
   "ui_95c9f0ef": {
-    "message": "Automatisk webbläsare röst avstängning"
+    "message": "automatiskt byte till webbläsarröst av"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$-tecken bitar, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ tecken · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Kunde inte komma åt den här sidan."
+    "message": "Det gick inte att komma åt den här sidan."
   },
   "ui_be75ad01": {
-    "message": "Best-effort readerEngine operation misslyckades."
+    "message": "Åtgärden kunde inte slutföras."
   },
   "ui_eb6988d3": {
-    "message": "Kan inte ladda återställ position"
+    "message": "Den sparade läspositionen kunde inte läsas in"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator misslyckades med att initialisera."
+    "message": "PageNarrator kunde inte startas."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator spelare"
+    "message": "PageNarrator-spelare"
   },
   "ui_9d65bbdb": {
-    "message": "Välj röstmodell"
+    "message": "Röstmodell"
   },
   "ui_e6334598": {
     "message": "Röstmodell"
@@ -872,7 +884,7 @@
     "message": "Språk"
   },
   "ui_2070a9f8": {
-    "message": "Laddade röster..."
+    "message": "Läser in röster…"
   },
   "ui_c39c8623": {
     "message": "Rösttyp"
@@ -887,7 +899,7 @@
     "message": "Röstvariant"
   },
   "ui_16383585": {
-    "message": "Välj en röstvariation. Ändringar gäller i nästa avsnitt. Ställ in tempo med uppspelningshastighet."
+    "message": "Välj en röstvariant. Ändringarna gäller från nästa avsnitt. Ställ in tempot med ”Uppspelningshastighet”."
   },
   "ui_d975568d": {
     "message": "Viskning"
@@ -896,7 +908,7 @@
     "message": "Uppspelningshastighet"
   },
   "ui_c58a3963": {
-    "message": "Sparas automatiskt.Röständringar gäller nästa avsnitt medan du läser."
+    "message": "Sparas automatiskt. Under uppläsning gäller röstbyten från nästa avsnitt."
   },
   "ui_71365cb1": {
     "message": "Förbered lokal röst"
@@ -905,7 +917,7 @@
     "message": "Hoppa över"
   },
   "ui_dad1a20b": {
-    "message": "Nu läser"
+    "message": "Läser"
   },
   "ui_30ea6e2f": {
     "message": "Föregående avsnitt"
@@ -929,7 +941,7 @@
     "message": "Pauser, textrensning, markeringar"
   },
   "ui_67231237": {
-    "message": "Avbrott mellan avsnitten"
+    "message": "Paus mellan avsnitt"
   },
   "ui_8f517045": {
     "message": "Prestanda"
@@ -938,19 +950,19 @@
     "message": "Bearbetning"
   },
   "ui_bec07b52": {
-    "message": "CPU och WebAssembly"
+    "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Frigör röstminnet när du är idel"
+    "message": "Frigör röstens minne vid inaktivitet"
   },
   "ui_231b3e4b": {
     "message": "Hoppa över kodavsnitt"
   },
   "ui_456ac053": {
-    "message": "Färgområde"
+    "message": "Läsområdets färg"
   },
   "ui_10cd7856": {
-    "message": "Färg ord"
+    "message": "Ordets färg"
   },
   "ui_1e4dbab9": {
     "message": "Läsområdets opacitet"
@@ -959,13 +971,13 @@
     "message": "Ordets opacitet"
   },
   "ui_0583096b": {
-    "message": "Transkript"
+    "message": "Text"
   },
   "ui_89a5470c": {
     "message": "Läskö"
   },
   "ui_a106cd77": {
-    "message": "Sök sektioner"
+    "message": "Sök i avsnitt"
   },
   "ui_ee3d49e1": {
     "message": "Första"
@@ -980,31 +992,31 @@
     "message": "Sista"
   },
   "ui_bd9126df": {
-    "message": "Inga matchande avsnitt. Prova en annan sökning."
+    "message": "Inga avsnitt matchar. Prova en annan sökning."
   },
   "ui_620574c4": {
-    "message": "PageNarrator läsmaskin"
+    "message": "PageNarrator-spelare"
   },
   "ui_c5fbc06e": {
-    "message": "Tillgång till Grant Page"
+    "message": "Tillåt åtkomst"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator förlängning ikon"
+    "message": "PageNarrator-tilläggets ikon"
   },
   "ui_5a3d9c47": {
     "message": "Öppna PageNarrator från sidan"
   },
   "ui_94a4b160": {
-    "message": "Klicka på utvidgningsikonen PageNarrator medan sidan är aktiv och välj sedan Läs sida."
+    "message": "Öppna sidan, klicka på PageNarrator-ikonen och välj ”Läs upp sidan”."
   },
   "ui_4be7c01e": {
-    "message": "Saknade röstfiler ladda ner vid första användningen. tal körs lokalt."
+    "message": "Röstfiler som saknas hämtas från Hugging Face när du förbereder rösten eller läser. Talet skapas på den här enheten. Cachade filer kan återanvändas offline så länge de inte rensas."
   },
   "ui_3d04a00a": {
-    "message": "Förbereda lokal röst; saknade filer nedladdning från Hugging Face..."
+    "message": "Förbereder röst… Röstfiler som saknas hämtas från Hugging Face när du förbereder rösten eller läser."
   },
   "ui_048ca959": {
-    "message": "Återhämtningssteg"
+    "message": "Så löser du problemet"
   },
   "ui_0ec24245": {
     "message": "Detaljer"
@@ -1013,112 +1025,112 @@
     "message": "Fortsätt läsa"
   },
   "ui_cb2eed93": {
-    "message": "Återuppta i sparad position"
+    "message": "Fortsätt från sparad position"
   },
   "ui_ded3954b": {
-    "message": "Spara läsposition"
+    "message": "Sparad läsposition"
   },
   "ui_24299867": {
     "message": "Börja om"
   },
   "ui_d71c7401": {
-    "message": "Läs förslag"
+    "message": "Läsförslag"
   },
   "ui_d5c02828": {
-    "message": "Den här sidan har många kodflikar."
+    "message": "Den här sidan innehåller många kodavsnitt."
   },
   "ui_336b89fb": {
     "message": "Hoppa över kod"
   },
   "ui_299fab6d": {
-    "message": "Upptäckt artikel"
+    "message": "Identifierad artikel"
   },
   "ui_a9898369": {
-    "message": "Läsning: Endast artikel"
+    "message": "Läser: Endast artikeln"
   },
   "ui_3065e144": {
     "message": "Börjar med"
   },
   "ui_7ac012cc": {
-    "message": "Läsande spelare"
+    "message": "PageNarrator-spelare"
   },
   "ui_8edce20a": {
-    "message": "Läsa framsteg"
+    "message": "Läsförlopp"
   },
   "ui_949ea37c": {
-    "message": "0 poäng kvar"
+    "message": "Delar kvar: 0"
   },
   "ui_1250127e": {
-    "message": "PDF sida navigering"
+    "message": "PDF-kontroller"
   },
   "ui_e83d9196": {
     "message": "Sida"
   },
   "ui_27ba99fc": {
-    "message": "Skippa nuvarande PDF sida"
+    "message": "Hoppa över aktuell PDF-sida"
   },
   "ui_dbd1ad47": {
-    "message": "Läsarinställningar"
+    "message": "Läsinställningar"
   },
   "ui_1a27bec5": {
-    "message": "Språket kommer att detekteras när läsningen börjar."
+    "message": "Språket identifieras när uppläsningen börjar."
   },
   "ui_52ff662d": {
-    "message": "Device krav"
+    "message": "Maskinvarukrav"
   },
   "ui_fd02dfc2": {
     "message": "Rekommenderat:"
   },
   "ui_b0555d92": {
-    "message": "en dedikerad NVIDIA RTX 30-serie GPU eller senare, med 8 GB + VRAM och 8 GB + system RAM."
+    "message": "en dedikerad NVIDIA-GPU i RTX 30-serien eller senare, med minst 8 GB VRAM och 8 GB systemminne."
   },
   "ui_0d393abc": {
-    "message": "Använd Chromium 120 eller senare. Kokoro har en långsammare CPU fallback."
+    "message": "Använd Chromium 120 eller senare. Kokoro kan även köras långsammare på CPU. Maskinvaruklasserna har inte verifierats på verkliga enheter."
   },
   "ui_f31ba722": {
-    "message": "Timing, städning och röster"
+    "message": "Pauser, textrensning, röster"
   },
   "ui_a879e367": {
-    "message": "Avsnitt pauser"
+    "message": "Paus mellan avsnitt"
   },
   "ui_07e1c336": {
-    "message": "Höjdpunkter stil"
+    "message": "Markeringsstil"
   },
   "ui_9525b78e": {
     "message": "Anpassat"
   },
   "ui_e0955632": {
-    "message": "Läsa område"
+    "message": "Läsområde"
   },
   "ui_90571eca": {
-    "message": "Nuvarande ord"
+    "message": "Aktuellt ord"
   },
   "ui_ea585567": {
-    "message": "Läsning Rengöring"
+    "message": "Textrensning"
   },
   "ui_0dc6b4aa": {
     "message": "Av"
   },
   "ui_d6fbffc9": {
-    "message": "Transkript och transkript sammanfattning"
+    "message": "Läsordning och text"
   },
   "ui_21fd85e4": {
-    "message": "Queue & transkript"
+    "message": "Läsordning och text"
   },
   "ui_d6c98891": {
-    "message": "Aktuell sektion, transkriptsökning och hoppa kontroller är tillgängliga i avancerat läge."
+    "message": "Aktuellt avsnitt, textsökning och hoppkontroller finns i avancerat läge."
   },
   "ui_0eac1f07": {
     "message": "Bläddra"
   },
   "ui_44d76dee": {
-    "message": "Fullständig transkribering"
+    "message": "Hela texten"
   },
   "ui_ab5783a6": {
-    "message": "0 stycken"
+    "message": "Stycken: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Queue navigering"
+    "message": "Navigera i läsordningen"
   },
   "ui_2d877b6c": {
     "message": "Avsnitt"
@@ -1127,31 +1139,31 @@
     "message": "Hitta avsnitt"
   },
   "ui_27654275": {
-    "message": "Sök efter transkript eller sida..."
+    "message": "Sök i texten eller på sidan…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF kontroller"
+    "message": "PDF-kontroller"
   },
   "ui_88828491": {
     "message": "Sida 1 av 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom ut"
+    "message": "Zooma ut"
   },
   "ui_a3583899": {
-    "message": "Zoom på"
+    "message": "Zooma in"
   },
   "ui_2b3553eb": {
-    "message": "Rotera vänster"
+    "message": "Rotera åt vänster"
   },
   "ui_2eaecb74": {
-    "message": "Rotera rätt"
+    "message": "Rotera åt höger"
   },
   "ui_b6ab6b07": {
-    "message": "Passar mode"
+    "message": "Anpassa visning"
   },
   "ui_69acd800": {
     "message": "Anpassa till bredd"
@@ -1160,132 +1172,132 @@
     "message": "Anpassa till sida"
   },
   "ui_9f9cf525": {
-    "message": "PDF sidor"
+    "message": "PDF-sidor"
   },
   "ui_ab32ceb0": {
     "message": "Experimentell. 646 språkposter med varierande kvalitet. Kräver WebGPU med fp16 och cirka 1,35 GB hämtningar. Välj röst, variant eller viskning."
   },
   "ui_ab4a698f": {
-    "message": "Öppna från sidan"
+    "message": "Öppna sidan"
   },
   "ui_68fbfc28": {
-    "message": "Chrome beviljade inte åtkomst till den aktiva fliken."
+    "message": "Chrome gav inte åtkomst till den aktiva fliken."
   },
   "ui_67aad8a8": {
-    "message": "Öppna sidan, klicka på ikonen PageNarrator och välj sedan Läs sida."
+    "message": "Öppna sidan, klicka på PageNarrator-ikonen och välj ”Läs upp sidan”."
   },
   "ui_724c0e56": {
-    "message": "Öppna från sidan"
+    "message": "Öppna sidan"
   },
   "ui_4f96b3e0": {
-    "message": "Skyddade Chrome-sidor kan inte läsas. Öppna en webbsida eller PDF."
+    "message": "Skyddade Chrome-sidor kan inte läsas upp. Öppna en webbsida eller PDF."
   },
   "ui_0cddc760": {
-    "message": "Öppna sidor"
+    "message": "Öppna sidan"
   },
   "ui_30274c11": {
-    "message": "Page Access behövs"
+    "message": "Åtkomst till sidan krävs"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator behöver tillgång till denna webbplats."
+    "message": "PageNarrator behöver åtkomst till den här webbplatsen."
   },
   "ui_2b54b790": {
     "message": "Tillåt åtkomst till webbplatsen via PageNarrator-ikonen och försök igen."
   },
   "ui_57906b45": {
-    "message": "Tillgång till Grant"
+    "message": "Tillåt åtkomst"
   },
   "ui_b48f6457": {
-    "message": "Gratis webbläsarlagring, sedan retry."
+    "message": "Frigör lagringsutrymme i webbläsaren och försök igen."
   },
   "ui_75eca5ea": {
-    "message": "Fri förvaring"
+    "message": "Frigör lagringsutrymme"
   },
   "ui_99e92621": {
-    "message": "Välj en röst för den här sidans språk."
+    "message": "Välj en röst för språket på den här sidan."
   },
   "ui_997f787a": {
     "message": "Välj röst"
   },
   "ui_50a8c46f": {
-    "message": "Den aktiva fliken stängdes innan läsningen kunde börja."
+    "message": "Den aktiva fliken stängdes innan uppläsningen kunde börja."
   },
   "ui_e64862ef": {
-    "message": "Fliken är stängd. Öppna sidan igen och retry."
+    "message": "Fliken stängdes. Öppna sidan igen och försök på nytt."
   },
   "ui_39f600ae": {
-    "message": "Inga valda texter"
+    "message": "Ingen text markerad"
   },
   "ui_79f7dfca": {
-    "message": "Ingen text är vald."
+    "message": "Ingen text är markerad."
   },
   "ui_b7a079b0": {
-    "message": "Välj text"
+    "message": "Markera text"
   },
   "ui_522bcc26": {
-    "message": "Välj den text du vill höra och välj sedan Läs vald."
+    "message": "Markera texten du vill lyssna på och välj ”Läs upp markeringen”."
   },
   "ui_580dc44e": {
-    "message": "Textbekräftelse krävs"
+    "message": "Textigenkänning krävs"
   },
   "ui_ce175449": {
-    "message": "Vissa PDF text kunde inte läsas på ett tillförlitligt sätt."
+    "message": "En del av texten i PDF-filen kunde inte läsas tillförlitligt."
   },
   "ui_f7c03bfe": {
-    "message": "Använda en textbaserad PDF"
+    "message": "Använd en PDF med text"
   },
   "ui_cde1ae87": {
-    "message": "Använd textigenkänning (OCR) eller en PDF med ett komplett textlager."
+    "message": "Använd textigenkänning (OCR) eller en PDF med ett fullständigt textlager."
   },
   "ui_281501a3": {
-    "message": "Fyll i CAPTCHA på sidan, sedan retry."
+    "message": "Lös CAPTCHA-kontrollen på sidan och försök igen."
   },
   "ui_d1c2931f": {
-    "message": "Logga in på webbplatsen, sedan retry."
+    "message": "Logga in på webbplatsen och försök igen."
   },
   "ui_744be623": {
-    "message": "tecken i"
+    "message": "Logga in"
   },
   "ui_3c4b4f30": {
-    "message": "Ingen läsbar artikel hittad"
+    "message": "Ingen läsbar artikel hittades"
   },
   "ui_fb499b08": {
-    "message": "Ingen läsbar text hittades."
+    "message": "Ingen läsbar artikeltext hittades."
   },
   "ui_a1fad21c": {
     "message": "Prova en annan sida"
   },
   "ui_b0ddc925": {
-    "message": "Välj en passage och välj Läs vald eller öppna en annan artikel."
+    "message": "Markera ett stycke och välj ”Läs upp markeringen”, eller öppna en annan artikel."
   },
   "ui_d20c5459": {
-    "message": "Rösten slutade inte ladda."
+    "message": "Rösten kunde inte laddas färdigt."
   },
   "ui_eee6a1ad": {
-    "message": "Välj Förbered röst för att återställa inställningen."
+    "message": "Välj ”Förbered röst” för att försöka installera rösten igen."
   },
   "ui_eab3cf34": {
-    "message": "Talgenerationen misslyckades"
+    "message": "Talgenereringen misslyckades"
   },
   "ui_4cad964d": {
-    "message": "Talgenerering stannade innan ljudet var klart."
+    "message": "Talgenereringen avbröts innan ljudet var klart."
   },
   "ui_2519f9e6": {
-    "message": "Gå tillbaka eller välj en annan röst."
+    "message": "Försök igen eller välj en annan röst."
   },
   "ui_1844c6fe": {
-    "message": "Stöds inte PDF"
+    "message": "PDF-formatet stöds inte"
   },
   "ui_4a8aceae": {
-    "message": "Denna PDF är skadad eller inte stöds."
+    "message": "Den här PDF-filen är skadad eller stöds inte."
   },
   "ui_5679bf2f": {
-    "message": "Försök med en annan PDF"
+    "message": "Prova en annan PDF"
   },
   "ui_b8183083": {
-    "message": "Kunde inte ladda ner PDF. Kontrollera länken och din anslutning."
+    "message": "PDF-filen kunde inte hämtas. Kontrollera länken och din anslutning."
   },
   "ui_ce24479d": {
-    "message": "Kan inte öppna den här PDF."
+    "message": "Den här PDF-filen kunde inte öppnas."
   }
 }

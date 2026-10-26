@@ -1,6 +1,6 @@
 {
   "extensionDescription": {
-    "message": "Leggi le pagine web e i PDF ad alta voce con voci locali sul dispositivo e evidenziamento sincronizzato."
+    "message": "Leggi pagine web e PDF ad alta voce con voci locali ed evidenziazione sincronizzata."
   },
   "actionTitle": {
     "message": "Ascolta questa pagina"
@@ -33,10 +33,10 @@
     "message": "Non è stato possibile identificare con certezza la lingua."
   },
   "onboardingQuickWinTitle": {
-    "message": "Leggi un passaggio selezionato"
+    "message": "Leggi selezione"
   },
   "onboardingQuickWinBody": {
-    "message": "Selezionare due frasi sulla pagina, quindi selezionare Leggi selezione."
+    "message": "Seleziona due frasi nella pagina e scegli «Leggi selezione»."
   },
   "onboardingQuickWinCta": {
     "message": "Leggi selezione"
@@ -45,7 +45,7 @@
     "message": "Leggi la pagina"
   },
   "onboardingFullPageBody": {
-    "message": "Selezionare la pagina di lettura per iniziare a leggere."
+    "message": "Scegli «Leggi pagina» per iniziare la lettura."
   },
   "onboardingFullPageCta": {
     "message": "Leggi tutta la pagina"
@@ -69,7 +69,7 @@
     "message": "Recensisci"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ pagina caricata",
+    "message": "Pagine caricate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ pagine caricate",
+    "message": "Pagine caricate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,13 +85,13 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Caricamento di documenti..."
+    "message": "Caricamento del documento…"
   },
   "ui_ffb67f19": {
-    "message": "Caricamento PDF ..."
+    "message": "Caricamento del PDF…"
   },
   "ui_abc76c7c": {
-    "message": "Riapertura PDF ..."
+    "message": "Riapertura del PDF…"
   },
   "ui_824a0948": {
     "message": "Pagina $arg1$ di $arg2$",
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Lavorare..."
+    "message": "Operazione in corso…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ voci",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Voce"
   },
   "ui_85d257a6": {
-    "message": "Trattamento: WebGPU (dedicato a GPU)"
+    "message": "Elaborazione: WebGPU (GPU dedicata)"
   },
   "ui_ea65fbf2": {
-    "message": "Trattamento: WebGPU (integrato GPU)"
+    "message": "Elaborazione: WebGPU (GPU integrata)"
   },
   "ui_4e4b8680": {
-    "message": "Numero di processore: WebGPU"
+    "message": "Elaborazione: WebGPU"
   },
   "ui_7d6c19ce": {
-    "message": "Trattamento: CPU / WebAssembly (più lento)"
+    "message": "Elaborazione: CPU / WebAssembly (più lento)"
   },
   "ui_5c338a74": {
-    "message": "Il processo di elaborazione mostrato dopo la lettura inizia."
+    "message": "Il metodo di elaborazione apparirà all’avvio della lettura."
   },
   "ui_c513493a": {
-    "message": "Preparazione della voce locale... $arg1$%",
+    "message": "Preparazione della voce… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "La preparazione della voce non è riuscita. riprovare."
+    "message": "Impossibile preparare la voce. Riprova."
   },
   "ui_523c0c96": {
-    "message": "I file vocali mancanti scaricati da Hugging Face prima della configurazione."
+    "message": "I file vocali mancanti vengono scaricati da Hugging Face durante la preparazione o la lettura."
   },
   "ui_8036af59": {
     "message": "Riprova"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Disponibile quando inizia la lettura"
+    "message": "Il testo apparirà all’avvio della lettura."
   },
   "ui_1d9bdb7f": {
-    "message": "La trascrizione viene visualizzata quando il testo viene caricato."
+    "message": "Il testo apparirà all’avvio della lettura."
   },
   "ui_fe92f855": {
-    "message": "Pagina attuale"
+    "message": "Pagina corrente"
   },
   "ui_bf0c7feb": {
-    "message": "Preparare..."
+    "message": "Operazione in corso…"
   },
   "ui_3d77a20f": {
-    "message": "Preparazione della voce... $arg1$%",
+    "message": "Preparazione della voce… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Pronto per la lettura"
   },
   "ui_9283b625": {
-    "message": "Preparare la voce..."
+    "message": "Preparazione della voce"
   },
   "ui_5ee7339b": {
     "message": "Lettura in corso"
@@ -214,22 +214,22 @@
     "message": "Richiede attenzione"
   },
   "ui_4d1cf041": {
-    "message": "Donne americane"
+    "message": "Inglese americano, femminile"
   },
   "ui_faf95838": {
-    "message": "maschio americano"
+    "message": "Inglese americano, maschile"
   },
   "ui_f3768d40": {
-    "message": "Donne britanniche"
+    "message": "Inglese britannico, femminile"
   },
   "ui_4139054c": {
-    "message": "Seleziona la voce inglese Kokoro Non sono supportate altre lingue."
+    "message": "Scegli una voce inglese di Kokoro. Kokoro non supporta altre lingue."
   },
   "ui_c0c171d2": {
-    "message": "Non poteva completare questa azione."
+    "message": "Impossibile completare questa operazione."
   },
   "ui_02e8a8a4": {
-    "message": "Riconoscere il testo sulla pagina $arg1$ ...",
+    "message": "Riconoscimento del testo a pagina $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ pagina dopo questa pagina",
+    "message": "Pagine successive rimanenti: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ pagine dopo questa pagina",
+    "message": "Pagine successive rimanenti: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Più veloce"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s più lento",
+    "message": "$arg1$ s più lento",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Leggi tutto: $arg1$",
+    "message": "Lettura: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Leggi il testo selezionato"
+    "message": "Leggi selezione"
   },
   "ui_865bf5ae": {
     "message": "Leggi selezione"
@@ -284,7 +284,7 @@
     "message": "Riprova"
   },
   "ui_1dbc8cae": {
-    "message": "Accesso al sito Grant"
+    "message": "Consenti accesso"
   },
   "ui_450f715d": {
     "message": "Leggi la sezione $arg1$",
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "La riproduzione audio è fallita."
+    "message": "Riproduzione audio non riuscita."
   },
   "ui_248b7c43": {
-    "message": "Non riesco a trovare il testo dell'articolo"
+    "message": "Non è stato trovato testo leggibile nell’articolo."
   },
   "ui_48ca3593": {
     "message": "Impossibile estrarre il testo dalla pagina $arg1$ del PDF",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Nessuna pagina carica"
+    "message": "Nessuna pagina caricata"
   },
   "ui_8bdfb3a1": {
-    "message": "Il testo appare quando inizia la lettura."
+    "message": "Il testo apparirà all’avvio della lettura."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ h $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Leggi questa pagina ad alta voce"
+    "message": "Leggi pagina"
   },
   "ui_758bbc44": {
     "message": "Leggi pagina"
   },
   "ui_a174ecb1": {
-    "message": "0% completo"
+    "message": "0% completato"
   },
   "ui_e527eba2": {
-    "message": "Preparazione della voce - $arg1$%$arg2$",
+    "message": "Preparazione della voce… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Preparare la voce..."
+    "message": "Preparazione della voce"
   },
   "ui_78d44090": {
-    "message": "Stop alla lettura corrente"
+    "message": "Arresto in corso..."
   },
   "ui_98847cfb": {
-    "message": "Smettere di leggere..."
+    "message": "Arresto in corso..."
   },
   "ui_e100f46d": {
     "message": "Arresto in corso..."
@@ -372,7 +372,7 @@
     "message": "Interrompi"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% completo",
+    "message": "$arg1$% completato",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Finita la lettura"
+    "message": "Completato"
   },
   "ui_2f0dcc5d": {
     "message": "Leggi di nuovo"
   },
   "ui_329cfb9e": {
-    "message": "Il 100% completo"
+    "message": "100% completato"
   },
   "ui_76fc465e": {
-    "message": "Qualcosa è andato male"
+    "message": "Si è verificato un errore"
   },
   "ui_0d4b0da7": {
-    "message": "Leggere il testo selezionato"
+    "message": "Lettura: Testo selezionato"
   },
   "ui_242bb2e3": {
-    "message": "Leggere il testo selezionato..."
+    "message": "Lettura: Testo selezionato"
   },
   "ui_10905ea3": {
-    "message": "Preparazione del testo selezionato"
+    "message": "Preparazione: Testo selezionato…"
   },
   "ui_a2df426f": {
-    "message": "Testo selezionato sospeso"
+    "message": "In pausa"
   },
   "ui_915b9541": {
-    "message": "Leggere la pagina attuale"
+    "message": "Lettura: Pagina corrente"
   },
   "ui_50880cb0": {
-    "message": "Pagina di lettura..."
+    "message": "Lettura: Pagina corrente"
   },
   "ui_e8bf303d": {
-    "message": "Preparare la pagina attuale"
+    "message": "Preparazione: Pagina corrente…"
   },
   "ui_59ad3c41": {
-    "message": "Preparare la voce"
+    "message": "Preparazione della voce"
   },
   "ui_af82140f": {
-    "message": "Leggere in pausa"
+    "message": "In pausa"
   },
   "ui_1ede4e42": {
-    "message": "La voce pronta"
+    "message": "Voce pronta"
   },
   "ui_63338bd9": {
-    "message": "Impostazione vocale fallita"
+    "message": "Configurazione della voce non riuscita"
   },
   "ui_cedd5bba": {
-    "message": "Modello di installazione fallito."
+    "message": "Impossibile configurare il modello."
   },
   "ui_a7f38d4e": {
-    "message": "Preparare la voce locale; scaricare i file mancanti da Hugging Face."
+    "message": "Preparazione della voce… I file vocali mancanti vengono scaricati da Hugging Face durante la preparazione o la lettura."
   },
   "ui_430dc39d": {
-    "message": "La stima del tempo..."
+    "message": "Stima del tempo…"
   },
   "ui_06a382b7": {
-    "message": "Apri un articolo, poi leggi la pagina"
+    "message": "Apri un articolo e avvia la lettura della pagina."
   },
   "ui_37bc7086": {
     "message": "Parole: $arg1$",
@@ -456,7 +456,7 @@
     "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 sezioni"
+    "message": "Sezioni: 0"
   },
   "ui_2d292516": {
     "message": "Sezione $arg1$ di $arg2$",
@@ -481,13 +481,13 @@
     "message": "Testo selezionato"
   },
   "ui_8212a19a": {
-    "message": "PDF Documenti"
+    "message": "Documento PDF"
   },
   "ui_cb3b43ef": {
-    "message": "Pagina completa"
+    "message": "Intera pagina"
   },
   "ui_e13844b5": {
-    "message": "Articolo solo"
+    "message": "Solo articolo"
   },
   "ui_6cae863f": {
     "message": "Parole rimanenti: $arg1$",
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · primo $arg2$ mostrato",
+    "message": "$arg1$ · primi $arg2$ visualizzati",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ mostrato",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ di $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - Cache per la prossima volta",
+    "message": "$arg1$ – salvata per il prossimo utilizzo",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Il modello vocale"
+    "message": "Modello vocale"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Verificato $arg1$. Preparare la voce...",
+    "message": "✓ $arg1$ · Preparazione della voce",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Download di $arg1$: $arg2$",
+    "message": "Download: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "L'installazione di GPU non è riuscita. Ripristino con CPU/WebAssembly..."
+    "message": "Configurazione GPU non riuscita. Nuovo tentativo con CPU/WebAssembly…"
   },
   "ui_f0fc3524": {
-    "message": "Download di $arg1$...",
+    "message": "Download: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Preparazione $arg1$ ...",
+    "message": "Preparazione: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Controlla il supporto GPU ..."
+    "message": "Verifica del supporto GPU…"
   },
   "ui_a1f035db": {
-    "message": "Controllare il browser cache."
+    "message": "Verifica della cache del browser…"
   },
   "ui_412b5f0e": {
-    "message": "Installazione unilaterale"
+    "message": "Configurazione iniziale"
   },
   "ui_91d30309": {
-    "message": "Non riusciva a preparare la voce richiesta."
+    "message": "Impossibile preparare la voce richiesta."
   },
   "ui_b9775b3a": {
-    "message": "Experimentale - Qualità non convalidata"
+    "message": "Sperimentale – qualità non verificata"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - modificato",
+    "message": "$arg1$ – adattato",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Qualità vocale regolata dopo $arg1$.",
+  "ui_b835b751": {
+    "message": "caricamento lento del modello"
+  },
+  "ui_4f078920": {
+    "message": "generazione iniziale della voce lenta"
+  },
+  "ui_007bbfcb": {
+    "message": "passaggi lenti tra le sezioni"
+  },
+  "ui_794a03d4": {
+    "message": "La qualità vocale è stata adattata. Motivo: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "metodo di elaborazione selezionato"
   },
   "ui_aa682200": {
-    "message": "Processi vocali: GPU (WebGPU) con impostazioni amichevoli alla CPU."
+    "message": "Elaborazione: GPU (WebGPU) · impostazioni a basso carico CPU"
   },
   "ui_3411bb9b": {
-    "message": "Processore vocale: GPU (WebGPU)"
+    "message": "Elaborazione: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Processi vocali: solo CPU (WebAssembly) perché WebGPU non è disponibile."
+    "message": "Elaborazione: CPU (WebAssembly) · WebGPU non disponibile"
   },
   "ui_9e335d53": {
-    "message": "Processi vocali: solo CPU (WebAssembly)"
+    "message": "Elaborazione: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Trattamento della voce: voce del sistema (browser o sistema operativo)."
+    "message": "Elaborazione: voce di sistema (browser o sistema operativo)"
   },
   "ui_815f1834": {
-    "message": "Trattamento vocale: controllato quando si inizia la lettura."
+    "message": "Il metodo di elaborazione apparirà all’avvio della lettura."
   },
   "ui_19f02581": {
     "message": "È in uso OmniVoice sperimentale su WebGPU."
@@ -749,7 +761,7 @@
     "message": "La sintesi vocale avviene su questo dispositivo. I file nella cache sono riutilizzabili offline finché non vengono cancellati."
   },
   "ui_95b6ef87": {
-    "message": "Qualità sperimentale: $arg1$.",
+    "message": "Sperimentale – qualità non verificata ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Il numero di voce $arg1$ è disponibile.",
+    "message": "Nessuna voce disponibile per la lingua: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Scopri il codice snippets?"
+    "message": "Salta i frammenti di codice"
   },
   "ui_9d9f28af": {
-    "message": "Questa pagina contiene molti frammenti di codice. Skip circa $arg1$ min di codice per una narrazione più fluida.",
+    "message": "Questa pagina contiene molti frammenti di codice. Salta circa $arg1$ min di codice per una lettura più scorrevole.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Questa pagina ha molti frammenti di codice. Passare circa $arg1$ minuti di codice per una narrazione più fluida.",
+    "message": "Questa pagina contiene molti frammenti di codice. Salta circa $arg1$ min di codice per una lettura più scorrevole.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 sezione precaricata"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ sezioni precaricate",
+    "message": "Sezioni precaricate: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Il playback progressivo"
+    "message": "riproduzione progressiva attiva"
   },
   "ui_4ddd1cf4": {
-    "message": "Il playback progressivo"
+    "message": "riproduzione progressiva disattiva"
   },
   "ui_95c9f0ef": {
-    "message": "Il browser automatico si spegne"
+    "message": "passaggio automatico alla voce del browser disattivato"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: pezzi di carattere $arg2$, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ caratteri · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Non è stato possibile accedere a questa pagina."
+    "message": "Impossibile accedere a questa pagina."
   },
   "ui_be75ad01": {
-    "message": "L'operazione Best-effort readerEngine ha fallito."
+    "message": "Impossibile completare questa operazione."
   },
   "ui_eb6988d3": {
-    "message": "Non riesce a ripristinare la posizione"
+    "message": "Impossibile caricare la posizione salvata"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator non ha inizializzato."
+    "message": "Impossibile avviare PageNarrator."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator giocatori"
+    "message": "Lettore PageNarrator"
   },
   "ui_9d65bbdb": {
-    "message": "Scegli il modello vocale"
+    "message": "Modello vocale"
   },
   "ui_e6334598": {
     "message": "Modello vocale"
@@ -872,7 +884,7 @@
     "message": "Lingua"
   },
   "ui_2070a9f8": {
-    "message": "Caricamento delle voci..."
+    "message": "Caricamento delle voci…"
   },
   "ui_c39c8623": {
     "message": "Tipo di voce"
@@ -887,7 +899,7 @@
     "message": "Variante vocale"
   },
   "ui_16383585": {
-    "message": "Selezionare una variazione vocale. Le modifiche si applicano alla sezione successiva. Impostare il ritmo con la velocità di riproduzione."
+    "message": "Scegli una variante della voce. Le modifiche si applicano dalla sezione successiva. Regola il ritmo con «Velocità di riproduzione»."
   },
   "ui_d975568d": {
     "message": "Sussurro"
@@ -896,19 +908,19 @@
     "message": "Velocità di riproduzione"
   },
   "ui_c58a3963": {
-    "message": "Salvato automaticamente. le modifiche vocali si applicano alla sezione successiva durante la lettura."
+    "message": "Salvataggio automatico. Durante la lettura, le modifiche alla voce si applicano dalla sezione successiva."
   },
   "ui_71365cb1": {
-    "message": "Prepara la voce locale"
+    "message": "Prepara voce locale"
   },
   "ui_c197c7e2": {
     "message": "Salta"
   },
   "ui_dad1a20b": {
-    "message": "Ora la lettura"
+    "message": "Lettura in corso"
   },
   "ui_30ea6e2f": {
-    "message": "Articolo precedenteSezione"
+    "message": "Sezione precedente"
   },
   "ui_c2954bc2": {
     "message": "Indietro"
@@ -941,16 +953,16 @@
     "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Rilasciare la memoria vocale quando idolo"
+    "message": "Libera la memoria della voce quando inattiva"
   },
   "ui_231b3e4b": {
     "message": "Salta i frammenti di codice"
   },
   "ui_456ac053": {
-    "message": "Zona di colore"
+    "message": "Colore dell’area"
   },
   "ui_10cd7856": {
-    "message": "Parola di colore"
+    "message": "Colore della parola"
   },
   "ui_1e4dbab9": {
     "message": "Opacità dell’area"
@@ -965,13 +977,13 @@
     "message": "Coda di lettura"
   },
   "ui_a106cd77": {
-    "message": "Sezione di ricerca"
+    "message": "Cerca nelle sezioni"
   },
   "ui_ee3d49e1": {
     "message": "Primo"
   },
   "ui_30035f15": {
-    "message": "Numero di sezione"
+    "message": "Numero della sezione"
   },
   "ui_41d0c56b": {
     "message": "Vai"
@@ -980,40 +992,40 @@
     "message": "Ultimo"
   },
   "ui_bd9126df": {
-    "message": "Non ci sono sezioni corrispondenti. provare un'altra ricerca."
+    "message": "Nessuna sezione corrispondente. Prova un’altra ricerca."
   },
   "ui_620574c4": {
-    "message": "PageNarrator motore di lettura"
+    "message": "Lettore PageNarrator"
   },
   "ui_c5fbc06e": {
-    "message": "Accesso alla pagina"
+    "message": "Consenti accesso"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator icona di estensione"
+    "message": "Icona dell’estensione PageNarrator"
   },
   "ui_5a3d9c47": {
-    "message": "Aprire PageNarrator dalla pagina"
+    "message": "Apri PageNarrator dalla pagina"
   },
   "ui_94a4b160": {
-    "message": "Fare clic sull'icona dell'estensione PageNarrator mentre la pagina è attiva, quindi selezionare Leggi pagina."
+    "message": "Apri la pagina, fai clic sull’icona di PageNarrator e scegli «Leggi pagina»."
   },
   "ui_4be7c01e": {
-    "message": "Scarica i file vocali mancanti al primo utilizzo."
+    "message": "I file vocali mancanti vengono scaricati da Hugging Face durante la preparazione o la lettura. La sintesi vocale avviene su questo dispositivo. I file nella cache sono riutilizzabili offline finché non vengono cancellati."
   },
   "ui_3d04a00a": {
-    "message": "Preparare la voce locale; scaricare i file mancanti da Hugging Face..."
+    "message": "Preparazione della voce… I file vocali mancanti vengono scaricati da Hugging Face durante la preparazione o la lettura."
   },
   "ui_048ca959": {
-    "message": "Passaggi di recupero"
+    "message": "Come risolvere il problema"
   },
   "ui_0ec24245": {
     "message": "Dettagli"
   },
   "ui_4ff448da": {
-    "message": "Ripetere la lettura"
+    "message": "Riprendi la lettura"
   },
   "ui_cb2eed93": {
-    "message": "Ritorno alla posizione salvata"
+    "message": "Riprendi dalla posizione salvata"
   },
   "ui_ded3954b": {
     "message": "Posizione di lettura salvata"
@@ -1025,7 +1037,7 @@
     "message": "Suggerimento di lettura"
   },
   "ui_d5c02828": {
-    "message": "Questa pagina contiene molti snippets di codice."
+    "message": "Questa pagina contiene molti frammenti di codice."
   },
   "ui_336b89fb": {
     "message": "Salta codice"
@@ -1034,91 +1046,91 @@
     "message": "Articolo rilevato"
   },
   "ui_a9898369": {
-    "message": "Leggere: solo articolo"
+    "message": "Lettura: Solo articolo"
   },
   "ui_3065e144": {
     "message": "Inizia con"
   },
   "ui_7ac012cc": {
-    "message": "lettore giocatore"
+    "message": "Lettore PageNarrator"
   },
   "ui_8edce20a": {
-    "message": "Leggere progressi"
+    "message": "Avanzamento della lettura"
   },
   "ui_949ea37c": {
-    "message": "0 squali lasciati"
+    "message": "Parti rimanenti: 0"
   },
   "ui_1250127e": {
-    "message": "PDF Pagina di navigazione"
+    "message": "Controlli PDF"
   },
   "ui_e83d9196": {
     "message": "Pagina"
   },
   "ui_27ba99fc": {
-    "message": "Scarica la pagina attuale PDF"
+    "message": "Salta la pagina PDF corrente"
   },
   "ui_dbd1ad47": {
-    "message": "Le impostazioni del lettore"
+    "message": "Impostazioni di lettura"
   },
   "ui_1a27bec5": {
-    "message": "Il linguaggio verrà rilevato quando inizia la lettura."
+    "message": "La lingua verrà rilevata all’avvio della lettura."
   },
   "ui_52ff662d": {
-    "message": "Requisiti di dispositivo"
+    "message": "Requisiti del dispositivo"
   },
   "ui_fd02dfc2": {
     "message": "Consigliato:"
   },
   "ui_b0555d92": {
-    "message": "una serie NVIDIA RTX 30 dedicata GPU o successiva, con 8 GB + VRAM e 8 GB + RAM del sistema."
+    "message": "una GPU NVIDIA dedicata della serie RTX 30 o successiva, con almeno 8 GB di VRAM e 8 GB di RAM di sistema."
   },
   "ui_0d393abc": {
-    "message": "Utilizzare Chromium 120 o più recente. Kokoro ha un fallback CPU più lento."
+    "message": "Usa Chromium 120 o successivo. Kokoro dispone di una modalità alternativa più lenta su CPU. Le fasce hardware non sono state verificate su dispositivi reali."
   },
   "ui_f31ba722": {
-    "message": "Timing, pulizia e voci"
+    "message": "Pause, pulizia del testo, voci"
   },
   "ui_a879e367": {
-    "message": "Sezione pausa"
+    "message": "Pausa tra le sezioni"
   },
   "ui_07e1c336": {
-    "message": "Mostra lo stile"
+    "message": "Stile di evidenziazione"
   },
   "ui_9525b78e": {
     "message": "Personalizzato"
   },
   "ui_e0955632": {
-    "message": "Leggi area"
+    "message": "Area di lettura"
   },
   "ui_90571eca": {
-    "message": "La parola attuale"
+    "message": "Parola corrente"
   },
   "ui_ea585567": {
-    "message": "Leggere la pulizia"
+    "message": "Pulizia del testo"
   },
   "ui_0dc6b4aa": {
     "message": "Disattivato"
   },
   "ui_d6fbffc9": {
-    "message": "Quaderno e sintesi della trascrizione"
+    "message": "Coda e testo"
   },
   "ui_21fd85e4": {
-    "message": "Quotazione & Transcript"
+    "message": "Coda e testo"
   },
   "ui_d6c98891": {
-    "message": "La sezione corrente, la ricerca della trascrizione e i controlli di salto sono disponibili in modalità avanzata."
+    "message": "La sezione corrente, la ricerca nel testo e i comandi di salto sono disponibili in modalità avanzata."
   },
   "ui_0eac1f07": {
     "message": "Sfoglia"
   },
   "ui_44d76dee": {
-    "message": "Trascrizione completa"
+    "message": "Testo completo"
   },
   "ui_ab5783a6": {
-    "message": "0 paragrafi"
+    "message": "Paragrafi: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Navigare in coda"
+    "message": "Navigazione nella coda"
   },
   "ui_2d877b6c": {
     "message": "Sezione"
@@ -1127,31 +1139,31 @@
     "message": "Trova sezione"
   },
   "ui_27654275": {
-    "message": "Cerca la transcrizione o la pagina..."
+    "message": "Cerca nel testo o nella pagina…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF controlli"
+    "message": "Controlli PDF"
   },
   "ui_88828491": {
     "message": "Pagina 1 di 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom fuori"
+    "message": "Riduci zoom"
   },
   "ui_a3583899": {
-    "message": "Zoom in"
+    "message": "Aumenta zoom"
   },
   "ui_2b3553eb": {
-    "message": "Ritorno a sinistra"
+    "message": "Ruota a sinistra"
   },
   "ui_2eaecb74": {
-    "message": "Rotare a destra"
+    "message": "Ruota a destra"
   },
   "ui_b6ab6b07": {
-    "message": "Fatto di moda"
+    "message": "Modalità di adattamento"
   },
   "ui_69acd800": {
     "message": "Adatta alla larghezza"
@@ -1160,121 +1172,121 @@
     "message": "Adatta alla pagina"
   },
   "ui_9f9cf525": {
-    "message": "PDF pagine"
+    "message": "Pagine PDF"
   },
   "ui_ab32ceb0": {
     "message": "Sperimentale. 646 voci di lingua; la qualità varia. Richiede WebGPU con fp16 e circa 1,35 GB di download. Scegli una voce, una variante o il sussurro."
   },
   "ui_ab4a698f": {
-    "message": "Apri dalla pagina"
+    "message": "Apri pagina"
   },
   "ui_68fbfc28": {
-    "message": "Chrome non ha concesso l'accesso alla scheda attiva."
+    "message": "Chrome non ha consentito l’accesso alla scheda attiva."
   },
   "ui_67aad8a8": {
-    "message": "Aprire la pagina, fare clic sull'icona PageNarrator e quindi selezionare Leggi pagina."
+    "message": "Apri la pagina, fai clic sull’icona di PageNarrator e scegli «Leggi pagina»."
   },
   "ui_724c0e56": {
-    "message": "aperto dalla pagina"
+    "message": "Apri pagina"
   },
   "ui_4f96b3e0": {
-    "message": "Le pagine Chrome protette non possono essere lette. Apri una pagina web o PDF."
+    "message": "Le pagine protette di Chrome non possono essere lette. Apri una pagina web o un PDF."
   },
   "ui_0cddc760": {
-    "message": "Pagina aperta"
+    "message": "Apri pagina"
   },
   "ui_30274c11": {
-    "message": "L'accesso alla pagina richiesto"
+    "message": "Accesso alla pagina necessario"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator bisogno di accesso a questo sito."
+    "message": "PageNarrator ha bisogno di accedere a questo sito."
   },
   "ui_2b54b790": {
     "message": "Consenti l’accesso al sito dall’icona di PageNarrator, poi riprova."
   },
   "ui_57906b45": {
-    "message": "Accesso Grant"
+    "message": "Consenti accesso"
   },
   "ui_b48f6457": {
-    "message": "Libero archiviazione del browser, quindi retry."
+    "message": "Libera spazio di archiviazione nel browser, poi riprova."
   },
   "ui_75eca5ea": {
-    "message": "Storage libero"
+    "message": "Libera spazio"
   },
   "ui_99e92621": {
-    "message": "Scegliere una voce per la lingua di questa pagina."
+    "message": "Scegli una voce per la lingua di questa pagina."
   },
   "ui_997f787a": {
-    "message": "Scegli la voce"
+    "message": "Scegli voce"
   },
   "ui_50a8c46f": {
-    "message": "La scheda attiva è chiusa prima che la lettura possa iniziare."
+    "message": "La scheda attiva è stata chiusa prima che la lettura potesse iniziare."
   },
   "ui_e64862ef": {
-    "message": "La scheda è chiusa. Riaprire la pagina e ripetere."
+    "message": "La scheda è stata chiusa. Riapri la pagina e riprova."
   },
   "ui_39f600ae": {
     "message": "Nessun testo selezionato"
   },
   "ui_79f7dfca": {
-    "message": "Nessun testo è selezionato."
+    "message": "Non è selezionato alcun testo."
   },
   "ui_b7a079b0": {
-    "message": "Selezione del testo"
+    "message": "Seleziona testo"
   },
   "ui_522bcc26": {
-    "message": "Selezionare il testo che si desidera ascoltare, quindi selezionare Leggi selezione."
+    "message": "Seleziona il testo da ascoltare e scegli «Leggi selezione»."
   },
   "ui_580dc44e": {
-    "message": "Riconoscimento del testo richiesto"
+    "message": "È necessario il riconoscimento del testo"
   },
   "ui_ce175449": {
-    "message": "Alcuni testo PDF non poteva essere letto in modo affidabile."
+    "message": "Parte del testo del PDF non è stata letta correttamente."
   },
   "ui_f7c03bfe": {
-    "message": "Utilizzare un testo basato PDF"
+    "message": "Usa un PDF con testo"
   },
   "ui_cde1ae87": {
-    "message": "Utilizzare il riconoscimento del testo (OCR) o un PDF con uno strato di testo completo."
+    "message": "Usa il riconoscimento del testo (OCR) o un PDF con un livello di testo completo."
   },
   "ui_281501a3": {
-    "message": "Completare il CAPTCHA sulla pagina, quindi ripetere."
+    "message": "Completa il CAPTCHA nella pagina, poi riprova."
   },
   "ui_d1c2931f": {
-    "message": "Inserisci il sito e poi ritorni."
+    "message": "Accedi al sito, poi riprova."
   },
   "ui_744be623": {
-    "message": "segno in"
+    "message": "Accedi"
   },
   "ui_3c4b4f30": {
-    "message": "Nessun articolo letto trovato"
+    "message": "Nessun articolo leggibile trovato"
   },
   "ui_fb499b08": {
-    "message": "Non è stato trovato alcun testo leggibile."
+    "message": "Non è stato trovato testo leggibile nell’articolo."
   },
   "ui_a1fad21c": {
-    "message": "Prova un'altra pagina"
+    "message": "Prova un’altra pagina"
   },
   "ui_b0ddc925": {
-    "message": "Selezionare un passaggio e selezionare Leggi selezione, o aprire un altro articolo."
+    "message": "Seleziona un brano e scegli «Leggi selezione», oppure apri un altro articolo."
   },
   "ui_d20c5459": {
-    "message": "La voce non ha finito di caricare."
+    "message": "Il caricamento della voce non è stato completato."
   },
   "ui_eee6a1ad": {
-    "message": "Selezionare Prepara la voce per ripristinare la configurazione."
+    "message": "Scegli «Prepara voce» per riprovare la configurazione."
   },
   "ui_eab3cf34": {
-    "message": "La generazione del discorso fallisce"
+    "message": "Generazione vocale non riuscita"
   },
   "ui_4cad964d": {
-    "message": "La generazione di voce si è fermata prima che l'audio fosse pronto."
+    "message": "La generazione vocale si è interrotta prima che l’audio fosse pronto."
   },
   "ui_2519f9e6": {
-    "message": "Ritorna o scegli un'altra voce."
+    "message": "Riprova oppure scegli un’altra voce."
   },
   "ui_1844c6fe": {
-    "message": "Nessun supporto PDF"
+    "message": "PDF non supportato"
   },
   "ui_4a8aceae": {
     "message": "Questo PDF è danneggiato o non supportato."
@@ -1283,9 +1295,9 @@
     "message": "Prova un altro PDF"
   },
   "ui_b8183083": {
-    "message": "Non è stato possibile scaricare il PDF. Controlla il link e la tua connessione."
+    "message": "Impossibile scaricare il PDF. Controlla il collegamento e la connessione."
   },
   "ui_ce24479d": {
-    "message": "Non è stato possibile aprire questo PDF."
+    "message": "Impossibile aprire questo PDF."
   }
 }

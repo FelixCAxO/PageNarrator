@@ -699,13 +699,25 @@
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Voice quality adjusted after $arg1$.",
+  "ui_b835b751": {
+    "message": "slow model loading"
+  },
+  "ui_4f078920": {
+    "message": "slow initial speech generation"
+  },
+  "ui_007bbfcb": {
+    "message": "slow section transitions"
+  },
+  "ui_794a03d4": {
+    "message": "Voice quality was adjusted. Reason: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "the selected processing method"
   },
   "ui_aa682200": {
     "message": "Voice processing: GPU (WebGPU) with CPU-friendly settings."

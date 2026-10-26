@@ -264,7 +264,14 @@ export function createReaderEngineVoiceSettingsController({
       els.ttsPerformanceProfileBadge.setAttribute('aria-live', 'polite');
       if (adjusted) {
         els.ttsPerformanceProfileBadge.dataset.adjusted = 'true';
-        els.ttsPerformanceProfileBadge.title = t("Voice quality adjusted after $1.", [lastAdjustedProfileDecision.reason]);
+        const reasons = {
+          'slow-model-load': t('slow model loading'),
+          'slow-first-synthesis': t('slow initial speech generation'),
+          'slow-section-transition': t('slow section transitions'),
+        };
+        els.ttsPerformanceProfileBadge.title = t('Voice quality was adjusted. Reason: $1.', [
+          reasons[lastAdjustedProfileDecision.reason] || t('the selected processing method'),
+        ]);
       } else {
         delete els.ttsPerformanceProfileBadge.dataset.adjusted;
         els.ttsPerformanceProfileBadge.removeAttribute('title');

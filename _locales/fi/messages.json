@@ -1,12 +1,12 @@
 {
   "extensionDescription": {
-    "message": "Lue verkkosivuja ja PDF-tiedostoja ääneen paikallisilla laitteilla ja synkronoidulla korostuksella."
+    "message": "Kuuntele verkkosivuja ja PDF:iä paikallisilla äänillä ja seuraa tekstin korostusta."
   },
   "actionTitle": {
-    "message": "Kuuntele tätä sivua"
+    "message": "Kuuntele tämä sivu"
   },
   "languageSuggestionOmniVoice": {
-    "message": "Tunnistettu kieli: $language$. Kokoro tukee englantia. Valitse ääniasetuksista OmniVoice ja $language$, jotta voit kuunnella tämän tekstin.",
+    "message": "Tunnistettu kieli: $language$. Kokoro tukee vain englantia. Valitse ääniasetuksissa OmniVoice ja kieleksi ”$language$”, jotta voit kuunnella tämän tekstin.",
     "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
     "placeholders": {
       "language": {
@@ -33,10 +33,10 @@
     "message": "Kieltä ei voitu tunnistaa varmasti."
   },
   "onboardingQuickWinTitle": {
-    "message": "Lue valittu kulku"
+    "message": "Lue valinta ääneen"
   },
   "onboardingQuickWinBody": {
-    "message": "Valitse sivulla kaksi lauseita ja valitse sitten Lue valittu."
+    "message": "Valitse sivulta kaksi lausetta ja sitten ”Lue valinta ääneen”."
   },
   "onboardingQuickWinCta": {
     "message": "Lue valinta ääneen"
@@ -45,7 +45,7 @@
     "message": "Lue sivu ääneen"
   },
   "onboardingFullPageBody": {
-    "message": "Valitse Lue sivu aloittaaksesi lukemisen."
+    "message": "Aloita lukeminen valitsemalla ”Lue sivu ääneen”."
   },
   "onboardingFullPageCta": {
     "message": "Lue koko sivu ääneen"
@@ -57,7 +57,7 @@
     "message": "Arvioi PageNarrator"
   },
   "reviewPromptBody": {
-    "message": "Arvostelu auttaa muita lukijoita valitsemaan."
+    "message": "Arviosi auttaa muita lukijoita valitsemaan."
   },
   "reviewNever": {
     "message": "Ei koskaan"
@@ -69,7 +69,7 @@
     "message": "Arvioi"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ sivua ladattu",
+    "message": "Ladattuja sivuja: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ sivua ladattu",
+    "message": "Ladattuja sivuja: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,16 +85,16 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Asiakirjojen lataaminen..."
+    "message": "Ladataan asiakirjaa…"
   },
   "ui_ffb67f19": {
-    "message": "Lataa PDF ..."
+    "message": "Ladataan PDF:ää…"
   },
   "ui_abc76c7c": {
-    "message": "Avaa uudelleen PDF ..."
+    "message": "Avataan PDF uudelleen…"
   },
   "ui_824a0948": {
-    "message": "Sivu $arg1$ / $arg2$",
+    "message": "Sivu $arg1$/$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Työskentely..."
+    "message": "Käsitellään…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ ääntä",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,7 +119,7 @@
     "message": "Ääni"
   },
   "ui_85d257a6": {
-    "message": "Käsittely: WebGPU (omistettu GPU)"
+    "message": "Käsittely: WebGPU (erillinen GPU)"
   },
   "ui_ea65fbf2": {
     "message": "Käsittely: WebGPU (integroitu GPU)"
@@ -128,13 +128,13 @@
     "message": "Käsittely: WebGPU"
   },
   "ui_7d6c19ce": {
-    "message": "Käsittely: CPU / WebAssembly (hidas)"
+    "message": "Käsittely: CPU / WebAssembly (hitaampi)"
   },
   "ui_5c338a74": {
-    "message": "Käsittely näkyy lukemisen jälkeen."
+    "message": "Käsittelytapa näytetään lukemisen alkaessa."
   },
   "ui_c513493a": {
-    "message": "Paikallisen äänen valmistelu... $arg1$%",
+    "message": "Valmistellaan ääntä… $arg1$ %",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Äänentoisto epäonnistui. Kokeile uudelleen"
+    "message": "Äänen valmistelu epäonnistui. Yritä uudelleen."
   },
   "ui_523c0c96": {
-    "message": "Puuttuvat äänitiedostot ladattu Hugging Face ennen asennusta."
+    "message": "Puuttuvat äänitiedostot ladataan Hugging Facesta äänen valmistelun tai lukemisen yhteydessä."
   },
   "ui_8036af59": {
     "message": "Yritä uudelleen"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Käytettävissä, kun lukeminen alkaa"
+    "message": "Teksti tulee näkyviin lukemisen alkaessa."
   },
   "ui_1d9bdb7f": {
-    "message": "Transcript ilmestyy, kun teksti ladataan."
+    "message": "Teksti tulee näkyviin lukemisen alkaessa."
   },
   "ui_fe92f855": {
     "message": "Nykyinen sivu"
   },
   "ui_bf0c7feb": {
-    "message": "Valmistautuminen..."
+    "message": "Käsitellään…"
   },
   "ui_3d77a20f": {
-    "message": "Valmistautuminen ääni... $arg1$%",
+    "message": "Valmistellaan ääntä… $arg1$ %",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Valmis lukemaan"
   },
   "ui_9283b625": {
-    "message": "Ääniä valmistaen..."
+    "message": "Valmistellaan ääntä"
   },
   "ui_5ee7339b": {
     "message": "Luetaan"
@@ -214,22 +214,22 @@
     "message": "Vaatii huomiota"
   },
   "ui_4d1cf041": {
-    "message": "Amerikkalainen nainen"
+    "message": "Amerikanenglanti, naisääni"
   },
   "ui_faf95838": {
-    "message": "Amerikkalainen mies"
+    "message": "Amerikanenglanti, miesääni"
   },
   "ui_f3768d40": {
-    "message": "brittiläinen nainen"
+    "message": "Brittienglanti, naisääni"
   },
   "ui_4139054c": {
-    "message": "Valitse Englanti Kokoro ääni. Muita kieliä ei tueta."
+    "message": "Valitse englanninkielinen Kokoro-ääni. Kokoro ei tue muita kieliä."
   },
   "ui_c0c171d2": {
-    "message": "Tätä toimintaa ei pystytty suorittamaan."
+    "message": "Toimintoa ei voitu suorittaa loppuun."
   },
   "ui_02e8a8a4": {
-    "message": "Sivun $arg1$ tekstin tunnistaminen...",
+    "message": "Tunnistetaan sivun $arg1$ tekstiä…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ sivua tämän sivun jälkeen",
+    "message": "Tämän sivun jälkeen jäljellä: $arg1$ sivua",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ sivua tämän sivun jälkeen",
+    "message": "Tämän sivun jälkeen jäljellä: $arg1$ sivua",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Nopeammin"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s hitaampi",
+    "message": "$arg1$ s hitaammin",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Luettu: $arg1$",
+    "message": "Luetaan: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Lue valittu teksti"
+    "message": "Lue valinta ääneen"
   },
   "ui_865bf5ae": {
     "message": "Lue valinta ääneen"
@@ -284,10 +284,10 @@
     "message": "Yritä uudelleen"
   },
   "ui_1dbc8cae": {
-    "message": "Verkkosivuston käyttöoikeus"
+    "message": "Salli käyttö"
   },
   "ui_450f715d": {
-    "message": "Luettelo kohdasta $arg1$",
+    "message": "Lue osio $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio Playback epäonnistui."
+    "message": "Äänen toistaminen epäonnistui."
   },
   "ui_248b7c43": {
-    "message": "Artikkelin tekstiä ei löydy"
+    "message": "Artikkelista ei löytynyt luettavaa tekstiä."
   },
   "ui_48ca3593": {
     "message": "PDF-sivun $arg1$ tekstiä ei voitu poimia",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Ei sivua ladattu"
+    "message": "Sivua ei ole ladattu"
   },
   "ui_8bdfb3a1": {
-    "message": "Teksti ilmestyy, kun lukeminen alkaa."
+    "message": "Teksti tulee näkyviin lukemisen alkaessa."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ min $arg2$ s",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ h $arg2$ min",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Lue tämä sivu ääneen"
+    "message": "Lue sivu ääneen"
   },
   "ui_758bbc44": {
     "message": "Lue sivu ääneen"
   },
   "ui_a174ecb1": {
-    "message": "0 % täydellinen"
+    "message": "0 % valmiina"
   },
   "ui_e527eba2": {
-    "message": "Äänen valmistelu - $arg1$%$arg2$",
+    "message": "Valmistellaan ääntä… $arg1$ %$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Ääniä valmisteleva..."
+    "message": "Valmistellaan ääntä"
   },
   "ui_78d44090": {
-    "message": "Pysäytä nykyinen lukeminen"
+    "message": "Pysäytetään..."
   },
   "ui_98847cfb": {
-    "message": "Lukemisen lopettaminen..."
+    "message": "Pysäytetään..."
   },
   "ui_e100f46d": {
     "message": "Pysäytetään..."
@@ -372,7 +372,7 @@
     "message": "Lopeta"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% täydellinen",
+    "message": "$arg1$ % valmiina",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Lukemisen loppu"
+    "message": "Valmis"
   },
   "ui_2f0dcc5d": {
     "message": "Lue uudelleen"
   },
   "ui_329cfb9e": {
-    "message": "100 % täydellinen"
+    "message": "100 % valmiina"
   },
   "ui_76fc465e": {
-    "message": "Jotain meni pieleen"
+    "message": "Jokin meni vikaan"
   },
   "ui_0d4b0da7": {
-    "message": "Valitun tekstin lukeminen"
+    "message": "Luetaan: Valittu teksti"
   },
   "ui_242bb2e3": {
-    "message": "Valitun tekstin lukeminen..."
+    "message": "Luetaan: Valittu teksti"
   },
   "ui_10905ea3": {
-    "message": "Valitun tekstin kirjoittaminen"
+    "message": "Valmistellaan: Valittu teksti…"
   },
   "ui_a2df426f": {
-    "message": "Valittu teksti keskeytetty"
+    "message": "Tauolla"
   },
   "ui_915b9541": {
-    "message": "Nykyisen sivun lukeminen"
+    "message": "Luetaan: Nykyinen sivu"
   },
   "ui_50880cb0": {
-    "message": "Sivun lukeminen..."
+    "message": "Luetaan: Nykyinen sivu"
   },
   "ui_e8bf303d": {
-    "message": "Nykyisen sivun valmistelu"
+    "message": "Valmistellaan: Nykyinen sivu…"
   },
   "ui_59ad3c41": {
-    "message": "Valmista ääntä"
+    "message": "Valmistellaan ääntä"
   },
   "ui_af82140f": {
-    "message": "Lukeminen pysähtyi"
+    "message": "Tauolla"
   },
   "ui_1ede4e42": {
-    "message": "Ääni valmiina"
+    "message": "Ääni on valmis"
   },
   "ui_63338bd9": {
-    "message": "Ääniasennus epäonnistui"
+    "message": "Äänen käyttöönotto epäonnistui"
   },
   "ui_cedd5bba": {
-    "message": "Malli on epäonnistunut."
+    "message": "Mallin käyttöönotto epäonnistui."
   },
   "ui_a7f38d4e": {
-    "message": "Paikallisen äänen valmistelu; puuttuvat tiedostot ladattu Hugging Face: sta."
+    "message": "Valmistellaan ääntä… Puuttuvat äänitiedostot ladataan Hugging Facesta äänen valmistelun tai lukemisen yhteydessä."
   },
   "ui_430dc39d": {
-    "message": "Arvioi aikaa..."
+    "message": "Arvioidaan aikaa…"
   },
   "ui_06a382b7": {
-    "message": "Avaa artikkeli ja lue sitten sivu"
+    "message": "Avaa artikkeli ja aloita sivun lukeminen."
   },
   "ui_37bc7086": {
     "message": "Sanoja: $arg1$",
@@ -453,13 +453,13 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Minä"
+    "message": "min"
   },
   "ui_5dca8675": {
-    "message": "0 osastoa"
+    "message": "Osioita: 0"
   },
   "ui_2d292516": {
-    "message": "Osa $arg1$ / $arg2$",
+    "message": "Osio $arg1$/$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -481,13 +481,13 @@
     "message": "Valittu teksti"
   },
   "ui_8212a19a": {
-    "message": "PDF asiakirja"
+    "message": "PDF-asiakirja"
   },
   "ui_cb3b43ef": {
-    "message": "Täysi sivu"
+    "message": "Koko sivu"
   },
   "ui_e13844b5": {
-    "message": "Ainoastaan artikkeli"
+    "message": "Vain artikkeli"
   },
   "ui_6cae863f": {
     "message": "Sanoja jäljellä: $arg1$",
@@ -533,7 +533,7 @@
     }
   },
   "ui_0290cbb9": {
-    "message": "Sivut, jotka ovat luokassa $arg1$",
+    "message": "Sivu $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · ensimmäinen $arg2$ näytetty",
+    "message": "$arg1$ · ensimmäiset $arg2$ näytetään",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ Näytetään",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ ja $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - välimuisti seuraavaksi",
+    "message": "$arg1$ – tallennettu seuraavaa kertaa varten",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Ääni malli"
+    "message": "Äänimalli"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Tarkistettu $arg1$. Valmistaudu ään...",
+    "message": "✓ $arg1$ · Valmistellaan ääntä",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Lataa äänitiedostoja: $arg1$",
+    "message": "Ladataan äänitiedostoja: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Lataa $arg1$: $arg2$",
+    "message": "Ladataan: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU asennus epäonnistui. Toistaminen CPU/WebAssembly..."
+    "message": "GPU:n käyttöönotto epäonnistui. Yritetään CPU/WebAssemblylla…"
   },
   "ui_f0fc3524": {
-    "message": "Lataa $arg1$ ...",
+    "message": "Ladataan: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Valmistautuminen $arg1$",
+    "message": "Valmistellaan: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Tarkista GPU tuki..."
+    "message": "Tarkistetaan GPU-tukea…"
   },
   "ui_a1f035db": {
-    "message": "Tarkista selaimen välimuisti."
+    "message": "Tarkistetaan selaimen välimuistia…"
   },
   "ui_412b5f0e": {
-    "message": "Yksi-aikainen asennus"
+    "message": "Kertaluonteinen käyttöönotto"
   },
   "ui_91d30309": {
-    "message": "Emme pystyneet antamaan pyydettyä ääntä."
+    "message": "Valittua ääntä ei voitu valmistella."
   },
   "ui_b9775b3a": {
-    "message": "Kokeellinen - laatu ei validoitu"
+    "message": "Kokeellinen – laatua ei ole varmistettu"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - säädetty",
+    "message": "$arg1$ – mukautettu",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Äänenlaatu on säädetty $arg1$ jälkeen.",
+  "ui_b835b751": {
+    "message": "mallin hidas latautuminen"
+  },
+  "ui_4f078920": {
+    "message": "ensimmäisen puhejakson hidas tuottaminen"
+  },
+  "ui_007bbfcb": {
+    "message": "hitaat siirtymät osioiden välillä"
+  },
+  "ui_794a03d4": {
+    "message": "Äänenlaatua mukautettiin. Syy: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "valittu käsittelytapa"
   },
   "ui_aa682200": {
-    "message": "Äänikäsittely: GPU (WebGPU) CPU-ystävällisillä asetuksilla."
+    "message": "Käsittely: GPU (WebGPU) · CPU:ta säästävät asetukset"
   },
   "ui_3411bb9b": {
-    "message": "Äänen käsittely: GPU (WebGPU)"
+    "message": "Käsittely: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Äänikäsittely: vain CPU (WebAssembly) koska WebGPU ei ole käytettävissä."
+    "message": "Käsittely: CPU (WebAssembly) · WebGPU ei ole käytettävissä"
   },
   "ui_9e335d53": {
-    "message": "Äänikäsittely: vain CPU (WebAssembly)"
+    "message": "Käsittely: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Äänenkäsittely: Järjestelmän ääni (selain tai käyttöjärjestelmä)."
+    "message": "Käsittely: järjestelmän ääni (selain tai käyttöjärjestelmä)"
   },
   "ui_815f1834": {
-    "message": "Äänikäsittely: tarkistetaan, kun lukeminen alkaa."
+    "message": "Käsittelytapa näytetään lukemisen alkaessa."
   },
   "ui_19f02581": {
     "message": "Käytössä on kokeellinen OmniVoice ja WebGPU."
@@ -749,7 +761,7 @@
     "message": "Puhe tuotetaan tällä laitteella. Välimuistiin tallennettuja tiedostoja voi käyttää offline-tilassa, kunnes ne poistetaan."
   },
   "ui_95b6ef87": {
-    "message": "Kokeilun laatu: $arg1$",
+    "message": "Kokeellinen – laatua ei ole varmistettu ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Numero $arg1$ on käytettävissä.",
+    "message": "Valitulle kielelle ei ole ääntä: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip koodi lyöntejä?"
+    "message": "Ohita koodikatkelmat"
   },
   "ui_9d9f28af": {
-    "message": "Tällä sivulla on monia koodiosakkeita. Ohita noin $arg1$ min koodia sujuvampaa kertomusta varten.",
+    "message": "Sivulla on paljon koodia. Ohita noin $arg1$ min koodia, jotta lukeminen sujuu paremmin.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Tällä sivulla on monia koodiosakkeita. Ohita noin $arg1$ min koodia sujuvampaa kertomusta varten.",
+    "message": "Sivulla on paljon koodia. Ohita noin $arg1$ min koodia, jotta lukeminen sujuu paremmin.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 osio esiladattu"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ etukäteen ladatut osat",
+    "message": "Esiladattuja osioita: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressiivinen Playback"
+    "message": "vaiheittainen toisto käytössä"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressiivinen Playback Off"
+    "message": "vaiheittainen toisto pois käytöstä"
   },
   "ui_95c9f0ef": {
-    "message": "Automaattinen selaimen äänenvaihto"
+    "message": "automaattinen vaihto selaimen ääneen pois käytöstä"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$-merkkijonoja, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ merkkiä · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "En päässyt tälle sivulle."
+    "message": "Tätä sivua ei voitu avata."
   },
   "ui_be75ad01": {
-    "message": "Best-effort readerEngine -toiminta epäonnistui"
+    "message": "Toimintoa ei voitu suorittaa loppuun."
   },
   "ui_eb6988d3": {
-    "message": "Ei pystynyt palauttamaan asentoa"
+    "message": "Tallennettua lukukohtaa ei voitu ladata"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator ei onnistunut aloittamaan."
+    "message": "PageNarratoria ei voitu käynnistää."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator pelaaja"
+    "message": "PageNarrator-soitin"
   },
   "ui_9d65bbdb": {
-    "message": "Valitse ääni malli"
+    "message": "Äänimalli"
   },
   "ui_e6334598": {
     "message": "Äänimalli"
@@ -872,7 +884,7 @@
     "message": "Kieli"
   },
   "ui_2070a9f8": {
-    "message": "Lataavat äänet..."
+    "message": "Ladataan ääniä…"
   },
   "ui_c39c8623": {
     "message": "Äänityyppi"
@@ -884,10 +896,10 @@
     "message": "Miesääni"
   },
   "ui_a2a40f30": {
-    "message": "Äänivaihtoehto"
+    "message": "Äänimuunnelma"
   },
   "ui_16383585": {
-    "message": "Valitse äänivaihtoehto. Muutokset ovat voimassa seuraavassa osassa. Aseta vauhti toistonopeudella."
+    "message": "Valitse äänimuunnelma. Muutokset tulevat voimaan seuraavasta osiosta. Säädä tahtia asetuksella ”Toistonopeus”."
   },
   "ui_d975568d": {
     "message": "Kuiskaus"
@@ -896,19 +908,19 @@
     "message": "Toistonopeus"
   },
   "ui_c58a3963": {
-    "message": "Tallennettu automaattisesti. Äänimuutoksia sovelletaan seuraavaan osaan lukemisen aikana."
+    "message": "Tallennetaan automaattisesti. Lukemisen aikana äänen muutokset tulevat voimaan seuraavasta osiosta."
   },
   "ui_71365cb1": {
-    "message": "Valitse paikallinen ääni"
+    "message": "Valmistele paikallinen ääni"
   },
   "ui_c197c7e2": {
     "message": "Ohita"
   },
   "ui_dad1a20b": {
-    "message": "Nyt lukeminen"
+    "message": "Luetaan"
   },
   "ui_30ea6e2f": {
-    "message": "Edellinen osa"
+    "message": "Edellinen osio"
   },
   "ui_c2954bc2": {
     "message": "Takaisin"
@@ -929,7 +941,7 @@
     "message": "Tauot, tekstin siistiminen, korostukset"
   },
   "ui_67231237": {
-    "message": "Jaksojen välinen tauko"
+    "message": "Tauko osioiden välillä"
   },
   "ui_8f517045": {
     "message": "Suorituskyky"
@@ -938,16 +950,16 @@
     "message": "Käsittely"
   },
   "ui_bec07b52": {
-    "message": "CPU ja WebAssembly"
+    "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Vapauta äänimuisti, kun olet tyhjä"
+    "message": "Vapauta äänen muisti, kun sitä ei käytetä"
   },
   "ui_231b3e4b": {
     "message": "Ohita koodikatkelmat"
   },
   "ui_456ac053": {
-    "message": "Värialueet"
+    "message": "Lukualueen väri"
   },
   "ui_10cd7856": {
     "message": "Sanan väri"
@@ -965,13 +977,13 @@
     "message": "Lukujono"
   },
   "ui_a106cd77": {
-    "message": "Etsi osastoja"
+    "message": "Hae osioista"
   },
   "ui_ee3d49e1": {
     "message": "Ensimmäinen"
   },
   "ui_30035f15": {
-    "message": "Jakson numero"
+    "message": "Osion numero"
   },
   "ui_41d0c56b": {
     "message": "Siirry"
@@ -980,31 +992,31 @@
     "message": "Viimeinen"
   },
   "ui_bd9126df": {
-    "message": "Ei vastaavia osia. Kokeile toista hakua."
+    "message": "Vastaavia osioita ei löytynyt. Kokeile toista hakua."
   },
   "ui_620574c4": {
-    "message": "PageNarrator lukija"
+    "message": "PageNarrator-soitin"
   },
   "ui_c5fbc06e": {
-    "message": "Grant Page -sovellus"
+    "message": "Salli käyttö"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator laajennus kuvake"
+    "message": "PageNarrator-laajennuksen kuvake"
   },
   "ui_5a3d9c47": {
     "message": "Avaa PageNarrator sivulta"
   },
   "ui_94a4b160": {
-    "message": "Napsauta laajennuksen kuvaketta PageNarrator, kun sivu on aktiivinen, ja valitse sitten Lue sivu."
+    "message": "Avaa sivu, napsauta PageNarrator-kuvaketta ja valitse ”Lue sivu ääneen”."
   },
   "ui_4be7c01e": {
-    "message": "Puuttuvat äänitiedostot ladataan ensimmäisen käytön yhteydessä."
+    "message": "Puuttuvat äänitiedostot ladataan Hugging Facesta äänen valmistelun tai lukemisen yhteydessä. Puhe tuotetaan tällä laitteella. Välimuistiin tallennettuja tiedostoja voi käyttää offline-tilassa, kunnes ne poistetaan."
   },
   "ui_3d04a00a": {
-    "message": "Paikallisen äänen valmistelu; puuttuvat tiedostot ladata Hugging Face..."
+    "message": "Valmistellaan ääntä… Puuttuvat äänitiedostot ladataan Hugging Facesta äänen valmistelun tai lukemisen yhteydessä."
   },
   "ui_048ca959": {
-    "message": "Toipumisen vaiheet"
+    "message": "Ongelman ratkaiseminen"
   },
   "ui_0ec24245": {
     "message": "Tiedot"
@@ -1013,112 +1025,112 @@
     "message": "Jatka lukemista"
   },
   "ui_cb2eed93": {
-    "message": "Palaa pelastettuun asentoon"
+    "message": "Jatka tallennetusta kohdasta"
   },
   "ui_ded3954b": {
-    "message": "Pelastettu lukemisen asento"
+    "message": "Tallennettu lukukohta"
   },
   "ui_24299867": {
     "message": "Aloita alusta"
   },
   "ui_d71c7401": {
-    "message": "Lukemisen ehdotus"
+    "message": "Lukuvinkki"
   },
   "ui_d5c02828": {
-    "message": "Tällä sivulla on monia koodiosakkeita."
+    "message": "Tällä sivulla on paljon koodikatkelmia."
   },
   "ui_336b89fb": {
     "message": "Ohita koodi"
   },
   "ui_299fab6d": {
-    "message": "Löydetty artikkeli"
+    "message": "Tunnistettu artikkeli"
   },
   "ui_a9898369": {
-    "message": "LUE MYÖS: Artikkeli vain"
+    "message": "Luetaan: Vain artikkeli"
   },
   "ui_3065e144": {
-    "message": "Aloita kanssa"
+    "message": "Alkaa sanoilla"
   },
   "ui_7ac012cc": {
-    "message": "Lukemisen pelaaja"
+    "message": "PageNarrator-soitin"
   },
   "ui_8edce20a": {
     "message": "Lukemisen edistyminen"
   },
   "ui_949ea37c": {
-    "message": "0 paikkaa jäljellä"
+    "message": "Osioita jäljellä: 0"
   },
   "ui_1250127e": {
-    "message": "PDF sivun navigointi"
+    "message": "PDF:n säätimet"
   },
   "ui_e83d9196": {
     "message": "Sivu"
   },
   "ui_27ba99fc": {
-    "message": "Selaa nykyistä PDF sivua"
+    "message": "Ohita nykyinen PDF-sivu"
   },
   "ui_dbd1ad47": {
-    "message": "Lukijan asetukset"
+    "message": "Lukuasetukset"
   },
   "ui_1a27bec5": {
-    "message": "Kieli tunnistetaan, kun lukeminen alkaa."
+    "message": "Kieli tunnistetaan lukemisen alkaessa."
   },
   "ui_52ff662d": {
-    "message": "Laitteen vaatimukset"
+    "message": "Laitevaatimukset"
   },
   "ui_fd02dfc2": {
     "message": "Suositus:"
   },
   "ui_b0555d92": {
-    "message": "omistettu NVIDIA RTX 30 -sarja GPU tai uudempi, jossa on 8 Gt + VRAM ja 8 Gt + järjestelmämuisti."
+    "message": "erillinen NVIDIA RTX 30 -sarjan GPU tai uudempi, vähintään 8 GB VRAM-muistia ja 8 GB järjestelmämuistia."
   },
   "ui_0d393abc": {
-    "message": "Käytä Chromium 120:tä tai uudempaa. Kokoro on hitaampi CPU:n taantuma."
+    "message": "Käytä Chromium 120:tä tai uudempaa. Kokoro voi toimia myös hitaammin CPU:lla. Laitteistoluokkia ei ole varmennettu fyysisillä laitteilla."
   },
   "ui_f31ba722": {
-    "message": "Puhdistus, puhdistus ja äänet"
+    "message": "Tauot, tekstin siistiminen, äänet"
   },
   "ui_a879e367": {
-    "message": "Osa taukoja"
+    "message": "Tauko osioiden välillä"
   },
   "ui_07e1c336": {
-    "message": "Korosta tyyliä"
+    "message": "Korostustyyli"
   },
   "ui_9525b78e": {
     "message": "Mukautettu"
   },
   "ui_e0955632": {
-    "message": "Lue alue"
+    "message": "Lukualue"
   },
   "ui_90571eca": {
     "message": "Nykyinen sana"
   },
   "ui_ea585567": {
-    "message": "Lukeminen puhdistus"
+    "message": "Tekstin siistiminen"
   },
   "ui_0dc6b4aa": {
     "message": "Pois"
   },
   "ui_d6fbffc9": {
-    "message": "Kuoron ja transkription yhteenveto"
+    "message": "Jono ja teksti"
   },
   "ui_21fd85e4": {
-    "message": "Osoite & transkripti"
+    "message": "Jono ja teksti"
   },
   "ui_d6c98891": {
-    "message": "Nykyinen osio, transkriptin haku ja hyppyohjaimet ovat käytettävissä Advanced-tilassa."
+    "message": "Nykyinen osio, tekstihaku ja siirtymispainikkeet ovat käytettävissä lisätilassa."
   },
   "ui_0eac1f07": {
     "message": "Selaa"
   },
   "ui_44d76dee": {
-    "message": "Täydellinen transkripti"
+    "message": "Koko teksti"
   },
   "ui_ab5783a6": {
-    "message": "0 kappaletta"
+    "message": "Kappaleita: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Navigointisuunnitelma"
+    "message": "Jonon selaaminen"
   },
   "ui_2d877b6c": {
     "message": "Osio"
@@ -1127,31 +1139,31 @@
     "message": "Etsi osio"
   },
   "ui_27654275": {
-    "message": "Etsi transkripti tai sivu."
+    "message": "Hae tekstistä tai sivulta…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF tarkastukset"
+    "message": "PDF:n säätimet"
   },
   "ui_88828491": {
-    "message": "Sivu 1 / 1"
+    "message": "Sivu 1/1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom ulos"
+    "message": "Loitonna"
   },
   "ui_a3583899": {
-    "message": "Zoomaus sisään"
+    "message": "Lähennä"
   },
   "ui_2b3553eb": {
-    "message": "Pyöräile vasemmalle"
+    "message": "Kierrä vasemmalle"
   },
   "ui_2eaecb74": {
-    "message": "Käännä oikealle"
+    "message": "Kierrä oikealle"
   },
   "ui_b6ab6b07": {
-    "message": "Sopii muotiin"
+    "message": "Sovitustila"
   },
   "ui_69acd800": {
     "message": "Sovita leveyteen"
@@ -1160,132 +1172,132 @@
     "message": "Sovita sivu"
   },
   "ui_9f9cf525": {
-    "message": "PDF sivua"
+    "message": "PDF-sivut"
   },
   "ui_ab32ceb0": {
     "message": "Kokeellinen. 646 kielimerkintää; laatu vaihtelee. Vaatii WebGPU:n, fp16-tuen ja noin 1,35 GB latauksia. Valitse ääni, muunnelma tai kuiskaus."
   },
   "ui_ab4a698f": {
-    "message": "Avaa sivulta"
+    "message": "Avaa sivu"
   },
   "ui_68fbfc28": {
-    "message": "Chrome ei myöntänyt pääsyä aktiiviseen välilehteen."
+    "message": "Chrome ei sallinut aktiivisen välilehden käyttöä."
   },
   "ui_67aad8a8": {
-    "message": "Avaa sivu, napsauta PageNarrator -kuvaketta ja valitse sitten Lue sivu."
+    "message": "Avaa sivu, napsauta PageNarrator-kuvaketta ja valitse ”Lue sivu ääneen”."
   },
   "ui_724c0e56": {
-    "message": "Avaa sivuilta"
+    "message": "Avaa sivu"
   },
   "ui_4f96b3e0": {
-    "message": "Suojattuja Chrome-sivuja ei voi lukea. Avaa verkkosivu tai PDF."
+    "message": "Chromen suojattuja sivuja ei voi lukea ääneen. Avaa verkkosivu tai PDF."
   },
   "ui_0cddc760": {
-    "message": "Avoin sivu"
+    "message": "Avaa sivu"
   },
   "ui_30274c11": {
-    "message": "Tarvittava pääsy sivulle"
+    "message": "Sivun käyttöoikeus tarvitaan"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator tarvitsee pääsyn tähän sivustoon."
+    "message": "PageNarrator tarvitsee tämän sivuston käyttöoikeuden."
   },
   "ui_2b54b790": {
     "message": "Salli sivuston käyttö PageNarrator-kuvakkeesta ja yritä uudelleen."
   },
   "ui_57906b45": {
-    "message": "Pääsy Grant"
+    "message": "Salli käyttö"
   },
   "ui_b48f6457": {
-    "message": "Vapaa selaimen tallennus, sitten retry."
+    "message": "Vapauta selaimen tallennustilaa ja yritä uudelleen."
   },
   "ui_75eca5ea": {
-    "message": "Vapaa varastointi"
+    "message": "Vapauta tallennustilaa"
   },
   "ui_99e92621": {
-    "message": "Valitse ääni tämän sivun kielelle."
+    "message": "Valitse tämän sivun kieltä tukeva ääni."
   },
   "ui_997f787a": {
     "message": "Valitse ääni"
   },
   "ui_50a8c46f": {
-    "message": "Aktiivinen välilehti suljettu ennen lukemisen aloittamista."
+    "message": "Aktiivinen välilehti suljettiin ennen kuin lukeminen ehti alkaa."
   },
   "ui_e64862ef": {
-    "message": "Avaa sivu uudelleen ja uudelleen."
+    "message": "Välilehti suljettiin. Avaa sivu uudelleen ja yritä taas."
   },
   "ui_39f600ae": {
-    "message": "Ei valittua tekstiä"
+    "message": "Tekstiä ei ole valittu"
   },
   "ui_79f7dfca": {
-    "message": "Ei tekstiä valittu."
+    "message": "Tekstiä ei ole valittu."
   },
   "ui_b7a079b0": {
     "message": "Valitse teksti"
   },
   "ui_522bcc26": {
-    "message": "Valitse teksti, jonka haluat kuulla, ja valitse sitten Lue valittu."
+    "message": "Valitse teksti, jonka haluat kuulla, ja valitse ”Lue valinta ääneen”."
   },
   "ui_580dc44e": {
-    "message": "Tarvittava tekstin tunnistaminen"
+    "message": "Tekstintunnistus tarvitaan"
   },
   "ui_ce175449": {
-    "message": "Joitakin PDF tekstiä ei voitu lukea luotettavasti."
+    "message": "Osaa PDF-tiedoston tekstistä ei voitu lukea luotettavasti."
   },
   "ui_f7c03bfe": {
-    "message": "Käytä tekstipohjaista PDF"
+    "message": "Käytä tekstiä sisältävää PDF:ää"
   },
   "ui_cde1ae87": {
-    "message": "Käytä tekstin tunnistusta (OCR) tai PDF täydellä tekstikerroksella."
+    "message": "Käytä tekstintunnistusta (OCR) tai PDF-tiedostoa, jossa on täydellinen tekstikerros."
   },
   "ui_281501a3": {
-    "message": "Täytä CAPTCHA sivulla ja jatka sitten uudelleen."
+    "message": "Suorita sivun CAPTCHA-tarkistus ja yritä uudelleen."
   },
   "ui_d1c2931f": {
-    "message": "Rekisteröidy sivustolle ja sitten retry."
+    "message": "Kirjaudu sivustolle ja yritä uudelleen."
   },
   "ui_744be623": {
-    "message": "merkki sisään"
+    "message": "Kirjaudu sisään"
   },
   "ui_3c4b4f30": {
-    "message": "Ei löydetty luettavaa artikkelia"
+    "message": "Luettavaa artikkelia ei löytynyt"
   },
   "ui_fb499b08": {
-    "message": "Lukemattomia artikkeleita ei löytynyt."
+    "message": "Artikkelista ei löytynyt luettavaa tekstiä."
   },
   "ui_a1fad21c": {
     "message": "Kokeile toista sivua"
   },
   "ui_b0ddc925": {
-    "message": "Valitse kohta ja valitse Lue valittu tai avaa toinen artikkeli."
+    "message": "Valitse tekstikatkelma ja ”Lue valinta ääneen” tai avaa toinen artikkeli."
   },
   "ui_d20c5459": {
-    "message": "Ääni ei lopettanut kuormaa."
+    "message": "Äänen lataaminen ei valmistunut."
   },
   "ui_eee6a1ad": {
-    "message": "Valitse Valmista ääni uudelleen asennukseen."
+    "message": "Yritä asennusta uudelleen valitsemalla ”Valmistele ääni”."
   },
   "ui_eab3cf34": {
-    "message": "Puheen sukupolvi epäonnistui"
+    "message": "Puheen tuottaminen epäonnistui"
   },
   "ui_4cad964d": {
-    "message": "Ääni sukupolvi pysähtyi ennen kuin ääni oli valmis."
+    "message": "Puheen tuottaminen keskeytyi ennen äänen valmistumista."
   },
   "ui_2519f9e6": {
-    "message": "Palauta tai valitse toinen ääni."
+    "message": "Yritä uudelleen tai valitse toinen ääni."
   },
   "ui_1844c6fe": {
-    "message": "Tuki ei ole saatavilla PDF"
+    "message": "PDF ei ole tuettu"
   },
   "ui_4a8aceae": {
-    "message": "Tämä PDF on vaurioitunut tai ei tueta."
+    "message": "Tämä PDF on vioittunut tai sen muotoa ei tueta."
   },
   "ui_5679bf2f": {
-    "message": "Kokeile uutta PDF"
+    "message": "Kokeile toista PDF:ää"
   },
   "ui_b8183083": {
-    "message": "Ei voinut ladata PDF. Tarkista linkki ja yhteys."
+    "message": "PDF:n lataaminen epäonnistui. Tarkista linkki ja verkkoyhteys."
   },
   "ui_ce24479d": {
-    "message": "En pystynyt avaamaan tätä PDF."
+    "message": "Tätä PDF:ää ei voitu avata."
   }
 }

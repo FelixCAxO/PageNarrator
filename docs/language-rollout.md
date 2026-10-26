@@ -64,6 +64,12 @@ All 25 requested languages are wired into the popup, reader controls, PDF toolba
 
 The catalogs were drafted locally with [M2M100 1.2B](https://huggingface.co/facebook/m2m100_1.2B), revision `7b36184180524c1a1bbfa37f120a608046250b98` (MIT). The drafting script requires a separately downloaded local model and runs with hub networking disabled. The model and Python authoring dependencies are not packaged with the extension. Core captions, privacy/offline notices, language suggestions, variable counts and model requirements have explicit authored overrides in `config/ui-translations-reviewed.json` and `config/ui-translations-critical.json`. Native-speaker review of the complete catalogs remains outstanding; automated completeness and layout checks do not establish linguistic approval.
 
+### Linguistic correction pass: 2026-10-26
+
+All 25 languages, including both Portuguese variants, received an assistant review against the English source. Every packaged message now has authored wording or an explicit equivalent in the reviewed catalogs; no message depends on an unreviewed model draft. Corrections include storage cleanup versus free-of-charge storage, sign-in actions, PDF loading and fitting, speech generation versus charging, consistent button references, language-name grammar in suggestions, minute units, and the hardware verification caveat. Voice names, language codes, filenames and substitution values are preserved. Performance adjustment reasons use readable localized phrases rather than internal reason codes.
+
+There are now 325 messages per locale. `scripts/install-ui-translations.mjs` can rebuild all locales without ignored draft files, a translation model or networking. Regression checks cover that rebuild, earlier meaning-changing errors, substituted captions and the hardware caveat. This is an AI linguistic review; independent native-speaker validation remains outstanding.
+
 To maintain the catalogs:
 
 1. Run `node scripts/sync-ui-catalog.mjs` after changing UI copy. It regenerates the English catalog and `config/ui-message-sources.json` from wired call sites, HTML markers, model help and error records.

@@ -1,12 +1,12 @@
 {
   "extensionDescription": {
-    "message": "Đọc các trang web và PDF bằng giọng nói cục bộ trên thiết bị và điểm nhấn đồng bộ."
+    "message": "Nghe trang web và PDF bằng giọng trên thiết bị, với văn bản được tô sáng đồng bộ."
   },
   "actionTitle": {
-    "message": "Lắng nghe trang này"
+    "message": "Nghe trang này"
   },
   "languageSuggestionOmniVoice": {
-    "message": "Ngôn ngữ phát hiện: $language$. Kokoro hỗ trợ tiếng Anh. Để đọc văn bản này, hãy chọn OmniVoice và $language$ trong cài đặt giọng đọc.",
+    "message": "Ngôn ngữ được phát hiện: $language$. Kokoro chỉ hỗ trợ tiếng Anh. Để đọc văn bản này, chọn OmniVoice trong cài đặt giọng đọc và đặt ngôn ngữ là “$language$”.",
     "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
     "placeholders": {
       "language": {
@@ -16,7 +16,7 @@
     }
   },
   "languageDetected": {
-    "message": "Ngôn ngữ phát hiện: $language$ ($percentage$%).",
+    "message": "Ngôn ngữ được phát hiện: $language$ ($percentage$%).",
     "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
     "placeholders": {
       "language": {
@@ -33,10 +33,10 @@
     "message": "Không thể xác định chắc chắn ngôn ngữ."
   },
   "onboardingQuickWinTitle": {
-    "message": "Đọc một đoạn đã chọn"
+    "message": "Đọc phần đã chọn"
   },
   "onboardingQuickWinBody": {
-    "message": "Chọn hai câu trên trang, sau đó chọn Đọc chọn."
+    "message": "Chọn hai câu trên trang rồi chọn “Đọc phần đã chọn”."
   },
   "onboardingQuickWinCta": {
     "message": "Đọc phần đã chọn"
@@ -45,7 +45,7 @@
     "message": "Đọc trang"
   },
   "onboardingFullPageBody": {
-    "message": "Chọn Đọc trang để bắt đầu đọc."
+    "message": "Chọn “Đọc trang” để bắt đầu đọc."
   },
   "onboardingFullPageCta": {
     "message": "Đọc toàn bộ trang"
@@ -57,7 +57,7 @@
     "message": "Đánh giá PageNarrator"
   },
   "reviewPromptBody": {
-    "message": "Đánh giá của bạn giúp các độc giả khác lựa chọn."
+    "message": "Đánh giá của bạn giúp người đọc khác lựa chọn."
   },
   "reviewNever": {
     "message": "Không bao giờ"
@@ -69,7 +69,7 @@
     "message": "Đánh giá"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ trang tải",
+    "message": "Số trang đã tải: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ trang đã tải",
+    "message": "Số trang đã tải: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,16 +85,16 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Tải tài liệu..."
+    "message": "Đang tải tài liệu…"
   },
   "ui_ffb67f19": {
-    "message": "Tải về PDF"
+    "message": "Đang tải PDF…"
   },
   "ui_abc76c7c": {
-    "message": "Cập nhật PDF"
+    "message": "Đang mở lại PDF…"
   },
   "ui_824a0948": {
-    "message": "Trang $arg1$ của $arg2$",
+    "message": "Trang $arg1$ trên $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "làm việc..."
+    "message": "Đang xử lý…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ giọng nói",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Giọng đọc"
   },
   "ui_85d257a6": {
-    "message": "Xử lý: WebGPU (được dành riêng cho GPU)"
+    "message": "Xử lý: WebGPU (GPU rời)"
   },
   "ui_ea65fbf2": {
-    "message": "Bộ xử lý: WebGPU (được tích hợp GPU)"
+    "message": "Xử lý: WebGPU (GPU tích hợp)"
   },
   "ui_4e4b8680": {
-    "message": "Bộ xử lý: WebGPU"
+    "message": "Xử lý: WebGPU"
   },
   "ui_7d6c19ce": {
     "message": "Xử lý: CPU / WebAssembly (chậm hơn)"
   },
   "ui_5c338a74": {
-    "message": "Xử lý được hiển thị sau khi đọc bắt đầu."
+    "message": "Phương thức xử lý sẽ hiển thị khi bắt đầu đọc."
   },
   "ui_c513493a": {
-    "message": "Chuẩn bị giọng nói địa phương... $arg1$%",
+    "message": "Đang chuẩn bị giọng đọc… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Chuẩn bị giọng nói thất bại. hãy thử lại."
+    "message": "Không chuẩn bị được giọng đọc. Hãy thử lại."
   },
   "ui_523c0c96": {
-    "message": "Các tập tin giọng nói bị mất tải từ Hugging Face trước khi cài đặt."
+    "message": "Các tệp giọng đọc còn thiếu được tải từ Hugging Face khi chuẩn bị hoặc bắt đầu đọc."
   },
   "ui_8036af59": {
     "message": "Thử lại"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Có sẵn khi đọc bắt đầu"
+    "message": "Văn bản sẽ hiển thị khi bắt đầu đọc."
   },
   "ui_1d9bdb7f": {
-    "message": "Transkript xuất hiện khi text load."
+    "message": "Văn bản sẽ hiển thị khi bắt đầu đọc."
   },
   "ui_fe92f855": {
     "message": "Trang hiện tại"
   },
   "ui_bf0c7feb": {
-    "message": "Chuẩn bị..."
+    "message": "Đang xử lý…"
   },
   "ui_3d77a20f": {
-    "message": "Chuẩn bị giọng nói... $arg1$%",
+    "message": "Đang chuẩn bị giọng đọc… $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Sẵn sàng đọc"
   },
   "ui_9283b625": {
-    "message": "Chuẩn bị giọng nói..."
+    "message": "Đang chuẩn bị giọng đọc"
   },
   "ui_5ee7339b": {
     "message": "Đang đọc"
@@ -214,22 +214,22 @@
     "message": "Cần xử lý"
   },
   "ui_4d1cf041": {
-    "message": "Nữ Mỹ"
+    "message": "Tiếng Anh Mỹ, nữ"
   },
   "ui_faf95838": {
-    "message": "Người Mỹ Male"
+    "message": "Tiếng Anh Mỹ, nam"
   },
   "ui_f3768d40": {
-    "message": "Phụ nữ Anh"
+    "message": "Tiếng Anh Anh, nữ"
   },
   "ui_4139054c": {
-    "message": "Chọn tiếng Anh Kokoro . ngôn ngữ khác không được hỗ trợ."
+    "message": "Chọn giọng Kokoro tiếng Anh. Kokoro không hỗ trợ ngôn ngữ khác."
   },
   "ui_c0c171d2": {
-    "message": "Không thể hoàn thành hành động này."
+    "message": "Không hoàn tất được thao tác này."
   },
   "ui_02e8a8a4": {
-    "message": "Nhận dạng văn bản trên trang $arg1$ ...",
+    "message": "Đang nhận dạng văn bản trên trang $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ trang sau trang này",
+    "message": "Số trang còn lại sau trang này: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ trang sau trang này",
+    "message": "Số trang còn lại sau trang này: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Nhanh hơn"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s chậm hơn",
+    "message": "Chậm hơn $arg1$ giây",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Đọc: $arg1$",
+    "message": "Đang đọc: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Đọc văn bản được chọn"
+    "message": "Đọc phần đã chọn"
   },
   "ui_865bf5ae": {
     "message": "Đọc phần đã chọn"
@@ -284,10 +284,10 @@
     "message": "Thử lại"
   },
   "ui_1dbc8cae": {
-    "message": "Grant site truy cập"
+    "message": "Cho phép truy cập"
   },
   "ui_450f715d": {
-    "message": "Đọc mục $arg1$",
+    "message": "Đọc phần $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio playback thất bại"
+    "message": "Không phát được âm thanh."
   },
   "ui_248b7c43": {
-    "message": "Không thể tìm thấy bài viết text"
+    "message": "Không tìm thấy nội dung bài viết có thể đọc."
   },
   "ui_48ca3593": {
     "message": "Không thể trích xuất văn bản từ trang $arg1$ của PDF",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Trang không tải"
+    "message": "Chưa tải trang nào"
   },
   "ui_8bdfb3a1": {
-    "message": "Văn bản xuất hiện khi đọc bắt đầu."
+    "message": "Văn bản sẽ hiển thị khi bắt đầu đọc."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ phút $arg2$ giây",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ giờ $arg2$ phút",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Đọc trang này to"
+    "message": "Đọc trang"
   },
   "ui_758bbc44": {
     "message": "Đọc trang"
   },
   "ui_a174ecb1": {
-    "message": "0% Hoàn thành"
+    "message": "Đã hoàn thành 0%"
   },
   "ui_e527eba2": {
-    "message": "Chuẩn bị giọng nói - $arg1$%$arg2$",
+    "message": "Đang chuẩn bị giọng đọc… $arg1$%$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Chuẩn bị giọng nói..."
+    "message": "Đang chuẩn bị giọng đọc"
   },
   "ui_78d44090": {
-    "message": "Ngừng đọc hiện tại"
+    "message": "Đang dừng..."
   },
   "ui_98847cfb": {
-    "message": "Ngừng đọc..."
+    "message": "Đang dừng..."
   },
   "ui_e100f46d": {
     "message": "Đang dừng..."
@@ -372,7 +372,7 @@
     "message": "Dừng"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% Hoàn thành",
+    "message": "Đã hoàn thành $arg1$%",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Đọc xong"
+    "message": "Đã xong"
   },
   "ui_2f0dcc5d": {
     "message": "Đọc lại"
   },
   "ui_329cfb9e": {
-    "message": "100% hoàn thành"
+    "message": "Đã hoàn thành 100%"
   },
   "ui_76fc465e": {
-    "message": "Một cái gì đó đã sai"
+    "message": "Đã xảy ra lỗi"
   },
   "ui_0d4b0da7": {
-    "message": "Đọc văn bản được chọn"
+    "message": "Đang đọc: Văn bản đã chọn"
   },
   "ui_242bb2e3": {
-    "message": "Đọc văn bản đã chọn..."
+    "message": "Đang đọc: Văn bản đã chọn"
   },
   "ui_10905ea3": {
-    "message": "Chuẩn bị Text Selected"
+    "message": "Đang chuẩn bị: Văn bản đã chọn…"
   },
   "ui_a2df426f": {
-    "message": "Chọn Text Paused"
+    "message": "Đã tạm dừng"
   },
   "ui_915b9541": {
-    "message": "Đọc trang hiện tại"
+    "message": "Đang đọc: Trang hiện tại"
   },
   "ui_50880cb0": {
-    "message": "Đọc trang..."
+    "message": "Đang đọc: Trang hiện tại"
   },
   "ui_e8bf303d": {
-    "message": "Chuẩn bị trang hiện tại"
+    "message": "Đang chuẩn bị: Trang hiện tại…"
   },
   "ui_59ad3c41": {
-    "message": "chuẩn bị giọng nói"
+    "message": "Đang chuẩn bị giọng đọc"
   },
   "ui_af82140f": {
-    "message": "Đọc Pause"
+    "message": "Đã tạm dừng"
   },
   "ui_1ede4e42": {
-    "message": "Lời bài hát Ready"
+    "message": "Giọng đọc đã sẵn sàng"
   },
   "ui_63338bd9": {
-    "message": "Voice Setup thất bại"
+    "message": "Thiết lập giọng đọc không thành công"
   },
   "ui_cedd5bba": {
-    "message": "Mô hình thiết lập thất bại"
+    "message": "Không thiết lập được mô hình."
   },
   "ui_a7f38d4e": {
-    "message": "Chuẩn bị giọng nói địa phương; các tập tin thiếu tải về từ Hugging Face."
+    "message": "Đang chuẩn bị giọng đọc… Các tệp giọng đọc còn thiếu được tải từ Hugging Face khi chuẩn bị hoặc bắt đầu đọc."
   },
   "ui_430dc39d": {
-    "message": "Đánh giá thời gian..."
+    "message": "Đang ước tính thời gian…"
   },
   "ui_06a382b7": {
-    "message": "Mở một bài viết, sau đó đọc trang"
+    "message": "Mở một bài viết rồi bắt đầu đọc trang."
   },
   "ui_37bc7086": {
     "message": "Số từ: $arg1$",
@@ -453,13 +453,13 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Min"
+    "message": "phút"
   },
   "ui_5dca8675": {
-    "message": "0 phần"
+    "message": "Số phần: 0"
   },
   "ui_2d292516": {
-    "message": "Phần $arg1$ của $arg2$",
+    "message": "Phần $arg1$ trên $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "Text chọn"
+    "message": "Văn bản đã chọn"
   },
   "ui_8212a19a": {
-    "message": "PDF tài liệu"
+    "message": "Tài liệu PDF"
   },
   "ui_cb3b43ef": {
-    "message": "Trang đầy đủ"
+    "message": "Toàn bộ trang"
   },
   "ui_e13844b5": {
-    "message": "Bài viết duy nhất"
+    "message": "Chỉ bài viết"
   },
   "ui_6cae863f": {
     "message": "Số từ còn lại: $arg1$",
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · lần đầu tiên $arg2$ hiển thị",
+    "message": "$arg1$ · hiển thị $arg2$ mục đầu",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ Hiển thị",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ của $arg2$",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - Cache lần sau",
+    "message": "$arg1$ – đã lưu vào bộ nhớ đệm cho lần sau",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Mô hình Voice"
+    "message": "Mô hình giọng đọc"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "Đã xác minh $arg1$. chuẩn bị giọng nói ...",
+    "message": "✓ $arg1$ · Đang chuẩn bị giọng đọc",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Tải về tập tin thoại: $arg1$",
+    "message": "Đang tải tệp giọng đọc: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "Tải về $arg1$: $arg2$",
+    "message": "Đang tải xuống: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "Cài đặt GPU thất bại. Khởi động lại với CPU/WebAssembly..."
+    "message": "Thiết lập GPU thất bại. Đang thử lại bằng CPU/WebAssembly…"
   },
   "ui_f0fc3524": {
-    "message": "Tải về $arg1$",
+    "message": "Đang tải xuống: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "Chuẩn bị $arg1$",
+    "message": "Đang chuẩn bị: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "Kiểm tra GPU hỗ trợ..."
+    "message": "Đang kiểm tra hỗ trợ GPU…"
   },
   "ui_a1f035db": {
-    "message": "Kiểm tra trình duyệt cache"
+    "message": "Đang kiểm tra bộ nhớ đệm trình duyệt…"
   },
   "ui_412b5f0e": {
-    "message": "Thiết lập một thời gian"
+    "message": "Thiết lập một lần"
   },
   "ui_91d30309": {
-    "message": "Không thể chuẩn bị giọng nói được yêu cầu."
+    "message": "Không chuẩn bị được giọng đọc đã chọn."
   },
   "ui_b9775b3a": {
-    "message": "Thí nghiệm - Chất lượng không được xác nhận"
+    "message": "Thử nghiệm – chất lượng chưa được xác minh"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - điều chỉnh",
+    "message": "$arg1$ – đã điều chỉnh",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Chất lượng giọng nói được điều chỉnh sau $arg1$.",
+  "ui_b835b751": {
+    "message": "tải mô hình chậm"
+  },
+  "ui_4f078920": {
+    "message": "tạo giọng nói ban đầu chậm"
+  },
+  "ui_007bbfcb": {
+    "message": "chuyển phần chậm"
+  },
+  "ui_794a03d4": {
+    "message": "Đã điều chỉnh chất lượng giọng đọc. Lý do: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "phương thức xử lý đã chọn"
   },
   "ui_aa682200": {
-    "message": "Xử lý giọng nói: GPU (WebGPU) với cài đặt thân thiện với CPU."
+    "message": "Xử lý: GPU (WebGPU) · cài đặt giảm tải CPU"
   },
   "ui_3411bb9b": {
-    "message": "Bộ xử lý giọng nói: GPU (WebGPU)"
+    "message": "Xử lý: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Xử lý giọng nói: Chỉ CPU (WebAssembly) vì WebGPU không sẵn dùng."
+    "message": "Xử lý: CPU (WebAssembly) · WebGPU không khả dụng"
   },
   "ui_9e335d53": {
-    "message": "Bộ xử lý giọng nói: Chỉ CPU (WebAssembly)."
+    "message": "Xử lý: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "xử lý giọng nói: giọng nói hệ thống (trình duyệt hoặc hệ điều hành)."
+    "message": "Xử lý: giọng hệ thống (trình duyệt hoặc hệ điều hành)"
   },
   "ui_815f1834": {
-    "message": "Xử lý giọng nói: Kiểm tra khi bắt đầu đọc."
+    "message": "Phương thức xử lý sẽ hiển thị khi bắt đầu đọc."
   },
   "ui_19f02581": {
     "message": "Đang dùng OmniVoice thử nghiệm qua WebGPU."
@@ -749,7 +761,7 @@
     "message": "Giọng nói được tạo trên thiết bị này. Có thể dùng lại các tệp trong bộ nhớ đệm khi ngoại tuyến cho đến khi chúng bị xóa."
   },
   "ui_95b6ef87": {
-    "message": "Chất lượng thử nghiệm: $arg1$.",
+    "message": "Thử nghiệm – chất lượng chưa được xác minh ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "Số $arg1$ phiếu có sẵn.",
+    "message": "Không có giọng đọc cho ngôn ngữ đã chọn: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip code snippets là gì?"
+    "message": "Bỏ qua đoạn mã"
   },
   "ui_9d9f28af": {
-    "message": "Trang này có rất nhiều đoạn mã.Bỏ qua khoảng $arg1$ phút mã để kể chuyện trơn tru hơn.",
+    "message": "Trang này có nhiều đoạn mã. Bỏ qua khoảng $arg1$ phút mã để nghe liền mạch hơn.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Trang này có nhiều đoạn mã. vượt qua khoảng $arg1$ phút mã để kể chuyện trơn tru hơn.",
+    "message": "Trang này có nhiều đoạn mã. Bỏ qua khoảng $arg1$ phút mã để nghe liền mạch hơn.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "Đã tải trước 1 phần"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ phần tải trước",
+    "message": "Số phần đã tải trước: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressive Playback trên"
+    "message": "bật phát từng phần"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressive Playback Tắt"
+    "message": "tắt phát từng phần"
   },
   "ui_95c9f0ef": {
-    "message": "Tự động tắt trình duyệt bằng giọng nói"
+    "message": "tắt tự động chuyển sang giọng của trình duyệt"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$-chữ ký, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ ký tự · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Không thể truy cập trang này."
+    "message": "Không truy cập được trang này."
   },
   "ui_be75ad01": {
-    "message": "Best-effort readerEngine hoạt động thất bại."
+    "message": "Không hoàn tất được thao tác này."
   },
   "ui_eb6988d3": {
-    "message": "Không thể load resume position"
+    "message": "Không tải được vị trí đã lưu"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator đã không khởi tạo."
+    "message": "Không khởi động được PageNarrator."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator người chơi"
+    "message": "Trình phát PageNarrator"
   },
   "ui_9d65bbdb": {
-    "message": "Chọn Voice Model"
+    "message": "Mô hình giọng đọc"
   },
   "ui_e6334598": {
     "message": "Mô hình giọng đọc"
@@ -872,7 +884,7 @@
     "message": "Ngôn ngữ"
   },
   "ui_2070a9f8": {
-    "message": "Load giọng nói..."
+    "message": "Đang tải giọng đọc…"
   },
   "ui_c39c8623": {
     "message": "Loại giọng"
@@ -887,7 +899,7 @@
     "message": "Biến thể giọng"
   },
   "ui_16383585": {
-    "message": "Chọn một biến thể giọng nói. Thay đổi áp dụng trong phần tiếp theo. Thiết lập tốc độ với tốc độ phát lại."
+    "message": "Chọn biến thể giọng. Thay đổi áp dụng từ phần tiếp theo. Điều chỉnh nhịp đọc bằng “Tốc độ phát”."
   },
   "ui_d975568d": {
     "message": "Thì thầm"
@@ -896,19 +908,19 @@
     "message": "Tốc độ phát"
   },
   "ui_c58a3963": {
-    "message": "Tự động lưu. thay đổi giọng nói áp dụng cho phần tiếp theo trong khi đọc."
+    "message": "Tự động lưu. Khi đang đọc, thay đổi giọng có hiệu lực từ phần tiếp theo."
   },
   "ui_71365cb1": {
-    "message": "Chuẩn bị tiếng nói địa phương"
+    "message": "Chuẩn bị giọng đọc cục bộ"
   },
   "ui_c197c7e2": {
     "message": "Bỏ qua"
   },
   "ui_dad1a20b": {
-    "message": "Bây giờ đọc"
+    "message": "Đang đọc"
   },
   "ui_30ea6e2f": {
-    "message": "Previous Phần"
+    "message": "Phần trước"
   },
   "ui_c2954bc2": {
     "message": "Trước"
@@ -929,7 +941,7 @@
     "message": "Khoảng nghỉ, làm sạch văn bản, tô sáng"
   },
   "ui_67231237": {
-    "message": "Nghỉ ngơi giữa các phần"
+    "message": "Khoảng nghỉ giữa các phần"
   },
   "ui_8f517045": {
     "message": "Hiệu suất"
@@ -941,16 +953,16 @@
     "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "Giải phóng bộ nhớ giọng nói khi idle"
+    "message": "Giải phóng bộ nhớ giọng đọc khi không sử dụng"
   },
   "ui_231b3e4b": {
     "message": "Bỏ qua đoạn mã"
   },
   "ui_456ac053": {
-    "message": "Khu vực màu"
+    "message": "Màu vùng đọc"
   },
   "ui_10cd7856": {
-    "message": "Màu sắc từ"
+    "message": "Màu từ"
   },
   "ui_1e4dbab9": {
     "message": "Độ mờ của vùng"
@@ -965,7 +977,7 @@
     "message": "Hàng đợi đọc"
   },
   "ui_a106cd77": {
-    "message": "Tìm kiếm Sections"
+    "message": "Tìm trong các phần"
   },
   "ui_ee3d49e1": {
     "message": "Đầu"
@@ -980,145 +992,145 @@
     "message": "Cuối"
   },
   "ui_bd9126df": {
-    "message": "Không có phần nào phù hợp. hãy thử tìm kiếm khác."
+    "message": "Không có phần phù hợp. Hãy thử từ khóa khác."
   },
   "ui_620574c4": {
-    "message": "PageNarrator Máy đọc"
+    "message": "Trình phát PageNarrator"
   },
   "ui_c5fbc06e": {
-    "message": "Grant Page Truy cập"
+    "message": "Cho phép truy cập"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator biểu tượng mở rộng"
+    "message": "Biểu tượng tiện ích PageNarrator"
   },
   "ui_5a3d9c47": {
     "message": "Mở PageNarrator từ trang"
   },
   "ui_94a4b160": {
-    "message": "Nhấp vào biểu tượng phần mở rộng PageNarrator trong khi trang đang hoạt động, sau đó chọn Đọc trang."
+    "message": "Mở trang, nhấp vào biểu tượng PageNarrator rồi chọn “Đọc trang”."
   },
   "ui_4be7c01e": {
-    "message": "Tải xuống các tập tin giọng nói bị thiếu khi sử dụng lần đầu tiên."
+    "message": "Các tệp giọng đọc còn thiếu được tải từ Hugging Face khi chuẩn bị hoặc bắt đầu đọc. Giọng nói được tạo trên thiết bị này. Có thể dùng lại các tệp trong bộ nhớ đệm khi ngoại tuyến cho đến khi chúng bị xóa."
   },
   "ui_3d04a00a": {
-    "message": "Chuẩn bị giọng nói địa phương; các tập tin thiếu tải về từ Hugging Face..."
+    "message": "Đang chuẩn bị giọng đọc… Các tệp giọng đọc còn thiếu được tải từ Hugging Face khi chuẩn bị hoặc bắt đầu đọc."
   },
   "ui_048ca959": {
-    "message": "Các bước phục hồi"
+    "message": "Các bước khắc phục"
   },
   "ui_0ec24245": {
     "message": "Chi tiết"
   },
   "ui_4ff448da": {
-    "message": "Đọc tiếp"
+    "message": "Tiếp tục đọc"
   },
   "ui_cb2eed93": {
-    "message": "Trở lại ở vị trí được lưu"
+    "message": "Tiếp tục từ vị trí đã lưu"
   },
   "ui_ded3954b": {
-    "message": "Cứu vị trí đọc"
+    "message": "Vị trí đọc đã lưu"
   },
   "ui_24299867": {
     "message": "Bắt đầu lại"
   },
   "ui_d71c7401": {
-    "message": "Đọc đề nghị"
+    "message": "Gợi ý đọc"
   },
   "ui_d5c02828": {
-    "message": "Trang này có rất nhiều đoạn mã."
+    "message": "Trang này có nhiều đoạn mã."
   },
   "ui_336b89fb": {
     "message": "Bỏ qua mã"
   },
   "ui_299fab6d": {
-    "message": "Phát hiện bài viết"
+    "message": "Bài viết được nhận dạng"
   },
   "ui_a9898369": {
-    "message": "Lời bài hát: Article Only"
+    "message": "Đang đọc: Chỉ bài viết"
   },
   "ui_3065e144": {
-    "message": "Bắt đầu với"
+    "message": "Bắt đầu bằng"
   },
   "ui_7ac012cc": {
-    "message": "Đọc diễn viên"
+    "message": "Trình phát PageNarrator"
   },
   "ui_8edce20a": {
-    "message": "Đọc tiến bộ"
+    "message": "Tiến độ đọc"
   },
   "ui_949ea37c": {
-    "message": "0 chunk left"
+    "message": "Số đoạn còn lại: 0"
   },
   "ui_1250127e": {
-    "message": "PDF trang điều hướng"
+    "message": "Điều khiển PDF"
   },
   "ui_e83d9196": {
     "message": "Trang"
   },
   "ui_27ba99fc": {
-    "message": "Skip hiện tại PDF trang"
+    "message": "Bỏ qua trang PDF hiện tại"
   },
   "ui_dbd1ad47": {
-    "message": "Reader cài đặt"
+    "message": "Cài đặt đọc"
   },
   "ui_1a27bec5": {
-    "message": "Ngôn ngữ sẽ được phát hiện khi đọc bắt đầu."
+    "message": "Ngôn ngữ sẽ được nhận dạng khi bắt đầu đọc."
   },
   "ui_52ff662d": {
-    "message": "Device yêu cầu"
+    "message": "Yêu cầu thiết bị"
   },
   "ui_fd02dfc2": {
     "message": "Khuyến nghị:"
   },
   "ui_b0555d92": {
-    "message": "NVIDIA RTX 30 Series GPU hoặc mới hơn, với 8 GB + VRAM và 8 GB + RAM hệ thống."
+    "message": "GPU rời NVIDIA dòng RTX 30 trở lên, ít nhất 8 GB VRAM và 8 GB RAM hệ thống."
   },
   "ui_0d393abc": {
-    "message": "Sử dụng Chromium 120 hoặc mới hơn. Kokoro có tốc độ chậm hơn CPU. các cấp phần cứng vật lý chưa được xác minh."
+    "message": "Dùng Chromium 120 trở lên. Kokoro có chế độ dự phòng chậm hơn trên CPU. Các mức phần cứng chưa được kiểm chứng trên thiết bị thực."
   },
   "ui_f31ba722": {
-    "message": "Timing, cleanup, giọng nói"
+    "message": "Khoảng nghỉ, làm sạch văn bản, giọng đọc"
   },
   "ui_a879e367": {
-    "message": "Phần Pause"
+    "message": "Khoảng nghỉ giữa các phần"
   },
   "ui_07e1c336": {
-    "message": "Highlight phong cách"
+    "message": "Kiểu tô sáng"
   },
   "ui_9525b78e": {
     "message": "Tùy chỉnh"
   },
   "ui_e0955632": {
-    "message": "Đọc khu vực"
+    "message": "Vùng đọc"
   },
   "ui_90571eca": {
-    "message": "Lời hiện tại"
+    "message": "Từ hiện tại"
   },
   "ui_ea585567": {
-    "message": "đọc cleanup"
+    "message": "Làm sạch văn bản"
   },
   "ui_0dc6b4aa": {
     "message": "Tắt"
   },
   "ui_d6fbffc9": {
-    "message": "Queue và transcript tóm tắt"
+    "message": "Hàng đợi và văn bản"
   },
   "ui_21fd85e4": {
-    "message": "Lời bài hát: Queue & Transcript"
+    "message": "Hàng đợi và văn bản"
   },
   "ui_d6c98891": {
-    "message": "Phần hiện tại, tìm kiếm đoạn văn và điều khiển nhảy có sẵn trong chế độ nâng cao."
+    "message": "Phần hiện tại, tìm kiếm văn bản và điều khiển chuyển đoạn có trong chế độ nâng cao."
   },
   "ui_0eac1f07": {
     "message": "Duyệt"
   },
   "ui_44d76dee": {
-    "message": "Transcript đầy đủ"
+    "message": "Toàn bộ văn bản"
   },
   "ui_ab5783a6": {
-    "message": "0 điểm"
+    "message": "Số đoạn văn: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Queue Navigation Hành trình"
+    "message": "Điều hướng hàng đợi"
   },
   "ui_2d877b6c": {
     "message": "Phần"
@@ -1127,31 +1139,31 @@
     "message": "Tìm phần"
   },
   "ui_27654275": {
-    "message": "Tìm kiếm transcript hoặc page..."
+    "message": "Tìm trong văn bản hoặc trang…"
   },
   "ui_f4154041": {
     "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF Kiểm soát"
+    "message": "Điều khiển PDF"
   },
   "ui_88828491": {
-    "message": "Trang 1 của 1"
+    "message": "Trang 1 trên 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom ra ngoài"
+    "message": "Thu nhỏ"
   },
   "ui_a3583899": {
-    "message": "Zoom trong"
+    "message": "Phóng to"
   },
   "ui_2b3553eb": {
-    "message": "xoay left"
+    "message": "Xoay trái"
   },
   "ui_2eaecb74": {
-    "message": "xoay phải"
+    "message": "Xoay phải"
   },
   "ui_b6ab6b07": {
-    "message": "Thời trang phù hợp"
+    "message": "Chế độ vừa trang"
   },
   "ui_69acd800": {
     "message": "Vừa chiều rộng"
@@ -1160,132 +1172,132 @@
     "message": "Vừa trang"
   },
   "ui_9f9cf525": {
-    "message": "PDF trang"
+    "message": "Các trang PDF"
   },
   "ui_ab32ceb0": {
     "message": "Thử nghiệm. Có 646 mục ngôn ngữ với chất lượng khác nhau. Cần WebGPU hỗ trợ fp16 và tải xuống khoảng 1,35 GB. Chọn giọng, biến thể hoặc thì thầm."
   },
   "ui_ab4a698f": {
-    "message": "Mở từ trang"
+    "message": "Mở trang"
   },
   "ui_68fbfc28": {
-    "message": "Chrome đã không cấp quyền truy cập vào tab đang hoạt động."
+    "message": "Chrome chưa cho phép truy cập thẻ đang hoạt động."
   },
   "ui_67aad8a8": {
-    "message": "Mở trang, nhấp vào biểu tượng PageNarrator, sau đó chọn Đọc trang."
+    "message": "Mở trang, nhấp vào biểu tượng PageNarrator rồi chọn “Đọc trang”."
   },
   "ui_724c0e56": {
-    "message": "Mở từ page"
+    "message": "Mở trang"
   },
   "ui_4f96b3e0": {
-    "message": "Các trang Chrome được bảo vệ không thể đọc được.Mở một trang web hoặc PDF."
+    "message": "Không thể đọc các trang được bảo vệ của Chrome. Hãy mở trang web hoặc PDF."
   },
   "ui_0cddc760": {
-    "message": "Trang mở"
+    "message": "Mở trang"
   },
   "ui_30274c11": {
-    "message": "Truy cập trang cần thiết"
+    "message": "Cần quyền truy cập trang"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator cần truy cập trang web này."
+    "message": "PageNarrator cần quyền truy cập trang web này."
   },
   "ui_2b54b790": {
     "message": "Cho phép truy cập trang web qua biểu tượng PageNarrator rồi thử lại."
   },
   "ui_57906b45": {
-    "message": "Grant truy cập"
+    "message": "Cho phép truy cập"
   },
   "ui_b48f6457": {
-    "message": "Tự do lưu trữ trình duyệt, sau đó retry."
+    "message": "Giải phóng dung lượng lưu trữ của trình duyệt rồi thử lại."
   },
   "ui_75eca5ea": {
-    "message": "miễn phí lưu trữ"
+    "message": "Giải phóng dung lượng"
   },
   "ui_99e92621": {
-    "message": "Chọn một giọng nói cho ngôn ngữ của trang này."
+    "message": "Chọn giọng đọc hỗ trợ ngôn ngữ của trang này."
   },
   "ui_997f787a": {
-    "message": "Chọn Voice"
+    "message": "Chọn giọng đọc"
   },
   "ui_50a8c46f": {
-    "message": "Tab hoạt động đóng trước khi đọc có thể bắt đầu."
+    "message": "Thẻ đang hoạt động đã đóng trước khi bắt đầu đọc."
   },
   "ui_e64862ef": {
-    "message": "Mở lại trang và retry."
+    "message": "Thẻ đã đóng. Mở lại trang rồi thử lại."
   },
   "ui_39f600ae": {
-    "message": "Không chọn văn bản"
+    "message": "Chưa chọn văn bản"
   },
   "ui_79f7dfca": {
-    "message": "Không có văn bản được chọn."
+    "message": "Chưa có văn bản nào được chọn."
   },
   "ui_b7a079b0": {
-    "message": "Chọn text"
+    "message": "Chọn văn bản"
   },
   "ui_522bcc26": {
-    "message": "Chọn văn bản bạn muốn nghe, sau đó chọn Đọc chọn."
+    "message": "Chọn văn bản muốn nghe rồi chọn “Đọc phần đã chọn”."
   },
   "ui_580dc44e": {
-    "message": "Text Recognition yêu cầu"
+    "message": "Cần nhận dạng văn bản"
   },
   "ui_ce175449": {
-    "message": "Một số văn bản PDF không thể đọc đáng tin cậy."
+    "message": "Không thể đọc chính xác một phần văn bản trong PDF."
   },
   "ui_f7c03bfe": {
-    "message": "Sử dụng văn bản dựa trên PDF"
+    "message": "Dùng PDF có văn bản"
   },
   "ui_cde1ae87": {
-    "message": "Sử dụng nhận dạng văn bản (OCR) hoặc PDF với một lớp văn bản hoàn chỉnh."
+    "message": "Dùng nhận dạng văn bản (OCR) hoặc PDF có lớp văn bản đầy đủ."
   },
   "ui_281501a3": {
-    "message": "Hoàn thành CAPTCHA trên trang, sau đó retry."
+    "message": "Hoàn thành CAPTCHA trên trang rồi thử lại."
   },
   "ui_d1c2931f": {
-    "message": "Đăng nhập vào trang web, sau đó retry."
+    "message": "Đăng nhập vào trang web rồi thử lại."
   },
   "ui_744be623": {
-    "message": "ký hiệu in"
+    "message": "Đăng nhập"
   },
   "ui_3c4b4f30": {
-    "message": "Không tìm thấy bài viết được đọc"
+    "message": "Không tìm thấy bài viết có thể đọc"
   },
   "ui_fb499b08": {
-    "message": "Không tìm thấy bài viết có thể đọc được."
+    "message": "Không tìm thấy nội dung bài viết có thể đọc."
   },
   "ui_a1fad21c": {
     "message": "Thử trang khác"
   },
   "ui_b0ddc925": {
-    "message": "Chọn một đoạn văn và chọn Đọc chọn, hoặc mở một bài viết khác."
+    "message": "Chọn một đoạn rồi chọn “Đọc phần đã chọn” hoặc mở bài viết khác."
   },
   "ui_d20c5459": {
-    "message": "Giọng nói không hoàn thành việc nạp."
+    "message": "Chưa tải xong giọng đọc."
   },
   "ui_eee6a1ad": {
-    "message": "Chọn Chuẩn bị giọng nói để thiết lập lại."
+    "message": "Chọn “Chuẩn bị giọng đọc” để thử thiết lập lại."
   },
   "ui_eab3cf34": {
-    "message": "Lời bài hát Failed"
+    "message": "Không tạo được giọng nói"
   },
   "ui_4cad964d": {
-    "message": "Thế hệ giọng nói dừng lại trước khi âm thanh đã sẵn sàng."
+    "message": "Quá trình tạo giọng nói dừng trước khi âm thanh sẵn sàng."
   },
   "ui_2519f9e6": {
-    "message": "Retry hoặc chọn một giọng nói khác."
+    "message": "Thử lại hoặc chọn giọng đọc khác."
   },
   "ui_1844c6fe": {
-    "message": "Không hỗ trợ PDF"
+    "message": "PDF không được hỗ trợ"
   },
   "ui_4a8aceae": {
     "message": "PDF này bị hỏng hoặc không được hỗ trợ."
   },
   "ui_5679bf2f": {
-    "message": "Xem thêm PDF"
+    "message": "Thử PDF khác"
   },
   "ui_b8183083": {
-    "message": "Không thể tải xuống PDF. Kiểm tra liên kết và kết nối của bạn."
+    "message": "Không tải được PDF. Kiểm tra liên kết và kết nối mạng."
   },
   "ui_ce24479d": {
-    "message": "Không thể mở này PDF."
+    "message": "Không mở được PDF này."
   }
 }

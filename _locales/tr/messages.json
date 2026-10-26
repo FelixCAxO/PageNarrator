@@ -1,12 +1,12 @@
 {
   "extensionDescription": {
-    "message": "Web sayfaları ve PDF'leri yerel aygıt sesleri ve senkronize vurgulama ile yüksek sesle okuyun."
+    "message": "Web sayfalarını ve PDF’leri yerel seslerle dinleyin, eşzamanlı metin vurgularıyla takip edin."
   },
   "actionTitle": {
     "message": "Bu sayfayı dinle"
   },
   "languageSuggestionOmniVoice": {
-    "message": "Algılanan dil: $language$. Kokoro İngilizceyi destekler. Bu metni okumak için Ses ayarlarından OmniVoice ve $language$ seçin.",
+    "message": "Algılanan dil: $language$. Kokoro yalnızca İngilizceyi destekler. Bu metni okumak için Ses ayarlarında OmniVoice seçin ve dili “$language$” olarak ayarlayın.",
     "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
     "placeholders": {
       "language": {
@@ -33,10 +33,10 @@
     "message": "Dil kesin olarak belirlenemedi."
   },
   "onboardingQuickWinTitle": {
-    "message": "Seçilen bir yolculuğu oku"
+    "message": "Seçili metni oku"
   },
   "onboardingQuickWinBody": {
-    "message": "Sayfada iki cümle seçin, ardından Seçili metni oku seçin."
+    "message": "Sayfada iki cümle seçin ve “Seçili metni oku” seçeneğini kullanın."
   },
   "onboardingQuickWinCta": {
     "message": "Seçili metni oku"
@@ -45,7 +45,7 @@
     "message": "Sayfayı sesli oku"
   },
   "onboardingFullPageBody": {
-    "message": "Okumaya başlamak için Okuma sayfasını seçin."
+    "message": "Okumayı başlatmak için “Sayfayı sesli oku” seçeneğini seçin."
   },
   "onboardingFullPageCta": {
     "message": "Tüm sayfayı oku"
@@ -57,7 +57,7 @@
     "message": "PageNarrator'ı değerlendir"
   },
   "reviewPromptBody": {
-    "message": "Yorumlarınız diğer okuyuculara seçim yapmalarına yardımcı olur."
+    "message": "Değerlendirmeniz diğer okuyucuların seçim yapmasına yardımcı olur."
   },
   "reviewNever": {
     "message": "Bir daha gösterme"
@@ -69,7 +69,7 @@
     "message": "Değerlendir"
   },
   "ui_43b7293a": {
-    "message": "$arg1$ sayfa yüklü",
+    "message": "Yüklenen sayfa sayısı: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -77,7 +77,7 @@
     }
   },
   "ui_ba72f3a3": {
-    "message": "$arg1$ sayfa yüklü",
+    "message": "Yüklenen sayfa sayısı: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -85,13 +85,13 @@
     }
   },
   "ui_3e8b2a3a": {
-    "message": "Yükleme belgeleri..."
+    "message": "Belge yükleniyor…"
   },
   "ui_ffb67f19": {
-    "message": "Yükleme PDF ..."
+    "message": "PDF yükleniyor…"
   },
   "ui_abc76c7c": {
-    "message": "PDF Tekrar Açma..."
+    "message": "PDF yeniden açılıyor…"
   },
   "ui_824a0948": {
     "message": "Sayfa $arg1$ / $arg2$",
@@ -105,10 +105,10 @@
     }
   },
   "ui_c08b976a": {
-    "message": "Çalışmak..."
+    "message": "İşleniyor…"
   },
   "ui_059a0144": {
-    "message": "$arg1$ Yorumlar",
+    "message": "$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -119,22 +119,22 @@
     "message": "Ses"
   },
   "ui_85d257a6": {
-    "message": "İşlemci: WebGPU (GPU özel)"
+    "message": "İşleme: WebGPU (ayrı GPU)"
   },
   "ui_ea65fbf2": {
-    "message": "İşlemci: WebGPU (integrated GPU)"
+    "message": "İşleme: WebGPU (tümleşik GPU)"
   },
   "ui_4e4b8680": {
-    "message": "İşlemci: WebGPU"
+    "message": "İşleme: WebGPU"
   },
   "ui_7d6c19ce": {
     "message": "İşleme: CPU / WebAssembly (daha yavaş)"
   },
   "ui_5c338a74": {
-    "message": "Okumaya başlarken gösterilen işleme."
+    "message": "Okuma başladığında işleme yöntemi gösterilir."
   },
   "ui_c513493a": {
-    "message": "Yerel ses hazırlama... $arg1$%",
+    "message": "Ses hazırlanıyor… %$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -142,10 +142,10 @@
     }
   },
   "ui_642babee": {
-    "message": "Ses hazırlığı başarısız oldu. tekrar deneyin."
+    "message": "Ses hazırlanamadı. Yeniden deneyin."
   },
   "ui_523c0c96": {
-    "message": "Kayıp ses dosyaları yüklemeden önce Hugging Face'den indirilir."
+    "message": "Sesi hazırlarken veya okuma sırasında eksik ses dosyaları Hugging Face’ten indirilir."
   },
   "ui_8036af59": {
     "message": "Yeniden dene"
@@ -170,19 +170,19 @@
     }
   },
   "ui_a133c549": {
-    "message": "Okuma Başladıktan Sonra Kullanılabilir"
+    "message": "Okuma başladığında metin görünür."
   },
   "ui_1d9bdb7f": {
-    "message": "Transcript, metin yüklendiğinde görüntülenir."
+    "message": "Okuma başladığında metin görünür."
   },
   "ui_fe92f855": {
-    "message": "Mevcut sayfa"
+    "message": "Geçerli sayfa"
   },
   "ui_bf0c7feb": {
-    "message": "Hazırlık..."
+    "message": "İşleniyor…"
   },
   "ui_3d77a20f": {
-    "message": "Ses hazırlama... $arg1$%",
+    "message": "Ses hazırlanıyor… %$arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -199,7 +199,7 @@
     "message": "Okumaya hazır"
   },
   "ui_9283b625": {
-    "message": "Ses hazırlamak..."
+    "message": "Ses hazırlanıyor"
   },
   "ui_5ee7339b": {
     "message": "Okunuyor"
@@ -214,22 +214,22 @@
     "message": "İşlem gerekiyor"
   },
   "ui_4d1cf041": {
-    "message": "Amerikan kadın"
+    "message": "Amerikan İngilizcesi, kadın"
   },
   "ui_faf95838": {
-    "message": "Amerikalı erkek"
+    "message": "Amerikan İngilizcesi, erkek"
   },
   "ui_f3768d40": {
-    "message": "İngiliz kadın"
+    "message": "Britanya İngilizcesi, kadın"
   },
   "ui_4139054c": {
-    "message": "İngilizce Kokoro ses seçin. Diğer diller desteklenmiyor."
+    "message": "İngilizce bir Kokoro sesi seçin. Kokoro diğer dilleri desteklemez."
   },
   "ui_c0c171d2": {
-    "message": "Bu eylemi tamamlayamadım."
+    "message": "Bu işlem tamamlanamadı."
   },
   "ui_02e8a8a4": {
-    "message": "$arg1$ sayfasında bulunan metni tanımak...",
+    "message": "$arg1$. sayfadaki metin tanınıyor…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -237,7 +237,7 @@
     }
   },
   "ui_32d520cc": {
-    "message": "$arg1$ sayfa bu sayfadan sonra",
+    "message": "Bu sayfadan sonra kalan sayfa: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -245,7 +245,7 @@
     }
   },
   "ui_0cf8b1f7": {
-    "message": "$arg1$ Bu sayfadan sonraki sayfalar",
+    "message": "Bu sayfadan sonra kalan sayfa: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -259,7 +259,7 @@
     "message": "Daha hızlı"
   },
   "ui_f6adf6a7": {
-    "message": "$arg1$s daha yavaş",
+    "message": "$arg1$ sn daha yavaş",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -267,7 +267,7 @@
     }
   },
   "ui_2c9ef2b2": {
-    "message": "Okunma sayısı: $arg1$",
+    "message": "Okunuyor: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -275,7 +275,7 @@
     }
   },
   "ui_6ae318e1": {
-    "message": "Seçilen Yazıyı Oku"
+    "message": "Seçili metni oku"
   },
   "ui_865bf5ae": {
     "message": "Seçili metni oku"
@@ -284,10 +284,10 @@
     "message": "Tekrar dene"
   },
   "ui_1dbc8cae": {
-    "message": "Siteye erişim sağlama"
+    "message": "Erişime izin ver"
   },
   "ui_450f715d": {
-    "message": "Okunma sayısı $arg1$",
+    "message": "$arg1$. bölümü oku",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -295,10 +295,10 @@
     }
   },
   "ui_531cf49f": {
-    "message": "Audio playback başarısız oldu."
+    "message": "Ses oynatılamadı."
   },
   "ui_248b7c43": {
-    "message": "Yazı metni bulamadım"
+    "message": "Makalede okunabilir metin bulunamadı."
   },
   "ui_48ca3593": {
     "message": "PDF dosyasının $arg1$. sayfasından metin çıkarılamadı",
@@ -309,13 +309,13 @@
     }
   },
   "ui_70cc9cc6": {
-    "message": "Yüklenen sayfalar yok"
+    "message": "Yüklenmiş sayfa yok"
   },
   "ui_8bdfb3a1": {
-    "message": "Okumaya başladığında yazılar ortaya çıkar."
+    "message": "Okuma başladığında metin görünür."
   },
   "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
+    "message": "$arg1$ dk $arg2$ sn",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -326,7 +326,7 @@
     }
   },
   "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
+    "message": "$arg1$ sa $arg2$ dk",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -337,16 +337,16 @@
     }
   },
   "ui_d3f69559": {
-    "message": "Bu sayfayı yüksek sesle okuyun"
+    "message": "Sayfayı sesli oku"
   },
   "ui_758bbc44": {
     "message": "Sayfayı sesli oku"
   },
   "ui_a174ecb1": {
-    "message": "%0 Tamamlandı"
+    "message": "%0 tamamlandı"
   },
   "ui_e527eba2": {
-    "message": "Ses hazırlama - $arg1$%$arg2$",
+    "message": "Ses hazırlanıyor… %$arg1$$arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -357,13 +357,13 @@
     }
   },
   "ui_365406c5": {
-    "message": "Ses hazırlamak..."
+    "message": "Ses hazırlanıyor"
   },
   "ui_78d44090": {
-    "message": "Mevcut Okuma Durdurma"
+    "message": "Durduruluyor..."
   },
   "ui_98847cfb": {
-    "message": "Okumayı durdurmak..."
+    "message": "Durduruluyor..."
   },
   "ui_e100f46d": {
     "message": "Durduruluyor..."
@@ -372,7 +372,7 @@
     "message": "Durdur"
   },
   "ui_a8d7b6e8": {
-    "message": "$arg1$% Tamamlandı",
+    "message": "%$arg1$ tamamlandı",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -380,61 +380,61 @@
     }
   },
   "ui_5376d4e7": {
-    "message": "Okuma bitti"
+    "message": "Tamamlandı"
   },
   "ui_2f0dcc5d": {
     "message": "Yeniden oku"
   },
   "ui_329cfb9e": {
-    "message": "%100 Tamamlandı"
+    "message": "%100 tamamlandı"
   },
   "ui_76fc465e": {
-    "message": "Birşeyler yanlış gitti"
+    "message": "Bir hata oluştu"
   },
   "ui_0d4b0da7": {
-    "message": "Seçilen Yazıyı Oku"
+    "message": "Okunuyor: Seçili metin"
   },
   "ui_242bb2e3": {
-    "message": "Seçilen Yazıyı Oku..."
+    "message": "Okunuyor: Seçili metin"
   },
   "ui_10905ea3": {
-    "message": "Seçilen metnin hazırlanması"
+    "message": "Hazırlanıyor: Seçili metin…"
   },
   "ui_a2df426f": {
-    "message": "Seçilen metin durduruldu"
+    "message": "Duraklatıldı"
   },
   "ui_915b9541": {
-    "message": "Mevcut Sayfayı Oku"
+    "message": "Okunuyor: Geçerli sayfa"
   },
   "ui_50880cb0": {
-    "message": "Okuma sayfası..."
+    "message": "Okunuyor: Geçerli sayfa"
   },
   "ui_e8bf303d": {
-    "message": "Mevcut Sayfayı Hazırlamak"
+    "message": "Hazırlanıyor: Geçerli sayfa…"
   },
   "ui_59ad3c41": {
-    "message": "Ses Hazırlığı"
+    "message": "Ses hazırlanıyor"
   },
   "ui_af82140f": {
-    "message": "Okumayı durdurdu"
+    "message": "Duraklatıldı"
   },
   "ui_1ede4e42": {
-    "message": "Sesi Hazır"
+    "message": "Ses hazır"
   },
   "ui_63338bd9": {
-    "message": "Ses ayarları başarısız"
+    "message": "Ses kurulumu başarısız"
   },
   "ui_cedd5bba": {
     "message": "Model kurulumu başarısız oldu."
   },
   "ui_a7f38d4e": {
-    "message": "Yerel ses hazırlamak; eksik dosyaları Hugging Face'den indirin."
+    "message": "Ses hazırlanıyor… Sesi hazırlarken veya okuma sırasında eksik ses dosyaları Hugging Face’ten indirilir."
   },
   "ui_430dc39d": {
-    "message": "Zamanı tahmin etmek..."
+    "message": "Süre tahmin ediliyor…"
   },
   "ui_06a382b7": {
-    "message": "Bir makale açın, sonra sayfayı okuyun"
+    "message": "Bir makale açın ve sayfayı okumayı başlatın."
   },
   "ui_37bc7086": {
     "message": "Kelime: $arg1$",
@@ -453,10 +453,10 @@
     }
   },
   "ui_c98f4557": {
-    "message": "Benim"
+    "message": "dk"
   },
   "ui_5dca8675": {
-    "message": "0 Bölüm"
+    "message": "Bölüm: 0"
   },
   "ui_2d292516": {
     "message": "Bölüm $arg1$ / $arg2$",
@@ -478,16 +478,16 @@
     }
   },
   "ui_4dd870fb": {
-    "message": "Seçilen Yazı"
+    "message": "Seçili metin"
   },
   "ui_8212a19a": {
-    "message": "PDF Belgeler"
+    "message": "PDF belgesi"
   },
   "ui_cb3b43ef": {
-    "message": "Tam sayfa"
+    "message": "Tüm sayfa"
   },
   "ui_e13844b5": {
-    "message": "Sadece makale"
+    "message": "Yalnızca makale"
   },
   "ui_6cae863f": {
     "message": "Kalan kelime: $arg1$",
@@ -533,7 +533,7 @@
     }
   },
   "ui_0290cbb9": {
-    "message": "Sayfası $arg1$",
+    "message": "Sayfa $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -557,7 +557,7 @@
     }
   },
   "ui_bff757bc": {
-    "message": "$arg1$ · ilk $arg2$ gösterildi",
+    "message": "$arg1$ · ilk $arg2$ gösteriliyor",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -568,7 +568,7 @@
     }
   },
   "ui_ac6e697a": {
-    "message": "$arg1$ · $arg2$-$arg3$ gösterildi",
+    "message": "$arg1$ · $arg2$–$arg3$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -598,7 +598,7 @@
     }
   },
   "ui_359557ff": {
-    "message": "$arg1$ / $arg2$ Yorumları",
+    "message": "$arg1$ / $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -609,7 +609,7 @@
     }
   },
   "ui_eaa7e488": {
-    "message": "$arg1$ - Bir dahaki sefere kaydedildi",
+    "message": "$arg1$ – sonraki kullanım için önbelleğe alındı",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -617,7 +617,7 @@
     }
   },
   "ui_5670c878": {
-    "message": "Ses Modelleri"
+    "message": "Ses modeli"
   },
   "ui_801e9a8a": {
     "message": "$arg1$ / $arg2$ MB",
@@ -631,7 +631,7 @@
     }
   },
   "ui_0b4d6296": {
-    "message": "$arg1$ Yorum Yazın Cevapla",
+    "message": "✓ $arg1$ · Ses hazırlanıyor",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -639,7 +639,7 @@
     }
   },
   "ui_c2fd9f2f": {
-    "message": "Ses Dosyaları İndir: $arg1$",
+    "message": "Ses dosyaları indiriliyor: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -647,7 +647,7 @@
     }
   },
   "ui_6027988e": {
-    "message": "İndir $arg1$: $arg2$",
+    "message": "İndiriliyor: $arg1$ · $arg2$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -658,10 +658,10 @@
     }
   },
   "ui_3f7e2cfe": {
-    "message": "GPU yükleme başarısız oldu. CPU/WebAssembly ile yeniden çalıştırma..."
+    "message": "GPU kurulumu başarısız. CPU/WebAssembly ile yeniden deneniyor…"
   },
   "ui_f0fc3524": {
-    "message": "İndir $arg1$",
+    "message": "İndiriliyor: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -669,7 +669,7 @@
     }
   },
   "ui_9d82453c": {
-    "message": "$arg1$ Yorumları",
+    "message": "Hazırlanıyor: $arg1$…",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -677,53 +677,65 @@
     }
   },
   "ui_04b7d092": {
-    "message": "GPU Destek Kontrolü"
+    "message": "GPU desteği kontrol ediliyor…"
   },
   "ui_a1f035db": {
-    "message": "Browser Cache’i kontrol edin."
+    "message": "Tarayıcı önbelleği kontrol ediliyor…"
   },
   "ui_412b5f0e": {
     "message": "Tek seferlik kurulum"
   },
   "ui_91d30309": {
-    "message": "Talep edilen ses hazırlanamadı."
+    "message": "Seçilen ses hazırlanamadı."
   },
   "ui_b9775b3a": {
-    "message": "Deneysel - onaylanmamış kalite"
+    "message": "Deneysel – kalite doğrulanmadı"
   },
   "ui_c6b4d959": {
-    "message": "$arg1$ - ayarlanmış",
+    "message": "$arg1$ – ayarlandı",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
   },
-  "ui_ad24ebab": {
-    "message": "Ses kalitesi $arg1$'den sonra ayarlanmıştır.",
+  "ui_b835b751": {
+    "message": "modelin yavaş yüklenmesi"
+  },
+  "ui_4f078920": {
+    "message": "ilk konuşmanın yavaş üretilmesi"
+  },
+  "ui_007bbfcb": {
+    "message": "bölümler arasında yavaş geçiş"
+  },
+  "ui_794a03d4": {
+    "message": "Ses kalitesi ayarlandı. Neden: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
       }
     }
+  },
+  "ui_8f5010a5": {
+    "message": "seçilen işleme yöntemi"
   },
   "ui_aa682200": {
-    "message": "Ses işleme: CPU dostu ayarlar ile GPU (WebGPU)."
+    "message": "İşleme: GPU (WebGPU) · CPU yükünü azaltan ayarlar"
   },
   "ui_3411bb9b": {
-    "message": "Ses İşlemci: GPU (WebGPU)"
+    "message": "İşleme: GPU (WebGPU)"
   },
   "ui_078077a9": {
-    "message": "Ses işleme: sadece CPU (WebAssembly) çünkü WebGPU kullanılamaz."
+    "message": "İşleme: CPU (WebAssembly) · WebGPU kullanılamıyor"
   },
   "ui_9e335d53": {
-    "message": "Ses işleme: Sadece CPU (WebAssembly)"
+    "message": "İşleme: CPU (WebAssembly)"
   },
   "ui_8646aeef": {
-    "message": "Ses İşleme: Sistem ses (browser veya işletim sistemi)"
+    "message": "İşleme: sistem sesi (tarayıcı veya işletim sistemi)"
   },
   "ui_815f1834": {
-    "message": "Ses işleme: Okuma başlarken kontrol edilir."
+    "message": "Okuma başladığında işleme yöntemi gösterilir."
   },
   "ui_19f02581": {
     "message": "WebGPU ile deneysel OmniVoice kullanılıyor."
@@ -749,7 +761,7 @@
     "message": "Konuşma bu cihazda üretilir. Önbellekteki dosyalar silinmedikçe çevrimdışı yeniden kullanılabilir."
   },
   "ui_95b6ef87": {
-    "message": "Deney kalitesi: $arg1$",
+    "message": "Deneysel – kalite doğrulanmadı ($arg1$)",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -757,7 +769,7 @@
     }
   },
   "ui_3c2745dc": {
-    "message": "$arg1$ numarası mevcuttur.",
+    "message": "Seçilen dil için ses yok: $arg1$.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -765,10 +777,10 @@
     }
   },
   "ui_b7e3509c": {
-    "message": "Skip Snippets Nasıl Yapılır?"
+    "message": "Kod parçalarını atla"
   },
   "ui_9d9f28af": {
-    "message": "Bu sayfa çok sayıda kod kısaltması içerir. daha düzgün anlatım için yaklaşık $arg1$ min kod atın.",
+    "message": "Sayfada çok sayıda kod parçası var. Daha akıcı okuma için yaklaşık $arg1$ dk kodu atlayın.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -776,7 +788,7 @@
     }
   },
   "ui_ee180b24": {
-    "message": "Bu sayfa çok sayıda kod parçası içerir. daha kolay anlatım için yaklaşık $arg1$ dakika kod atın.",
+    "message": "Sayfada çok sayıda kod parçası var. Daha akıcı okuma için yaklaşık $arg1$ dk kodu atlayın.",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -799,7 +811,7 @@
     "message": "1 bölüm önceden yüklendi"
   },
   "ui_32bba2de": {
-    "message": "$arg1$ bölümler önceden yüklü",
+    "message": "Önceden yüklenen bölüm: $arg1$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -807,16 +819,16 @@
     }
   },
   "ui_01414b42": {
-    "message": "Progressive Playback Hakkında"
+    "message": "aşamalı oynatma açık"
   },
   "ui_4ddd1cf4": {
-    "message": "Progressive Playback Çıkışı"
+    "message": "aşamalı oynatma kapalı"
   },
   "ui_95c9f0ef": {
-    "message": "Otomatik sesli tarayıcı kapatma"
+    "message": "tarayıcı sesine otomatik geçiş kapalı"
   },
   "ui_c86df72a": {
-    "message": "$arg1$: $arg2$ karakter parçaları, $arg3$, $arg4$, $arg5$.",
+    "message": "$arg1$: $arg2$ karakter · $arg3$ · $arg4$ · $arg5$",
     "placeholders": {
       "arg1": {
         "content": "$1"
@@ -836,22 +848,22 @@
     }
   },
   "ui_c0557bfe": {
-    "message": "Bu sayfaya erişemiyorum."
+    "message": "Bu sayfaya erişilemedi."
   },
   "ui_be75ad01": {
-    "message": "En iyi okuyucu işlemi başarısız oldu."
+    "message": "Bu işlem tamamlanamadı."
   },
   "ui_eb6988d3": {
-    "message": "pozisyonu yeniden yükleyemedi"
+    "message": "Kaydedilen konum yüklenemedi"
   },
   "ui_1b842ad5": {
-    "message": "PageNarrator başlangıç yapamadı."
+    "message": "PageNarrator başlatılamadı."
   },
   "ui_87d977c4": {
-    "message": "PageNarrator Oyuncuları"
+    "message": "PageNarrator oynatıcı"
   },
   "ui_9d65bbdb": {
-    "message": "Ses modelini seçin"
+    "message": "Ses modeli"
   },
   "ui_e6334598": {
     "message": "Ses modeli"
@@ -872,7 +884,7 @@
     "message": "Dil"
   },
   "ui_2070a9f8": {
-    "message": "Yükleyen sesler..."
+    "message": "Sesler yükleniyor…"
   },
   "ui_c39c8623": {
     "message": "Ses türü"
@@ -887,7 +899,7 @@
     "message": "Ses çeşidi"
   },
   "ui_16383585": {
-    "message": "Bir ses değişikliği seçin. Değişiklikler bir sonraki bölümde geçerlidir. Hız ayarlayın."
+    "message": "Bir ses varyasyonu seçin. Değişiklikler sonraki bölümden itibaren uygulanır. Hızı “Oynatma hızı” ile ayarlayın."
   },
   "ui_d975568d": {
     "message": "Fısıltı"
@@ -896,19 +908,19 @@
     "message": "Oynatma hızı"
   },
   "ui_c58a3963": {
-    "message": "Otomatik olarak kaydedilir. Ses değişiklikleri okumak sırasında bir sonraki bölümde geçerlidir."
+    "message": "Otomatik kaydedilir. Okuma sırasındaki ses değişiklikleri sonraki bölümden itibaren uygulanır."
   },
   "ui_71365cb1": {
-    "message": "Yerel Ses Hazırlama"
+    "message": "Yerel sesi hazırla"
   },
   "ui_c197c7e2": {
     "message": "Atla"
   },
   "ui_dad1a20b": {
-    "message": "Şimdi okumak"
+    "message": "Okunuyor"
   },
   "ui_30ea6e2f": {
-    "message": "Önceki Bölüm"
+    "message": "Önceki bölüm"
   },
   "ui_c2954bc2": {
     "message": "Geri"
@@ -929,7 +941,7 @@
     "message": "Duraklamalar, metin temizleme, vurgulama"
   },
   "ui_67231237": {
-    "message": "Bölümler Arası Dinlenme"
+    "message": "Bölümler arası duraklama"
   },
   "ui_8f517045": {
     "message": "Performans"
@@ -938,19 +950,19 @@
     "message": "İşleme"
   },
   "ui_bec07b52": {
-    "message": "CPU / WebAssembly Hakkında"
+    "message": "CPU / WebAssembly"
   },
   "ui_e92f8761": {
-    "message": "idle sırasında ses hafızasını serbest bırakın"
+    "message": "Boştayken sesin belleğini serbest bırak"
   },
   "ui_231b3e4b": {
     "message": "Kod parçalarını atla"
   },
   "ui_456ac053": {
-    "message": "Renk Bölgesi"
+    "message": "Alan rengi"
   },
   "ui_10cd7856": {
-    "message": "Renk kelimesi"
+    "message": "Sözcük rengi"
   },
   "ui_1e4dbab9": {
     "message": "Alan opaklığı"
@@ -965,13 +977,13 @@
     "message": "Okuma sırası"
   },
   "ui_a106cd77": {
-    "message": "Arama Bölümleri"
+    "message": "Bölümlerde ara"
   },
   "ui_ee3d49e1": {
     "message": "İlk"
   },
   "ui_30035f15": {
-    "message": "Bölüm Numarası"
+    "message": "Bölüm numarası"
   },
   "ui_41d0c56b": {
     "message": "Git"
@@ -980,43 +992,43 @@
     "message": "Son"
   },
   "ui_bd9126df": {
-    "message": "Hiçbir bölüm eşleşmiyor. başka bir arama deneyin."
+    "message": "Eşleşen bölüm yok. Başka bir arama deneyin."
   },
   "ui_620574c4": {
-    "message": "PageNarrator Okuyucu motoru"
+    "message": "PageNarrator oynatıcı"
   },
   "ui_c5fbc06e": {
-    "message": "Grant Page erişimi"
+    "message": "Erişime izin ver"
   },
   "ui_0a05ab9f": {
-    "message": "PageNarrator uzantı simgesi"
+    "message": "PageNarrator uzantısının simgesi"
   },
   "ui_5a3d9c47": {
-    "message": "PageNarrator sayfadan açın"
+    "message": "PageNarrator’ı sayfadan aç"
   },
   "ui_94a4b160": {
-    "message": "Sayfa aktifken PageNarrator uzantısı simgesini tıklatın, ardından Sayfayı Okumayı seçin."
+    "message": "Sayfayı açın, PageNarrator simgesine tıklayın ve “Sayfayı sesli oku” seçeneğini seçin."
   },
   "ui_4be7c01e": {
-    "message": "Kayıp ses dosyaları ilk kullanımda indirilir. konuşma yerel olarak çalışır."
+    "message": "Sesi hazırlarken veya okuma sırasında eksik ses dosyaları Hugging Face’ten indirilir. Konuşma bu cihazda üretilir. Önbellekteki dosyalar silinmedikçe çevrimdışı yeniden kullanılabilir."
   },
   "ui_3d04a00a": {
-    "message": "Yerel ses hazırlamak; eksik dosyalar Hugging Face'den indirilir..."
+    "message": "Ses hazırlanıyor… Sesi hazırlarken veya okuma sırasında eksik ses dosyaları Hugging Face’ten indirilir."
   },
   "ui_048ca959": {
-    "message": "Geri Dönüşüm Adımları"
+    "message": "Çözüm adımları"
   },
   "ui_0ec24245": {
     "message": "Ayrıntılar"
   },
   "ui_4ff448da": {
-    "message": "Okuma Devamını Oku"
+    "message": "Okumaya devam et"
   },
   "ui_cb2eed93": {
-    "message": "Kurtarılmış pozisyonda tekrar"
+    "message": "Kaydedilen konumdan devam et"
   },
   "ui_ded3954b": {
-    "message": "Okuma pozisyonu kurtarıldı"
+    "message": "Kaydedilen okuma konumu"
   },
   "ui_24299867": {
     "message": "Baştan başla"
@@ -1025,133 +1037,133 @@
     "message": "Okuma önerisi"
   },
   "ui_d5c02828": {
-    "message": "Bu sayfa çok sayıda kod örneği içerir."
+    "message": "Bu sayfada çok sayıda kod parçası var."
   },
   "ui_336b89fb": {
     "message": "Kodu atla"
   },
   "ui_299fab6d": {
-    "message": "Keşfedilen makale"
+    "message": "Algılanan makale"
   },
   "ui_a9898369": {
-    "message": "Etiket: sadece makale"
+    "message": "Okunuyor: Yalnızca makale"
   },
   "ui_3065e144": {
-    "message": "ile başlar"
+    "message": "Başlangıç"
   },
   "ui_7ac012cc": {
-    "message": "Okuma Oyuncuları"
+    "message": "PageNarrator oynatıcı"
   },
   "ui_8edce20a": {
-    "message": "Okuma Gelişimi"
+    "message": "Okuma ilerlemesi"
   },
   "ui_949ea37c": {
-    "message": "0 Şanlıurfa kaldı"
+    "message": "Kalan parça: 0"
   },
   "ui_1250127e": {
-    "message": "PDF sayfa navigasyonu"
+    "message": "PDF denetimleri"
   },
   "ui_e83d9196": {
     "message": "Sayfa"
   },
   "ui_27ba99fc": {
-    "message": "Şu anki PDF sayfa"
+    "message": "Geçerli PDF sayfasını atla"
   },
   "ui_dbd1ad47": {
     "message": "Okuma ayarları"
   },
   "ui_1a27bec5": {
-    "message": "Okumaya başladığınızda dil tespit edilecektir."
+    "message": "Okuma başladığında dil algılanır."
   },
   "ui_52ff662d": {
-    "message": "Device Gereksinimleri"
+    "message": "Cihaz gereksinimleri"
   },
   "ui_fd02dfc2": {
     "message": "Önerilen:"
   },
   "ui_b0555d92": {
-    "message": "özel NVIDIA RTX 30 serisi GPU veya daha yeni, 8 GB + VRAM ve 8 GB + sistem RAM ile."
+    "message": "NVIDIA RTX 30 serisi veya daha yeni ayrı bir GPU, en az 8 GB VRAM ve 8 GB sistem RAM’i."
   },
   "ui_0d393abc": {
-    "message": "Chromium 120 veya üstü kullanın. Kokoro daha yavaş bir CPU düşüşe sahiptir. Fiziksel donanım seviyeleri doğrulanmamış."
+    "message": "Chromium 120 veya daha yenisini kullanın. Kokoro’nun daha yavaş bir CPU yedek modu vardır. Donanım sınıfları fiziksel cihazlarda doğrulanmamıştır."
   },
   "ui_f31ba722": {
-    "message": "Zamanlama, Temizleme, Sesler"
+    "message": "Duraklamalar, metin temizleme, sesler"
   },
   "ui_a879e367": {
-    "message": "Bölüm Pause"
+    "message": "Bölümler arası duraklama"
   },
   "ui_07e1c336": {
-    "message": "Gelişmiş Stil"
+    "message": "Vurgulama stili"
   },
   "ui_9525b78e": {
     "message": "Özel"
   },
   "ui_e0955632": {
-    "message": "Okuma Bölgesi"
+    "message": "Okuma alanı"
   },
   "ui_90571eca": {
-    "message": "Mevcut kelime"
+    "message": "Geçerli sözcük"
   },
   "ui_ea585567": {
-    "message": "Okuma Temizliği"
+    "message": "Metin temizleme"
   },
   "ui_0dc6b4aa": {
     "message": "Kapalı"
   },
   "ui_d6fbffc9": {
-    "message": "Çizgi ve Transcript Özetleri"
+    "message": "Kuyruk ve metin"
   },
   "ui_21fd85e4": {
-    "message": "Çizgi & Transcript"
+    "message": "Kuyruk ve metin"
   },
   "ui_d6c98891": {
-    "message": "Mevcut bölüm, transcript arama ve atlama kontrolleri Gelişmiş modda kullanılabilir."
+    "message": "Geçerli bölüm, metin araması ve atlama denetimleri gelişmiş modda kullanılabilir."
   },
   "ui_0eac1f07": {
     "message": "Göz at"
   },
   "ui_44d76dee": {
-    "message": "Tam Transcript Hakkında"
+    "message": "Tam metin"
   },
   "ui_ab5783a6": {
-    "message": "0 paragraflar"
+    "message": "Paragraf: 0"
   },
   "ui_d58a5a9a": {
-    "message": "Navigasyon Sıralaması"
+    "message": "Kuyrukta gezinme"
   },
   "ui_2d877b6c": {
     "message": "Bölüm"
   },
   "ui_03205ed1": {
-    "message": "Bölüm Bul"
+    "message": "Bölüm bul"
   },
   "ui_27654275": {
-    "message": "Transcript veya Page arama yapın."
+    "message": "Metinde veya sayfada ara…"
   },
   "ui_f4154041": {
-    "message": "PageNarrator PDF Yorumları"
+    "message": "PageNarrator PDF"
   },
   "ui_b7689f29": {
-    "message": "PDF kontrolü"
+    "message": "PDF denetimleri"
   },
   "ui_88828491": {
     "message": "Sayfa 1 / 1"
   },
   "ui_8570fe3a": {
-    "message": "Zoom Çıkış"
+    "message": "Uzaklaştır"
   },
   "ui_a3583899": {
-    "message": "Zoom İçinde"
+    "message": "Yakınlaştır"
   },
   "ui_2b3553eb": {
-    "message": "rotası sol"
+    "message": "Sola döndür"
   },
   "ui_2eaecb74": {
-    "message": "Doğru rotası"
+    "message": "Sağa döndür"
   },
   "ui_b6ab6b07": {
-    "message": "Modaya uygun"
+    "message": "Sığdırma modu"
   },
   "ui_69acd800": {
     "message": "Genişliğe sığdır"
@@ -1160,132 +1172,132 @@
     "message": "Sayfaya sığdır"
   },
   "ui_9f9cf525": {
-    "message": "PDF sayfa"
+    "message": "PDF sayfaları"
   },
   "ui_ab32ceb0": {
     "message": "Deneysel. 646 dil kaydı; kalite değişir. fp16 destekli WebGPU ve yaklaşık 1,35 GB indirme gerektirir. Ses, varyasyon veya fısıltı seçin."
   },
   "ui_ab4a698f": {
-    "message": "sayfadan açılır"
+    "message": "Sayfayı aç"
   },
   "ui_68fbfc28": {
-    "message": "Chrome aktif sekmesine erişim sağlamadı."
+    "message": "Chrome etkin sekmeye erişim izni vermedi."
   },
   "ui_67aad8a8": {
-    "message": "Sayfayı açın, PageNarrator simgesini tıklatın, ardından Sayfayı Okumayı seçin."
+    "message": "Sayfayı açın, PageNarrator simgesine tıklayın ve “Sayfayı sesli oku” seçeneğini seçin."
   },
   "ui_724c0e56": {
-    "message": "sayfadan açılır"
+    "message": "Sayfayı aç"
   },
   "ui_4f96b3e0": {
-    "message": "Korunan Chrome sayfaları okunamıyor. bir web sayfası veya PDF açın."
+    "message": "Korumalı Chrome sayfaları sesli okunamaz. Bir web sayfası veya PDF açın."
   },
   "ui_0cddc760": {
-    "message": "Açık sayfa"
+    "message": "Sayfayı aç"
   },
   "ui_30274c11": {
-    "message": "Page Access İhtiyaç"
+    "message": "Sayfa erişimi gerekli"
   },
   "ui_ce6d1fa8": {
-    "message": "PageNarrator bu siteye erişim gerektirir."
+    "message": "PageNarrator bu siteye erişim izni gerektiriyor."
   },
   "ui_2b54b790": {
     "message": "PageNarrator simgesinden site erişimine izin verin ve yeniden deneyin."
   },
   "ui_57906b45": {
-    "message": "Grant erişim"
+    "message": "Erişime izin ver"
   },
   "ui_b48f6457": {
-    "message": "Ücretsiz tarayıcı depolama, sonra retry."
+    "message": "Tarayıcı depolama alanında yer açın ve yeniden deneyin."
   },
   "ui_75eca5ea": {
-    "message": "Ücretsiz depolama"
+    "message": "Depolamada yer aç"
   },
   "ui_99e92621": {
-    "message": "Bu sayfanın dili için bir ses seçin."
+    "message": "Bu sayfanın dilini destekleyen bir ses seçin."
   },
   "ui_997f787a": {
-    "message": "Ses Seçin"
+    "message": "Ses seç"
   },
   "ui_50a8c46f": {
-    "message": "Okuma başlamadan önce aktif sekme kapatıldı."
+    "message": "Okuma başlayamadan etkin sekme kapandı."
   },
   "ui_e64862ef": {
-    "message": "Sayfayı yeniden açın ve retry yapın."
+    "message": "Sekme kapandı. Sayfayı yeniden açıp tekrar deneyin."
   },
   "ui_39f600ae": {
-    "message": "Seçilen Yazı Yok"
+    "message": "Seçili metin yok"
   },
   "ui_79f7dfca": {
-    "message": "Hiçbir metin seçilmemiştir."
+    "message": "Hiçbir metin seçili değil."
   },
   "ui_b7a079b0": {
-    "message": "Seçilen metin"
+    "message": "Metin seç"
   },
   "ui_522bcc26": {
-    "message": "Dinlemek istediğiniz metni seçin, ardından Read seçeneğini seçin."
+    "message": "Dinlemek istediğiniz metni seçin ve “Seçili metni oku” seçeneğini seçin."
   },
   "ui_580dc44e": {
-    "message": "İhtiyaç duyulan metin"
+    "message": "Metin tanıma gerekli"
   },
   "ui_ce175449": {
-    "message": "Bazı PDF metinleri güvenilir bir şekilde okunamadı."
+    "message": "PDF metninin bir kısmı doğru şekilde okunamadı."
   },
   "ui_f7c03bfe": {
-    "message": "Bir metin tabanlı kullanın PDF"
+    "message": "Metin içeren PDF kullan"
   },
   "ui_cde1ae87": {
-    "message": "Tam bir metin tabakası ile metin tanıma (OCR) veya PDF kullanın."
+    "message": "Metin tanıma (OCR) kullanın veya tam metin katmanı içeren bir PDF açın."
   },
   "ui_281501a3": {
-    "message": "Sayfanın CAPTCHA sayfasını tamamlayın ve sonra tekrar çalıştırın."
+    "message": "Sayfadaki CAPTCHA doğrulamasını tamamlayın ve yeniden deneyin."
   },
   "ui_d1c2931f": {
-    "message": "Siteye giriş yapın, sonra retry."
+    "message": "Sitede oturum açın ve yeniden deneyin."
   },
   "ui_744be623": {
-    "message": "işareti"
+    "message": "Oturum aç"
   },
   "ui_3c4b4f30": {
-    "message": "Bulunmayan Yazı Bulunamadı"
+    "message": "Okunabilir makale bulunamadı"
   },
   "ui_fb499b08": {
-    "message": "Okunabilir bir yazı bulamadım."
+    "message": "Makalede okunabilir metin bulunamadı."
   },
   "ui_a1fad21c": {
-    "message": "Başka bir sayfa deneyin"
+    "message": "Başka bir sayfa dene"
   },
   "ui_b0ddc925": {
-    "message": "Bir paragrafı seçin ve seçilen Okumayı seçin veya başka bir makaleyi açın."
+    "message": "Bir metin bölümü seçip “Seçili metni oku” seçeneğini kullanın veya başka bir makale açın."
   },
   "ui_d20c5459": {
-    "message": "Ses yüklemeyi bitirmedi."
+    "message": "Sesin yüklenmesi tamamlanamadı."
   },
   "ui_eee6a1ad": {
-    "message": "Hazırlayın ses yeniden ayarlamak için seçin."
+    "message": "Kurulumu yeniden denemek için “Sesi hazırla” seçeneğini seçin."
   },
   "ui_eab3cf34": {
-    "message": "Konuşma nesil başarısız"
+    "message": "Konuşma üretimi başarısız"
   },
   "ui_4cad964d": {
-    "message": "Ses üretimi, ses hazır olmadan durdu."
+    "message": "Ses hazır olmadan konuşma üretimi durdu."
   },
   "ui_2519f9e6": {
-    "message": "Yeniden girin veya başka bir ses seçin."
+    "message": "Yeniden deneyin veya başka bir ses seçin."
   },
   "ui_1844c6fe": {
-    "message": "Desteklenmemiş PDF"
+    "message": "Desteklenmeyen PDF"
   },
   "ui_4a8aceae": {
-    "message": "Bu PDF hasar görmüş veya desteklenmemiştir."
+    "message": "Bu PDF hasarlı veya desteklenmiyor."
   },
   "ui_5679bf2f": {
-    "message": "Başka bir PDF deneyin"
+    "message": "Başka bir PDF dene"
   },
   "ui_b8183083": {
-    "message": "PDF'i indiremedim. bağlantıyı ve bağlantınızı kontrol edin."
+    "message": "PDF indirilemedi. Bağlantıyı ve internet bağlantınızı kontrol edin."
   },
   "ui_ce24479d": {
-    "message": "bu ilanı beğen Eyl PDF"
+    "message": "Bu PDF açılamadı."
   }
 }
