@@ -5,6 +5,8 @@ import { JSDOM } from 'jsdom';
 import { createHash } from 'node:crypto';
 
 const defaultOrigin = 'https://pagenarrator.com';
+const { DOMParser } = new JSDOM('').window;
+const htmlParser = new DOMParser();
 const publicDir = fileURLToPath(new URL('../website/public/', import.meta.url));
 const requiredText = {
   '/': ['Version 1.0.1 source is available on GitHub', '8 GB+ VRAM'],
@@ -17,6 +19,7 @@ const requiredText = {
 // Pages serves 404.html for unmatched routes. Audit it through an unknown URL so a soft 404
 // (the homepage with HTTP 200) fails the check.
 const notFoundProbePath = '/pagenarrator-smoke-missing-page';
+const pagePath = file => file === 'index.html' || file.endsWith('/index.html') ? `/${file.slice(0, -10)}` : `/${file.slice(0, -5)}`;
 const unpublishedPaths = ['/cws-demo', '/cws-demo.html', '/.env', '/.dev.vars', '/package.json', '/docs/release-readiness.md'];
 const hostRedirects = [{
   source: 'https://www.pagenarrator.com/*',
@@ -24,21 +27,31 @@ const hostRedirects = [{
   status: 301,
 }];
 
+export function websiteHtmlFiles(directory, prefix = '') {
+  return readdirSync(join(directory, prefix), { withFileTypes: true }).flatMap(entry => {
+    const file = prefix ? `${prefix}/${entry.name}` : entry.name;
+    return entry.isDirectory() ? websiteHtmlFiles(directory, file) : entry.name.endsWith('.html') ? [file] : [];
+  });
+}
+
 export function loadPageContracts(directory = publicDir) {
   const sitemap = readFileSync(join(directory, 'sitemap.xml'), 'utf8');
   const sitemapPaths = new Set([...sitemap.matchAll(/<loc>https:\/\/pagenarrator\.com(\/[^<]*)<\/loc>/g)].map((match) => match[1]));
 
-  return readdirSync(directory)
-    .filter((name) => name.endsWith('.html') && name !== 'cws-demo.html')
+  return websiteHtmlFiles(directory)
+    .filter(name => name !== 'cws-demo.html')
     .sort()
     .map((file) => {
-      const path = file === 'index.html' ? '/' : `/${file.slice(0, -5)}`;
-      const document = new JSDOM(readFileSync(join(directory, file), 'utf8')).window.document;
+      const path = pagePath(file);
+      const document = htmlParser.parseFromString(readFileSync(join(directory, file), 'utf8'), 'text/html');
       const indexable = !document.querySelector('meta[name="robots"]')?.content.includes('noindex');
       if (indexable !== sitemapPaths.has(path)) throw new Error(`${path} sitemap/noindex mismatch`);
-      return {
+      const contract = {
+        file,
         path,
-        ...(file === '404.html' ? { fetchPath: notFoundProbePath, expectedStatus: 404 } : {}),
+        ...(file.endsWith('404.html') ? { fetchPath: path.replace(/\/404$/u, notFoundProbePath), expectedStatus: 404 } : {}),
+        lang: document.documentElement.lang,
+        title: document.title,
         canonical: document.querySelector('link[rel="canonical"]')?.href,
         indexable,
         requiredText: requiredText[path] || [],
@@ -46,6 +59,7 @@ export function loadPageContracts(directory = publicDir) {
           ? ['https://github.com/FelixCAxO/PageNarrator'] : [],
         forbiddenText: path === '/changelog' ? [] : ['Piper', 'browser voice', 'system voice'],
       };
+      return contract;
     });
 }
 
@@ -66,13 +80,15 @@ export async function auditPage(siteOrigin, contract, fetchPage = fetch) {
   const errors = [];
   if (contract.expectedStatus ? response.status !== contract.expectedStatus : !response.ok) errors.push(`HTTP ${response.status}`);
 
-  const document = new JSDOM(await response.text()).window.document;
+  const document = htmlParser.parseFromString(await response.text(), 'text/html');
   const title = document.title.trim();
   const description = document.querySelector('meta[name="description"]')?.content.trim();
   const robots = document.querySelector('meta[name="robots"]')?.content || '';
   const text = document.body.textContent.replace(/\s+/g, ' ').trim();
 
   if (!title) errors.push('missing title');
+  if (contract.lang && document.documentElement.lang !== contract.lang) errors.push('wrong language');
+  if (contract.title && title !== contract.title) errors.push('wrong translated title');
   if (document.querySelectorAll('h1').length !== 1) errors.push('expected one h1');
   if (contract.indexable && !description) errors.push('missing description');
   if (contract.indexable && document.querySelector('link[rel="canonical"]')?.href !== contract.canonical) errors.push('wrong canonical');
@@ -122,9 +138,12 @@ export async function auditUnpublishedPath(siteOrigin, path, fetchPage = fetch) 
 
 export function websiteBuildIdentity(directory = publicDir) {
   const hash = createHash('sha256');
-  for (const { path, indexable } of loadPageContracts(directory)) {
-    if (!indexable && path !== '/404') continue;
-    hash.update(path).update('\0').update(readFileSync(join(directory, path === '/' ? 'index.html' : `${path.slice(1)}.html`)));
+  const sitemap = readFileSync(join(directory, 'sitemap.xml'), 'utf8');
+  const indexed = new Set([...sitemap.matchAll(/<loc>https:\/\/pagenarrator\.com(\/[^<]*)<\/loc>/gu)].map(match => match[1]));
+  for (const file of websiteHtmlFiles(directory).filter(file => file !== 'cws-demo.html').sort()) {
+    const path = pagePath(file);
+    if (!indexed.has(path) && !path.endsWith('/404')) continue;
+    hash.update(path).update('\0').update(readFileSync(join(directory, file)));
   }
   return hash.digest('hex');
 }
@@ -136,16 +155,22 @@ export async function auditBuildIdentity(siteOrigin, directory = publicDir, fetc
 }
 
 export async function auditSite(siteOrigin, directory = publicDir, fetchPage = fetch) {
-  const pages = await Promise.all(loadPageContracts(directory).map((contract) => auditPage(siteOrigin, contract, fetchPage)));
+  // Keep the full language audit from flooding the host with hundreds of simultaneous requests.
+  const batches = async (items, audit) => {
+    const results = [];
+    for (let offset = 0; offset < items.length; offset += 12) results.push(...await Promise.all(items.slice(offset, offset + 12).map(audit)));
+    return results;
+  };
+  const pages = await batches(loadPageContracts(directory), (contract) => auditPage(siteOrigin, contract, fetchPage));
   const redirectContracts = loadRedirectContracts(directory)
     .filter(({ source }) => siteOrigin === defaultOrigin || !source.startsWith('http'));
-  const redirects = await Promise.all(redirectContracts.map((contract) => auditRedirect(siteOrigin, contract, fetchPage)));
+  const redirects = await batches(redirectContracts, (contract) => auditRedirect(siteOrigin, contract, fetchPage));
   const unpublished = await Promise.all(unpublishedPaths.map((path) => auditUnpublishedPath(siteOrigin, path, fetchPage)));
   const resources = [...new Set(pages.flatMap((page) => page.internalUrls))];
-  const resourceResults = await Promise.all(resources.map(async (url) => {
+  const resourceResults = await batches(resources, async (url) => {
     const response = await fetchPage(url, { redirect: 'follow' });
     return { path: url, errors: response.ok ? [] : [`HTTP ${response.status}`] };
-  }));
+  });
   const build = await auditBuildIdentity(siteOrigin, directory, fetchPage);
   return { pages, redirects, unpublished, resources: [...resourceResults, build] };
 }

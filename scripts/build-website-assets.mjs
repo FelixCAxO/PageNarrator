@@ -15,7 +15,7 @@ for (const width of [480, 800, 1280]) {
 }
 const fontVersion = hash(await readFile(`${root}/assets/fonts/newsreader.css`));
 const siteVersion = hash((await readFile(`${root}/assets/site-1.0.7.1.css`, 'utf8')).replace(/\r\n/g, '\n'));
-for (const file of (await readdir(root)).filter(file => file.endsWith('.html'))) {
+for (const file of (await readdir(root)).filter(file => file.endsWith('.html') && file !== 'cws-demo.html')) {
   let html = await readFile(`${root}/${file}`, 'utf8');
   html = html.replace(/<link\b[^>]*rel="preconnect"[^>]*href="https:\/\/fonts\.(?:googleapis|gstatic)\.com"[^>]*>/gu, '')
     .replace(/<link\b[^>]*href="https:\/\/fonts\.googleapis\.com[^>]*>/gu, `<link rel="stylesheet" href="/assets/fonts/newsreader.css?v=${fontVersion}">`)

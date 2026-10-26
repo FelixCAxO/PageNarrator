@@ -13,8 +13,8 @@ export function buildWebsite(sourceDir = join(root, 'website/public'), outputDir
     throw new Error('Website output must be separate from the source directory.');
   }
   const pages = loadPageContracts(source)
-    .filter(({ indexable, path }) => indexable || path === '/404')
-    .map(({ path }) => path === '/' ? 'index.html' : `${path.slice(1)}.html`);
+    .filter(({ indexable, path }) => indexable || path.endsWith('/404'))
+    .map(({ file }) => file);
   const files = [...pages, '_headers', '_redirects', 'robots.txt', 'sitemap.xml',
     'favicon.ico', 'apple-touch-icon.png', 'og-image.jpg', 'assets/fonts/OFL-Newsreader.txt'];
   function collectAssets(directory, prefix = 'assets') {

@@ -12,6 +12,7 @@ import {
 } from '../../scripts/smoke-production.mjs';
 
 const publicDir = join(import.meta.dirname, '../../website/public');
+const pageContracts = loadPageContracts(publicDir);
 
 describe('production website smoke audit', () => {
   it('checks a mocked route through the rendered page contract', async () => {
@@ -28,13 +29,24 @@ describe('production website smoke audit', () => {
   });
 
   it('derives every page and redirect from the deployed website sources', () => {
-    expect(loadPageContracts(publicDir)).toHaveLength(40);
-    expect(loadPageContracts(publicDir).filter(({ indexable }) => indexable)).toHaveLength(39);
-    expect(loadRedirectContracts(publicDir)).toHaveLength(47);
+    expect(pageContracts).toHaveLength(390);
+    expect(pageContracts.filter(({ indexable }) => indexable)).toHaveLength(364);
+    expect(loadRedirectContracts(publicDir)).toHaveLength(422);
+  });
+
+  it('rejects an English fallback on a translated inner page and probes localized errors', async () => {
+    const contracts = pageContracts;
+    const support = contracts.find(({ path }) => path === '/sv/support');
+    const result = await auditPage('https://pagenarrator.com', support,
+      async () => new Response(readFileSync(join(publicDir, 'support.html'), 'utf8')));
+    expect(result.errors).toEqual(expect.arrayContaining(['wrong language', 'wrong translated title', 'wrong canonical']));
+    expect(contracts.find(({ path }) => path === '/sv/404')).toMatchObject({
+      lang: 'sv', expectedStatus: 404, fetchPath: '/sv/pagenarrator-smoke-missing-page',
+    });
   });
 
   it('requires unknown URLs to return HTTP 404 with the not-found page, not a soft 404', async () => {
-    const contract = loadPageContracts(publicDir).find(({ path }) => path === '/404');
+    const contract = pageContracts.find(({ path }) => path === '/404');
     expect(contract).toMatchObject({ indexable: false, expectedStatus: 404 });
     expect(contract.fetchPath).not.toBe('/404');
 
@@ -54,16 +66,16 @@ describe('production website smoke audit', () => {
   });
 
   it('keeps removed voice paths out of current website copy', () => {
-    const html = loadPageContracts(publicDir)
+    const html = pageContracts
       .filter(({ path }) => path !== '/changelog')
-      .map(({ path }) => readFileSync(join(publicDir, path === '/' ? 'index.html' : `${path.slice(1)}.html`), 'utf8'))
+      .map(({ file }) => readFileSync(join(publicDir, file), 'utf8'))
       .join('\n');
 
     expect(html).not.toMatch(/Piper|browser voice|system voice/i);
   });
 
   it('rejects a privacy page that omits built-in download data handling', async () => {
-    const contract = loadPageContracts(publicDir).find(({ path }) => path === '/privacy');
+    const contract = pageContracts.find(({ path }) => path === '/privacy');
     const html = readFileSync(join(publicDir, 'privacy.html'), 'utf8');
     const current = await auditPage('https://pagenarrator.com', contract, async () => new Response(html));
     expect(current.errors).toEqual([]);
@@ -86,7 +98,7 @@ describe('production website smoke audit', () => {
   });
 
   it('rejects a stale install page with missing source instructions', async () => {
-    const contract = loadPageContracts(publicDir).find(({ path }) => path === '/chrome-extension');
+    const contract = pageContracts.find(({ path }) => path === '/chrome-extension');
     const html = readFileSync(join(publicDir, 'chrome-extension.html'), 'utf8');
     const current = await auditPage('https://pagenarrator.com', contract, async () => new Response(html));
     expect(current.errors).toEqual([]);

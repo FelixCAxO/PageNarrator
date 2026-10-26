@@ -1,9 +1,10 @@
 import { createHash } from 'node:crypto';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { expect, it } from 'vitest';
 import { SITE_BRAND_ICON, renderSiteBrandIcon } from '../../scripts/build-site-brand-icon.mjs';
+import { websiteHtmlFiles } from '../../scripts/smoke-production.mjs';
 
 const root = join(import.meta.dirname, '../..');
 const read = (path) => readFileSync(join(root, path));
@@ -37,7 +38,7 @@ it('uses the speech-bubble logo throughout the site without a competing wave mar
 });
 
 it('invalidates cached styles and product images when their bytes change', () => {
-  for (const page of readdirSync(join(root, 'website/public')).filter((name) => name.endsWith('.html'))) {
+  for (const page of websiteHtmlFiles(join(root, 'website/public')).filter(name => name !== 'cws-demo.html')) {
     const html = read(`website/public/${page}`).toString();
     const resources = html.matchAll(/(\/assets\/(?:site-[\w.-]+\.css|screenshots\/[\w.-]+\.(?:png|webp))|\/og-image\.jpg)(?:\?v=([a-f0-9]+))?/g);
     for (const [, path, version] of resources) expect(version, `${page}: ${path}`).toBe(assetVersion(path));

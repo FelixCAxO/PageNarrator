@@ -30,8 +30,8 @@ describe('public website deployment', () => {
       'assets/pagenarrator-icon.png', 'assets/screenshots/toolbar-player-reading.webp']) {
       expect(readFileSync(join(output, file)), file).toEqual(readFileSync(join(source, file)));
     }
-    expect(result.files.filter(file => file.endsWith('.html'))).toHaveLength(40);
-    for (const file of ['sv.html', 'de.html', 'ja.html', 'pt-br.html', 'pt-pt.html', 'assets/fonts/OFL-Newsreader.txt']) {
+    expect(result.files.filter(file => file.endsWith('.html'))).toHaveLength(390);
+    for (const file of ['sv/index.html', 'de/index.html', 'ja/index.html', 'pt-br/index.html', 'pt-pt/index.html', 'sv/support.html', 'de/privacy.html', 'ja/terms.html', 'pt-pt/404.html', 'assets/fonts/OFL-Newsreader.txt']) {
       expect(readFileSync(join(output, file))).toEqual(readFileSync(join(source, file)));
     }
     expect(existsSync(join(source, 'cws-demo.html'))).toBe(true);

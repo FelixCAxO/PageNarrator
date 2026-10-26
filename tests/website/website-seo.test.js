@@ -1,17 +1,24 @@
-import { existsSync, readFileSync, readdirSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { JSDOM } from 'jsdom';
 import { describe, expect, it } from 'vitest';
+import { websiteHtmlFiles } from '../../scripts/smoke-production.mjs';
 
 const publicDir = join(import.meta.dirname, '../../website/public');
 const socialVersion = createHash('sha256').update(readFileSync(join(publicDir, 'og-image.jpg'))).digest('hex').slice(0, 12);
 const socialUrl = `https://pagenarrator.com/og-image.jpg?v=${socialVersion}`;
-const htmlFiles = readdirSync(publicDir).filter((name) => name.endsWith('.html'));
+const htmlFiles = websiteHtmlFiles(publicDir);
 // cws-demo.html is a capture fixture; 404.html is served for unknown URLs. Neither is indexed.
-const indexableFiles = htmlFiles.filter((name) => !['cws-demo.html', '404.html'].includes(name));
+const indexableFiles = htmlFiles.filter(name => name !== 'cws-demo.html' && !name.endsWith('404.html'));
 
-const readPage = (name) => new JSDOM(readFileSync(join(publicDir, name), 'utf8')).window.document;
+const pages = new Map();
+const { DOMParser } = new JSDOM('').window;
+const parser = new DOMParser();
+const readPage = name => {
+  if (!pages.has(name)) pages.set(name, parser.parseFromString(readFileSync(join(publicDir, name), 'utf8'), 'text/html'));
+  return pages.get(name);
+};
 
 describe('website SEO', () => {
   it('gives every indexable page complete, unique search and sharing metadata', () => {
@@ -26,7 +33,7 @@ describe('website SEO', () => {
 
       expect(title, file).not.toBe('');
       expect(description, file).toBeTruthy();
-      expect(canonical, file).toMatch(/^https:\/\/pagenarrator\.com\/(?:[a-z0-9-]+)?$/);
+      expect(canonical, file).toMatch(/^https:\/\/pagenarrator\.com\/(?:[a-z0-9-]+(?:\/[a-z0-9-]+)?\/?)?$/);
       expect(document.querySelectorAll('h1'), file).toHaveLength(1);
       expect(document.querySelector('meta[property="og:title"]')?.content, file).toBe(title);
       expect(document.querySelector('meta[property="og:description"]')?.content, file).toBe(description);
@@ -36,10 +43,11 @@ describe('website SEO', () => {
       expect(document.querySelector('meta[name="twitter:title"]')?.content, file).toBe(title);
       expect(document.querySelector('meta[name="twitter:description"]')?.content, file).toBe(description);
       expect(document.querySelector('meta[name="twitter:image"]')?.content, file).toBe(socialUrl);
-      expect(titles.has(title), `duplicate title: ${title}`).toBe(false);
-      expect(descriptions.has(description), `duplicate description: ${description}`).toBe(false);
-      titles.add(title);
-      descriptions.add(description);
+      const locale = document.documentElement.lang;
+      expect(titles.has(`${locale}:${title}`), `duplicate title in ${locale}: ${title}`).toBe(false);
+      expect(descriptions.has(`${locale}:${description}`), `duplicate description in ${locale}: ${description}`).toBe(false);
+      titles.add(`${locale}:${title}`);
+      descriptions.add(`${locale}:${description}`);
     }
   });
 
@@ -48,7 +56,7 @@ describe('website SEO', () => {
       const document = readPage(file);
       for (const link of document.querySelectorAll('a[href^="/"]')) {
         const path = link.getAttribute('href').split(/[?#]/)[0];
-        const target = path === '/' ? 'index.html' : `${path.slice(1)}.html`;
+        const target = path.endsWith('/') ? `${path.slice(1)}index.html` : `${path.slice(1)}.html`;
         expect(existsSync(join(publicDir, target)), `${file}: ${path}`).toBe(true);
       }
     }
@@ -58,7 +66,7 @@ describe('website SEO', () => {
     expect(demo.querySelector('meta[name="robots"]')?.content).toBe('noindex, nofollow');
     expect(sitemap).not.toContain('cws-demo');
     for (const file of indexableFiles) {
-      const route = file === 'index.html' ? '' : file.replace(/\.html$/, '');
+      const route = file === 'index.html' || file.endsWith('/index.html') ? file.slice(0, -10) : file.replace(/\.html$/, '');
       expect(sitemap, file).toContain(`<loc>https://pagenarrator.com/${route}</loc>`);
     }
   });

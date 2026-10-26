@@ -197,11 +197,6 @@ a:not(.btn):not(.brand):not(.nav-cta):hover {
   color: var(--brand-strong);
 }
 
-html:not([lang="en"]) .language-note {
-  margin-top: 12px;
-  font-size: var(--text-sm);
-}
-
 @media (max-width: 820px) {
   .nav {
     position: relative;
@@ -268,6 +263,8 @@ h2,
 h3 {
   line-height: 1.15;
   margin: 0;
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 h1,
@@ -499,6 +496,7 @@ figcaption {
   padding: 13px 12px;
   text-align: left;
   vertical-align: top;
+  overflow-wrap: anywhere;
 }
 
 .comparison tr:last-child td {
