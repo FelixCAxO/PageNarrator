@@ -1,3 +1,4 @@
+import { t, localizeDocument, languageName } from './lib/i18n.js';
 import {
   clampPlaybackSpeed,
   clampSectionPauseSeconds,
@@ -11,6 +12,7 @@ import {
   getLanguageOptions,
   normalizeLanguageCode,
   getSelectableVoicesForLanguage,
+  formatVoiceOptionLabel,
 } from './lib/language-voice-options.js';
 import { normalizeStoredVoiceId } from './lib/voice-registry.js';
 import { injectContentScript, isContentScriptInjectableUrl } from './lib/content-script-injection.js';
@@ -67,6 +69,7 @@ export function createPopupApp({
   chrome: chromeApi = globalThis.chrome,
   window: win = globalThis.window,
 } = {}) {
+  localizeDocument(doc, { i18n: chromeApi?.i18n });
   const els = getPopupElements(doc);
   let popupVoices = [];
   let readerSnapshot = { state: 'idle', queue: [], transcript: '' };
@@ -101,7 +104,7 @@ export function createPopupApp({
     els.error.hidden = true;
   }
 
-  function setPending(button, label = 'Working…') {
+  function setPending(button, label = t('Working…')) {
     if (!button) return;
     clearError();
     button.dataset.label = button.textContent;
@@ -130,9 +133,9 @@ export function createPopupApp({
     if (els.language?.closest('label')) els.language.closest('label').hidden = !isOmniVoice();
     if (els.backendPreference?.closest('label')) els.backendPreference.closest('label').hidden = isOmniVoice();
     if (els.performanceProfile?.closest('label')) els.performanceProfile.closest('label').hidden = isOmniVoice();
-    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = VOICE_ENGINE_HELP[isOmniVoice() ? 'omnivoice' : 'kokoro'];
+    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[isOmniVoice() ? 'omnivoice' : 'kokoro']);
     renderOmniVoiceSettings(getOmniVoiceSettings());
-    els.settingsSummary.textContent = `${name ? `${name} voice` : 'Voice'} · ${getSpeed().toFixed(2)}x`;
+    els.settingsSummary.textContent = `${name ? t('$1 voice', [name]) : t('Voice')} · ${getSpeed().toFixed(2)}x`;
     if (els.speedOut) els.speedOut.textContent = `${getSpeed().toFixed(2)}x`;
     if (els.sectionPauseOut) els.sectionPauseOut.textContent = formatSectionPauseLabel(getPause());
     if (els.areaOpacity && els.areaOpacityOut) els.areaOpacityOut.textContent = `${Math.round(Number(els.areaOpacity.value) * 100)}%`;
@@ -146,13 +149,13 @@ export function createPopupApp({
     const gpuClass = String(plan?.calibration?.gpuClass || '');
     els.hardwareStatus.textContent = device.includes('webgpu')
       ? gpuClass === 'discrete'
-        ? 'Processing: WebGPU (dedicated GPU)'
+        ? t("Processing: WebGPU (dedicated GPU)")
         : gpuClass.startsWith('integrated')
-          ? 'Processing: WebGPU (integrated GPU)'
-          : 'Processing: WebGPU'
+          ? t("Processing: WebGPU (integrated GPU)")
+          : t("Processing: WebGPU")
       : device.includes('wasm') || device.includes('cpu')
-        ? 'Processing: CPU / WebAssembly (slower)'
-        : 'Processing shown after reading starts.';
+        ? t("Processing: CPU / WebAssembly (slower)")
+        : t("Processing shown after reading starts.");
   }
 
   // The engine sends modelSetup as { phase, progress, detail, eta }; getSetupView is how
@@ -178,16 +181,16 @@ export function createPopupApp({
     if (els.setupSkip) els.setupSkip.hidden = loading;
     if (els.setupDetail) {
       els.setupDetail.textContent = loading
-        ? (setup?.detail || `Preparing local voice… ${progress}%`)
+        ? (setup?.detail || t("Preparing local voice… $1%", [progress]))
         : phase === 'error'
-          ? (setup?.detail || 'Voice preparation failed. Try again.')
-          : 'Missing voice files download from Hugging Face before setup.';
+          ? (setup?.detail || t("Voice preparation failed. Try again."))
+          : t("Missing voice files download from Hugging Face before setup.");
     }
-    if (els.setupStart) els.setupStart.textContent = phase === 'error' ? 'Retry' : 'Prepare voice';
+    if (els.setupStart) els.setupStart.textContent = phase === 'error' ? t("Retry") : t("Prepare voice");
   }
 
   function formatSectionCount(count) {
-    return count ? `${count} ${count === 1 ? 'section' : 'sections'}` : 'Available when reading starts';
+    return count ? count === 1 ? t('$1 section', [count]) : t('$1 sections', [count]) : t("Available when reading starts");
   }
 
   // State broadcasts arrive on every chunk change with the full queue and transcript.
@@ -200,7 +203,7 @@ export function createPopupApp({
 
   function renderTranscript() {
     if (!els.transcript) return;
-    const transcript = String(readerSnapshot.transcript || '').trim() || 'Transcript appears when text loads.';
+    const transcript = String(readerSnapshot.transcript || '').trim() || t("Transcript appears when text loads.");
     const count = Array.isArray(readerSnapshot.queue) ? readerSnapshot.queue.length : 0;
     if (transcript !== renderedTranscript) {
       els.transcript.textContent = transcript;
@@ -280,24 +283,24 @@ export function createPopupApp({
     if (els.idleActions) els.idleActions.hidden = active;
     const title = String(readerSnapshot.title || '').trim();
     if (els.playerTitle) {
-      els.playerTitle.textContent = title && title !== ENGINE_PLACEHOLDER_TITLE ? title : 'Current page';
+      els.playerTitle.textContent = title && title !== ENGINE_PLACEHOLDER_TITLE ? title : t("Current page");
       els.playerTitle.title = els.playerTitle.textContent;
     }
     if (els.progress) {
       const setupProgress = setupProgressPercent();
       els.progress.textContent = state === 'preparing'
-        ? (readerSnapshot.modelSetup?.detail || (setupProgress === null ? 'Preparing…' : `Preparing voice… ${setupProgress}%`))
-        : [readerSnapshot.progressLabel, readerSnapshot.remainingLabel].filter(Boolean).join(' · ') || 'Preparing…';
+        ? (readerSnapshot.modelSetup?.detail || (setupProgress === null ? t('Preparing…') : t("Preparing voice… $1%", [setupProgress])))
+        : [readerSnapshot.progressLabel, readerSnapshot.remainingLabel].filter(Boolean).join(' · ') || t('Preparing…');
     }
     if (els.toggle) {
       // The progress line says "Preparing…"; a longer label clips in the four-button row.
-      els.toggle.textContent = state === 'paused' ? 'Resume' : 'Pause';
+      els.toggle.textContent = state === 'paused' ? t("Resume") : t("Pause");
       els.toggle.disabled = state === 'preparing' || Boolean(els.toggle.dataset.pending);
     }
     if (els.previous) els.previous.disabled = state === 'preparing' || Boolean(els.previous.dataset.pending) || Number(readerSnapshot.currentChunk || 0) <= 0;
     if (els.next) els.next.disabled = state === 'preparing' || Boolean(els.next.dataset.pending) || Number(readerSnapshot.currentChunk || 0) >= Number(readerSnapshot.totalChunks || 0) - 1;
     if (els.status) {
-      els.status.textContent = ({ idle: 'Ready to read', preparing: 'Preparing voice…', reading: 'Reading', paused: 'Paused', finished: 'Finished', error: 'Needs attention' })[state] || 'Ready to read';
+      els.status.textContent = ({ idle: t("Ready to read"), preparing: t("Preparing voice…"), reading: t("Reading"), paused: t("Paused"), finished: t("Finished"), error: t("Needs attention") })[state] || t("Ready to read");
       els.status.dataset.state = state;
     }
     if (state === 'error') showError({ code: readerSnapshot.errorCode, message: readerSnapshot.message });
@@ -436,7 +439,7 @@ export function createPopupApp({
     selected = normalizeLanguageCode(selected);
     const options = languageOptions();
     const OptionConstructor = win?.Option || Option;
-    els.language.replaceChildren(...options.map((language) => new OptionConstructor(language.label, language.code)));
+    els.language.replaceChildren(...options.map((language) => new OptionConstructor(languageName(language.code, language.label), language.code)));
     els.language.value = options.some(({ code }) => code === selected) ? selected : options.find(({ code }) => code === 'en')?.code || options[0].code;
   }
 
@@ -444,14 +447,14 @@ export function createPopupApp({
     if (!els.voice || !els.language) return;
     popupVoices = voicesForLanguage(isOmniVoice() ? 'en' : els.language.value);
     const OptionConstructor = win?.Option || Option;
-    els.voice.replaceChildren(...popupVoices.map((voice) => new OptionConstructor(voice.label, voice.id)));
+    els.voice.replaceChildren(...popupVoices.map((voice) => new OptionConstructor(formatVoiceOptionLabel(voice), voice.id)));
     const normalized = normalizeStoredVoiceId(storedVoice);
     els.voice.value = popupVoices.some(({ id }) => id === normalized) ? normalized : popupVoices[0]?.id || '';
     renderSettingsSummary();
   }
 
   async function prepareVoice() {
-    setPending(els.setupStart, 'Preparing…');
+    setPending(els.setupStart, t('Preparing…'));
     try {
       await saveSettings();
       await sendAction({ type: READER_ACTION_TYPES.PREPARE_VOICE });

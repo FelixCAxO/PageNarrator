@@ -30,7 +30,8 @@ export function resolveExtensionDir({ extensionDir = null, testInfo = null, env 
   return path.resolve(selected);
 }
 
-export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null } = {}) {
+export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null } = {}) {
+  if (locale && !/^[a-z]{2}(?:_[A-Z]{2})?$/u.test(locale)) throw new Error('Expected a Chrome locale code.');
   const selectedExtensionDir = resolveExtensionDir({ extensionDir, testInfo });
   const preparedExtension = hostPermissions.length
     ? await createExtensionCopyWithHostPermissions(selectedExtensionDir, hostPermissions)
@@ -41,9 +42,11 @@ export async function launchExtensionContext({ extensionDir = null, hostPermissi
   const context = await chromium.launchPersistentContext(userDataDir, {
     channel: 'chromium',
     headless: !e2eHeaded,
+    ...(locale ? { locale: locale.replace('_', '-') } : {}),
     args: [
       // Test narration must never reach the user's speakers, including headed runs.
       '--mute-audio',
+      ...(locale ? [`--lang=${locale.replace('_', '-')}`, `--accept-lang=${locale.replace('_', '-')}`] : []),
       `--disable-extensions-except=${preparedExtension.extensionDir}`,
       `--load-extension=${preparedExtension.extensionDir}`,
       '--autoplay-policy=no-user-gesture-required',

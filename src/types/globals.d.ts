@@ -63,7 +63,7 @@ declare global {
     };
     i18n?: {
       getMessage?(messageName: string, substitutions?: string | string[]): string;
-      detectLanguage?(text: string): Promise<{ languages?: Array<{ language?: string, percentage?: number }> }>;
+      detectLanguage?(text: string): Promise<{ isReliable?: boolean, languages?: Array<{ language?: string, percentage?: number }> }>;
     };
   }
 }

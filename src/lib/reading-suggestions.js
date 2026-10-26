@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 const WORDS_PER_MINUTE = 155;
 const CODE_DENSITY_THRESHOLD = 0.2;
 
@@ -22,8 +23,10 @@ export function createCodeCleanupSuggestion({
 
   return {
     visible: true,
-    title: 'Skip code snippets?',
-    detail: `This page has many code snippets. Skip about ${estimatedMinutes} ${estimatedMinutes === 1 ? 'min' : 'mins'} of code for smoother narration.`,
+    title: t("Skip code snippets?"),
+    detail: estimatedMinutes === 1
+      ? t('This page has many code snippets. Skip about $1 min of code for smoother narration.', [estimatedMinutes])
+      : t('This page has many code snippets. Skip about $1 mins of code for smoother narration.', [estimatedMinutes]),
     estimatedMinutes,
   };
 }

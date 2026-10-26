@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import {
   createReadingQueueWindow,
   createTranscriptWindow,
@@ -37,7 +38,7 @@ export function createReaderEngineQueueRenderer({
     node.dataset.state = item.state;
     node.setAttribute('role', 'button');
     node.tabIndex = 0;
-    node.setAttribute('aria-label', `Read section ${item.number}`);
+    node.setAttribute('aria-label', t("Read section $1", [item.number]));
 
     const index = doc.createElement('span');
     index.className = 'queue-index';

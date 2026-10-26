@@ -123,6 +123,13 @@ p,
 .field span {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+
+.field output {
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 select {
@@ -224,6 +231,10 @@ input[type="range"] {
 
 button {
   min-height: 40px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+  padding-block: 8px;
   border: 1px solid var(--border);
   border-radius: 8px;
   background: var(--card);
@@ -255,6 +266,7 @@ button:disabled {
 
 .settings summary {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   gap: 12px;
   padding: 12px;
@@ -369,4 +381,30 @@ button:disabled {
 progress {
   width: 100%;
   accent-color: var(--accent);
+}
+
+@media (max-width: 300px) {
+  .popup-shell {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  h1 {
+    font-size: 17px;
+    padding-left: 32px;
+  }
+
+  .player-controls,
+  .queue-nav {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .two-actions {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .settings summary {
+    flex-direction: column;
+    gap: 6px;
+  }
 }

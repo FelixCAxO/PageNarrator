@@ -30,7 +30,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
       tabId: 2, url: 'https://example.test/article', source: 'page',
       text: 'This article explains how people can select a local English voice and follow the text while PageNarrator reads it aloud.',
     };
-    detectLanguage = vi.fn(async () => ({ languages: [{ language: 'en', percentage: 94 }] }));
+    detectLanguage = vi.fn(async () => ({ isReliable: true, languages: [{ language: 'en', percentage: 94 }] }));
     vi.stubGlobal('chrome', { ...globalThis.chrome, i18n: { detectLanguage } });
     vi.stubGlobal('__pnReaderEngineInitStage', globalThis.__pnReaderEngineInitStage);
     const storage = createMemoryStorage();
@@ -128,5 +128,25 @@ describe('language detection in the shipped read loop and voice settings', () =>
     expect(playKokoroSpeech).not.toHaveBeenCalled();
     expect(state.readingState).toBe('idle');
     expect(state.activeReadingCursor).toBeNull();
+  });
+
+  it('suggests OmniVoice and does not synthesize reliably detected foreign text with English Kokoro', async () => {
+    detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'de', percentage: 99 }] });
+    await readLoop.readPage();
+    expect(state.selectedLanguageCode).toBe('en');
+    expect(state.readingState).toBe('error');
+    expect(els.languageStatus.textContent).toContain('Choose OmniVoice and German');
+    expect(ensureModel).not.toHaveBeenCalled();
+    expect(playKokoroSpeech).not.toHaveBeenCalled();
+  });
+
+  it('automatically selects a detected language within OmniVoice', async () => {
+    els.ttsEngine.value = 'omnivoice';
+    detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'zh-CN', percentage: 99 }] });
+    await readLoop.readPage();
+    expect(state.selectedLanguageCode).toBe('zh');
+    expect(els.language.value).toBe('zh');
+    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:zh:') }));
+    expect(els.languageStatus.textContent).toContain('Detected Chinese (99%).');
   });
 });

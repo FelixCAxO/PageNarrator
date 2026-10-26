@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import {hasPdfOcrInteriorInk} from './pdf-ocr-detector.js';
 import { createPdfOcrUnwarp, findOcrPaperInPixels } from './pdf-ocr-unwarp.js';
 import { createPdfOcrWorker } from './pdf-ocr-worker-client.js';
@@ -27,7 +28,7 @@ export function createPdfOcr({ runtime = chrome.runtime, onStatus = () => {} } =
     const task = queue.then(async () => {
       if (closed) throw new Error('PDF OCR has been closed.');
       if (cache.has(page.pageNumber)) return cache.get(page.pageNumber);
-      onStatus(`Recognizing text on page ${page.pageNumber}...`);
+      onStatus(t('Recognizing text on page $1...', [page.pageNumber]));
       const base = page.getViewport({ scale: 1 });
       const scale = Math.min(3, Math.sqrt(4_000_000 / (base.width * base.height)));
       const viewport = page.getViewport({ scale });

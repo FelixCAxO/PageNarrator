@@ -3,18 +3,18 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PageNarrator reader engine</title>
+    <title data-i18n="ui_620574c4">PageNarrator reader engine</title>
     <link rel="icon" type="image/png" href="../icons/icon-32.png" />
     <link rel="stylesheet" href="./reader-engine.css" />
   </head>
   <body hidden aria-hidden="true">
     <main class="app-shell">
-      <section id="app-panel" class="panel" aria-label="PageNarrator reader engine">
+      <section id="app-panel" class="panel" aria-label="PageNarrator reader engine" data-i18n-aria-label="ui_620574c4">
         <div class="expanded-view">
           <header class="header">
             <div class="brand">
               <h1>PageNarrator</h1>
-              <p id="panel-subtitle" class="subtitle">Read this page aloud</p>
+              <p id="panel-subtitle" class="subtitle" data-i18n="ui_d3f69559">Read this page aloud</p>
             </div>
           </header>
 
@@ -22,22 +22,22 @@
           <div class="panel-view idle-view" data-view="idle">
             <p id="status" class="status-text" aria-live="polite">
               <span class="status-dot" aria-hidden="true"></span>
-              <span id="status-label">Ready to read</span>
+              <span id="status-label" data-i18n="ui_f3de41d3">Ready to read</span>
             </p>
 
-            <section id="extension-access-guidance" class="access-guidance" aria-label="Grant page access" hidden>
-              <img id="extension-access-guidance-icon" alt="PageNarrator extension icon" width="32" height="32" />
+            <section id="extension-access-guidance" class="access-guidance" aria-label="Grant page access" hidden data-i18n-aria-label="ui_c5fbc06e">
+              <img id="extension-access-guidance-icon" alt="PageNarrator extension icon" width="32" height="32" data-i18n-alt="ui_0a05ab9f">
               <div>
-                <h2>Open PageNarrator from the page</h2>
-                <p>Click the PageNarrator extension icon while the page is active, then choose Read page.</p>
+                <h2 data-i18n="ui_5a3d9c47">Open PageNarrator from the page</h2>
+                <p data-i18n="ui_94a4b160">Click the PageNarrator extension icon while the page is active, then choose Read page.</p>
               </div>
             </section>
 
             <section id="model-setup" class="model-setup" hidden>
               <div class="model-setup__top">
                 <div>
-                  <h2 id="setup-title">Preparing voice</h2>
-                  <p>
+                  <h2 id="setup-title" data-i18n="ui_59ad3c41">Preparing voice</h2>
+                  <p data-i18n="ui_4be7c01e">
                     Missing voice files download on first use. Speech runs locally.
                   </p>
                 </div>
@@ -49,13 +49,13 @@
               </div>
 
               <div class="model-setup__meta">
-                <span id="setup-detail">Preparing local voice; missing files download from Hugging Face...</span>
-                <span id="setup-eta">Estimating time...</span>
+                <span id="setup-detail" data-i18n="ui_3d04a00a">Preparing local voice; missing files download from Hugging Face...</span>
+                <span id="setup-eta" data-i18n="ui_430dc39d">Estimating time...</span>
               </div>
             </section>
-            <section id="error-notice" class="access-guidance error-notice" aria-label="Recovery steps" hidden>
+            <section id="error-notice" class="access-guidance error-notice" aria-label="Recovery steps" hidden data-i18n-aria-label="ui_048ca959">
               <div>
-                <h2 id="error-title">Needs attention</h2>
+                <h2 id="error-title" data-i18n="ui_5d640b9c">Needs attention</h2>
                 <p id="error-message"></p>
                 <p id="error-action"></p>
                 <div id="error-actions" class="error-actions" hidden>
@@ -63,75 +63,75 @@
                   <button id="error-secondary-action" class="secondaryButton" type="button" hidden></button>
                 </div>
                 <details id="error-details" hidden>
-                  <summary>Details</summary>
+                  <summary data-i18n="ui_0ec24245">Details</summary>
                   <code id="error-code"></code>
                 </details>
               </div>
             </section>
-            <p id="voice-ready" class="voice-ready" hidden>Voice ready</p>
+            <p id="voice-ready" class="voice-ready" hidden data-i18n="ui_1ede4e42">Voice ready</p>
 
-            <section id="resume-prompt" class="resume-prompt" aria-label="Resume reading" hidden>
+            <section id="resume-prompt" class="resume-prompt" aria-label="Resume reading" hidden data-i18n-aria-label="ui_4ff448da">
               <div>
-                <p id="resume-title" class="resume-prompt__title">Resume at saved position</p>
-                <p id="resume-detail" class="resume-prompt__detail">Saved reading position</p>
+                <p id="resume-title" class="resume-prompt__title" data-i18n="ui_cb2eed93">Resume at saved position</p>
+                <p id="resume-detail" class="resume-prompt__detail" data-i18n="ui_ded3954b">Saved reading position</p>
                 <p id="resume-excerpt" class="resume-prompt__excerpt"></p>
               </div>
               <div class="resume-prompt__actions">
-                <button id="resume-read-btn" class="secondaryButton" type="button">Resume</button>
-                <button id="resume-start-over-btn" class="secondaryButton" type="button">Start over</button>
+                <button id="resume-read-btn" class="secondaryButton" type="button" data-i18n="ui_454d1d8a">Resume</button>
+                <button id="resume-start-over-btn" class="secondaryButton" type="button" data-i18n="ui_24299867">Start over</button>
               </div>
             </section>
 
-            <section id="code-suggestion" class="code-suggestion" aria-label="Reading suggestion" hidden>
+            <section id="code-suggestion" class="code-suggestion" aria-label="Reading suggestion" hidden data-i18n-aria-label="ui_d71c7401">
               <div>
-                <p id="code-suggestion-title" class="code-suggestion__title">Skip code snippets?</p>
-                <p id="code-suggestion-detail" class="code-suggestion__detail">This page has many code snippets.</p>
+                <p id="code-suggestion-title" class="code-suggestion__title" data-i18n="ui_b7e3509c">Skip code snippets?</p>
+                <p id="code-suggestion-detail" class="code-suggestion__detail" data-i18n="ui_d5c02828">This page has many code snippets.</p>
               </div>
-              <button id="code-suggestion-accept" class="secondaryButton" type="button">Skip code</button>
+              <button id="code-suggestion-accept" class="secondaryButton" type="button" data-i18n="ui_336b89fb">Skip code</button>
             </section>
 
-            <section class="card detected" aria-label="Detected article">
-              <p class="section-label">Detected article</p>
-              <h2 id="article-title" role="status" aria-label="No page loaded">No page loaded</h2>
-              <p id="article-meta" class="article-meta">Open an article, then read the page</p>
-              <p id="article-mode" class="article-mode">Reading: Article only</p>
+            <section class="card detected" aria-label="Detected article" data-i18n-aria-label="ui_299fab6d">
+              <p class="section-label" data-i18n="ui_299fab6d">Detected article</p>
+              <h2 id="article-title" role="status" aria-label="No page loaded" data-i18n-aria-label="ui_70cc9cc6" data-i18n="ui_70cc9cc6">No page loaded</h2>
+              <p id="article-meta" class="article-meta" data-i18n="ui_06a382b7">Open an article, then read the page</p>
+              <p id="article-mode" class="article-mode" data-i18n="ui_a9898369">Reading: Article only</p>
               <div class="preview-copy">
-                <p class="section-label">Starts with</p>
-                <p id="article-text">Text appears when reading starts.</p>
+                <p class="section-label" data-i18n="ui_3065e144">Starts with</p>
+                <p id="article-text" data-i18n="ui_8bdfb3a1">Text appears when reading starts.</p>
               </div>
             </section>
           </div>
 
-          <section class="player-shell" aria-label="Reading player">
+          <section class="player-shell" aria-label="Reading player" data-i18n-aria-label="ui_7ac012cc">
           <div class="panel-view reading-view" data-view="reading">
-            <section class="player-strip" aria-label="Reading progress">
+            <section class="player-strip" aria-label="Reading progress" data-i18n-aria-label="ui_8edce20a">
               <div class="player-strip__main">
                 <div id="play-indicator" class="play-indicator">
                   <span class="bar" aria-hidden="true"></span>
                   <span class="bar" aria-hidden="true"></span>
                   <span class="bar" aria-hidden="true"></span>
-                  <span id="reading-state-label" aria-live="polite">Reading</span>
+                  <span id="reading-state-label" aria-live="polite" data-i18n="ui_5ee7339b">Reading</span>
                 </div>
-                <h2 id="reading-article-title" class="article-title">No page loaded</h2>
+                <h2 id="reading-article-title" class="article-title" data-i18n="ui_70cc9cc6">No page loaded</h2>
               </div>
               <div id="reading-progress" class="reading-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" hidden aria-hidden="true">
                 <div class="reading-progress__track">
                   <div id="reading-progress-bar" class="reading-progress__bar"></div>
                 </div>
                 <div class="reading-progress__stats">
-                  <span id="reading-progress-label">0% complete</span>
-                  <span id="reading-remaining-label">0 chunks left</span>
+                  <span id="reading-progress-label" data-i18n="ui_a174ecb1">0% complete</span>
+                  <span id="reading-remaining-label" data-i18n="ui_949ea37c">0 chunks left</span>
                 </div>
               </div>
             </section>
           </div>
 
           <div class="controls-row">
-            <button id="read-btn" class="primaryButton" type="button" data-label="Read page" data-funnel-event="full_page_read_started"></button>
-            <button id="read-selected-btn" class="secondaryButton" type="button" data-label="Read selected" data-funnel-event="selected_text_read_started">Read selected</button>
-            <button id="prev-btn" class="secondaryButton" type="button" data-label="Back" title="Previous section">Back</button>
-            <button id="stop-btn" class="secondaryButton" type="button" data-label="Stop"></button>
-            <button id="next-btn" class="secondaryButton" type="button" data-label="Next">Next</button>
+            <button id="read-btn" class="primaryButton" type="button" data-label="Read page" data-funnel-event="full_page_read_started" data-i18n-data-label="ui_758bbc44"></button>
+            <button id="read-selected-btn" class="secondaryButton" type="button" data-label="Read selected" data-funnel-event="selected_text_read_started" data-i18n-data-label="ui_865bf5ae" data-i18n="ui_865bf5ae">Read selected</button>
+            <button id="prev-btn" class="secondaryButton" type="button" data-label="Back" title="Previous section" data-i18n-title="ui_30ea6e2f" data-i18n-data-label="ui_c2954bc2" data-i18n="ui_c2954bc2">Back</button>
+            <button id="stop-btn" class="secondaryButton" type="button" data-label="Stop" data-i18n-data-label="ui_4b7f7705"></button>
+            <button id="next-btn" class="secondaryButton" type="button" data-label="Next" data-i18n-data-label="ui_dce2da08" data-i18n="ui_dce2da08">Next</button>
           </div>
 
           <section id="onboarding-banner" class="resume-prompt onboarding-banner" role="status" hidden>
@@ -147,89 +147,89 @@
 
           </section>
 
-          <section id="pdf-page-nav" class="pdf-page-nav" aria-label="PDF page navigation" hidden>
-            <button id="pdf-page-first-btn" class="pdf-page-nav__button" type="button">First</button>
+          <section id="pdf-page-nav" class="pdf-page-nav" aria-label="PDF page navigation" hidden data-i18n-aria-label="ui_1250127e">
+            <button id="pdf-page-first-btn" class="pdf-page-nav__button" type="button" data-i18n="ui_ee3d49e1">First</button>
             <label class="pdf-page-jump-field">
-              <span>Page</span>
+              <span data-i18n="ui_e83d9196">Page</span>
               <input id="pdf-page-jump-input" type="number" min="1" value="1" inputmode="numeric" />
             </label>
-            <button id="pdf-page-jump-btn" class="pdf-page-nav__button" type="button">Go</button>
-            <button id="pdf-page-skip-btn" class="pdf-page-nav__button" type="button" aria-label="Skip current PDF page">Skip</button>
+            <button id="pdf-page-jump-btn" class="pdf-page-nav__button" type="button" data-i18n="ui_41d0c56b">Go</button>
+            <button id="pdf-page-skip-btn" class="pdf-page-nav__button" type="button" aria-label="Skip current PDF page" data-i18n-aria-label="ui_27ba99fc" data-i18n="ui_c197c7e2">Skip</button>
           </section>
 
-          <section class="voice-choice" aria-label="Choose voice model">
+          <section class="voice-choice" aria-label="Choose voice model" data-i18n-aria-label="ui_9d65bbdb">
             <label class="field">
-              <span>Voice model</span>
-              <select id="tts-engine-select" aria-describedby="voice-model-help"><option value="kokoro">Kokoro (default)</option><option value="omnivoice">OmniVoice (experimental)</option></select>
+              <span data-i18n="ui_e6334598">Voice model</span>
+              <select id="tts-engine-select" aria-describedby="voice-model-help"><option value="kokoro" data-i18n="ui_38319e92">Kokoro (default)</option><option value="omnivoice" data-i18n="ui_a476bebf">OmniVoice (experimental)</option></select>
             </label>
-            <p id="voice-model-help" class="language-status" role="status">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+            <p id="voice-model-help" class="language-status" role="status" data-i18n="ui_6c6b4ee0">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
           </section>
 
-          <details id="reader-settings" class="controls settings-section" aria-label="Reader settings">
+          <details id="reader-settings" class="controls settings-section" aria-label="Reader settings" data-i18n-aria-label="ui_dbd1ad47">
             <summary>
-              <span>Voice settings</span>
-              <span id="voice-settings-summary" class="summary-chip">Heart · English · 1.00x</span>
+              <span data-i18n="ui_2c04fde6">Voice settings</span>
+              <span id="voice-settings-summary" class="summary-chip"></span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </summary>
             <div class="controls__body">
               <label class="field">
-                <span>Language</span>
+                <span data-i18n="ui_9a73db9b">Language</span>
                 <select id="language-select"></select>
               </label>
-              <p id="language-status" class="language-status" aria-live="polite">Language will be detected when reading starts.</p>
+              <p id="language-status" class="language-status" aria-live="polite" data-i18n="ui_1a27bec5">Language will be detected when reading starts.</p>
               <label class="field">
-                <span>Voice</span>
+                <span data-i18n="ui_27d1a499">Voice</span>
                 <select id="voice-select"></select>
               </label>
               <div id="omnivoice-settings" hidden>
-                <label class="field"><span>Voice type</span><select id="omnivoice-gender"><option value="female">Female</option><option value="male">Male</option></select></label>
-          <label class="field"><span>Voice variation <output id="omnivoice-variation-out" for="omnivoice-variation">1 / 10</output></span><input id="omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
-          <p class="field-help">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
-                <label class="field"><span><input id="omnivoice-whisper" type="checkbox" /> Whisper</span></label>
+                <label class="field"><span data-i18n="ui_c39c8623">Voice type</span><select id="omnivoice-gender"><option value="female" data-i18n="ui_d8a26cb9">Female</option><option value="male" data-i18n="ui_487d36f0">Male</option></select></label>
+          <label class="field"><span><span data-i18n="ui_a2a40f30">Voice variation </span><output id="omnivoice-variation-out" for="omnivoice-variation">1 / 10</output></span><input id="omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
+          <p class="field-help" data-i18n="ui_16383585">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
+                <label class="field"><span><input id="omnivoice-whisper" type="checkbox" /><span data-i18n="ui_d975568d"> Whisper</span></span></label>
               </div>
               <label class="field">
-                <span>Playback speed <output id="speed-out">1.00x</output></span>
+                <span><span data-i18n="ui_3d7af8ef">Playback speed </span><output id="speed-out">1.00x</output></span>
                 <input id="speed" type="range" min="0.5" max="3.0" step="0.05" value="1.0" />
               </label>
-              <p class="language-status">Saved automatically. Voice changes apply to the next section while reading.</p>
-              <p id="tts-backend-status" class="language-status" aria-live="polite">Voice processing: checked when reading starts.</p>
+              <p class="language-status" data-i18n="ui_c58a3963">Saved automatically. Voice changes apply to the next section while reading.</p>
+              <p id="tts-backend-status" class="language-status" aria-live="polite" data-i18n="ui_815f1834">Voice processing: checked when reading starts.</p>
               <details id="kokoro-requirements">
-                <summary>Device requirements</summary>
-                <p class="language-status"><strong>Recommended:</strong> a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.</p>
-                <p class="language-status">Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.</p>
+                <summary data-i18n="ui_52ff662d">Device requirements</summary>
+                <p class="language-status"><strong data-i18n="ui_fd02dfc2">Recommended:</strong> <span data-i18n="ui_b0555d92"> a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.</span></p>
+                <p class="language-status" data-i18n="ui_0d393abc">Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.</p>
               </details>
             </div>
           </details>
 
-          <details id="advanced-tools-panel" class="controls settings-section" data-advanced-only aria-label="Advanced settings">
+          <details id="advanced-tools-panel" class="controls settings-section" data-advanced-only aria-label="Advanced settings" data-i18n-aria-label="ui_1eb4158c">
             <summary>
-              <span>Advanced settings</span>
-              <span class="summary-chip">Timing, cleanup, voices</span>
+              <span data-i18n="ui_1eb4158c">Advanced settings</span>
+              <span class="summary-chip" data-i18n="ui_f31ba722">Timing, cleanup, voices</span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </summary>
             <div class="controls__body advanced-tools-panel__body">
-          <details id="section-pause-settings" class="controls settings-section" data-advanced-only aria-label="Section pauses">
+          <details id="section-pause-settings" class="controls settings-section" data-advanced-only aria-label="Section pauses" data-i18n-aria-label="ui_a879e367">
             <summary>
-              <span>Section pauses</span>
-              <span id="section-pause-summary" class="summary-chip">Normal</span>
+              <span data-i18n="ui_a879e367">Section pauses</span>
+              <span id="section-pause-summary" class="summary-chip" data-i18n="ui_58de2772">Normal</span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
             </summary>
             <div class="controls__body">
               <label class="field">
-                <span>Pause between sections <output id="section-pause-out">Normal</output></span>
+                <span><span data-i18n="ui_67231237">Pause between sections </span><output id="section-pause-out" data-i18n="ui_58de2772">Normal</output></span>
                 <input id="section-pause" type="range" min="-5" max="5" step="0.1" value="0" />
               </label>
             </div>
           </details>
 
-          <details id="highlight-settings" class="controls settings-section highlight-settings" data-advanced-only aria-label="Highlight style">
+          <details id="highlight-settings" class="controls settings-section highlight-settings" data-advanced-only aria-label="Highlight style" data-i18n-aria-label="ui_07e1c336">
             <summary>
-              <span>Highlight style</span>
-              <span id="highlight-settings-summary" class="summary-chip">Custom</span>
+              <span data-i18n="ui_07e1c336">Highlight style</span>
+              <span id="highlight-settings-summary" class="summary-chip" data-i18n="ui_9525b78e">Custom</span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
@@ -237,36 +237,36 @@
             <div class="controls__body">
               <div class="highlight-settings__grid">
                 <label class="field color-field">
-                  <span>Read area</span>
+                  <span data-i18n="ui_e0955632">Read area</span>
                   <input id="highlight-area-color" type="color" value="#ffdd57" />
                 </label>
                 <label class="field">
-                  <span>Area opacity <output id="highlight-area-opacity-out">10%</output></span>
+                  <span><span data-i18n="ui_1e4dbab9">Area opacity </span><output id="highlight-area-opacity-out">10%</output></span>
                   <input id="highlight-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" />
                 </label>
                 <label class="field color-field">
-                  <span>Current word</span>
+                  <span data-i18n="ui_90571eca">Current word</span>
                   <input id="highlight-word-color" type="color" value="#ffdd57" />
                 </label>
                 <label class="field">
-                  <span>Word opacity <output id="highlight-word-opacity-out">38%</output></span>
+                  <span><span data-i18n="ui_1688a6f4">Word opacity </span><output id="highlight-word-opacity-out">38%</output></span>
                   <input id="highlight-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" />
                 </label>
               </div>
             </div>
           </details>
 
-          <details id="skip-code-settings" class="controls settings-section" data-advanced-only aria-label="Reading cleanup">
+          <details id="skip-code-settings" class="controls settings-section" data-advanced-only aria-label="Reading cleanup" data-i18n-aria-label="ui_ea585567">
             <summary>
-              <span>Reading cleanup</span>
-              <span id="skip-code-summary" class="summary-chip">Off</span>
+              <span data-i18n="ui_ea585567">Reading cleanup</span>
+              <span id="skip-code-summary" class="summary-chip" data-i18n="ui_0dc6b4aa">Off</span>
               <svg class="chevron" width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="m6 9 6 6 6-6" />
               </svg>
             </summary>
             <div class="controls__body">
               <label class="toggle-field">
-                <span>Skip code snippets</span>
+                <span data-i18n="ui_231b3e4b">Skip code snippets</span>
                 <input id="skip-code-snippets" type="checkbox" />
               </label>
             </div>
@@ -277,39 +277,39 @@
             </div>
           </details>
 
-          <section id="simple-reading-summary" class="simple-reading-summary" data-simple-only aria-label="Queue and transcript summary" hidden>
+          <section id="simple-reading-summary" class="simple-reading-summary" data-simple-only aria-label="Queue and transcript summary" hidden data-i18n-aria-label="ui_d6fbffc9">
             <div>
-              <span class="section-label">Queue &amp; transcript</span>
-              <p>Current section, transcript search, and jump controls are available in Advanced mode.</p>
+              <span class="section-label" data-i18n="ui_21fd85e4">Queue &amp; transcript</span>
+              <p data-i18n="ui_d6c98891">Current section, transcript search, and jump controls are available in Advanced mode.</p>
             </div>
-            <button id="simple-reading-browse" class="secondaryButton" type="button">Browse</button>
+            <button id="simple-reading-browse" class="secondaryButton" type="button" data-i18n="ui_0eac1f07">Browse</button>
           </section>
 
-          <details class="card transcript-card" data-advanced-only aria-label="Full transcript">
+          <details class="card transcript-card" data-advanced-only aria-label="Full transcript" data-i18n-aria-label="ui_44d76dee">
             <summary class="section-heading">
-              <span class="section-label">Transcript</span>
-              <span id="transcript-count">0 paragraphs</span>
+              <span class="section-label" data-i18n="ui_0583096b">Transcript</span>
+              <span id="transcript-count" data-i18n="ui_ab5783a6">0 paragraphs</span>
             </summary>
-            <div id="transcript-text" class="transcript-text">Transcript appears when text loads.</div>
+            <div id="transcript-text" class="transcript-text" data-i18n="ui_1d9bdb7f">Transcript appears when text loads.</div>
           </details>
 
-          <details id="queue-card" class="card queue-card" data-advanced-only aria-label="Reading queue">
+          <details id="queue-card" class="card queue-card" data-advanced-only aria-label="Reading queue" data-i18n-aria-label="ui_89a5470c">
             <summary class="section-heading">
-              <span class="section-label">Reading queue</span>
-              <span id="queue-count">0 sections</span>
+              <span class="section-label" data-i18n="ui_89a5470c">Reading queue</span>
+              <span id="queue-count" data-i18n="ui_5dca8675">0 sections</span>
             </summary>
-            <div id="queue-nav" class="queue-nav" aria-label="Queue navigation" hidden>
-              <button id="queue-first-btn" class="queue-nav__button" type="button">First</button>
+            <div id="queue-nav" class="queue-nav" aria-label="Queue navigation" hidden data-i18n-aria-label="ui_d58a5a9a">
+              <button id="queue-first-btn" class="queue-nav__button" type="button" data-i18n="ui_ee3d49e1">First</button>
               <label class="queue-jump-field">
-                <span>Section</span>
+                <span data-i18n="ui_2d877b6c">Section</span>
                 <input id="queue-jump-input" type="number" min="1" value="1" inputmode="numeric" />
               </label>
-              <button id="queue-jump-btn" class="queue-nav__button" type="button">Go</button>
-              <button id="queue-last-btn" class="queue-nav__button" type="button">Last</button>
+              <button id="queue-jump-btn" class="queue-nav__button" type="button" data-i18n="ui_41d0c56b">Go</button>
+              <button id="queue-last-btn" class="queue-nav__button" type="button" data-i18n="ui_e40e2439">Last</button>
             </div>
             <label class="queue-search-field">
-              <span>Find section</span>
-              <input id="queue-search-input" type="search" placeholder="Search transcript or page..." />
+              <span data-i18n="ui_03205ed1">Find section</span>
+              <input id="queue-search-input" type="search" placeholder="Search transcript or page..." data-i18n-placeholder="ui_27654275">
             </label>
             <ol id="reading-queue" class="reading-queue"></ol>
           </details>

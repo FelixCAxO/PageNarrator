@@ -6,7 +6,7 @@ Read webpages, selected text, and PDFs aloud in Chrome. Speech runs on your devi
 
 [Build locally](#build-and-test) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
 
-This private repository starts from one initial commit. Previous GitHub releases and tags were removed; build from source for installation.
+This repository starts from a fresh initial commit. Previous GitHub releases and tags were removed; build from source for installation.
 
 [Engineering decisions and results](docs/project-architecture.md#engineering-decisions)
 

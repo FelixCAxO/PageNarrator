@@ -1,3 +1,4 @@
+import { getMessage, t, languageName } from './i18n.js';
 import {
   clampPlaybackSpeed,
   clampSectionPauseSeconds,
@@ -18,6 +19,8 @@ import {
   isExperimentalVoice,
   normalizeLanguageCode,
   resolveVoiceSelection,
+  getDetectedLanguageSuggestion,
+  getUnsupportedLanguageMessage,
 } from './language-voice-options.js';
 import {
   createTtsPerformanceGovernor,
@@ -53,6 +56,7 @@ export function createReaderEngineVoiceSettingsController({
 } = {}) {
   let lastAdjustedProfileDecision = null;
   let ttsBackendPreference = DEFAULT_TTS_BACKEND_PREFERENCE;
+  let lastDetectedLanguage = null;
 
   function getSelectedLanguageCode() {
     return state?.selectedLanguageCode || 'en';
@@ -76,7 +80,7 @@ export function createReaderEngineVoiceSettingsController({
     for (const language of languages) {
       const option = document.createElement('option');
       option.value = language.code;
-      option.textContent = language.label;
+      option.textContent = languageName(language.code, language.label);
       els.language.appendChild(option);
     }
     if (!languages.some((language) => language.code === getSelectedLanguageCode())) {
@@ -99,7 +103,7 @@ export function createReaderEngineVoiceSettingsController({
 
     if (experimentalVoices.length > 0) {
       const group = document.createElement('optgroup');
-      group.label = 'Experimental - quality not validated';
+      group.label = t("Experimental - quality not validated");
       appendVoiceOptions(group, experimentalVoices);
       fragment.appendChild(group);
     }
@@ -215,18 +219,18 @@ export function createReaderEngineVoiceSettingsController({
     if (els.voice?.closest('label')) els.voice.closest('label').hidden = omni;
     if (els.language?.closest('label')) els.language.closest('label').hidden = !omni;
     if (els.kokoroRequirements) els.kokoroRequirements.hidden = omni;
-    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = VOICE_ENGINE_HELP[omni ? 'omnivoice' : 'kokoro'];
+    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[omni ? 'omnivoice' : 'kokoro']);
     if (!els.voiceSettingsSummary) return;
     const language = getLanguageOption(getSelectedLanguageCode());
     const selectedVoice = resolveSelectedVoice();
     const voiceLabel = getCompactVoiceLabel(selectedVoice);
-    const languageLabel = language?.label || 'English';
+    const languageLabel = languageName(getSelectedLanguageCode(), language?.label || 'English');
     els.voiceSettingsSummary.textContent = `${voiceLabel} · ${languageLabel} · ${getPlaybackSpeed().toFixed(2)}x`;
   }
 
   function getCompactVoiceLabel(voice) {
     const label = String(voice?.label || '').trim();
-    if (!label) return 'Voice';
+    if (!label) return t("Voice");
     return label.split(' - ')[0]?.trim() || label;
   }
 
@@ -255,12 +259,12 @@ export function createReaderEngineVoiceSettingsController({
         && lastAdjustedProfileDecision.changed
         && lastAdjustedProfileDecision.nextProfile === displayProfile;
       els.ttsPerformanceProfileBadge.textContent = adjusted
-        ? `${formatTtsPerformanceProfileOptionLabel(displayProfile)} - adjusted`
+        ? t("$1 - adjusted", [formatTtsPerformanceProfileOptionLabel(displayProfile)])
         : formatTtsPerformanceProfileOptionLabel(displayProfile);
       els.ttsPerformanceProfileBadge.setAttribute('aria-live', 'polite');
       if (adjusted) {
         els.ttsPerformanceProfileBadge.dataset.adjusted = 'true';
-        els.ttsPerformanceProfileBadge.title = `Voice quality adjusted after ${lastAdjustedProfileDecision.reason}.`;
+        els.ttsPerformanceProfileBadge.title = t("Voice quality adjusted after $1.", [lastAdjustedProfileDecision.reason]);
       } else {
         delete els.ttsPerformanceProfileBadge.dataset.adjusted;
         els.ttsPerformanceProfileBadge.removeAttribute('title');
@@ -282,14 +286,17 @@ export function createReaderEngineVoiceSettingsController({
     const device = String(plan.device || '');
     const reason = String(plan.reason || '');
     if (device === 'webgpu') {
-      els.ttsBackendStatus.textContent = `Voice processing: GPU (WebGPU)${reason === 'marginal-webgpu' ? ' with CPU-friendly settings' : ''}.`;
+      els.ttsBackendStatus.textContent = reason === 'marginal-webgpu'
+        ? t('Voice processing: GPU (WebGPU) with CPU-friendly settings.')
+        : t('Voice processing: GPU (WebGPU).');
     } else if (device === 'wasm') {
-      const detail = reason === 'no-webgpu' ? ' because WebGPU is unavailable' : '';
-      els.ttsBackendStatus.textContent = `Voice processing: CPU only (WebAssembly)${detail}.`;
+      els.ttsBackendStatus.textContent = reason === 'no-webgpu'
+        ? t('Voice processing: CPU only (WebAssembly) because WebGPU is unavailable.')
+        : t('Voice processing: CPU only (WebAssembly).');
     } else if (device === 'browser') {
-      els.ttsBackendStatus.textContent = 'Voice processing: system voice (browser or operating system).';
+      els.ttsBackendStatus.textContent = t("Voice processing: system voice (browser or operating system).");
     } else {
-      els.ttsBackendStatus.textContent = 'Voice processing: checked when reading starts.';
+      els.ttsBackendStatus.textContent = t("Voice processing: checked when reading starts.");
     }
     els.ttsBackendStatus.dataset.backend = device || 'pending';
   }
@@ -404,16 +411,28 @@ export function createReaderEngineVoiceSettingsController({
 
   /** @param {any} [detected] */
   async function renderLanguageStatus(detected = null) {
+    if (detected) lastDetectedLanguage = detected;
+    detected = lastDetectedLanguage;
     const language = getLanguageOption(getSelectedLanguageCode());
     const selectedVoice = resolveSelectedVoice();
+    const selectedLanguageLabel = languageName(getSelectedLanguageCode(), language?.label || getSelectedLanguageCode());
+    const suggestion = getDetectedLanguageSuggestion(detected, selectedVoice?.engine || els.ttsEngine?.value || 'kokoro');
+    if (suggestion && !suggestion.supported) {
+      els.languageStatus.textContent = getUnsupportedLanguageMessage(suggestion.code);
+      updateVoiceSettingsSummary();
+      return;
+    }
     const detectedText = detected?.reliable
-      ? `Detected ${getLanguageOption(detected.code)?.label || detected.code} (${detected.percent}%). `
-      : detected ? 'Language detection was uncertain. ' : '';
+      ? `${getMessage('languageDetected', [languageName(getLanguageOption(detected.code)?.code || detected.code, getLanguageOption(detected.code)?.label || detected.code), String(detected.percent)], {
+        fallback: `Detected ${languageName(getLanguageOption(detected.code)?.code || detected.code, getLanguageOption(detected.code)?.label || detected.code)} (${detected.percent}%).`,
+      })} `
+      : detected ? `${getMessage('languageDetectionUncertain', undefined, { fallback: 'Language detection was uncertain.' })} ` : '';
     const voiceText = selectedVoice?.engine === 'omnivoice'
-      ? 'Using experimental OmniVoice on WebGPU. Model files download from Hugging Face; speech stays on this device. Choose Kokoro if WebGPU is unavailable.'
+      ? [t('Using experimental OmniVoice on WebGPU.'), t('Model files download from Hugging Face; speech stays on this device.'), t('Choose Kokoro if WebGPU is unavailable.')].join(' ')
       : selectedVoice?.engine === 'kokoro'
-      ? `Using Kokoro ${language?.label || 'selected language'} voice. Missing voice files download from Hugging Face when you prepare or read. Speech runs on this device; cached files can be reused offline unless cleared.${isExperimentalVoice(selectedVoice) ? ` Experimental quality: ${selectedVoice.quality}.` : ''}`
-      : `No ${language?.label || 'selected language'} voice is available.`;
+      ? [t('Using Kokoro $1 voice.', [selectedLanguageLabel]), t('Missing voice files download from Hugging Face when you prepare or read.'), t('Speech runs on this device; cached files can be reused offline unless cleared.'),
+        ...(isExperimentalVoice(selectedVoice) ? [t('Experimental quality: $1.', [selectedVoice.quality])] : [])].join(' ')
+      : t("No $1 voice is available.", [selectedLanguageLabel]);
     els.languageStatus.textContent = `${detectedText}${voiceText}`;
     updateVoiceSettingsSummary();
   }

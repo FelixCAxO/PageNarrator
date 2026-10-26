@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { shouldStopReadForClosedTab as defaultShouldStopReadForClosedTab } from './reader-engine-read-lifecycle.js';
 import {
   createPauseableDelay as defaultCreatePauseableDelay,
@@ -84,7 +85,7 @@ export function createReaderEngineReadControlsController({
       setReadingState('reading');
     }).catch((error) => {
       logger.error?.('Audio playback failed.', error);
-      setReadingState('error', { message: 'Audio playback failed.' });
+      setReadingState('error', { message: t("Audio playback failed.") });
     });
   }
 

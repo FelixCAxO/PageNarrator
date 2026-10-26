@@ -8,24 +8,30 @@ import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-downl
 import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
 import { OMNIVOICE_MODEL_BASE_URL } from '../../src/tts/omnivoice/loader.js';
 import { waveBytes, audioMeasures } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
+import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-const root = path.resolve('artifacts/omnivoice-language-audit');
+const root = path.resolve(process.env.PN_E2E_LANGUAGE_AUDIT_DIR || 'artifacts/omnivoice-language-audit');
 
 test('audits every OmniVoice language with resumable real GPU recordings', async ({}, testInfo) => {
   test.skip(process.env.PN_E2E_LANGUAGE_AUDIT !== '1', 'Explicit opt-in: hundreds of real model syntheses.');
   test.setTimeout(4 * 60 * 60_000);
   const corpus = JSON.parse(await readFile(path.join(root, 'corpus.json'), 'utf8')).languages;
-  expect(corpus).toHaveLength(646);
-  expect(new Set(corpus.map(item => item.code)).size).toBe(646);
+  expect(corpus.length).toBeGreaterThan(0);
+  expect(new Set(corpus.map(item => item.id || item.code)).size).toBe(corpus.length);
   const [shardIndex, shardCount] = (process.env.PN_E2E_LANGUAGE_AUDIT_SHARD || '0/1').split('/').map(Number);
   expect(Number.isInteger(shardIndex) && Number.isInteger(shardCount)
     && shardCount > 0 && shardIndex >= 0 && shardIndex < shardCount).toBe(true);
   const cases = corpus.filter((_, index) => index % shardCount === shardIndex);
   await mkdir(path.join(root, 'wav'), { recursive: true });
   await mkdir(path.join(root, 'records'), { recursive: true });
-  const { context, cleanup, extensionDir } = await launchExtensionContext({ testInfo, hostPermissions: ['http://127.0.0.1/*'] });
+  const lock = await acquireMeasurementLock({ owner: { purpose: 'Packaged OmniVoice language retest' },
+    onWait: holder => console.log(`Waiting for measurement process ${holder?.pid}.`) });
+  let cleanup = async () => {};
   try {
+    const launched = await launchExtensionContext({ testInfo, hostPermissions: ['http://127.0.0.1/*'] });
+    const { context, extensionDir } = launched;
+    cleanup = launched.cleanup;
     const assets = await readdir(path.join(extensionDir, 'assets'));
     let script;
     for (const name of assets.filter(name => /^worker-.*\.js$/.test(name))) {
@@ -42,7 +48,9 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
     });
     await writeFile(path.join(root, shardCount === 1 ? 'runtime.json' : `runtime-shard-${shardIndex}.json`), JSON.stringify({ workerSha256, script, adapter,
       shardIndex, shardCount,
-      settings: { gender: 'female', variation: 1, whisper: false }, modelBaseUrl: OMNIVOICE_MODEL_BASE_URL }, null, 2));
+      settings: 'Per-sample settings recorded with each request; default female/variation 1.',
+      builtManifestSha256: hash(await readFile(path.join(extensionDir, 'manifest.json'))),
+      startedAt: new Date().toISOString(), modelBaseUrl: OMNIVOICE_MODEL_BASE_URL }, null, 2));
     await page.evaluate(({ script, baseUrl }) => {
       let worker, id = 0;
       globalThis.__languageAuditCall = (method, payload = {}) => new Promise((resolve, reject) => {
@@ -70,16 +78,17 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
       const item = scheduled.nativeText ? scheduled : JSON.parse(await readFile(path.join(root, 'corpus.json'), 'utf8'))
         .languages.find(item => item.code === scheduled.code);
       const text = item.text || 'Today we are reading a short story about a quiet garden.';
-      const request = createOmniVoiceRequest(text, { detectCode: item.code, omniVoice: { gender: 'female', variation: 1, whisper: false } });
+      const sampleId = item.id || item.code;
+      const request = createOmniVoiceRequest(text, { detectCode: item.code, omniVoice: item.omniVoice || { gender: 'female', variation: 1, whisper: false } });
       const requestSha256 = hash(JSON.stringify(request));
-      const recordPath = path.join(root, 'records', `${item.code}.json`);
+      const recordPath = path.join(root, 'records', `${sampleId}.json`);
       try {
         const old = JSON.parse(await readFile(recordPath, 'utf8'));
         if (old.workerSha256 === workerSha256 && old.requestSha256 === requestSha256 && old.wavSha256
           && hash(await readFile(path.join(root, old.wav))) === old.wavSha256) { processed += 1; continue; }
       } catch { /* No complete matching checkpoint: generate it. */ }
       if (processed && processed % 32 === 0) await page.evaluate(() => __languageAuditReset());
-      const record = { code: item.code, name: item.name, iso: item.iso, nativeText: item.nativeText,
+      const record = { id: sampleId, code: item.code, name: item.name, iso: item.iso, nativeText: item.nativeText,
         text, source: item.source, sourceUrl: item.sourceUrl, workerSha256, requestSha256, request,
         semanticStatus: item.nativeText ? 'awaiting-independent-analysis' : 'unverified-no-native-reference', attempts: [] };
       for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -92,7 +101,7 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
           expect(result.sampleRate).toBe(24000);
           const pcm = Float32Array.from(result.pcm), wav = waveBytes(pcm);
           record.attempts.push({ elapsedMs: Date.now() - started, speaker: result.speaker, timings: result.timings });
-          record.wav = `wav/${item.code}.wav`; record.wavSha256 = hash(wav); record.signal = audioMeasures(pcm);
+          record.wav = `wav/${sampleId}.wav`; record.wavSha256 = hash(wav); record.signal = audioMeasures(pcm);
           record.status = attempt ? 'generated-after-reset' : 'generated';
           await writeFile(path.join(root, record.wav), wav);
           break;
@@ -104,12 +113,12 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
       }
       await writeFile(recordPath, JSON.stringify(record, null, 2));
       processed += 1;
-      console.log(JSON.stringify({ processed, total: cases.length, shardIndex, code: item.code, nativeText: item.nativeText,
+      console.log(JSON.stringify({ processed, total: cases.length, shardIndex, id: sampleId, code: item.code, nativeText: item.nativeText,
         status: record.status, seconds: record.signal?.seconds }));
     }
     // This verifies complete capture, including retained failures. Only the independent
     // analysis and report --require-pass decide quality acceptance.
     const records = new Set((await readdir(path.join(root, 'records'))).filter(name => name.endsWith('.json')));
-    expect(cases.every(item => records.has(`${item.code}.json`))).toBe(true);
-  } finally { await cleanup(); }
+    expect(cases.every(item => records.has(`${item.id || item.code}.json`))).toBe(true);
+  } finally { try { await cleanup(); } finally { lock.release(); } }
 });

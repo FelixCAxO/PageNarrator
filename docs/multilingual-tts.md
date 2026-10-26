@@ -65,6 +65,8 @@ For catalog screening, run `python scripts/prepare-omnivoice-language-audit.py` 
 
 `python scripts/report-omnivoice-languages.py` writes the local gallery and verdicts to `artifacts/omnivoice-language-audit`. `--require-pass` requires unrestricted automatic passes for every entry. Missing references, restricted probes, poor acoustic scores, and transcript disagreements fail it. Recordings and inputs stay in ignored caches and artifacts. One sample never qualifies all uses.
 
+For the requested EU/gaming shortlist, [language rollout](language-rollout.md) documents the 25-language, eight-sample retest, offline language suggestions for both engines, and the 26 packaged interface locales with layout verification.
+
 <details>
 <summary>Recorded language sweeps and preserved failures</summary>
 

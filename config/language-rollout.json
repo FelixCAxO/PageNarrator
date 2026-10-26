@@ -1,0 +1,31 @@
+{
+  "scope": "Languages requested for current-runtime speech retesting and packaged interface translation. Inclusion is not a speech-quality or native-speaker approval.",
+  "samplesPerLanguage": 8,
+  "languages": [
+    { "code": "en", "name": "English", "locales": ["en"] },
+    { "code": "de", "name": "German", "locales": ["de"] },
+    { "code": "pl", "name": "Polish", "locales": ["pl"] },
+    { "code": "it", "name": "Italian", "locales": ["it"] },
+    { "code": "cs", "name": "Czech", "locales": ["cs"] },
+    { "code": "pt", "name": "Portuguese", "locales": ["pt_BR", "pt_PT"] },
+    { "code": "sv", "name": "Swedish", "locales": ["sv"] },
+    { "code": "da", "name": "Danish", "locales": ["da"] },
+    { "code": "fi", "name": "Finnish", "locales": ["fi"] },
+    { "code": "ro", "name": "Romanian", "locales": ["ro"] },
+    { "code": "sk", "name": "Slovak", "locales": ["sk"] },
+    { "code": "et", "name": "Estonian", "locales": ["et"] },
+    { "code": "bg", "name": "Bulgarian", "locales": ["bg"] },
+    { "code": "zh", "name": "Chinese", "locales": ["zh_CN"] },
+    { "code": "ru", "name": "Russian", "locales": ["ru"] },
+    { "code": "ko", "name": "Korean", "locales": ["ko"] },
+    { "code": "tr", "name": "Turkish", "locales": ["tr"] },
+    { "code": "th", "name": "Thai", "locales": ["th"] },
+    { "code": "uk", "name": "Ukrainian", "locales": ["uk"] },
+    { "code": "vi", "name": "Vietnamese", "locales": ["vi"] },
+    { "code": "id", "name": "Indonesian", "locales": ["id"] },
+    { "code": "es", "name": "Spanish", "locales": ["es"] },
+    { "code": "fr", "name": "French", "locales": ["fr"] },
+    { "code": "nl", "name": "Dutch", "locales": ["nl"] },
+    { "code": "ja", "name": "Japanese", "locales": ["ja"] }
+  ]
+}

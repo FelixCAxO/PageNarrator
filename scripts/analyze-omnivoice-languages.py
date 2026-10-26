@@ -142,6 +142,9 @@ def reference_check(pipeline, case, directory):
 
 def summarize(directory):
     results = [json.loads(path.read_text(encoding='utf-8')) for path in sorted((directory / 'analysis').glob('*.json'))]
+    expected = json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']
+    expected_ids = {item.get('id', item['code']) for item in expected}
+    results = [result for result in results if result.get('id', result['code']) in expected_ids]
     counts = {}
     for result in results:
         counts[result['status']] = counts.get(result['status'], 0) + 1
@@ -151,6 +154,7 @@ def summarize(directory):
               'normalizerVersion': NORMALIZER_VERSION,
               'thresholds': {'maximumSampleCer': .10, 'minimumDnsMosSpeech': 2.5,
                              'minimumDnsMosBackground': 2, 'minimumDnsMosOverall': 2.5},
+              'expectedSamples': len(expected), 'expectedLanguages': len({item['code'] for item in expected}),
               'analyzed': len(results), 'counts': counts, 'languages': results}
     atomic_json(directory / 'summary.json', report)
     return counts
@@ -171,7 +175,8 @@ def strong_review_targets(directory, watch):
                 found = True
                 last_progress = time.monotonic()
                 yield path
-        if not watch or (len(paths) == 646 and not found):
+        expected_count = len(json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages'])
+        if not watch or (len(paths) == expected_count and not found):
             return
         if not found:
             if time.monotonic() - last_progress > 600:
@@ -182,7 +187,7 @@ def strong_review_targets(directory, watch):
 def strong_review(directory, watch=False):
     """Second recognition opinion; never provide the target transcript to ASR."""
     model = 'omniASR_LLM_7B_v2'
-    corpus = {case['code']: case for case in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
+    corpus = {case.get('id', case['code']): case for case in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
     torch.set_num_threads(4)
     # The official loader's mmap option avoids materializing the complete 30 GB
     # FP32 checkpoint in host RAM before loading the unchanged BF16 GPU model.
@@ -201,7 +206,7 @@ def strong_review(directory, watch=False):
         result = json.loads(target.read_text(encoding='utf-8'))
         if result['status'] not in {'review-transcript', 'review-acoustics'} or result.get('strongRecognition'):
             continue
-        case = corpus[result['code']]
+        case = corpus[result.get('id', result['code'])]
         candidates = []
         for iso in [case.get('sourceIso'), case['iso'], aliases.get(case['iso'])]:
             matches = sorted(code for code in supported_langs if code.split('_')[0] == iso)
@@ -256,7 +261,7 @@ def main():
         strong_review(directory, args.watch)
         return
     (directory / 'analysis').mkdir(parents=True, exist_ok=True)
-    corpus = {item['code']: item for item in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
+    corpus = {item.get('id', item['code']): item for item in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
     torch.set_num_threads(4)
     pipeline = ASRInferencePipeline(model_card=MODEL, device=args.device,
                                     dtype=torch.float32 if args.device == 'cpu' else torch.bfloat16)
@@ -273,21 +278,23 @@ def main():
     last_progress = time.monotonic()
     supported = {code.split('_')[0] for code in supported_langs}
     while True:
-        corpus = {item['code']: item for item in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
+        corpus = {item.get('id', item['code']): item for item in json.loads((directory / 'corpus.json').read_text(encoding='utf-8'))['languages']}
         changed = False
         for record in sorted((directory / 'records').glob('*.json')):
             try:
                 item = json.loads(record.read_text(encoding='utf-8'))
             except json.JSONDecodeError:
                 continue
-            if item['nativeText'] and item['text'] != corpus[item['code']]['text']:
+            sample_id = item.get('id', item['code'])
+            if sample_id not in corpus or (item['nativeText'] and item['text'] != corpus[sample_id]['text']):
                 continue
             target = directory / 'analysis' / record.name
             if target.is_file():
                 previous = json.loads(target.read_text(encoding='utf-8'))
-                if previous.get('analysisVersion') == ANALYSIS_VERSION and previous.get('wavSha256') == item.get('wavSha256') and previous.get('requestSha256') == item['requestSha256']:
+                if previous.get('status') != 'analysis-error' and previous.get('analysisVersion') == ANALYSIS_VERSION and previous.get('wavSha256') == item.get('wavSha256') and previous.get('requestSha256') == item['requestSha256']:
                     continue
-            result = {key: item.get(key) for key in ['code', 'name', 'iso', 'nativeText', 'text', 'source', 'sourceUrl', 'wav', 'wavSha256', 'requestSha256']}
+            result = {key: item.get(key) for key in ['id', 'code', 'name', 'iso', 'nativeText', 'text', 'source', 'sourceUrl', 'wav', 'wavSha256', 'requestSha256']}
+            result['id'] = sample_id
             result['analysisVersion'] = ANALYSIS_VERSION
             result['recognizer'] = {'model': MODEL, 'device': args.device,
                                     'dtype': 'float32' if args.device == 'cpu' else 'bfloat16'}
@@ -299,14 +306,14 @@ def main():
                         raise ValueError('WAV hash differs from browser capture')
                     result['signal'] = signal_scores(path, session)
                     result['recognition'] = transcribe(pipeline, path, item['text'])
-                    result['asrLanguageListed'] = item['iso'] in supported or corpus[item['code']].get('sourceIso') in supported
+                    result['asrLanguageListed'] = item['iso'] in supported or corpus[sample_id].get('sourceIso') in supported
                     if not item['nativeText']:
                         result['status'] = 'signal-only-no-native-reference'
                     elif result['signal']['physicalFailure']:
                         result['status'] = 'signal-failed'
                     elif result['signal']['acousticReview']:
                         result['status'] = 'review-acoustics'
-                    elif corpus[item['code']].get('referenceKind') == 'phonetic-numeral':
+                    elif corpus[sample_id].get('referenceKind') == 'phonetic-numeral':
                         result['status'] = 'unverified-phonetic-reference'
                     elif result['recognition']['cer'] > .10:
                         result['status'] = 'review-transcript'
@@ -314,7 +321,7 @@ def main():
                         result['status'] = 'automatic-sample-pass'
                     if item['nativeText'] and result['recognition']['cer'] > .10:
                         try:
-                            baseline = reference_check(pipeline, corpus[item['code']], directory)
+                            baseline = reference_check(pipeline, corpus[sample_id], directory)
                             if baseline:
                                 result['nativeReferenceRecognition'] = baseline
                                 if baseline['cer'] > .10:
@@ -331,7 +338,7 @@ def main():
             print(json.dumps({'analyzed': sum(counts.values()), 'code': item['code'], 'status': result['status'],
                               'cer': result.get('recognition', {}).get('cer'), 'counts': counts}), flush=True)
         completed = len(list((directory / 'analysis').glob('*.json')))
-        if not args.watch or completed == 646:
+        if not args.watch or completed == len(corpus):
             break
         if not changed:
             if time.monotonic() - last_progress > 600:

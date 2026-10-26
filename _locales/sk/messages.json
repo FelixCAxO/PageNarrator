@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "Prečítajte si webové stránky a súbory PDF nahlas s lokálnymi hlasmi v zariadení a synchronizovaným zvýraznením."
+  },
+  "actionTitle": {
+    "message": "Počúvajte túto stránku"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "Zistený jazyk: $language$. Kokoro podporuje angličtinu. Ak chcete prečítať tento text, v nastaveniach hlasu vyberte OmniVoice a $language$.",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "Zistený jazyk: $language$ ($percentage$ %).",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "Jazyk sa nepodarilo spoľahlivo určiť."
+  },
+  "onboardingQuickWinTitle": {
+    "message": "Prečítajte si vybranú časť"
+  },
+  "onboardingQuickWinBody": {
+    "message": "Vyberte dve vety na stránke a potom vyberte položku Čítať vybraté."
+  },
+  "onboardingQuickWinCta": {
+    "message": "Čítať výber"
+  },
+  "onboardingFullPageTitle": {
+    "message": "Čítať stránku"
+  },
+  "onboardingFullPageBody": {
+    "message": "Vyberte položku Čítať stránku začať čítať."
+  },
+  "onboardingFullPageCta": {
+    "message": "Čítať celú stránku"
+  },
+  "onboardingDismiss": {
+    "message": "Preskočiť"
+  },
+  "reviewPromptTitle": {
+    "message": "Ohodnotiť PageNarrator"
+  },
+  "reviewPromptBody": {
+    "message": "Vaša recenzia pomáha ostatným čitateľom vybrať si."
+  },
+  "reviewNever": {
+    "message": "Nikdy"
+  },
+  "reviewLater": {
+    "message": "Neskôr"
+  },
+  "reviewReview": {
+    "message": "Ohodnotiť"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ stránka nainštalovaná",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ zobrazených stránok",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "Načítať dokumenty..."
+  },
+  "ui_ffb67f19": {
+    "message": "Načítať PDF"
+  },
+  "ui_abc76c7c": {
+    "message": "Opätovné otvorenie PDF ..."
+  },
+  "ui_824a0948": {
+    "message": "Stránka $arg1$ z $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "Pracovať..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ hlasov",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "Hlas"
+  },
+  "ui_85d257a6": {
+    "message": "Spracovanie: WebGPU (zamerané na GPU)"
+  },
+  "ui_ea65fbf2": {
+    "message": "Spracovanie: WebGPU (integrovaný GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "Spracovanie: WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "Spracovanie: CPU / WebAssembly (pomalšie)"
+  },
+  "ui_5c338a74": {
+    "message": "Spracovanie zobrazené po začatí čítania."
+  },
+  "ui_c513493a": {
+    "message": "Príprava miestneho hlasu... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "Príprava hlasu zlyhala. Skúste to znova."
+  },
+  "ui_523c0c96": {
+    "message": "Chýbajúce hlasové súbory na stiahnutie z Hugging Face pred inštaláciou."
+  },
+  "ui_8036af59": {
+    "message": "Skúsiť znova"
+  },
+  "ui_fb625aee": {
+    "message": "Pripraviť hlas"
+  },
+  "ui_b9328a4d": {
+    "message": "Oddiely: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "Oddiely: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "K dispozícii, keď sa čítanie začne"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript sa zobrazí pri načítaní textu."
+  },
+  "ui_fe92f855": {
+    "message": "Aktuálna stránka"
+  },
+  "ui_bf0c7feb": {
+    "message": "Príprava..."
+  },
+  "ui_3d77a20f": {
+    "message": "Príprava hlasu... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "Pokračovať"
+  },
+  "ui_44f9bf2d": {
+    "message": "Pozastaviť"
+  },
+  "ui_f3de41d3": {
+    "message": "Pripravené na čítanie"
+  },
+  "ui_9283b625": {
+    "message": "Príprava hlasu..."
+  },
+  "ui_5ee7339b": {
+    "message": "Čítanie"
+  },
+  "ui_de281feb": {
+    "message": "Pozastavené"
+  },
+  "ui_a7b2cec3": {
+    "message": "Dokončené"
+  },
+  "ui_5d640b9c": {
+    "message": "Vyžaduje pozornosť"
+  },
+  "ui_4d1cf041": {
+    "message": "Americká žena"
+  },
+  "ui_faf95838": {
+    "message": "Americký muž"
+  },
+  "ui_f3768d40": {
+    "message": "Britské ženy"
+  },
+  "ui_4139054c": {
+    "message": "Vyberte si anglický Kokoro hlas. Ostatné jazyky nie sú podporované."
+  },
+  "ui_c0c171d2": {
+    "message": "Túto akciu nedokázal dokončiť."
+  },
+  "ui_02e8a8a4": {
+    "message": "Rozpoznávanie textu na stránke $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ stránka po tejto stránke",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ stránok po tejto stránke",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "Normálna"
+  },
+  "ui_99f0d384": {
+    "message": "Rýchlejšie"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$s pomalšie",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "Čítanie: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "Prečítajte si vybraný text"
+  },
+  "ui_865bf5ae": {
+    "message": "Čítať výber"
+  },
+  "ui_213e90fa": {
+    "message": "Skúsiť znova"
+  },
+  "ui_1dbc8cae": {
+    "message": "Prístup na grantovú stránku"
+  },
+  "ui_450f715d": {
+    "message": "Čítať časť $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "Audio prehrávač zlyhal."
+  },
+  "ui_248b7c43": {
+    "message": "Nemožno nájsť text článku"
+  },
+  "ui_48ca3593": {
+    "message": "Zo strany $arg1$ dokumentu PDF sa nepodarilo získať text",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "Žiadna stránka naložená"
+  },
+  "ui_8bdfb3a1": {
+    "message": "Text sa objaví, keď sa čítanie začne."
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "Prečítajte si túto stránku nahlas"
+  },
+  "ui_758bbc44": {
+    "message": "Čítať stránku"
+  },
+  "ui_a174ecb1": {
+    "message": "0% kompletný"
+  },
+  "ui_e527eba2": {
+    "message": "Príprava hlasu - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "Príprava hlasu..."
+  },
+  "ui_78d44090": {
+    "message": "Zastavenie aktuálneho čítania"
+  },
+  "ui_98847cfb": {
+    "message": "Zastaviť čítanie..."
+  },
+  "ui_e100f46d": {
+    "message": "Zastavovanie..."
+  },
+  "ui_4b7f7705": {
+    "message": "Zastaviť"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% kompletný",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "Ukončené čítanie"
+  },
+  "ui_2f0dcc5d": {
+    "message": "Čítať znova"
+  },
+  "ui_329cfb9e": {
+    "message": "100% kompletný"
+  },
+  "ui_76fc465e": {
+    "message": "Niečo sa pokazilo"
+  },
+  "ui_0d4b0da7": {
+    "message": "Čítanie vybraného textu"
+  },
+  "ui_242bb2e3": {
+    "message": "Čítanie vybraného textu..."
+  },
+  "ui_10905ea3": {
+    "message": "Príprava vybraného textu"
+  },
+  "ui_a2df426f": {
+    "message": "Vybraný text pozastavený"
+  },
+  "ui_915b9541": {
+    "message": "Prečítajte si aktuálnu stránku"
+  },
+  "ui_50880cb0": {
+    "message": "Čítanie stránky..."
+  },
+  "ui_e8bf303d": {
+    "message": "Príprava aktuálnej stránky"
+  },
+  "ui_59ad3c41": {
+    "message": "Príprava hlasu"
+  },
+  "ui_af82140f": {
+    "message": "Čítanie v pauze"
+  },
+  "ui_1ede4e42": {
+    "message": "Hlas pripravený"
+  },
+  "ui_63338bd9": {
+    "message": "Nastavenie hlasu zlyhalo"
+  },
+  "ui_cedd5bba": {
+    "message": "Modelové nastavenie zlyhalo."
+  },
+  "ui_a7f38d4e": {
+    "message": "Príprava miestneho hlasu; chýbajúce súbory stiahnuť z Hugging Face."
+  },
+  "ui_430dc39d": {
+    "message": "Odhadovať čas..."
+  },
+  "ui_06a382b7": {
+    "message": "Otvorte článok, potom prečítajte si stránku"
+  },
+  "ui_37bc7086": {
+    "message": "Slová: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "Slová: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "Mňa"
+  },
+  "ui_5dca8675": {
+    "message": "0 sekcií"
+  },
+  "ui_2d292516": {
+    "message": "Článok $arg1$ z $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "Pokračovať od $arg1$ %",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "Vybraný text"
+  },
+  "ui_8212a19a": {
+    "message": "PDF dokument"
+  },
+  "ui_cb3b43ef": {
+    "message": "Plná stránka"
+  },
+  "ui_e13844b5": {
+    "message": "Článok iba"
+  },
+  "ui_6cae863f": {
+    "message": "Zostávajúce slová: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "Zostávajúce slová: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "Zostávajúce časti: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "Zostávajúce časti: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "Strana $arg1$ · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "Stránka $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "Odseky: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "Odseky: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · prvý $arg2$ zobrazený",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ zobrazený",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "Zhody: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "Zhody: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ z $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - vyrovnávacia pamäť nabudúce",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "Hlasový model"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "Overené $arg1$. príprava hlasu ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "Stiahnuť hlasové súbory: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "Stiahnuť $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "Nastavenie GPU zlyhalo. Opätovné spustenie s CPU/WebAssembly..."
+  },
+  "ui_f0fc3524": {
+    "message": "Stiahnuť $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "Príprava $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "Kontrola podpory GPU ..."
+  },
+  "ui_a1f035db": {
+    "message": "Skontrolujte cache prehliadača."
+  },
+  "ui_412b5f0e": {
+    "message": "Jednorazové nastavenie"
+  },
+  "ui_91d30309": {
+    "message": "Nedokázal pripraviť požadovaný hlas."
+  },
+  "ui_b9775b3a": {
+    "message": "Experimentálne - kvalita nebola overená"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - upravené",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "Kvalita hlasu upravená po $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "Spracovanie hlasu: GPU (WebGPU) s nastaveniami šetrnými k CPU."
+  },
+  "ui_3411bb9b": {
+    "message": "Hlasové spracovanie: GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "Spracovanie hlasu: iba CPU (WebAssembly) pretože WebGPU nie je k dispozícii."
+  },
+  "ui_9e335d53": {
+    "message": "Spracovanie hlasu: iba CPU (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "Spracovanie hlasu: systémový hlas (prehliadač alebo operačný systém)."
+  },
+  "ui_815f1834": {
+    "message": "Spracovanie hlasu: skontrolované pri začatí čítania."
+  },
+  "ui_19f02581": {
+    "message": "Používa sa experimentálny OmniVoice cez WebGPU."
+  },
+  "ui_f7c3a723": {
+    "message": "Súbory modelu sa stiahnu z Hugging Face. Reč sa spracúva v tomto zariadení."
+  },
+  "ui_411e02b2": {
+    "message": "Ak WebGPU nie je dostupné, vyberte Kokoro."
+  },
+  "ui_3581ebdf": {
+    "message": "Hlas Kokoro: $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "Chýbajúce hlasové súbory sa stiahnu z Hugging Face pri príprave alebo čítaní."
+  },
+  "ui_6813181e": {
+    "message": "Reč sa vytvára v tomto zariadení. Súbory vo vyrovnávacej pamäti možno používať offline, kým ich nevymažete."
+  },
+  "ui_95b6ef87": {
+    "message": "Experimentálna kvalita: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "Číslo hlasu $arg1$ je k dispozícii.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "Skopírovať kód Snippets?"
+  },
+  "ui_9d9f28af": {
+    "message": "Táto stránka má veľa kódu odrezky. preskočiť asi $arg1$ min kódu pre hladšie rozprávanie.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "Táto stránka má veľa kódu odrezky. preskočiť asi $arg1$ min kódu pre hladšie rozprávanie.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "Automaticky"
+  },
+  "ui_361987ac": {
+    "message": "Vysoká kvalita"
+  },
+  "ui_c0cc603d": {
+    "message": "Vyvážené"
+  },
+  "ui_5b602dbf": {
+    "message": "Šetrenie batérie"
+  },
+  "ui_157606b3": {
+    "message": "1 oddiel vopred načítaný"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ sekcie predinštalované",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "Progresívny playback"
+  },
+  "ui_4ddd1cf4": {
+    "message": "Progresívne playback off"
+  },
+  "ui_95c9f0ef": {
+    "message": "Automatické hlasové prepínanie prehliadača"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$ Charakterové kúsky, $arg3$, $arg4$, $arg5$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "Nemohol som sa dostať na túto stránku."
+  },
+  "ui_be75ad01": {
+    "message": "Operácia Best-effort readerEngine zlyhala."
+  },
+  "ui_eb6988d3": {
+    "message": "Nemožno načítať pozíciu obnovenia"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator sa nepodarilo inicializovať."
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator hráčov"
+  },
+  "ui_9d65bbdb": {
+    "message": "Vyberte si hlasový model"
+  },
+  "ui_e6334598": {
+    "message": "Hlasový model"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (predvolené)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (experimentálne)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "Desať anglických hlasov. Prvé nastavenie: asi 93 MB pre CPU alebo 326 MB pre GPU. Ďalší hlas vyžaduje asi 0,5 MB. Uložený hlas sa zachová."
+  },
+  "ui_2c04fde6": {
+    "message": "Nastavenia hlasu"
+  },
+  "ui_9a73db9b": {
+    "message": "Jazyk"
+  },
+  "ui_2070a9f8": {
+    "message": "Nabíjanie hlasov..."
+  },
+  "ui_c39c8623": {
+    "message": "Typ hlasu"
+  },
+  "ui_d8a26cb9": {
+    "message": "Ženský"
+  },
+  "ui_487d36f0": {
+    "message": "Mužský"
+  },
+  "ui_a2a40f30": {
+    "message": "Variant hlasu"
+  },
+  "ui_16383585": {
+    "message": "Vyberte hlasovú variáciu. Zmeny sa uplatňujú v ďalšej časti. Nastavte tempo pomocou rýchlosti prehrávania."
+  },
+  "ui_d975568d": {
+    "message": "Šepot"
+  },
+  "ui_3d7af8ef": {
+    "message": "Rýchlosť prehrávania"
+  },
+  "ui_c58a3963": {
+    "message": "Zmeny hlasu sa počas čítania vzťahujú na ďalšiu sekciu."
+  },
+  "ui_71365cb1": {
+    "message": "Pripravte si miestny hlas"
+  },
+  "ui_c197c7e2": {
+    "message": "Preskočiť"
+  },
+  "ui_dad1a20b": {
+    "message": "Teraz čítať"
+  },
+  "ui_30ea6e2f": {
+    "message": "Predchádzajúca sekcia"
+  },
+  "ui_c2954bc2": {
+    "message": "Späť"
+  },
+  "ui_dce2da08": {
+    "message": "Ďalej"
+  },
+  "ui_0c341bc6": {
+    "message": "Vstavané hlasy Kokoro fungujú lokálne. Rovnako aj OmniVoice. Chýbajúce hlasové súbory sa stiahnu z Hugging Face. Predčítaný text zostáva v tomto zariadení. Nastavenia, adresy stránok, názvy, pozícia čítania a krátky úryvok textu zostávajú lokálne."
+  },
+  "ui_3452d125": {
+    "message": "Podrobnosti o súkromí"
+  },
+  "ui_1eb4158c": {
+    "message": "Rozšírené nastavenia"
+  },
+  "ui_ce305438": {
+    "message": "Prestávky, úprava textu, zvýraznenie"
+  },
+  "ui_67231237": {
+    "message": "Prestávka medzi sekciami"
+  },
+  "ui_8f517045": {
+    "message": "Výkon"
+  },
+  "ui_34c199e6": {
+    "message": "Spracovanie"
+  },
+  "ui_bec07b52": {
+    "message": "CPU alebo WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "Uvoľnite hlasovú pamäť, keď idle"
+  },
+  "ui_231b3e4b": {
+    "message": "Preskakovať úryvky kódu"
+  },
+  "ui_456ac053": {
+    "message": "Farebná oblasť"
+  },
+  "ui_10cd7856": {
+    "message": "Slovo farba"
+  },
+  "ui_1e4dbab9": {
+    "message": "Krytie oblasti"
+  },
+  "ui_1688a6f4": {
+    "message": "Krytie slova"
+  },
+  "ui_0583096b": {
+    "message": "Prepis"
+  },
+  "ui_89a5470c": {
+    "message": "Rad čítania"
+  },
+  "ui_a106cd77": {
+    "message": "Vyhľadávanie sekcií"
+  },
+  "ui_ee3d49e1": {
+    "message": "Prvá"
+  },
+  "ui_30035f15": {
+    "message": "Číslo sekcie"
+  },
+  "ui_41d0c56b": {
+    "message": "Prejsť"
+  },
+  "ui_e40e2439": {
+    "message": "Posledná"
+  },
+  "ui_bd9126df": {
+    "message": "Žiadne zhodné sekcie. Skúste iné vyhľadávanie."
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator čítačka motora"
+  },
+  "ui_c5fbc06e": {
+    "message": "Grant Page prístup"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator rozšírenie ikona"
+  },
+  "ui_5a3d9c47": {
+    "message": "Otvoriť PageNarrator zo stránky"
+  },
+  "ui_94a4b160": {
+    "message": "Kliknite na ikonu rozšírenia PageNarrator, kým je stránka aktívna, a potom vyberte položku Čítať stránku."
+  },
+  "ui_4be7c01e": {
+    "message": "Chýbajúce hlasové súbory na stiahnutie pri prvom použití."
+  },
+  "ui_3d04a00a": {
+    "message": "Príprava miestneho hlasu; chýbajúce súbory na stiahnutie z Hugging Face..."
+  },
+  "ui_048ca959": {
+    "message": "Kroky zotavenia"
+  },
+  "ui_0ec24245": {
+    "message": "Podrobnosti"
+  },
+  "ui_4ff448da": {
+    "message": "Zopakovať čítanie"
+  },
+  "ui_cb2eed93": {
+    "message": "Vráťte sa do zachránenej pozície"
+  },
+  "ui_ded3954b": {
+    "message": "Uložená pozícia čítania"
+  },
+  "ui_24299867": {
+    "message": "Začať znova"
+  },
+  "ui_d71c7401": {
+    "message": "Čítanie návrhu"
+  },
+  "ui_d5c02828": {
+    "message": "Táto stránka má veľa kódových odrezkov."
+  },
+  "ui_336b89fb": {
+    "message": "Preskočiť kód"
+  },
+  "ui_299fab6d": {
+    "message": "Zistený článok"
+  },
+  "ui_a9898369": {
+    "message": "Čítanie: iba článok"
+  },
+  "ui_3065e144": {
+    "message": "Začať s"
+  },
+  "ui_7ac012cc": {
+    "message": "Čítanie hráčov"
+  },
+  "ui_8edce20a": {
+    "message": "Čítanie pokroku"
+  },
+  "ui_949ea37c": {
+    "message": "0 kusov left"
+  },
+  "ui_1250127e": {
+    "message": "PDF navigácia na stránke"
+  },
+  "ui_e83d9196": {
+    "message": "Strana"
+  },
+  "ui_27ba99fc": {
+    "message": "Preskočiť aktuálnu stránku PDF"
+  },
+  "ui_dbd1ad47": {
+    "message": "Nastavenie čitateľov"
+  },
+  "ui_1a27bec5": {
+    "message": "Jazyk sa zistí, keď sa začne čítať."
+  },
+  "ui_52ff662d": {
+    "message": "Požiadavky na zariadenie"
+  },
+  "ui_fd02dfc2": {
+    "message": "Odporúčané:"
+  },
+  "ui_b0555d92": {
+    "message": "vyvinutá séria NVIDIA RTX 30 série GPU alebo novšia, s 8 GB + VRAM a 8 GB + RAM."
+  },
+  "ui_0d393abc": {
+    "message": "Použite Chromium 120 alebo novší. Kokoro má pomalší CPU fallback."
+  },
+  "ui_f31ba722": {
+    "message": "Časovanie, upratovanie, hlasy"
+  },
+  "ui_a879e367": {
+    "message": "Sekcia pauzy"
+  },
+  "ui_07e1c336": {
+    "message": "Zdôrazniť štýl"
+  },
+  "ui_9525b78e": {
+    "message": "Vlastné"
+  },
+  "ui_e0955632": {
+    "message": "Čítať oblasť"
+  },
+  "ui_90571eca": {
+    "message": "Súčasné slovo"
+  },
+  "ui_ea585567": {
+    "message": "Čítanie Čistenie"
+  },
+  "ui_0dc6b4aa": {
+    "message": "Vypnuté"
+  },
+  "ui_d6fbffc9": {
+    "message": "Zhrnutie a transkripcia"
+  },
+  "ui_21fd85e4": {
+    "message": "Kľúčové slová & transcript"
+  },
+  "ui_d6c98891": {
+    "message": "Aktuálna sekcia, vyhľadávanie transkriptov a ovládacie prvky pre skok sú k dispozícii v pokročilom režime."
+  },
+  "ui_0eac1f07": {
+    "message": "Prehľadávať"
+  },
+  "ui_44d76dee": {
+    "message": "Úplný transkript"
+  },
+  "ui_ab5783a6": {
+    "message": "0 odsekov"
+  },
+  "ui_d58a5a9a": {
+    "message": "Navigačný reťazec"
+  },
+  "ui_2d877b6c": {
+    "message": "Oddiel"
+  },
+  "ui_03205ed1": {
+    "message": "Nájsť sekciu"
+  },
+  "ui_27654275": {
+    "message": "Vyhľadávanie transkriptu alebo stránky..."
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF kontroly"
+  },
+  "ui_88828491": {
+    "message": "Stránka 1 z 1"
+  },
+  "ui_8570fe3a": {
+    "message": "Zoom von"
+  },
+  "ui_a3583899": {
+    "message": "Zoom na"
+  },
+  "ui_2b3553eb": {
+    "message": "rotácia ľavá"
+  },
+  "ui_2eaecb74": {
+    "message": "Rotácia vpravo"
+  },
+  "ui_b6ab6b07": {
+    "message": "Vhodná móda"
+  },
+  "ui_69acd800": {
+    "message": "Prispôsobiť šírke"
+  },
+  "ui_607af25f": {
+    "message": "Prispôsobiť strane"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF strán"
+  },
+  "ui_ab32ceb0": {
+    "message": "Experimentálne. 646 jazykových položiek; kvalita sa líši. Vyžaduje WebGPU s fp16 a stiahnutie asi 1,35 GB. Vyberte hlas, variant alebo šepot."
+  },
+  "ui_ab4a698f": {
+    "message": "Otvorené zo stránky"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome neposkytol prístup k aktívnej karte."
+  },
+  "ui_67aad8a8": {
+    "message": "Otvorte stránku, kliknite na ikonu PageNarrator a potom vyberte položku Čítať stránku."
+  },
+  "ui_724c0e56": {
+    "message": "Otvorené zo stránky"
+  },
+  "ui_4f96b3e0": {
+    "message": "Chrómové stránky, ktoré sú chránené, sa nedajú čítať. Otvorte webovú stránku alebo PDF."
+  },
+  "ui_0cddc760": {
+    "message": "Otvorená stránka"
+  },
+  "ui_30274c11": {
+    "message": "Potrebný prístup na stránku"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator potrebuje prístup na túto stránku."
+  },
+  "ui_2b54b790": {
+    "message": "Povoľte prístup k webu cez ikonu PageNarrator a skúste to znova."
+  },
+  "ui_57906b45": {
+    "message": "Grantový prístup"
+  },
+  "ui_b48f6457": {
+    "message": "Voľný prehliadač úložisko, potom retry."
+  },
+  "ui_75eca5ea": {
+    "message": "Bezplatné skladovanie"
+  },
+  "ui_99e92621": {
+    "message": "Vyberte hlas pre jazyk tejto stránky."
+  },
+  "ui_997f787a": {
+    "message": "Vyberte hlas"
+  },
+  "ui_50a8c46f": {
+    "message": "Aktívna karta zatvorená predtým, ako sa čítanie mohlo začať."
+  },
+  "ui_e64862ef": {
+    "message": "Tabuľka je zatvorená. opätovné otvorenie stránky a retry."
+  },
+  "ui_39f600ae": {
+    "message": "Žiadny vybraný text"
+  },
+  "ui_79f7dfca": {
+    "message": "Žiadny text nie je vybraný."
+  },
+  "ui_b7a079b0": {
+    "message": "Vybrať text"
+  },
+  "ui_522bcc26": {
+    "message": "Vyberte text, ktorý chcete počuť, a potom vyberte položku Čítať vybraté."
+  },
+  "ui_580dc44e": {
+    "message": "Potrebné uznanie textu"
+  },
+  "ui_ce175449": {
+    "message": "Niektorý text PDF sa nedal spoľahlivo čítať."
+  },
+  "ui_f7c03bfe": {
+    "message": "Použitie textového súboru PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "Použite rozpoznávanie textu (OCR) alebo PDF s úplnou vrstvou textu."
+  },
+  "ui_281501a3": {
+    "message": "Vyplňte CAPTCHA na stránke a potom prejdite."
+  },
+  "ui_d1c2931f": {
+    "message": "Prihláste sa na stránku, potom retry."
+  },
+  "ui_744be623": {
+    "message": "Signalizácia v"
+  },
+  "ui_3c4b4f30": {
+    "message": "Nenašiel sa žiadny čitateľný článok"
+  },
+  "ui_fb499b08": {
+    "message": "Nenašiel sa žiadny čitateľný text článku."
+  },
+  "ui_a1fad21c": {
+    "message": "Skúste inú stránku"
+  },
+  "ui_b0ddc925": {
+    "message": "Vyberte pasáž a vyberte položku Prečítajte si vybratú alebo otvorte iný článok."
+  },
+  "ui_d20c5459": {
+    "message": "Hlas ešte nedokončil nabíjanie."
+  },
+  "ui_eee6a1ad": {
+    "message": "Vyberte položku Pripraviť hlas na obnovenie nastavenia."
+  },
+  "ui_eab3cf34": {
+    "message": "Generácia reči zlyhala"
+  },
+  "ui_4cad964d": {
+    "message": "Generácia reči sa zastavila predtým, ako bolo audio pripravené."
+  },
+  "ui_2519f9e6": {
+    "message": "Retry, alebo vyberte iný hlas."
+  },
+  "ui_1844c6fe": {
+    "message": "Nepodporované PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "Tento PDF je poškodený alebo nepodporovaný."
+  },
+  "ui_5679bf2f": {
+    "message": "Skúste ďalší PDF"
+  },
+  "ui_b8183083": {
+    "message": "Nemohol si stiahnuť PDF. skontrolujte odkaz a vaše pripojenie."
+  },
+  "ui_ce24479d": {
+    "message": "Nemohol som otvoriť tento PDF."
+  }
+}

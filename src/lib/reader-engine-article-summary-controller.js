@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 /** @param {any} deps */
 export function createReaderEngineArticleSummaryController({
   els,
@@ -18,7 +19,7 @@ export function createReaderEngineArticleSummaryController({
     els.title.textContent = summary.title;
     els.readingTitle.textContent = summary.title;
     els.meta.textContent = summary.metaText;
-    els.mode.textContent = `Reading: ${summary.modeLabel}`;
+    els.mode.textContent = t("Reading: $1", [summary.modeLabel]);
     els.body.textContent = summary.previewText || getInitialPreview(article.chunks || article.text);
 
     const { activeChunks, currentChunk } = getState();

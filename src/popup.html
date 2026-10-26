@@ -8,114 +8,114 @@
     <link rel="stylesheet" href="./popup.css" />
   </head>
   <body>
-    <main class="popup-shell" aria-label="PageNarrator player">
+    <main class="popup-shell" aria-label="PageNarrator player" data-i18n-aria-label="ui_87d977c4">
       <header>
         <h1>PageNarrator</h1>
-        <p id="popup-status" class="header-status" role="status">Ready to read</p>
+        <p id="popup-status" class="header-status" role="status" data-i18n="ui_f3de41d3">Ready to read</p>
       </header>
 
       <p id="popup-error" class="popup-error" role="alert" hidden></p>
 
-      <section class="voice-choice" aria-label="Choose voice model">
+      <section class="voice-choice" aria-label="Choose voice model" data-i18n-aria-label="ui_9d65bbdb">
         <label class="field">
-          <span>Voice model</span>
-          <select id="popup-tts-engine" aria-describedby="popup-voice-model-help"><option value="kokoro">Kokoro (default)</option><option value="omnivoice">OmniVoice (experimental)</option></select>
+          <span data-i18n="ui_e6334598">Voice model</span>
+          <select id="popup-tts-engine" aria-describedby="popup-voice-model-help"><option value="kokoro" data-i18n="ui_38319e92">Kokoro (default)</option><option value="omnivoice" data-i18n="ui_a476bebf">OmniVoice (experimental)</option></select>
         </label>
-        <p id="popup-voice-model-help" class="field-help" role="status">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+        <p id="popup-voice-model-help" class="field-help" role="status" data-i18n="ui_6c6b4ee0">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
       </section>
 
       <details id="popup-settings" class="settings">
         <summary>
-          <span>Voice settings</span>
-          <span id="popup-settings-summary">Heart voice · 1.00x</span>
+          <span data-i18n="ui_2c04fde6">Voice settings</span>
+          <span id="popup-settings-summary"></span>
         </summary>
 
         <div class="settings-body">
           <label class="field">
-            <span>Language</span>
+            <span data-i18n="ui_9a73db9b">Language</span>
             <select id="popup-language"></select>
           </label>
 
           <label class="field">
-            <span>Voice</span>
+            <span data-i18n="ui_27d1a499">Voice</span>
             <select id="popup-voice">
-              <option value="">Loading voices…</option>
+              <option value="" data-i18n="ui_2070a9f8">Loading voices…</option>
             </select>
           </label>
 
           <div id="popup-omnivoice-settings" hidden>
-            <label class="field"><span>Voice type</span><select id="popup-omnivoice-gender"><option value="female">Female</option><option value="male">Male</option></select></label>
-            <label class="field"><span>Voice variation <output id="popup-omnivoice-variation-out" for="popup-omnivoice-variation">1 / 10</output></span><input id="popup-omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
-            <p class="field-help">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
-            <label class="toggle"><input id="popup-omnivoice-whisper" type="checkbox" /><span>Whisper</span></label>
+            <label class="field"><span data-i18n="ui_c39c8623">Voice type</span><select id="popup-omnivoice-gender"><option value="female" data-i18n="ui_d8a26cb9">Female</option><option value="male" data-i18n="ui_487d36f0">Male</option></select></label>
+            <label class="field"><span><span data-i18n="ui_a2a40f30">Voice variation </span><output id="popup-omnivoice-variation-out" for="popup-omnivoice-variation">1 / 10</output></span><input id="popup-omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
+            <p class="field-help" data-i18n="ui_16383585">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
+            <label class="toggle"><input id="popup-omnivoice-whisper" type="checkbox" /><span data-i18n="ui_d975568d">Whisper</span></label>
           </div>
 
           <label class="field">
-            <span>Playback speed <output id="popup-speed-out">1.00x</output></span>
+            <span><span data-i18n="ui_3d7af8ef">Playback speed </span><output id="popup-speed-out">1.00x</output></span>
             <input id="popup-speed" type="range" min="0.5" max="3.0" step="0.05" value="1.0" />
           </label>
-          <p class="field-help">Saved automatically. Voice changes apply to the next section while reading.</p>
+          <p class="field-help" data-i18n="ui_c58a3963">Saved automatically. Voice changes apply to the next section while reading.</p>
         </div>
       </details>
 
       <section id="popup-setup" class="player-status" aria-labelledby="popup-setup-title" hidden>
-        <h2 id="popup-setup-title">Prepare local voice</h2>
-        <p id="popup-setup-detail">Missing voice files download from Hugging Face before setup.</p>
+        <h2 id="popup-setup-title" data-i18n="ui_71365cb1">Prepare local voice</h2>
+        <p id="popup-setup-detail" data-i18n="ui_523c0c96">Missing voice files download from Hugging Face before setup.</p>
         <progress id="popup-setup-progress" max="100" value="0" hidden></progress>
         <div class="two-actions">
-          <button id="popup-setup-start" class="primary" type="button">Prepare voice</button>
-          <button id="popup-setup-skip" type="button">Skip</button>
+          <button id="popup-setup-start" class="primary" type="button" data-i18n="ui_fb625aee">Prepare voice</button>
+          <button id="popup-setup-skip" type="button" data-i18n="ui_c197c7e2">Skip</button>
         </div>
       </section>
 
-      <section id="popup-player" class="player-status" aria-label="Now reading" hidden>
-        <h2 id="popup-player-title">Current page</h2>
-        <p id="popup-progress" class="player-progress">Preparing…</p>
+      <section id="popup-player" class="player-status" aria-label="Now reading" hidden data-i18n-aria-label="ui_dad1a20b">
+        <h2 id="popup-player-title" data-i18n="ui_fe92f855">Current page</h2>
+        <p id="popup-progress" class="player-progress" data-i18n="ui_bf0c7feb">Preparing…</p>
         <div class="player-controls">
-          <button id="popup-previous" type="button" title="Previous section">Back</button>
-          <button id="popup-toggle" class="primary" type="button">Pause</button>
-          <button id="popup-stop" type="button">Stop</button>
-          <button id="popup-next" type="button">Next</button>
+          <button id="popup-previous" type="button" title="Previous section" data-i18n-title="ui_30ea6e2f" data-i18n="ui_c2954bc2">Back</button>
+          <button id="popup-toggle" class="primary" type="button" data-i18n="ui_44f9bf2d">Pause</button>
+          <button id="popup-stop" type="button" data-i18n="ui_4b7f7705">Stop</button>
+          <button id="popup-next" type="button" data-i18n="ui_dce2da08">Next</button>
         </div>
       </section>
 
       <div id="popup-idle-actions" class="actions">
-        <p id="popup-privacy-notice" class="privacy-notice">Built-in Kokoro voices run locally. OmniVoice does too. Missing voice files download from Hugging Face. Narrated text stays on this device. Settings, page URLs, titles, reading position, and a short text excerpt stay local. <a href="https://pagenarrator.com/privacy" target="_blank" rel="noreferrer">Privacy details</a>.</p>
-        <button id="start-reading" class="primary" type="button" disabled>Read page</button>
-        <button id="read-selected" type="button" disabled>Read selected</button>
+        <p id="popup-privacy-notice" class="privacy-notice"><span data-i18n="ui_0c341bc6">Built-in Kokoro voices run locally. OmniVoice does too. Missing voice files download from Hugging Face. Narrated text stays on this device. Settings, page URLs, titles, reading position, and a short text excerpt stay local. </span> <a href="https://pagenarrator.com/privacy" target="_blank" rel="noreferrer" data-i18n="ui_3452d125">Privacy details</a>.</p>
+        <button id="start-reading" class="primary" type="button" disabled data-i18n="ui_758bbc44">Read page</button>
+        <button id="read-selected" type="button" disabled data-i18n="ui_865bf5ae">Read selected</button>
       </div>
 
       <details id="popup-advanced" class="settings">
-        <summary><span>Advanced settings</span><span>Timing, cleanup, highlights</span></summary>
+        <summary><span data-i18n="ui_1eb4158c">Advanced settings</span><span data-i18n="ui_ce305438">Timing, cleanup, highlights</span></summary>
         <div class="settings-body">
-          <label class="field"><span>Pause between sections <output id="popup-section-pause-out">Normal</output></span><input id="popup-section-pause" type="range" min="-5" max="5" step="0.1" value="0" /></label>
-          <label class="field"><span>Performance</span><select id="popup-performance-profile"><option value="auto">Auto</option><option value="quality">High quality</option><option value="balanced">Balanced</option><option value="lowPower">Battery saver</option></select></label>
-          <label class="field"><span>Processing</span><select id="popup-backend-preference"><option value="auto">Auto</option><option value="webgpu">WebGPU</option><option value="wasm">CPU / WebAssembly</option></select></label>
-          <label class="toggle"><input id="popup-idle-release" type="checkbox" checked /><span>Release voice memory when idle</span></label>
-          <label class="toggle"><input id="popup-skip-code" type="checkbox" /><span>Skip code snippets</span></label>
+          <label class="field"><span><span data-i18n="ui_67231237">Pause between sections </span><output id="popup-section-pause-out" data-i18n="ui_58de2772">Normal</output></span><input id="popup-section-pause" type="range" min="-5" max="5" step="0.1" value="0" /></label>
+          <label class="field"><span data-i18n="ui_8f517045">Performance</span><select id="popup-performance-profile"><option value="auto" data-i18n="ui_126befb6">Auto</option><option value="quality" data-i18n="ui_361987ac">High quality</option><option value="balanced" data-i18n="ui_c0cc603d">Balanced</option><option value="lowPower" data-i18n="ui_5b602dbf">Battery saver</option></select></label>
+          <label class="field"><span data-i18n="ui_34c199e6">Processing</span><select id="popup-backend-preference"><option value="auto" data-i18n="ui_126befb6">Auto</option><option value="webgpu">WebGPU</option><option value="wasm" data-i18n="ui_bec07b52">CPU / WebAssembly</option></select></label>
+          <label class="toggle"><input id="popup-idle-release" type="checkbox" checked /><span data-i18n="ui_e92f8761">Release voice memory when idle</span></label>
+          <label class="toggle"><input id="popup-skip-code" type="checkbox" /><span data-i18n="ui_231b3e4b">Skip code snippets</span></label>
           <div class="color-grid">
-            <label class="field"><span>Area color</span><input id="popup-area-color" type="color" value="#ffdd57" /></label>
-            <label class="field"><span>Word color</span><input id="popup-word-color" type="color" value="#ffdd57" /></label>
+            <label class="field"><span data-i18n="ui_456ac053">Area color</span><input id="popup-area-color" type="color" value="#ffdd57" /></label>
+            <label class="field"><span data-i18n="ui_10cd7856">Word color</span><input id="popup-word-color" type="color" value="#ffdd57" /></label>
           </div>
-          <label class="field"><span>Area opacity <output id="popup-area-opacity-out">10%</output></span><input id="popup-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" /></label>
-          <label class="field"><span>Word opacity <output id="popup-word-opacity-out">38%</output></span><input id="popup-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" /></label>
-          <p id="popup-hardware-status" class="field-help">Processing shown after reading starts.</p>
+          <label class="field"><span><span data-i18n="ui_1e4dbab9">Area opacity </span><output id="popup-area-opacity-out">10%</output></span><input id="popup-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" /></label>
+          <label class="field"><span><span data-i18n="ui_1688a6f4">Word opacity </span><output id="popup-word-opacity-out">38%</output></span><input id="popup-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" /></label>
+          <p id="popup-hardware-status" class="field-help" data-i18n="ui_5c338a74">Processing shown after reading starts.</p>
         </div>
       </details>
 
 
 
       <details id="popup-transcript-card" class="settings" hidden>
-        <summary><span>Transcript</span><span id="popup-transcript-count">Available when reading starts</span></summary>
-        <div id="popup-transcript" class="scroll-panel">Transcript appears when text loads.</div>
+        <summary><span data-i18n="ui_0583096b">Transcript</span><span id="popup-transcript-count" data-i18n="ui_a133c549">Available when reading starts</span></summary>
+        <div id="popup-transcript" class="scroll-panel" data-i18n="ui_1d9bdb7f">Transcript appears when text loads.</div>
       </details>
 
       <details id="popup-queue-card" class="settings" hidden>
-        <summary><span>Reading queue</span><span id="popup-queue-count">Available when reading starts</span></summary>
+        <summary><span data-i18n="ui_89a5470c">Reading queue</span><span id="popup-queue-count" data-i18n="ui_a133c549">Available when reading starts</span></summary>
         <div class="settings-body">
-          <input id="popup-queue-search" type="search" placeholder="Search sections" aria-label="Search sections" />
-          <div class="queue-nav"><button id="popup-queue-first" type="button">First</button><input id="popup-queue-jump" type="number" min="1" value="1" required aria-label="Section number" /><button id="popup-queue-go" type="button">Go</button><button id="popup-queue-last" type="button">Last</button></div>
-          <p id="popup-queue-empty" class="field-help" role="status" hidden>No matching sections. Try another search.</p>
+          <input id="popup-queue-search" type="search" placeholder="Search sections" aria-label="Search sections" data-i18n-aria-label="ui_a106cd77" data-i18n-placeholder="ui_a106cd77">
+          <div class="queue-nav"><button id="popup-queue-first" type="button" data-i18n="ui_ee3d49e1">First</button><input id="popup-queue-jump" type="number" min="1" value="1" required aria-label="Section number" data-i18n-aria-label="ui_30035f15"><button id="popup-queue-go" type="button" data-i18n="ui_41d0c56b">Go</button><button id="popup-queue-last" type="button" data-i18n="ui_e40e2439">Last</button></div>
+          <p id="popup-queue-empty" class="field-help" role="status" hidden data-i18n="ui_bd9126df">No matching sections. Try another search.</p>
           <ul id="popup-queue" class="compact-list"></ul>
         </div>
       </details>

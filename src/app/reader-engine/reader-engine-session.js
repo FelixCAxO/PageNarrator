@@ -1,3 +1,4 @@
+import { t } from '../../lib/i18n.js';
 import { getInitialPreview } from '../../lib/speech-chunks.js';
 import {
   createProgressiveSegmentChunk,
@@ -154,7 +155,7 @@ export function createReaderEngineChromeAdapter({
 
       const readerEngineLogger = createLogger('readerEngine');
       const logSuppressedReaderEngineError = (message) => createSuppressedErrorHandler(readerEngineLogger, message);
-      const logBestEffortReaderEngineError = logSuppressedReaderEngineError('Best-effort readerEngine operation failed.');
+      const logBestEffortReaderEngineError = logSuppressedReaderEngineError(t("Best-effort readerEngine operation failed."));
       const suppressReaderEngineError = (error) => {
         logBestEffortReaderEngineError(error);
         renderReaderEngineErrorNotice(els, error);
@@ -372,7 +373,7 @@ export function createReaderEngineChromeAdapter({
         getChunkWordCounts,
         messageTypes: MESSAGE_TYPES,
         onError: suppressReaderEngineError,
-        onLoadError: logSuppressedReaderEngineError('Could not load resume position'),
+        onLoadError: logSuppressedReaderEngineError(t("Could not load resume position")),
       });
       let pendingPlaybackSettingsWrite = null;
       let playbackSettingsWriteTimer = null;
@@ -1011,7 +1012,7 @@ export function createReaderEngineChromeAdapter({
 
       return init().catch((error) => {
         readerEngineLogger.error('PageNarrator readerEngine failed to initialize.', error);
-        setReadingState('error', { message: 'PageNarrator failed to initialize.' });
+        setReadingState('error', { message: t("PageNarrator failed to initialize.") });
       });
 
     },

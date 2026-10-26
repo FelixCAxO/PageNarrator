@@ -7,9 +7,9 @@ import { createHash } from 'node:crypto';
 const defaultOrigin = 'https://pagenarrator.com';
 const publicDir = fileURLToPath(new URL('../website/public/', import.meta.url));
 const requiredText = {
-  '/': ['Version 1.0.1 is available on GitHub', '8 GB+ VRAM'],
-  '/chrome-extension': ['Install v1.0.1', 'pagenarrator-1.0.1.zip', '93 MB', '326 MB', 'Update an unpacked installation'],
-  '/support': ['ZIP installation steps', 'Update without losing your place'],
+  '/': ['Version 1.0.1 source is available on GitHub', '8 GB+ VRAM'],
+  '/chrome-extension': ['Install v1.0.1', 'Previous release downloads are no longer available', '93 MB', '326 MB', 'Update an unpacked installation'],
+  '/support': ['source installation steps', 'Update without losing your place'],
   '/changelog': ['1.0.1'],
   '/privacy': ['Chrome Web Store User Data Policy', 'Limited Use requirements', 'Built-in voice downloads', 'Online documents'],
   '/terms': ['GPL-3.0-or-later', 'MIT License', 'Apache License 2.0', 'These Terms do not restrict rights granted by those licenses'],
@@ -43,7 +43,7 @@ export function loadPageContracts(directory = publicDir) {
         indexable,
         requiredText: requiredText[path] || [],
         requiredLinks: path === '/chrome-extension'
-          ? ['https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.1'] : [],
+          ? ['https://github.com/FelixCAxO/PageNarrator'] : [],
         forbiddenText: path === '/changelog' ? [] : ['Piper', 'browser voice', 'system voice'],
       };
     });

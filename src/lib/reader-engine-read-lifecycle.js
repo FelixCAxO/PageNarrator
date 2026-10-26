@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import {
   normalizeNonNegativeInteger as normalizeNonNegativeIntegerValue,
   normalizePositiveInteger as normalizePositiveIntegerValue,
@@ -6,7 +7,7 @@ import { createLogger, createSuppressedErrorHandler } from './logger.js';
 import { TUNING_CONFIG } from './tuning-config.js';
 import { STREAM_SYNTHESIS_TIMEOUT_MS } from './timing-config.js';
 
-export const EMPTY_ARTICLE_TEXT_MESSAGE = 'Could not detect article text';
+export const EMPTY_ARTICLE_TEXT_MESSAGE = t("Could not detect article text");
 export const KEEP_FULL_CHUNK_HISTORY_LIMIT = 250;
 export const READ_STREAM_CLEANUP_TIMEOUT_MS = 1000;
 const ACTIVE_READ_STATES = new Set(['preparing', 'reading', 'paused']);
@@ -235,7 +236,7 @@ export function compactCompletedPdfChunks(chunks, {
 export function getEmptyStreamMessage(article = {}) {
   const startPage = getPdfStartPage(article);
   if (article?.source === 'pdf' && startPage > 0) {
-    return `Could not extract text from PDF page ${startPage}`;
+    return t("Could not extract text from PDF page $1", [startPage]);
   }
   return EMPTY_ARTICLE_TEXT_MESSAGE;
 }

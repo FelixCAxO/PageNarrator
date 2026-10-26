@@ -1,5 +1,6 @@
 import { readReaderEngineSourceSurface, readReaderEngineSource, readReadLoopSource, readAudioPlaybackSource, readPageHighlightControllerSource, readSpeechPreloadSource } from "./reader-engine-view.fixtures.js";
 import { readFileSync } from 'node:fs';
+import { JSDOM } from 'jsdom';
 
 import { describe, expect, it } from 'vitest';
 
@@ -175,7 +176,8 @@ describe('toolbar player view model', () => {
   it('shows the GPU recommendation without claiming verified hardware minimums', () => {
     const html = readFileSync(new URL('../../src/reader-engine.html', import.meta.url), 'utf8');
 
-    expect(html).toContain('<strong>Recommended:</strong>');
+    const document = new JSDOM(html).window.document;
+    expect([...document.querySelectorAll('strong')].some(element => element.textContent === 'Recommended:' && element.hasAttribute('data-i18n'))).toBe(true);
     expect(html).toContain('NVIDIA RTX 30 series GPU or newer');
     expect(html).toContain('8 GB+ VRAM and 8 GB+ system RAM');
     expect(html).toContain('Physical hardware tiers are unverified.');

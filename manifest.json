@@ -3,7 +3,7 @@
   "name": "PageNarrator",
   "version": "1.0.1",
   "default_locale": "en",
-  "description": "Read webpages and PDFs aloud with local on-device voices and synchronized highlighting.",
+  "description": "__MSG_extensionDescription__",
   "homepage_url": "https://pagenarrator.com/chrome-extension",
   "minimum_chrome_version": "120",
   "incognito": "not_allowed",
@@ -24,7 +24,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "Listen to this page",
+    "default_title": "__MSG_actionTitle__",
     "default_popup": "src/popup.html",
     "default_icon": {
       "16": "icons/icon-16.png",

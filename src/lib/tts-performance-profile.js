@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { TUNING_CONFIG } from './tuning-config.js';
 
 export const TTS_PERFORMANCE_PROFILE_DEFAULT = 'auto';
@@ -20,10 +21,10 @@ const BALANCED_CPU_CONFIG = Object.freeze({
 });
 
 const PROFILE_LABELS = Object.freeze({
-  auto: 'Auto',
-  quality: 'High quality',
-  balanced: 'Balanced',
-  lowPower: 'Battery saver',
+  auto: t("Auto"),
+  quality: t("High quality"),
+  balanced: t("Balanced"),
+  lowPower: t("Battery saver"),
 });
 
 export function normalizeTtsPerformanceProfile(value) {
@@ -48,11 +49,11 @@ export function formatTtsPerformanceProfileOptionLabel(profile, currentProfile =
 export function formatTtsPerformanceProfileTooltip(profile, config = null) {
   const normalized = normalizeResolvedTtsPerformanceProfile(profile) || 'balanced';
   const activeConfig = config || getTtsPerformanceProfileConfig(normalized);
-  const preloadLabel = activeConfig.preloadAhead === 1 ? '1 section preloaded' : `${activeConfig.preloadAhead} sections preloaded`;
-  const progressiveLabel = activeConfig.progressiveSegments ? 'progressive playback on' : 'progressive playback off';
-  const voiceLabel = 'automatic browser voice switching off';
+  const preloadLabel = activeConfig.preloadAhead === 1 ? t("1 section preloaded") : t("$1 sections preloaded", [activeConfig.preloadAhead]);
+  const progressiveLabel = activeConfig.progressiveSegments ? t("progressive playback on") : t("progressive playback off");
+  const voiceLabel = t("automatic browser voice switching off");
 
-  return `${PROFILE_LABELS[normalized]}: ${activeConfig.maxChunkLength}-character chunks, ${preloadLabel}, ${progressiveLabel}, ${voiceLabel}.`;
+  return t("$1: $2-character chunks, $3, $4, $5.", [PROFILE_LABELS[normalized], activeConfig.maxChunkLength, preloadLabel, progressiveLabel, voiceLabel]);
 }
 
 function normalizeResolvedTtsPerformanceProfile(value) {

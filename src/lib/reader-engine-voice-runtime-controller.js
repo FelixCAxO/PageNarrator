@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { shouldCleanupReadOnPanelHide as defaultShouldCleanupReadOnPanelHide } from './reader-engine-read-lifecycle.js';
 import { getModelDownloadProgress, renderModelSetupElements } from './reader-engine-view.js';
 import { withAbortSignal } from './abort-signal.js';
@@ -108,7 +109,7 @@ export function createReaderEngineVoiceRuntimeController({
         render.renderBackendStatus?.(fallbackPlan);
         render.recordModelFallback?.(error, fallbackPlan);
         logger.warn?.('WebGPU setup failed; retrying with WASM.', error);
-        setModelProgress(8, 'GPU setup failed. Retrying with CPU/WebAssembly...');
+        setModelProgress(8, t("GPU setup failed. Retrying with CPU/WebAssembly..."));
       },
       onReady: () => { if (!signal?.aborted) completeModelSetup(); },
       onError(error) {
@@ -225,10 +226,10 @@ export function createReaderEngineVoiceRuntimeController({
       return;
     }
     if (status === 'progress' && typeof progress.progress === 'number') {
-      setModelProgress(Math.max(5, Math.min(98, Math.round(progress.progress * 0.9))), `Downloading ${file}...`);
+      setModelProgress(Math.max(5, Math.min(98, Math.round(progress.progress * 0.9))), t("Downloading $1...", [file]));
       return;
     }
-    if (status === 'file') setModelProgress(35, `Preparing ${file}...`);
+    if (status === 'file') setModelProgress(35, t("Preparing $1...", [file]));
     else if (status === 'ready') completeModelSetup();
     else if (progress?.message) setModelProgress(15, progress.message);
   }
@@ -254,16 +255,16 @@ export function createReaderEngineVoiceRuntimeController({
     renderSetupState({
       phase: 'loading',
       progress: 3,
-      detail: useGpu ? 'Checking GPU support...' : 'Checking browser cache...',
-      eta: 'One-time setup',
+      detail: useGpu ? t("Checking GPU support...") : t("Checking browser cache..."),
+      eta: t("One-time setup"),
     });
   }
   function completeModelSetup() { renderSetupState({ phase: 'ready' }); }
   function failModelSetup(message) {
-    renderSetupState({ phase: 'error', detail: message || 'Model setup failed.', eta: 'Try again' });
+    renderSetupState({ phase: 'error', detail: message || t("Model setup failed."), eta: t("Try again") });
   }
   function setModelProgress(progress, detail) {
-    renderSetupState({ phase: 'loading', progress, detail, eta: 'One-time setup' });
+    renderSetupState({ phase: 'loading', progress, detail, eta: t("One-time setup") });
   }
   function renderSetupState(setup) {
     state.modelSetupState = { ...setup };
@@ -275,14 +276,14 @@ export function createReaderEngineVoiceRuntimeController({
     renderModelSetupElements(els, setup);
   }
   function fileLabel(file) {
-    return file ? String(file).split('/').pop() || 'voice model' : 'voice model';
+    return file ? String(file).split('/').pop() || t("voice model") : t("voice model");
   }
 
   return {
     ensureModel,
     prepareIncomingVoice,
     activateIncomingVoice,
-    failIncomingVoice: error => failModelSetup(error?.message || 'Could not prepare the requested voice.'),
+    failIncomingVoice: error => failModelSetup(error?.message || t("Could not prepare the requested voice.")),
     prepareTtsBackendPlanForChunking,
     releaseLoadedVoiceModel,
     canReleaseLoadedVoiceModel,

@@ -3,40 +3,40 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>PageNarrator PDF</title>
+    <title data-i18n="ui_f4154041">PageNarrator PDF</title>
     <link rel="icon" type="image/png" href="../icons/icon-32.png" />
     <link rel="stylesheet" href="./pdf-viewer.css" />
   </head>
   <body>
     <header class="viewer-header">
       <div>
-        <h1>PageNarrator PDF</h1>
-        <p id="pdf-status" role="status">Loading document...</p>
+        <h1 data-i18n="ui_f4154041">PageNarrator PDF</h1>
+        <p id="pdf-status" role="status" data-i18n="ui_3e8b2a3a">Loading document...</p>
       </div>
-      <div id="pdf-toolbar" class="pdf-toolbar" role="toolbar" aria-label="PDF controls">
+      <div id="pdf-toolbar" class="pdf-toolbar" role="toolbar" aria-label="PDF controls" data-i18n-aria-label="ui_b7689f29">
         <div class="toolbar-group page-toolbar">
           <label class="page-field" for="pdf-page-input">
-            <span>Page</span>
-            <input id="pdf-page-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Page 1 of 1" />
+            <span data-i18n="ui_e83d9196">Page</span>
+            <input id="pdf-page-input" type="number" min="1" value="1" inputmode="numeric" aria-label="Page 1 of 1" data-i18n-aria-label="ui_88828491">
           </label>
           <span id="pdf-page-count" class="page-count">/ 1</span>
         </div>
         <div class="toolbar-group zoom-toolbar">
-          <button id="pdf-zoom-out-btn" type="button" aria-label="Zoom out" title="Zoom out">-</button>
+          <button id="pdf-zoom-out-btn" type="button" aria-label="Zoom out" title="Zoom out" data-i18n-title="ui_8570fe3a" data-i18n-aria-label="ui_8570fe3a">-</button>
           <output id="pdf-zoom-label" aria-live="polite">100%</output>
-          <button id="pdf-zoom-in-btn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+          <button id="pdf-zoom-in-btn" type="button" aria-label="Zoom in" title="Zoom in" data-i18n-title="ui_a3583899" data-i18n-aria-label="ui_a3583899">+</button>
         </div>
         <div class="toolbar-group rotate-toolbar">
-          <button id="pdf-rotate-left-btn" type="button" aria-label="Rotate left" title="Rotate left">&#8634;</button>
-          <button id="pdf-rotate-right-btn" type="button" aria-label="Rotate right" title="Rotate right">&#8635;</button>
+          <button id="pdf-rotate-left-btn" type="button" aria-label="Rotate left" title="Rotate left" data-i18n-title="ui_2b3553eb" data-i18n-aria-label="ui_2b3553eb">&#8634;</button>
+          <button id="pdf-rotate-right-btn" type="button" aria-label="Rotate right" title="Rotate right" data-i18n-title="ui_2eaecb74" data-i18n-aria-label="ui_2eaecb74">&#8635;</button>
         </div>
-        <div class="toolbar-group fit-toolbar" role="group" aria-label="Fit mode">
-          <button id="pdf-fit-width-btn" type="button" aria-pressed="true">Fit width</button>
-          <button id="pdf-fit-page-btn" type="button" aria-pressed="false">Fit page</button>
+        <div class="toolbar-group fit-toolbar" role="group" aria-label="Fit mode" data-i18n-aria-label="ui_b6ab6b07">
+          <button id="pdf-fit-width-btn" type="button" aria-pressed="true" data-i18n="ui_69acd800">Fit width</button>
+          <button id="pdf-fit-page-btn" type="button" aria-pressed="false" data-i18n="ui_607af25f">Fit page</button>
         </div>
       </div>
     </header>
-    <main id="pdf-pages" class="pdf-pages" aria-label="PDF pages"></main>
+    <main id="pdf-pages" class="pdf-pages" aria-label="PDF pages" data-i18n-aria-label="ui_9f9cf525"></main>
     <script type="module" src="./pdf-viewer.js"></script>
   </body>
 </html>

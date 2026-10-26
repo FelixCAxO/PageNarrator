@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { ERROR_REGISTRY, getErrorRecord } from './error-registry.js';
 
 const ERROR_CODE_ALIASES = Object.freeze({
@@ -8,19 +9,19 @@ const ERROR_CODE_ALIASES = Object.freeze({
 
 const RECOVERY_ACTIONS_BY_CODE = Object.freeze({
   article_text_not_found: [
-    { label: 'Read selected text', action: 'read-selected' },
+    { label: t("Read selected text"), action: 'read-selected' },
   ],
   empty_selection: [
-    { label: 'Read selected', action: 'read-selected' },
+    { label: t("Read selected"), action: 'read-selected' },
   ],
   tts_generation_failed: [
-    { label: 'Try again', action: 'try-again' },
+    { label: t("Try again"), action: 'try-again' },
   ],
   model_setup_failed: [
-    { label: 'Try again', action: 'try-again' },
+    { label: t("Try again"), action: 'try-again' },
   ],
   host_permission_required: [
-    { label: 'Grant site access', action: 'grant-access' },
+    { label: t("Grant site access"), action: 'grant-access' },
   ],
 });
 
@@ -38,7 +39,7 @@ function getReaderEngineErrorRecord(error) {
   if (/language.+mismatch|voice.+language/i.test(raw)) return getErrorRecord('voice_language_mismatch');
   if (/tts|speech generation|synthesis|audio playback/i.test(raw)) return getErrorRecord('tts_generation_failed');
   if (/setup|voice model|model.+prepar/i.test(raw)) return getErrorRecord('model_setup_failed');
-  return raw ? getErrorRecord('', { message: raw, actionLabel: 'Try again', recoveryHint: raw }) : null;
+  return raw ? getErrorRecord('', { message: raw, actionLabel: t("Try again"), recoveryHint: raw }) : null;
 }
 
 export function getReaderEngineRecoveryActions(error) {
@@ -64,7 +65,7 @@ export function renderReaderEngineErrorNotice(els = {}, error) {
 
   if (els.errorNotice) {
     els.errorNotice.hidden = false;
-    if (els.errorTitle) els.errorTitle.textContent = record.title || 'Needs attention';
+    if (els.errorTitle) els.errorTitle.textContent = record.title || t("Needs attention");
     if (els.errorMessage) els.errorMessage.textContent = record.cause || record.message;
     if (els.errorAction) els.errorAction.textContent = message;
     renderRecoveryActionButton(els.errorPrimaryAction, actions[0]);

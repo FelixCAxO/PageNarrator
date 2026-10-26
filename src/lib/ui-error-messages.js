@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { ERROR_REGISTRY, getErrorRecord } from './error-registry.js';
 
 const ERROR_CODE_ALIASES = Object.freeze({
@@ -22,5 +23,5 @@ export function getPopupRecoveryMessage(error) {
   if (/closed|No tab/i.test(raw)) {
     return getErrorRecord('tab_closed').recoveryHint;
   }
-  return raw || 'Could not access this page.';
+  return raw || t("Could not access this page.");
 }

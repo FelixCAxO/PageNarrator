@@ -1,6 +1,7 @@
 // @ts-check
 import { getVoiceOptions, normalizeStoredVoiceId } from './voice-registry.js';
 import { getOmniVoiceLanguage } from '../omnivoice/languages.js';
+import { getMessage, t, languageName } from '../../lib/i18n.js';
 
 const ENGLISH = Object.freeze({ code: 'en', label: 'English', lang: 'en-US' });
 const LANGUAGE_LABELS = Object.freeze({ en: 'English', sv: 'Swedish', de: 'German', fr: 'French', nl: 'Dutch' });
@@ -45,7 +46,10 @@ export function isExperimentalVoice(voice) {
 
 export function formatVoiceOptionLabel(voice) {
   if (!voice) return '';
-  return isExperimentalVoice(voice) && voice.quality ? `${voice.label} (${voice.quality})` : voice.label;
+  const descriptions = { 'American female': t('American female'), 'American male': t('American male'), 'British female': t('British female') };
+  const [name, description] = voice.label.split(' - ');
+  const label = descriptions[description] ? `${name} - ${descriptions[description]}` : voice.label;
+  return isExperimentalVoice(voice) && voice.quality ? `${label} (${voice.quality})` : label;
 }
 
 export function resolveVoiceSelection(voiceId, languageCode) {
@@ -55,6 +59,20 @@ export function resolveVoiceSelection(voiceId, languageCode) {
   return voices.find((voice) => voice.id === normalized) || voices[0] || null;
 }
 
-export function getUnsupportedLanguageMessage() {
-  return 'Choose an English Kokoro voice. Other languages are not supported.';
+export function getDetectedLanguageSuggestion(detected, engine = 'kokoro') {
+  if (!detected?.reliable || !detected?.code || detected.code === 'und') return null;
+  const language = getOmniVoiceLanguage(detected.code);
+  if (!language) return null;
+  const supported = engine === 'omnivoice' || language.code === 'en';
+  return { code: language.code, label: language.label, engine: supported ? engine : 'omnivoice', supported };
+}
+
+export function getUnsupportedLanguageMessage(code) {
+  const language = getOmniVoiceLanguage(code);
+  const label = language ? languageName(language.code, language.label) : '';
+  return language && language.code !== 'en'
+    ? getMessage('languageSuggestionOmniVoice', [label], {
+      fallback: `Detected ${label}. Kokoro supports English. Choose OmniVoice and ${label} in Voice settings to read this text.`,
+    })
+    : t('Choose an English Kokoro voice. Other languages are not supported.');
 }

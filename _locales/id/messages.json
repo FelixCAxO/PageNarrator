@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "Baca halaman web dan PDF dengan keras dengan suara lokal pada perangkat dan menonjolkan sinkron."
+  },
+  "actionTitle": {
+    "message": "Dengarkan halaman ini"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "Bahasa terdeteksi: $language$. Kokoro mendukung bahasa Inggris. Untuk membaca teks ini, pilih OmniVoice dan $language$ di pengaturan suara.",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "Bahasa terdeteksi: $language$ ($percentage$%).",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "Bahasa tidak dapat diidentifikasi dengan pasti."
+  },
+  "onboardingQuickWinTitle": {
+    "message": "Membaca bagian yang dipilih"
+  },
+  "onboardingQuickWinBody": {
+    "message": "Pilih dua kalimat di halaman, lalu pilih Baca pilihan."
+  },
+  "onboardingQuickWinCta": {
+    "message": "Baca pilihan"
+  },
+  "onboardingFullPageTitle": {
+    "message": "Baca halaman"
+  },
+  "onboardingFullPageBody": {
+    "message": "Pilih Baca halaman untuk mulai membaca."
+  },
+  "onboardingFullPageCta": {
+    "message": "Baca seluruh halaman"
+  },
+  "onboardingDismiss": {
+    "message": "Lewati"
+  },
+  "reviewPromptTitle": {
+    "message": "Beri nilai PageNarrator"
+  },
+  "reviewPromptBody": {
+    "message": "Ulasan Anda membantu pembaca lain memilih."
+  },
+  "reviewNever": {
+    "message": "Jangan tampilkan lagi"
+  },
+  "reviewLater": {
+    "message": "Nanti"
+  },
+  "reviewReview": {
+    "message": "Beri ulasan"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ halaman yang dimuat",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ halaman yang dimuat",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "Mengunggah dokumen..."
+  },
+  "ui_ffb67f19": {
+    "message": "Mengunggah PDF"
+  },
+  "ui_abc76c7c": {
+    "message": "Pembukaan ulang PDF ..."
+  },
+  "ui_824a0948": {
+    "message": "Halaman $arg1$ dari $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "bekerja..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ suara",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "Suara"
+  },
+  "ui_85d257a6": {
+    "message": "Pengolahan: WebGPU (dikhususkan untuk GPU)"
+  },
+  "ui_ea65fbf2": {
+    "message": "Prosesor: WebGPU (terintegrasi dengan GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "Pengolahan : WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "Pengolahan: CPU / WebAssembly (lebih lambat)"
+  },
+  "ui_5c338a74": {
+    "message": "Pengolahan yang ditunjukkan setelah membaca dimulai."
+  },
+  "ui_c513493a": {
+    "message": "Persiapan suara lokal... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "Pencarian suara gagal. coba lagi."
+  },
+  "ui_523c0c96": {
+    "message": "Mengunduh file suara yang hilang dari Hugging Face sebelum pengaturan."
+  },
+  "ui_8036af59": {
+    "message": "Coba lagi"
+  },
+  "ui_fb625aee": {
+    "message": "Siapkan suara"
+  },
+  "ui_b9328a4d": {
+    "message": "Bagian: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "Bagian: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "Tersedia saat membaca dimulai"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript muncul ketika teks dimuat."
+  },
+  "ui_fe92f855": {
+    "message": "Halaman saat ini"
+  },
+  "ui_bf0c7feb": {
+    "message": "Mempersiapkan..."
+  },
+  "ui_3d77a20f": {
+    "message": "Persiapan suara... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "Lanjutkan"
+  },
+  "ui_44f9bf2d": {
+    "message": "Jeda"
+  },
+  "ui_f3de41d3": {
+    "message": "Siap membaca"
+  },
+  "ui_9283b625": {
+    "message": "Menyiapkan suara..."
+  },
+  "ui_5ee7339b": {
+    "message": "Membaca"
+  },
+  "ui_de281feb": {
+    "message": "Dijeda"
+  },
+  "ui_a7b2cec3": {
+    "message": "Selesai"
+  },
+  "ui_5d640b9c": {
+    "message": "Perlu perhatian"
+  },
+  "ui_4d1cf041": {
+    "message": "Wanita Amerika"
+  },
+  "ui_faf95838": {
+    "message": "Pria Amerika"
+  },
+  "ui_f3768d40": {
+    "message": "Perempuan Inggris"
+  },
+  "ui_4139054c": {
+    "message": "Pilih bahasa Inggris Kokoro suara. bahasa lain tidak didukung."
+  },
+  "ui_c0c171d2": {
+    "message": "Tidak bisa menyelesaikan kegiatan ini."
+  },
+  "ui_02e8a8a4": {
+    "message": "Mengidentifikasi teks pada halaman $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ halaman setelah halaman ini",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ halaman setelah halaman ini",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "Normal"
+  },
+  "ui_99f0d384": {
+    "message": "Lebih cepat"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$s lebih lambat",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "Bacaan : $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "Membaca teks yang dipilih"
+  },
+  "ui_865bf5ae": {
+    "message": "Baca pilihan"
+  },
+  "ui_213e90fa": {
+    "message": "Coba lagi"
+  },
+  "ui_1dbc8cae": {
+    "message": "Memberikan Akses Situs"
+  },
+  "ui_450f715d": {
+    "message": "Baca Selengkapnya $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "Audio playback tidak berhasil."
+  },
+  "ui_248b7c43": {
+    "message": "Tidak dapat menemukan teks artikel"
+  },
+  "ui_48ca3593": {
+    "message": "Tidak dapat mengekstrak teks dari halaman $arg1$ PDF",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "Tidak ada halaman yang dimuat"
+  },
+  "ui_8bdfb3a1": {
+    "message": "Teks muncul saat membaca dimulai."
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "Baca halaman ini dengan keras"
+  },
+  "ui_758bbc44": {
+    "message": "Baca halaman"
+  },
+  "ui_a174ecb1": {
+    "message": "0% lengkap"
+  },
+  "ui_e527eba2": {
+    "message": "Persiapan suara - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "Menyiapkan suara..."
+  },
+  "ui_78d44090": {
+    "message": "Menghentikan bacaan saat ini"
+  },
+  "ui_98847cfb": {
+    "message": "Berhenti membaca..."
+  },
+  "ui_e100f46d": {
+    "message": "Menghentikan..."
+  },
+  "ui_4b7f7705": {
+    "message": "Hentikan"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% lengkap",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "selesai membaca"
+  },
+  "ui_2f0dcc5d": {
+    "message": "Baca lagi"
+  },
+  "ui_329cfb9e": {
+    "message": "100% lengkap"
+  },
+  "ui_76fc465e": {
+    "message": "Sesuatu yang salah"
+  },
+  "ui_0d4b0da7": {
+    "message": "Membaca teks yang dipilih"
+  },
+  "ui_242bb2e3": {
+    "message": "Membaca teks yang dipilih..."
+  },
+  "ui_10905ea3": {
+    "message": "Menyiapkan teks yang dipilih"
+  },
+  "ui_a2df426f": {
+    "message": "Teks yang dipilih dihentikan"
+  },
+  "ui_915b9541": {
+    "message": "Membaca halaman saat ini"
+  },
+  "ui_50880cb0": {
+    "message": "Membaca halaman..."
+  },
+  "ui_e8bf303d": {
+    "message": "Menyiapkan halaman saat ini"
+  },
+  "ui_59ad3c41": {
+    "message": "persiapan suara"
+  },
+  "ui_af82140f": {
+    "message": "Membaca beristirahat"
+  },
+  "ui_1ede4e42": {
+    "message": "Suara siap"
+  },
+  "ui_63338bd9": {
+    "message": "Pengaturan suara gagal"
+  },
+  "ui_cedd5bba": {
+    "message": "Model pengaturan gagal."
+  },
+  "ui_a7f38d4e": {
+    "message": "Menyiapkan suara lokal; file yang hilang unduh dari Hugging Face."
+  },
+  "ui_430dc39d": {
+    "message": "Menghitung waktu..."
+  },
+  "ui_06a382b7": {
+    "message": "Buka artikel, kemudian baca halaman"
+  },
+  "ui_37bc7086": {
+    "message": "Kata: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "Kata: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "Min"
+  },
+  "ui_5dca8675": {
+    "message": "0 bagian"
+  },
+  "ui_2d292516": {
+    "message": "Bagian $arg1$ dari $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "Lanjutkan dari $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "Teks yang dipilih"
+  },
+  "ui_8212a19a": {
+    "message": "PDF dokumen"
+  },
+  "ui_cb3b43ef": {
+    "message": "halaman penuh"
+  },
+  "ui_e13844b5": {
+    "message": "Artikel hanya"
+  },
+  "ui_6cae863f": {
+    "message": "Kata tersisa: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "Kata tersisa: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "Bagian tersisa: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "Bagian tersisa: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "Halaman $arg1$ · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "Halaman $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "Paragraf: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "Paragraf: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · pertama $arg2$ ditampilkan",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ ditampilkan",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "Hasil: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "Hasil: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ dari $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - Cache untuk kali berikutnya",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "Model suara"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "Periksa $arg1$. persiapan suara ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "Download file suara: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "Mengunduh $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "GPU setup gagal. Mengembalikan dengan CPU/WebAssembly..."
+  },
+  "ui_f0fc3524": {
+    "message": "Mengunduh $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "Siapkan $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "Periksa dukungan GPU ..."
+  },
+  "ui_a1f035db": {
+    "message": "Untuk memeriksa browser cache"
+  },
+  "ui_412b5f0e": {
+    "message": "Pengaturan Satu Waktu"
+  },
+  "ui_91d30309": {
+    "message": "Tidak dapat menyiapkan suara yang diminta."
+  },
+  "ui_b9775b3a": {
+    "message": "Eksperimen - kualitas tidak validasi"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - disesuaikan",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "Kualitas suara disesuaikan setelah $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "Prosesor suara: GPU (WebGPU) dengan pengaturan yang ramah CPU."
+  },
+  "ui_3411bb9b": {
+    "message": "Prosesor suara: GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "Pemrosesan suara: Hanya CPU (WebAssembly) karena WebGPU tidak tersedia."
+  },
+  "ui_9e335d53": {
+    "message": "Pemrosesan suara: Hanya CPU (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "Pemrosesan suara: suara sistem (browser atau sistem operasi)."
+  },
+  "ui_815f1834": {
+    "message": "Pengolahan suara: diperiksa saat membaca dimulai."
+  },
+  "ui_19f02581": {
+    "message": "Menggunakan OmniVoice eksperimental melalui WebGPU."
+  },
+  "ui_f7c3a723": {
+    "message": "Berkas model diunduh dari Hugging Face. Ucapan dibuat di perangkat ini."
+  },
+  "ui_411e02b2": {
+    "message": "Pilih Kokoro jika WebGPU tidak tersedia."
+  },
+  "ui_3581ebdf": {
+    "message": "Suara Kokoro: $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "Berkas suara yang belum tersedia diunduh dari Hugging Face saat persiapan atau pembacaan."
+  },
+  "ui_6813181e": {
+    "message": "Ucapan dibuat di perangkat ini. Berkas dalam cache dapat digunakan kembali secara offline sampai dihapus."
+  },
+  "ui_95b6ef87": {
+    "message": "Kualitas eksperimen: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "Nomor suara $arg1$ tersedia.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "Apa itu Skip code snippets?"
+  },
+  "ui_9d9f28af": {
+    "message": "Halaman ini memiliki banyak snippets kode.Slip sekitar $arg1$ min kode untuk narasi yang lebih lancar.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "Halaman ini memiliki banyak snippets kode.Slip sekitar $arg1$ menit kode untuk narasi yang lebih lancar.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "Otomatis"
+  },
+  "ui_361987ac": {
+    "message": "Kualitas tinggi"
+  },
+  "ui_c0cc603d": {
+    "message": "Seimbang"
+  },
+  "ui_5b602dbf": {
+    "message": "Hemat baterai"
+  },
+  "ui_157606b3": {
+    "message": "1 bagian dimuat sebelumnya"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ bagian yang diunggah",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "progresif playback pada"
+  },
+  "ui_4ddd1cf4": {
+    "message": "Progresif Playback Off"
+  },
+  "ui_95c9f0ef": {
+    "message": "Automatic Browser Voice Switching"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$ potongan karakter, $arg3$, $arg4$, $arg5$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "Tidak dapat mengakses halaman ini."
+  },
+  "ui_be75ad01": {
+    "message": "Operasi best-effort readerEngine gagal."
+  },
+  "ui_eb6988d3": {
+    "message": "Tidak dapat mengisi posisi resume"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator gagal untuk memulai."
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator pemain"
+  },
+  "ui_9d65bbdb": {
+    "message": "Pilih Model Suara"
+  },
+  "ui_e6334598": {
+    "message": "Model suara"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (bawaan)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (eksperimental)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "Sepuluh suara bahasa Inggris. Penyiapan awal: sekitar 93 MB pada CPU atau 326 MB pada GPU. Suara tambahan membutuhkan sekitar 0,5 MB. Pilihan suara yang disimpan tetap dipertahankan."
+  },
+  "ui_2c04fde6": {
+    "message": "Pengaturan suara"
+  },
+  "ui_9a73db9b": {
+    "message": "Bahasa"
+  },
+  "ui_2070a9f8": {
+    "message": "Mengisi suara..."
+  },
+  "ui_c39c8623": {
+    "message": "Jenis suara"
+  },
+  "ui_d8a26cb9": {
+    "message": "Perempuan"
+  },
+  "ui_487d36f0": {
+    "message": "Laki-laki"
+  },
+  "ui_a2a40f30": {
+    "message": "Variasi suara"
+  },
+  "ui_16383585": {
+    "message": "Pilih variasi suara. Perubahan berlaku di bagian berikutnya. Tetapkan kecepatan dengan kecepatan Playback."
+  },
+  "ui_d975568d": {
+    "message": "Bisikan"
+  },
+  "ui_3d7af8ef": {
+    "message": "Kecepatan pemutaran"
+  },
+  "ui_c58a3963": {
+    "message": "Perubahan suara berlaku untuk bagian berikutnya saat membaca."
+  },
+  "ui_71365cb1": {
+    "message": "Siapkan suara lokal"
+  },
+  "ui_c197c7e2": {
+    "message": "Lewati"
+  },
+  "ui_dad1a20b": {
+    "message": "Sekarang membaca"
+  },
+  "ui_30ea6e2f": {
+    "message": "Bagian sebelumnya"
+  },
+  "ui_c2954bc2": {
+    "message": "Sebelumnya"
+  },
+  "ui_dce2da08": {
+    "message": "Berikutnya"
+  },
+  "ui_0c341bc6": {
+    "message": "Suara bawaan Kokoro berjalan secara lokal. Begitu juga OmniVoice. Berkas suara yang belum tersedia diunduh dari Hugging Face. Teks yang dibacakan tetap berada di perangkat ini. Pengaturan, URL halaman, judul, posisi baca, dan cuplikan teks singkat disimpan secara lokal."
+  },
+  "ui_3452d125": {
+    "message": "Detail privasi"
+  },
+  "ui_1eb4158c": {
+    "message": "Pengaturan lanjutan"
+  },
+  "ui_ce305438": {
+    "message": "Jeda, pembersihan teks, sorotan"
+  },
+  "ui_67231237": {
+    "message": "istirahat antara bagian"
+  },
+  "ui_8f517045": {
+    "message": "Kinerja"
+  },
+  "ui_34c199e6": {
+    "message": "Pemrosesan"
+  },
+  "ui_bec07b52": {
+    "message": "CPU dan WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "Membebaskan memori suara saat idle"
+  },
+  "ui_231b3e4b": {
+    "message": "Lewati cuplikan kode"
+  },
+  "ui_456ac053": {
+    "message": "Wilayah warna"
+  },
+  "ui_10cd7856": {
+    "message": "Kata warna"
+  },
+  "ui_1e4dbab9": {
+    "message": "Opasitas area"
+  },
+  "ui_1688a6f4": {
+    "message": "Opasitas kata"
+  },
+  "ui_0583096b": {
+    "message": "Transkrip"
+  },
+  "ui_89a5470c": {
+    "message": "Antrean baca"
+  },
+  "ui_a106cd77": {
+    "message": "Penelusuran bagian"
+  },
+  "ui_ee3d49e1": {
+    "message": "Pertama"
+  },
+  "ui_30035f15": {
+    "message": "Nomor Bagian"
+  },
+  "ui_41d0c56b": {
+    "message": "Buka"
+  },
+  "ui_e40e2439": {
+    "message": "Terakhir"
+  },
+  "ui_bd9126df": {
+    "message": "Tidak ada bagian yang cocok. cobalah pencarian lain."
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator mesin pembaca"
+  },
+  "ui_c5fbc06e": {
+    "message": "Memberi akses ke halaman"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator ikon ekstensi"
+  },
+  "ui_5a3d9c47": {
+    "message": "Buka PageNarrator dari halaman"
+  },
+  "ui_94a4b160": {
+    "message": "Klik ikon ekstensi PageNarrator saat halaman aktif, lalu pilih Baca halaman."
+  },
+  "ui_4be7c01e": {
+    "message": "Mengunduh file suara yang hilang saat pertama kali digunakan."
+  },
+  "ui_3d04a00a": {
+    "message": "Menyiapkan suara lokal; file yang hilang unduh dari Hugging Face..."
+  },
+  "ui_048ca959": {
+    "message": "Langkah Pemulihan"
+  },
+  "ui_0ec24245": {
+    "message": "Detail"
+  },
+  "ui_4ff448da": {
+    "message": "Kembali Membaca"
+  },
+  "ui_cb2eed93": {
+    "message": "Kembali ke posisi terselamat"
+  },
+  "ui_ded3954b": {
+    "message": "Menyelamatkan posisi membaca"
+  },
+  "ui_24299867": {
+    "message": "Mulai dari awal"
+  },
+  "ui_d71c7401": {
+    "message": "Membaca Saran"
+  },
+  "ui_d5c02828": {
+    "message": "Halaman ini memiliki banyak snippet kode."
+  },
+  "ui_336b89fb": {
+    "message": "Lewati kode"
+  },
+  "ui_299fab6d": {
+    "message": "Artikel yang ditemukan"
+  },
+  "ui_a9898369": {
+    "message": "Baca: Artikel Hanya"
+  },
+  "ui_3065e144": {
+    "message": "Mulai dengan"
+  },
+  "ui_7ac012cc": {
+    "message": "Pembaca Player"
+  },
+  "ui_8edce20a": {
+    "message": "Membaca kemajuan"
+  },
+  "ui_949ea37c": {
+    "message": "0 buah yang tersisa"
+  },
+  "ui_1250127e": {
+    "message": "PDF navigasi halaman"
+  },
+  "ui_e83d9196": {
+    "message": "Halaman"
+  },
+  "ui_27ba99fc": {
+    "message": "Skip halaman PDF saat ini"
+  },
+  "ui_dbd1ad47": {
+    "message": "Pembaca Setting"
+  },
+  "ui_1a27bec5": {
+    "message": "Bahasa akan dideteksi saat membaca dimulai."
+  },
+  "ui_52ff662d": {
+    "message": "persyaratan perangkat"
+  },
+  "ui_fd02dfc2": {
+    "message": "Disarankan:"
+  },
+  "ui_b0555d92": {
+    "message": "NVIDIA RTX 30 Series GPU atau yang lebih baru, dengan 8 GB + VRAM dan 8 GB + RAM sistem."
+  },
+  "ui_0d393abc": {
+    "message": "Gunakan Chromium 120 atau yang lebih baru. Kokoro memiliki fallback CPU yang lebih lambat."
+  },
+  "ui_f31ba722": {
+    "message": "Timing, pembersihan, suara"
+  },
+  "ui_a879e367": {
+    "message": "Bagian Perhentian"
+  },
+  "ui_07e1c336": {
+    "message": "Meningkatkan gaya"
+  },
+  "ui_9525b78e": {
+    "message": "Kustom"
+  },
+  "ui_e0955632": {
+    "message": "Membaca area"
+  },
+  "ui_90571eca": {
+    "message": "Kata yang saat ini"
+  },
+  "ui_ea585567": {
+    "message": "Membaca Pembersihan"
+  },
+  "ui_0dc6b4aa": {
+    "message": "Nonaktif"
+  },
+  "ui_d6fbffc9": {
+    "message": "Keterangan dan Transcript Summary"
+  },
+  "ui_21fd85e4": {
+    "message": "Penulisan & Transcript"
+  },
+  "ui_d6c98891": {
+    "message": "Bagian saat ini, pencarian transkrip, dan kontrol melompat tersedia dalam mode Lanjutan."
+  },
+  "ui_0eac1f07": {
+    "message": "Jelajahi"
+  },
+  "ui_44d76dee": {
+    "message": "Transcript Lengkap"
+  },
+  "ui_ab5783a6": {
+    "message": "0 paragraf"
+  },
+  "ui_d58a5a9a": {
+    "message": "Navigasi Kaki"
+  },
+  "ui_2d877b6c": {
+    "message": "Bagian"
+  },
+  "ui_03205ed1": {
+    "message": "Temukan bagian"
+  },
+  "ui_27654275": {
+    "message": "Mencari transkrip atau halaman."
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF Pengendalian"
+  },
+  "ui_88828491": {
+    "message": "Halaman 1 dari 1"
+  },
+  "ui_8570fe3a": {
+    "message": "Zoom keluar"
+  },
+  "ui_a3583899": {
+    "message": "Zoom pada"
+  },
+  "ui_2b3553eb": {
+    "message": "Rotasi Kiri"
+  },
+  "ui_2eaecb74": {
+    "message": "Rotasi yang benar"
+  },
+  "ui_b6ab6b07": {
+    "message": "Mode yang baik"
+  },
+  "ui_69acd800": {
+    "message": "Sesuaikan lebar"
+  },
+  "ui_607af25f": {
+    "message": "Sesuaikan halaman"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF halaman"
+  },
+  "ui_ab32ceb0": {
+    "message": "Eksperimental. 646 entri bahasa; kualitas bervariasi. Memerlukan WebGPU dengan fp16 dan unduhan sekitar 1,35 GB. Pilih suara, variasi, atau bisikan."
+  },
+  "ui_ab4a698f": {
+    "message": "Terbuka dari halaman"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome tidak memberikan akses ke tab aktif."
+  },
+  "ui_67aad8a8": {
+    "message": "Buka halaman, klik ikon PageNarrator, lalu pilih Baca halaman."
+  },
+  "ui_724c0e56": {
+    "message": "Terbuka dari halaman"
+  },
+  "ui_4f96b3e0": {
+    "message": "Halaman Chrome yang dilindungi tidak dapat dibaca.Buka halaman web atau PDF."
+  },
+  "ui_0cddc760": {
+    "message": "halaman terbuka"
+  },
+  "ui_30274c11": {
+    "message": "Akses halaman yang diperlukan"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator membutuhkan akses ke situs ini."
+  },
+  "ui_2b54b790": {
+    "message": "Izinkan akses situs melalui ikon PageNarrator, lalu coba lagi."
+  },
+  "ui_57906b45": {
+    "message": "Grant Akses"
+  },
+  "ui_b48f6457": {
+    "message": "Gratis browser penyimpanan, kemudian retry."
+  },
+  "ui_75eca5ea": {
+    "message": "Penyimpanan Gratis"
+  },
+  "ui_99e92621": {
+    "message": "Pilih suara untuk bahasa halaman ini."
+  },
+  "ui_997f787a": {
+    "message": "Pilih Suara"
+  },
+  "ui_50a8c46f": {
+    "message": "Tab aktif ditutup sebelum membaca bisa dimulai."
+  },
+  "ui_e64862ef": {
+    "message": "Membuka kembali halaman dan retry."
+  },
+  "ui_39f600ae": {
+    "message": "Tidak ada teks yang dipilih"
+  },
+  "ui_79f7dfca": {
+    "message": "Tidak ada teks yang dipilih."
+  },
+  "ui_b7a079b0": {
+    "message": "Seleksi teks"
+  },
+  "ui_522bcc26": {
+    "message": "Pilih teks yang ingin Anda dengar, lalu pilih Baca pilihan."
+  },
+  "ui_580dc44e": {
+    "message": "Pengenalan teks yang diperlukan"
+  },
+  "ui_ce175449": {
+    "message": "Beberapa teks PDF tidak dapat dibaca dengan aman."
+  },
+  "ui_f7c03bfe": {
+    "message": "Menggunakan teks berbasis PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "Gunakan pengenalan teks (OCR) atau PDF dengan lapisan teks lengkap."
+  },
+  "ui_281501a3": {
+    "message": "Selesaikan CAPTCHA pada halaman, lalu retry."
+  },
+  "ui_d1c2931f": {
+    "message": "Masuk ke situs, lalu retry."
+  },
+  "ui_744be623": {
+    "message": "Tanda dalam"
+  },
+  "ui_3c4b4f30": {
+    "message": "Tidak ditemukan artikel yang dapat dibaca"
+  },
+  "ui_fb499b08": {
+    "message": "Tidak ada teks artikel yang dapat dibaca."
+  },
+  "ui_a1fad21c": {
+    "message": "Cobalah halaman lain"
+  },
+  "ui_b0ddc925": {
+    "message": "Pilih bagian dan pilih Baca pilihan, atau buka artikel lain."
+  },
+  "ui_d20c5459": {
+    "message": "Suara tidak selesai mengisi."
+  },
+  "ui_eee6a1ad": {
+    "message": "Pilih persiapan suara untuk mengatur ulang."
+  },
+  "ui_eab3cf34": {
+    "message": "Generasi bicara gagal"
+  },
+  "ui_4cad964d": {
+    "message": "Generasi suara berhenti sebelum audio siap."
+  },
+  "ui_2519f9e6": {
+    "message": "Pilih kembali, atau pilih suara lain."
+  },
+  "ui_1844c6fe": {
+    "message": "Tidak didukung PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "PDF ini rusak atau tidak didukung."
+  },
+  "ui_5679bf2f": {
+    "message": "Coba yang lain PDF"
+  },
+  "ui_b8183083": {
+    "message": "Tidak dapat mengunduh PDF. periksa tautan dan koneksi Anda."
+  },
+  "ui_ce24479d": {
+    "message": "Tidak dapat membuka ini PDF."
+  }
+}

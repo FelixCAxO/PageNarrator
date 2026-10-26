@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "로컬 장치 음성과 동기화된 강조 기능을 사용하여 웹 페이지 및 PDF를 큰 소리로 읽으십시오."
+  },
+  "actionTitle": {
+    "message": "이 페이지를 들어보세요"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "감지된 언어: $language$. Kokoro는 영어를 지원합니다. 이 텍스트를 읽으려면 음성 설정에서 OmniVoice와 $language$을 선택하세요.",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "감지된 언어: $language$ ($percentage$%).",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "언어를 확실하게 감지하지 못했습니다."
+  },
+  "onboardingQuickWinTitle": {
+    "message": "선택한 통로 읽기"
+  },
+  "onboardingQuickWinBody": {
+    "message": "페이지에서 두 문장을 선택한 다음 선택한 텍스트 읽기를 선택합니다."
+  },
+  "onboardingQuickWinCta": {
+    "message": "선택한 텍스트 읽기"
+  },
+  "onboardingFullPageTitle": {
+    "message": "페이지 읽기"
+  },
+  "onboardingFullPageBody": {
+    "message": "읽기 시작하기 위해 읽기 페이지를 선택합니다."
+  },
+  "onboardingFullPageCta": {
+    "message": "전체 페이지 읽기"
+  },
+  "onboardingDismiss": {
+    "message": "건너뛰기"
+  },
+  "reviewPromptTitle": {
+    "message": "PageNarrator 평가"
+  },
+  "reviewPromptBody": {
+    "message": "귀하의 리뷰는 다른 독자가 선택하는 데 도움이됩니다."
+  },
+  "reviewNever": {
+    "message": "다시 표시 안 함"
+  },
+  "reviewLater": {
+    "message": "나중에"
+  },
+  "reviewReview": {
+    "message": "평가하기"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ 페이지 로드",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ 페이지 로드",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "문서 충전..."
+  },
+  "ui_ffb67f19": {
+    "message": "로드하기 PDF"
+  },
+  "ui_abc76c7c": {
+    "message": "PDF 다시 열기"
+  },
+  "ui_824a0948": {
+    "message": "페이지 $arg1$ of $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "일하는 ..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ 목소리",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "음성"
+  },
+  "ui_85d257a6": {
+    "message": "처리: WebGPU (전용 GPU)"
+  },
+  "ui_ea65fbf2": {
+    "message": "처리: WebGPU (통합된 GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "제조사 : WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "처리: CPU / WebAssembly (더 느린)"
+  },
+  "ui_5c338a74": {
+    "message": "읽기 시작한 후에 표시되는 처리."
+  },
+  "ui_c513493a": {
+    "message": "로컬 음성 준비... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "음성 준비가 실패했습니다.다시 시도하십시오."
+  },
+  "ui_523c0c96": {
+    "message": "설치 전에 Hugging Face에서 잃어버린 음성 파일 다운로드."
+  },
+  "ui_8036af59": {
+    "message": "다시 시도"
+  },
+  "ui_fb625aee": {
+    "message": "음성 준비"
+  },
+  "ui_b9328a4d": {
+    "message": "구간 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "구간 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "읽기 시작할 때 사용할 수 있는"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript 는 텍스트가 로드될 때 나타납니다."
+  },
+  "ui_fe92f855": {
+    "message": "현재 페이지"
+  },
+  "ui_bf0c7feb": {
+    "message": "준비하는..."
+  },
+  "ui_3d77a20f": {
+    "message": "목소리 준비... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "계속"
+  },
+  "ui_44f9bf2d": {
+    "message": "일시 정지"
+  },
+  "ui_f3de41d3": {
+    "message": "읽기 준비 완료"
+  },
+  "ui_9283b625": {
+    "message": "목소리를 준비하는..."
+  },
+  "ui_5ee7339b": {
+    "message": "읽는 중"
+  },
+  "ui_de281feb": {
+    "message": "일시 정지됨"
+  },
+  "ui_a7b2cec3": {
+    "message": "완료"
+  },
+  "ui_5d640b9c": {
+    "message": "확인이 필요합니다"
+  },
+  "ui_4d1cf041": {
+    "message": "미국 여자"
+  },
+  "ui_faf95838": {
+    "message": "미국 남성"
+  },
+  "ui_f3768d40": {
+    "message": "영국 여자"
+  },
+  "ui_4139054c": {
+    "message": "영어 Kokoro 음성을 선택합니다.다른 언어는 지원되지 않습니다."
+  },
+  "ui_c0c171d2": {
+    "message": "이 작업을 완료할 수 없었다."
+  },
+  "ui_02e8a8a4": {
+    "message": "$arg1$ 페이지의 텍스트를 인식합니다.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ 페이지 이 페이지 후",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ 페이지 이 페이지 후",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "보통"
+  },
+  "ui_99f0d384": {
+    "message": "더 빠르게"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$ 천천히",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "읽기 : $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "선택한 텍스트 읽기"
+  },
+  "ui_865bf5ae": {
+    "message": "선택한 텍스트 읽기"
+  },
+  "ui_213e90fa": {
+    "message": "다시 시도"
+  },
+  "ui_1dbc8cae": {
+    "message": "Grant Site 액세스"
+  },
+  "ui_450f715d": {
+    "message": "읽기 섹션 $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "오디오 재생이 실패했습니다."
+  },
+  "ui_248b7c43": {
+    "message": "텍스트를 찾을 수 없음"
+  },
+  "ui_48ca3593": {
+    "message": "PDF $arg1$페이지에서 텍스트를 추출할 수 없습니다",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "페이지가 충전되지 않음"
+  },
+  "ui_8bdfb3a1": {
+    "message": "읽기 시작할 때 텍스트가 나타납니다."
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "이 페이지를 큰소리로 읽어보세요"
+  },
+  "ui_758bbc44": {
+    "message": "페이지 읽기"
+  },
+  "ui_a174ecb1": {
+    "message": "0% 완전"
+  },
+  "ui_e527eba2": {
+    "message": "목소리 준비 - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "목소리를 준비하는..."
+  },
+  "ui_78d44090": {
+    "message": "현재 읽기 중지"
+  },
+  "ui_98847cfb": {
+    "message": "읽기 멈추기..."
+  },
+  "ui_e100f46d": {
+    "message": "중지 중..."
+  },
+  "ui_4b7f7705": {
+    "message": "중지"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% 완료",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "읽기 마무리"
+  },
+  "ui_2f0dcc5d": {
+    "message": "다시 읽기"
+  },
+  "ui_329cfb9e": {
+    "message": "100% 완전"
+  },
+  "ui_76fc465e": {
+    "message": "무언가 잘못 갔다"
+  },
+  "ui_0d4b0da7": {
+    "message": "선택한 텍스트 읽기"
+  },
+  "ui_242bb2e3": {
+    "message": "선택한 텍스트를 읽고..."
+  },
+  "ui_10905ea3": {
+    "message": "선택한 텍스트 준비"
+  },
+  "ui_a2df426f": {
+    "message": "선택한 텍스트 paused"
+  },
+  "ui_915b9541": {
+    "message": "현재 페이지 읽기"
+  },
+  "ui_50880cb0": {
+    "message": "읽기 페이지..."
+  },
+  "ui_e8bf303d": {
+    "message": "현재 페이지 준비"
+  },
+  "ui_59ad3c41": {
+    "message": "목소리 준비"
+  },
+  "ui_af82140f": {
+    "message": "읽기 휴식"
+  },
+  "ui_1ede4e42": {
+    "message": "목소리 준비"
+  },
+  "ui_63338bd9": {
+    "message": "Voice Setup 실패"
+  },
+  "ui_cedd5bba": {
+    "message": "모델 설정 실패"
+  },
+  "ui_a7f38d4e": {
+    "message": "로컬 음성 준비; Hugging Face에서 실종 파일 다운로드."
+  },
+  "ui_430dc39d": {
+    "message": "시간을 계산하는..."
+  },
+  "ui_06a382b7": {
+    "message": "문서를 열고, 다음 페이지를 읽으십시오."
+  },
+  "ui_37bc7086": {
+    "message": "단어 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "단어 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "미니"
+  },
+  "ui_5dca8675": {
+    "message": "0 섹션"
+  },
+  "ui_2d292516": {
+    "message": "$arg1$ 의 $arg2$ 섹션",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "$arg1$%부터 이어 읽기",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "선택한 텍스트"
+  },
+  "ui_8212a19a": {
+    "message": "PDF 문서"
+  },
+  "ui_cb3b43ef": {
+    "message": "전체 페이지"
+  },
+  "ui_e13844b5": {
+    "message": "단지 기사"
+  },
+  "ui_6cae863f": {
+    "message": "남은 단어: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "남은 단어: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "남은 구간: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "남은 구간: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "$arg1$페이지 · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "페이지 $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "문단 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "문단 수: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · 첫 번째 $arg2$ 표시",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ 표시",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "검색 결과: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "검색 결과: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ 의 $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - 다음 번에 캐시",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "목소리 모델"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "$arg1$ - 목소리 준비",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "다운로드 음성 파일: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "다운로드 $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "GPU 설치가 실패했습니다. CPU/WebAssembly로 재생..."
+  },
+  "ui_f0fc3524": {
+    "message": "다운로드 $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "$arg1$을 준비합니다.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "GPU 지원을 확인합니다."
+  },
+  "ui_a1f035db": {
+    "message": "브라우저 캐시를 확인하십시오."
+  },
+  "ui_412b5f0e": {
+    "message": "일시적인 설정"
+  },
+  "ui_91d30309": {
+    "message": "요청하신 목소리를 준비할 수 없습니다."
+  },
+  "ui_b9775b3a": {
+    "message": "실험적 - 품질은 검증되지 않음"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - 조정",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "$arg1$ 이후에 조정된 음성 품질.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "음성 처리: GPU (WebGPU) CPU 친화적 인 설정."
+  },
+  "ui_3411bb9b": {
+    "message": "음성 처리 : GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "음성 처리: WebGPU가 사용할 수 없기 때문에 CPU(WebAssembly)만 사용할 수 있습니다."
+  },
+  "ui_9e335d53": {
+    "message": "음성 처리: CPU 만 (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "음성 처리: 시스템 음성 (브라우저 또는 운영 체제)"
+  },
+  "ui_815f1834": {
+    "message": "음성 처리: 읽기 시작할 때 확인됩니다."
+  },
+  "ui_19f02581": {
+    "message": "WebGPU에서 실험적인 OmniVoice를 사용합니다."
+  },
+  "ui_f7c3a723": {
+    "message": "모델 파일은 Hugging Face에서 다운로드되며 음성은 이 기기에서 생성됩니다."
+  },
+  "ui_411e02b2": {
+    "message": "WebGPU를 사용할 수 없으면 Kokoro를 선택하세요."
+  },
+  "ui_3581ebdf": {
+    "message": "Kokoro 음성: $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "음성을 준비하거나 읽기를 시작할 때 누락된 음성 파일이 Hugging Face에서 다운로드됩니다."
+  },
+  "ui_6813181e": {
+    "message": "음성은 이 기기에서 생성됩니다. 캐시된 파일은 삭제하기 전까지 오프라인으로 다시 사용할 수 있습니다."
+  },
+  "ui_95b6ef87": {
+    "message": "실험 품질: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "$arg1$ 음성은 사용할 수 있습니다.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "SKIP 코드 스냅펫?"
+  },
+  "ui_9d9f28af": {
+    "message": "이 페이지에는 많은 코드 스냅펫이 있습니다. 약 $arg1$ 분 코드를 니다.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "이 페이지에는 많은 코드 조각이 있습니다. 약 $arg1$ 분의 코드를 니다.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "자동"
+  },
+  "ui_361987ac": {
+    "message": "고품질"
+  },
+  "ui_c0cc603d": {
+    "message": "균형"
+  },
+  "ui_5b602dbf": {
+    "message": "배터리 절약"
+  },
+  "ui_157606b3": {
+    "message": "1개 구간 미리 로드됨"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ 개의 섹션을 프리로드",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "Progressive Playback"
+  },
+  "ui_4ddd1cf4": {
+    "message": "Progressive Playback Off"
+  },
+  "ui_95c9f0ef": {
+    "message": "자동 브라우저 음성 스위치"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$ 문자 조각, $arg3$, $arg4$, $arg5$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "이 페이지에 액세스할 수 없습니다."
+  },
+  "ui_be75ad01": {
+    "message": "Best-effort readerEngine 작업이 실패했습니다."
+  },
+  "ui_eb6988d3": {
+    "message": "다시 위치를 로드할 수 없음"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator 초기화가 실패했습니다."
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator 선수"
+  },
+  "ui_9d65bbdb": {
+    "message": "음성 모델 선택"
+  },
+  "ui_e6334598": {
+    "message": "음성 모델"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (기본값)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (실험적)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "영어 음성 10개를 제공합니다. 첫 설정에는 CPU 사용 시 약 93 MB, GPU 사용 시 약 326 MB가 필요합니다. 다른 음성에는 약 0.5 MB가 필요합니다. 저장된 음성 선택은 유지됩니다."
+  },
+  "ui_2c04fde6": {
+    "message": "음성 설정"
+  },
+  "ui_9a73db9b": {
+    "message": "언어"
+  },
+  "ui_2070a9f8": {
+    "message": "목소리 충전..."
+  },
+  "ui_c39c8623": {
+    "message": "음성 유형"
+  },
+  "ui_d8a26cb9": {
+    "message": "여성"
+  },
+  "ui_487d36f0": {
+    "message": "남성"
+  },
+  "ui_a2a40f30": {
+    "message": "음성 변형"
+  },
+  "ui_16383585": {
+    "message": "음성 변형을 선택합니다.다음 섹션에서 변경 사항이 적용됩니다.Playback 속도로 속도를 설정합니다."
+  },
+  "ui_d975568d": {
+    "message": "속삭임"
+  },
+  "ui_3d7af8ef": {
+    "message": "재생 속도"
+  },
+  "ui_c58a3963": {
+    "message": "자동으로 저장됩니다. 음성 변경 내용은 읽을 때 다음 섹션에 적용됩니다."
+  },
+  "ui_71365cb1": {
+    "message": "로컬 목소리 준비"
+  },
+  "ui_c197c7e2": {
+    "message": "건너뛰기"
+  },
+  "ui_dad1a20b": {
+    "message": "이제 읽기"
+  },
+  "ui_30ea6e2f": {
+    "message": "이전 섹션"
+  },
+  "ui_c2954bc2": {
+    "message": "이전"
+  },
+  "ui_dce2da08": {
+    "message": "다음"
+  },
+  "ui_0c341bc6": {
+    "message": "내장 Kokoro 음성은 기기에서 실행됩니다. OmniVoice도 마찬가지입니다. 누락된 음성 파일은 Hugging Face에서 다운로드됩니다. 읽어 주는 텍스트는 이 기기에만 보관됩니다. 설정, 페이지 주소, 제목, 읽던 위치, 짧은 텍스트 발췌문은 기기에 보관됩니다."
+  },
+  "ui_3452d125": {
+    "message": "개인정보 보호 세부정보"
+  },
+  "ui_1eb4158c": {
+    "message": "고급 설정"
+  },
+  "ui_ce305438": {
+    "message": "일시 정지, 텍스트 정리, 강조 표시"
+  },
+  "ui_67231237": {
+    "message": "섹션 사이의 휴식"
+  },
+  "ui_8f517045": {
+    "message": "성능"
+  },
+  "ui_34c199e6": {
+    "message": "처리"
+  },
+  "ui_bec07b52": {
+    "message": "CPU / WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "idle 할 때 음성 메모리를 해제"
+  },
+  "ui_231b3e4b": {
+    "message": "코드 조각 건너뛰기"
+  },
+  "ui_456ac053": {
+    "message": "지역 색상"
+  },
+  "ui_10cd7856": {
+    "message": "단어 색상"
+  },
+  "ui_1e4dbab9": {
+    "message": "영역 불투명도"
+  },
+  "ui_1688a6f4": {
+    "message": "단어 불투명도"
+  },
+  "ui_0583096b": {
+    "message": "텍스트"
+  },
+  "ui_89a5470c": {
+    "message": "읽기 대기열"
+  },
+  "ui_a106cd77": {
+    "message": "검색 섹션"
+  },
+  "ui_ee3d49e1": {
+    "message": "처음"
+  },
+  "ui_30035f15": {
+    "message": "섹션 번호"
+  },
+  "ui_41d0c56b": {
+    "message": "이동"
+  },
+  "ui_e40e2439": {
+    "message": "마지막"
+  },
+  "ui_bd9126df": {
+    "message": "일치하는 섹션이 없습니다.다른 검색을 시도하세요."
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator 리더 엔진"
+  },
+  "ui_c5fbc06e": {
+    "message": "Grant Page 액세스"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator 확장 아이콘"
+  },
+  "ui_5a3d9c47": {
+    "message": "PageNarrator 페이지에서 열기"
+  },
+  "ui_94a4b160": {
+    "message": "페이지가 활성 상태에 있는 동안 PageNarrator 확장 아이콘을 클릭한 다음 페이지 읽기를 선택합니다."
+  },
+  "ui_4be7c01e": {
+    "message": "실종된 음성 파일은 첫 번째 사용시 다운로드됩니다."
+  },
+  "ui_3d04a00a": {
+    "message": "로컬 음성 준비; Hugging Face에서 실종 파일 다운로드..."
+  },
+  "ui_048ca959": {
+    "message": "회복 단계"
+  },
+  "ui_0ec24245": {
+    "message": "자세히"
+  },
+  "ui_4ff448da": {
+    "message": "다시 읽기"
+  },
+  "ui_cb2eed93": {
+    "message": "저장된 위치에서 재개"
+  },
+  "ui_ded3954b": {
+    "message": "읽기 위치를 저장"
+  },
+  "ui_24299867": {
+    "message": "처음부터 시작"
+  },
+  "ui_d71c7401": {
+    "message": "읽기 제안"
+  },
+  "ui_d5c02828": {
+    "message": "이 페이지에는 많은 코드 스냅펫이 있습니다."
+  },
+  "ui_336b89fb": {
+    "message": "코드 건너뛰기"
+  },
+  "ui_299fab6d": {
+    "message": "발견된 기사"
+  },
+  "ui_a9898369": {
+    "message": "읽기: Article Only"
+  },
+  "ui_3065e144": {
+    "message": "시작하기 with"
+  },
+  "ui_7ac012cc": {
+    "message": "읽기 배우"
+  },
+  "ui_8edce20a": {
+    "message": "읽기 진행"
+  },
+  "ui_949ea37c": {
+    "message": "0 개 left"
+  },
+  "ui_1250127e": {
+    "message": "PDF 페이지 탐색"
+  },
+  "ui_e83d9196": {
+    "message": "페이지"
+  },
+  "ui_27ba99fc": {
+    "message": "현재 PDF 페이지"
+  },
+  "ui_dbd1ad47": {
+    "message": "READER 설정"
+  },
+  "ui_1a27bec5": {
+    "message": "읽기 시작할 때 언어가 감지됩니다."
+  },
+  "ui_52ff662d": {
+    "message": "디바이스 요구사항"
+  },
+  "ui_fd02dfc2": {
+    "message": "권장:"
+  },
+  "ui_b0555d92": {
+    "message": "전용 NVIDIA RTX 30 시리즈 GPU 이상, 8GB+ VRAM 및 8GB+ 시스템 RAM."
+  },
+  "ui_0d393abc": {
+    "message": "Chromium 120 이상을 사용합니다. Kokoro은 느린 CPU fallback를 가지고 있습니다."
+  },
+  "ui_f31ba722": {
+    "message": "타이밍, 청소, 목소리"
+  },
+  "ui_a879e367": {
+    "message": "섹션 휴식"
+  },
+  "ui_07e1c336": {
+    "message": "Highlight 스타일"
+  },
+  "ui_9525b78e": {
+    "message": "사용자 지정"
+  },
+  "ui_e0955632": {
+    "message": "읽기 영역"
+  },
+  "ui_90571eca": {
+    "message": "현재 단어"
+  },
+  "ui_ea585567": {
+    "message": "읽기 Cleanup"
+  },
+  "ui_0dc6b4aa": {
+    "message": "꺼짐"
+  },
+  "ui_d6fbffc9": {
+    "message": "다음글 : Queue and Transcript Summary"
+  },
+  "ui_21fd85e4": {
+    "message": "케이블 & Transcript"
+  },
+  "ui_d6c98891": {
+    "message": "현재 섹션, 번호 검색 및 점프 컨트롤은 고급 모드로 사용할 수 있습니다.Current section, transcript search, and jump controls are available in Advanced mode."
+  },
+  "ui_0eac1f07": {
+    "message": "둘러보기"
+  },
+  "ui_44d76dee": {
+    "message": "전체 transcript"
+  },
+  "ui_ab5783a6": {
+    "message": "0 항목"
+  },
+  "ui_d58a5a9a": {
+    "message": "케이블 Navigation"
+  },
+  "ui_2d877b6c": {
+    "message": "구간"
+  },
+  "ui_03205ed1": {
+    "message": "섹션 찾기"
+  },
+  "ui_27654275": {
+    "message": "transcript 또는 page 검색"
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF 통제"
+  },
+  "ui_88828491": {
+    "message": "페이지 1 of 1"
+  },
+  "ui_8570fe3a": {
+    "message": "zoom out"
+  },
+  "ui_a3583899": {
+    "message": "Zoom 에"
+  },
+  "ui_2b3553eb": {
+    "message": "왼쪽 Rotate"
+  },
+  "ui_2eaecb74": {
+    "message": "바퀴 오른쪽"
+  },
+  "ui_b6ab6b07": {
+    "message": "패션을 잘"
+  },
+  "ui_69acd800": {
+    "message": "너비에 맞춤"
+  },
+  "ui_607af25f": {
+    "message": "페이지에 맞춤"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF 페이지"
+  },
+  "ui_ab32ceb0": {
+    "message": "실험적 기능입니다. 언어 항목은 646개이며 품질은 다릅니다. fp16을 지원하는 WebGPU와 약 1.35 GB의 다운로드가 필요합니다. 음성, 변형 또는 속삭임을 선택하세요."
+  },
+  "ui_ab4a698f": {
+    "message": "페이지에서 열기"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome은 활성 탭에 대한 액세스를 허용하지 않았습니다."
+  },
+  "ui_67aad8a8": {
+    "message": "페이지를 열고 PageNarrator 아이콘을 클릭한 다음 읽기 페이지를 선택합니다."
+  },
+  "ui_724c0e56": {
+    "message": "페이지에서 열기"
+  },
+  "ui_4f96b3e0": {
+    "message": "보호된 Chrome 페이지는 읽을 수 없습니다. 웹 페이지 또는 PDF을 엽니다."
+  },
+  "ui_0cddc760": {
+    "message": "오픈 페이지"
+  },
+  "ui_30274c11": {
+    "message": "페이지 액세스 필수"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator이 사이트에 액세스해야합니다."
+  },
+  "ui_2b54b790": {
+    "message": "PageNarrator 아이콘에서 사이트 접근을 허용한 후 다시 시도하세요."
+  },
+  "ui_57906b45": {
+    "message": "Grant 액세스"
+  },
+  "ui_b48f6457": {
+    "message": "무료 브라우저 스토리지, 다음 retry."
+  },
+  "ui_75eca5ea": {
+    "message": "무료 저장"
+  },
+  "ui_99e92621": {
+    "message": "이 페이지의 언어에 대한 목소리를 선택합니다."
+  },
+  "ui_997f787a": {
+    "message": "목소리 선택"
+  },
+  "ui_50a8c46f": {
+    "message": "읽기 시작하기 전에 활성 탭을 닫습니다."
+  },
+  "ui_e64862ef": {
+    "message": "탭이 닫혔습니다. 페이지를 다시 열고 리트리합니다."
+  },
+  "ui_39f600ae": {
+    "message": "선택된 텍스트 없음"
+  },
+  "ui_79f7dfca": {
+    "message": "텍스트가 선택되지 않습니다.No text is selected."
+  },
+  "ui_b7a079b0": {
+    "message": "선택한 텍스트"
+  },
+  "ui_522bcc26": {
+    "message": "듣고 싶은 텍스트를 선택한 다음 선택한 텍스트 읽기를 선택합니다."
+  },
+  "ui_580dc44e": {
+    "message": "필요한 텍스트 인식"
+  },
+  "ui_ce175449": {
+    "message": "PDF 일부 텍스트는 신뢰할 수 없었습니다."
+  },
+  "ui_f7c03bfe": {
+    "message": "텍스트 기반 사용 PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "텍스트 인식(OCR) 또는 완전한 텍스트 레이어와 함께 PDF를 사용합니다."
+  },
+  "ui_281501a3": {
+    "message": "페이지에 있는 CAPTCHA을 완료한 다음 다시 링크합니다."
+  },
+  "ui_d1c2931f": {
+    "message": "사이트에 로그인 한 다음 retry."
+  },
+  "ui_744be623": {
+    "message": "신호 IN"
+  },
+  "ui_3c4b4f30": {
+    "message": "읽을 수 없는 기사 찾기"
+  },
+  "ui_fb499b08": {
+    "message": "읽을 수 있는 문서가 발견되지 않았습니다."
+  },
+  "ui_a1fad21c": {
+    "message": "다른 페이지를 시도해 보세요"
+  },
+  "ui_b0ddc925": {
+    "message": "단락을 선택하고 선택한 텍스트 읽기를 선택하거나 다른 기사를 열 수 있습니다."
+  },
+  "ui_d20c5459": {
+    "message": "목소리는 충전을 끝내지 않았다."
+  },
+  "ui_eee6a1ad": {
+    "message": "음성 준비를 선택하여 리트리 설정을 선택합니다."
+  },
+  "ui_eab3cf34": {
+    "message": "연설 세대 실패"
+  },
+  "ui_4cad964d": {
+    "message": "오디오가 준비되기 전에 음성 생성이 중단되었습니다."
+  },
+  "ui_2519f9e6": {
+    "message": "재생 또는 다른 목소리를 선택합니다."
+  },
+  "ui_1844c6fe": {
+    "message": "지원하지 않음 PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "이 PDF은 손상되거나 지원되지 않습니다."
+  },
+  "ui_5679bf2f": {
+    "message": "다른 PDF을 시도하십시오."
+  },
+  "ui_b8183083": {
+    "message": "PDF을 다운로드할 수 없습니다. 링크와 연결을 확인하십시오."
+  },
+  "ui_ce24479d": {
+    "message": "PDF을 열 수 없습니다."
+  }
+}

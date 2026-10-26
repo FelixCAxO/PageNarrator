@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { HIDDEN_TAB_URL_ACCESS_ERROR_CODE } from './content-script-injection.js';
 import { MESSAGE_TYPES } from './message-types.js';
 import { getPanelView } from './reader-engine-view.js';
@@ -50,7 +51,7 @@ export function createReaderEngineReadingStateRenderer({
     renderAccessGuidance(nextState === 'error' && options.errorCode === HIDDEN_TAB_URL_ACCESS_ERROR_CODE);
     els.panel.classList.toggle('is-reading', view.mode === 'reading');
     els.panel.classList.toggle('is-paused', view.statusTone === 'paused');
-    renderActionButton(els.read, view.primaryAction.label, view.primaryAction.label === 'Pause' ? 'pause' : 'play');
+    renderActionButton(els.read, view.primaryAction.label, nextState === 'reading' ? 'pause' : 'play');
     els.read.disabled = view.primaryAction.disabled;
     state.activePrimaryAction = view.primaryAction.action || null;
     const stopAction = view.secondaryActions.find((action) => action.id === 'stop');
@@ -70,7 +71,7 @@ export function createReaderEngineReadingStateRenderer({
     els.readingProgressBar.style.width = `${view.progressPercent}%`;
     els.readingProgressLabel.textContent = view.progressLabel;
     els.readingRemainingLabel.textContent = view.remainingLabel;
-    els.readingStateLabel.textContent = view.statusTone === 'paused' ? 'Paused' : 'Reading';
+    els.readingStateLabel.textContent = view.statusTone === 'paused' ? t("Paused") : t("Reading");
     broadcastPlayerState(options);
     onRendered(nextState);
 
@@ -118,7 +119,10 @@ export function createReaderEngineReadingStateRenderer({
 
   function renderActionButton(button, label, iconName) {
     button.dataset.label = label;
-    button.innerHTML = `${icons[iconName]}<span>${label}</span>`;
+    button.innerHTML = icons[iconName];
+    const caption = button.ownerDocument.createElement('span');
+    caption.textContent = label;
+    button.appendChild(caption);
   }
 
   function renderAccessGuidance(visible) {

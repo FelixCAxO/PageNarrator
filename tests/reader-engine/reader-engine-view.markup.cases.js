@@ -115,9 +115,8 @@ describe('toolbar player view model', () => {
     expect(readerSettings?.querySelector('summary')?.textContent).toContain('Voice settings');
     expect(readerSettings?.querySelector('summary')?.textContent).not.toContain('Change');
     expect(document.getElementById('voice-select')?.closest('#reader-settings')).toBe(readerSettings);
-    expect(document.getElementById('voice-settings-summary')?.textContent).toContain('Heart');
-    expect(document.getElementById('voice-settings-summary')?.textContent).toContain('English');
-    expect(document.getElementById('voice-settings-summary')?.textContent).toContain('1.00x');
+    // The live summary is populated from saved settings; no untranslated voice/language is flashed during startup.
+    expect(document.getElementById('voice-settings-summary')?.textContent).toBe('');
 
     expect(document.getElementById('activate-pro-card')).toBeNull();
   });

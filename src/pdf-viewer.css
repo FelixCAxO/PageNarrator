@@ -71,6 +71,8 @@ body {
 
 .toolbar-group {
   min-height: 34px;
+  max-width: 100%;
+  flex-wrap: wrap;
   gap: 6px;
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 6px;
@@ -84,6 +86,8 @@ body {
 
 .page-field {
   gap: 6px;
+  min-width: 0;
+  flex-wrap: wrap;
   color: var(--muted);
   font-size: 12px;
   font-weight: 700;
@@ -111,7 +115,10 @@ body {
 
 .pdf-toolbar button {
   min-width: 28px;
-  height: 28px;
+  min-height: 28px;
+  height: auto;
+  white-space: normal;
+  overflow-wrap: anywhere;
   border: 0;
   border-radius: 4px;
   padding: 0 8px;

@@ -68,7 +68,9 @@ describe('free-product launch docs', () => {
     const manifest = JSON.parse(read('manifest.json'));
     const summary = read('docs/cws-listing.md').replace(/\r\n/g, '\n').match(/## Short description\n\n(.+)\n/)?.[1];
 
-    expect(manifest.description).toBe(summary);
+    expect(manifest.description).toBe('__MSG_extensionDescription__');
+    const english = JSON.parse(read(`_locales/${manifest.default_locale}/messages.json`));
+    expect(english.extensionDescription.message).toBe(summary);
     expect(summary.length).toBeLessThanOrEqual(132);
   });
 

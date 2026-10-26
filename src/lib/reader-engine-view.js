@@ -1,9 +1,10 @@
+import { t } from './i18n.js';
 import { getPdfReadingProgress } from './pdf-reading-progress.js';
 const WORDS_PER_MINUTE = 155;
 // Also the reader engine's title before extraction; the popup treats it as "no title yet".
-export const DEFAULT_TITLE = 'No page loaded';
-const DEFAULT_PREVIEW = 'Text appears when reading starts.';
-const DEFAULT_TRANSCRIPT = 'Transcript appears when text loads.';
+export const DEFAULT_TITLE = t("No page loaded");
+const DEFAULT_PREVIEW = t("Text appears when reading starts.");
+const DEFAULT_TRANSCRIPT = t("Transcript appears when text loads.");
 const DEFAULT_TRANSCRIPT_WINDOW_LIMIT = 30;
 const DEFAULT_QUEUE_WINDOW_SIZE = 10;
 const MAX_QUEUE_SEARCH_CACHE_ENTRIES = 100;
@@ -15,10 +16,10 @@ export function formatSetupDuration(seconds) {
   if (safeSeconds < 60) return `${safeSeconds}s`;
   const minutes = Math.floor(safeSeconds / 60);
   const remainingSeconds = safeSeconds % 60;
-  if (minutes < 60) return remainingSeconds ? `${minutes}m ${remainingSeconds}s` : `${minutes}m`;
+  if (minutes < 60) return remainingSeconds ? t("$1m $2s", [minutes, remainingSeconds]) : `${minutes}m`;
   const hours = Math.floor(minutes / 60);
   const remainingMinutes = minutes % 60;
-  return remainingMinutes ? `${hours}h ${remainingMinutes}m` : `${hours}h`;
+  return remainingMinutes ? t("$1h $2m", [hours, remainingMinutes]) : `${hours}h`;
 }
 
 export function getPanelView(reading = {}) {
@@ -28,15 +29,15 @@ export function getPanelView(reading = {}) {
   const readingCopy = getReadingCopy(reading.source);
   const modelSetup = reading.modelSetup || {};
   const view = {
-    subtitle: 'Read this page aloud',
-    statusText: 'Ready to read',
+    subtitle: t("Read this page aloud"),
+    statusText: t("Ready to read"),
     statusTone: 'ready',
     mode: 'idle',
     isError: false,
-    primaryAction: { label: 'Read page', disabled: false },
+    primaryAction: { label: t("Read page"), disabled: false },
     secondaryActions: [],
     progressPercent: 0,
-    progressLabel: '0% complete',
+    progressLabel: t("0% complete"),
     remainingLabel: '',
   };
 
@@ -45,9 +46,9 @@ export function getPanelView(reading = {}) {
     const eta = normalizeEta(modelSetup.eta);
     return {
       ...view,
-      statusText: `Preparing voice - ${progress}%${eta ? `, ${eta}` : ''}`,
+      statusText: t("Preparing voice - $1%$2", [progress, eta ? `, ${eta}` : '']),
       statusTone: 'preparing',
-      primaryAction: { label: 'Preparing voice...', disabled: true },
+      primaryAction: { label: t("Preparing voice..."), disabled: true },
     };
   }
 
@@ -57,17 +58,17 @@ export function getPanelView(reading = {}) {
       subtitle: readingCopy.preparingSubtitle,
       statusText: readingCopy.preparingStatus,
       statusTone: 'preparing',
-      primaryAction: { label: 'Preparing voice...', disabled: true },
+      primaryAction: { label: t("Preparing voice..."), disabled: true },
     };
   }
 
   if (state === 'stopping') {
     return {
       ...view,
-      subtitle: 'Stopping current read',
-      statusText: 'Stopping read...',
+      subtitle: t("Stopping current read"),
+      statusText: t("Stopping read..."),
       statusTone: 'preparing',
-      primaryAction: { label: 'Stopping...', disabled: true },
+      primaryAction: { label: t('Stopping...'), disabled: true },
     };
   }
 
@@ -79,10 +80,10 @@ export function getPanelView(reading = {}) {
       statusText: readingCopy.readingStatus,
       statusTone: 'reading',
       mode: 'reading',
-      primaryAction: { label: 'Pause', disabled: false },
-      secondaryActions: [{ id: 'stop', label: 'Stop' }],
+      primaryAction: { label: t("Pause"), disabled: false },
+      secondaryActions: [{ id: 'stop', label: t("Stop") }],
       progressPercent,
-      progressLabel: `${progressPercent}% complete`,
+      progressLabel: t("$1% complete", [progressPercent]),
       remainingLabel: getRemainingLabel(reading.currentChunk, reading.totalChunks, reading.wordCounts, reading.totalReadableWordCount),
       ...pdfProgress,
     };
@@ -93,13 +94,13 @@ export function getPanelView(reading = {}) {
     return {
       ...view,
       subtitle: readingCopy.pausedSubtitle,
-      statusText: 'Paused',
+      statusText: t("Paused"),
       statusTone: 'paused',
       mode: 'reading',
-      primaryAction: { label: 'Resume', disabled: false },
-      secondaryActions: [{ id: 'stop', label: 'Stop' }],
+      primaryAction: { label: t("Resume"), disabled: false },
+      secondaryActions: [{ id: 'stop', label: t("Stop") }],
       progressPercent,
-      progressLabel: `${progressPercent}% complete`,
+      progressLabel: t("$1% complete", [progressPercent]),
       remainingLabel: getRemainingLabel(reading.currentChunk, reading.totalChunks, reading.wordCounts, reading.totalReadableWordCount),
       ...pdfProgress,
     };
@@ -108,11 +109,11 @@ export function getPanelView(reading = {}) {
   if (state === 'finished') {
     return {
       ...view,
-      statusText: 'Finished reading',
+      statusText: t("Finished reading"),
       statusTone: 'ready',
-      primaryAction: { label: 'Read again', disabled: false },
+      primaryAction: { label: t("Read again"), disabled: false },
       progressPercent: 100,
-      progressLabel: '100% complete',
+      progressLabel: t("100% complete"),
     };
   }
 
@@ -120,7 +121,7 @@ export function getPanelView(reading = {}) {
     const primaryAction = getErrorPrimaryAction(reading.errorCode);
     return {
       ...view,
-      statusText: reading.message || 'Something went wrong',
+      statusText: reading.message || t("Something went wrong"),
       statusTone: 'error',
       isError: true,
       primaryAction,
@@ -132,28 +133,28 @@ export function getPanelView(reading = {}) {
 
 function getErrorPrimaryAction(errorCode) {
   if (errorCode === 'article_text_not_found' || errorCode === 'empty_selection') {
-    return { label: 'Read selected', disabled: false, action: 'read-selected' };
+    return { label: t("Read selected"), disabled: false, action: 'read-selected' };
   }
-  return { label: 'Try again', disabled: false, action: 'try-again' };
+  return { label: t("Try again"), disabled: false, action: 'try-again' };
 }
 
 function getReadingCopy(source) {
   if (source === 'selection') {
     return {
-      readingSubtitle: 'Reading selected text',
-      readingStatus: 'Reading selected text...',
-      preparingSubtitle: 'Preparing selected text',
-      preparingStatus: 'Preparing selected text',
-      pausedSubtitle: 'Selected text paused',
+      readingSubtitle: t("Reading selected text"),
+      readingStatus: t("Reading selected text..."),
+      preparingSubtitle: t("Preparing selected text"),
+      preparingStatus: t("Preparing selected text"),
+      pausedSubtitle: t("Selected text paused"),
     };
   }
 
   return {
-    readingSubtitle: 'Reading current page',
-    readingStatus: 'Reading page...',
-    preparingSubtitle: 'Preparing current page',
-    preparingStatus: 'Preparing voice',
-    pausedSubtitle: 'Reading paused',
+    readingSubtitle: t("Reading current page"),
+    readingStatus: t("Reading page..."),
+    preparingSubtitle: t("Preparing current page"),
+    preparingStatus: t("Preparing voice"),
+    pausedSubtitle: t("Reading paused"),
   };
 }
 
@@ -162,7 +163,7 @@ export function getSetupView(setup = {}) {
   if (phase === 'ready') {
     return {
       visible: false,
-      compactText: 'Voice ready',
+      compactText: t("Voice ready"),
     };
   }
 
@@ -170,10 +171,10 @@ export function getSetupView(setup = {}) {
     return {
       visible: true,
       isError: true,
-      title: 'Voice setup failed',
+      title: t("Voice setup failed"),
       progressPercent: clampPercent(setup.progress),
-      detail: setup.detail || 'Model setup failed.',
-      eta: setup.eta || 'Try again',
+      detail: setup.detail || t("Model setup failed."),
+      eta: setup.eta || t("Try again"),
     };
   }
 
@@ -183,10 +184,10 @@ export function getSetupView(setup = {}) {
 
   return {
     visible: true,
-    title: 'Preparing voice',
+    title: t("Preparing voice"),
     progressPercent: clampPercent(setup.progress),
-    detail: setup.detail || 'Preparing local voice; missing files download from Hugging Face.',
-    eta: setup.eta || 'Estimating time...',
+    detail: setup.detail || t("Preparing local voice; missing files download from Hugging Face."),
+    eta: setup.eta || t("Estimating time..."),
   };
 }
 
@@ -202,7 +203,7 @@ export function createArticleSummary(article = {}) {
       modeLabel,
       wordCount: 0,
       minutes: 0,
-      metaText: 'Open an article, then read the page',
+      metaText: t("Open an article, then read the page"),
       previewText: DEFAULT_PREVIEW,
     };
   }
@@ -214,7 +215,7 @@ export function createArticleSummary(article = {}) {
     modeLabel,
     wordCount,
     minutes,
-    metaText: `${wordCount} ${wordCount === 1 ? 'word' : 'words'} · ~${minutes} ${minutes === 1 ? 'min' : 'min'}`,
+    metaText: `${wordCount === 1 ? t('$1 word', [wordCount]) : t('$1 words', [wordCount])} · ~${minutes} ${t('min')}`,
     previewText: firstSentences(text),
   };
 }
@@ -256,7 +257,7 @@ export function createReadingQueueWindow(chunks = [], currentChunk = 0, { window
       startNumber: 0,
       endNumber: 0,
       isLimited: false,
-      countLabel: '0 sections',
+      countLabel: t("0 sections"),
     };
   }
 
@@ -323,10 +324,10 @@ export function createResumePrompt(saved = null) {
 
   const progressPercent = clampPercent(Number(saved.progressPercent));
   const title = normalizeSpace(saved.title);
-  const sectionLabel = `Section ${Math.trunc(chunk) + 1} of ${Math.trunc(totalChunks)}`;
+  const sectionLabel = t("Section $1 of $2", [Math.trunc(chunk) + 1, Math.trunc(totalChunks)]);
   return {
     visible: true,
-    title: `Resume at ${progressPercent}%`,
+    title: t("Resume at $1%", [progressPercent]),
     detail: title ? `${title} · ${sectionLabel}` : sectionLabel,
     excerpt: normalizeSpace(saved.excerpt),
   };
@@ -342,10 +343,10 @@ export function getWeightedProgress(currentChunk, wordCounts = []) {
 }
 
 export function getContentModeLabel(source) {
-  if (source === 'selection') return 'Selected text';
-  if (source === 'pdf') return 'PDF document';
-  if (source === 'fallback') return 'Full page';
-  return 'Article only';
+  if (source === 'selection') return t("Selected text");
+  if (source === 'pdf') return t("PDF document");
+  if (source === 'fallback') return t("Full page");
+  return t("Article only");
 }
 
 function getReadProgress(currentChunk, totalChunks, wordCounts = null, totalReadableWordCount = 0) {
@@ -361,7 +362,7 @@ function getRemainingLabel(currentChunk, totalChunks, wordCounts = null, totalRe
   const totalWords = Math.max(0, Math.trunc(Number(totalReadableWordCount) || 0));
   if (totalWords > 0) {
     const remainingWords = Math.max(0, totalWords - getCompletedWordCount(currentChunk, wordCounts));
-    return `${remainingWords} ${remainingWords === 1 ? 'word' : 'words'} left`;
+    return remainingWords === 1 ? t('$1 word left', [remainingWords]) : t('$1 words left', [remainingWords]);
   }
   if (!Number.isFinite(totalChunks) || totalChunks <= 0) return '';
   const current = Number.isFinite(currentChunk) ? currentChunk : 0;
@@ -369,10 +370,10 @@ function getRemainingLabel(currentChunk, totalChunks, wordCounts = null, totalRe
     const summary = getWordCountSummary(wordCounts);
     const currentIndex = Math.min(Math.max(0, Math.trunc(current)), summary.length);
     const remainingWords = Math.max(0, summary.total - summary.prefix[currentIndex]);
-    return `${remainingWords} ${remainingWords === 1 ? 'word' : 'words'} left`;
+    return remainingWords === 1 ? t('$1 word left', [remainingWords]) : t('$1 words left', [remainingWords]);
   }
   const remaining = Math.max(0, totalChunks - current);
-  return `${remaining} ${remaining === 1 ? 'chunk' : 'chunks'} left`;
+  return remaining === 1 ? t('$1 chunk left', [remaining]) : t('$1 chunks left', [remaining]);
 }
 
 function getCompletedWordCount(currentChunk, wordCounts) {
@@ -465,7 +466,7 @@ function createQueueItem(chunk, index, safeCurrent) {
   const text = firstSentences(getChunkDisplayText(chunk));
   const item = {
     number: index + 1,
-    text: Number.isFinite(pageNumber) ? `Page ${pageNumber} · ${text}` : text,
+    text: Number.isFinite(pageNumber) ? t("Page $1 · $2", [pageNumber, text]) : text,
     state: index < safeCurrent ? 'done' : index === safeCurrent ? 'current' : 'upcoming',
   };
   if (Number.isFinite(pageNumber)) item.pageNumber = pageNumber;
@@ -500,7 +501,7 @@ function getQueueSearchRecords(chunks, query) {
   chunks.forEach((chunk, index) => {
     const pageNumber = typeof chunk === 'string' ? null : chunk?.pageNumber;
     const text = firstSentences(getChunkDisplayText(chunk));
-    const displayText = Number.isFinite(pageNumber) ? `Page ${pageNumber} · ${text}` : text;
+    const displayText = Number.isFinite(pageNumber) ? t("Page $1 · $2", [pageNumber, text]) : text;
     const record = { index, text: displayText, pageNumber };
     if (queueSearchRecordMatches(record, query)) records.push(record);
   });
@@ -526,29 +527,29 @@ function queueSearchRecordMatches(record, query) {
   if (text.includes(query)) return true;
   if (Number.isFinite(record.pageNumber)) {
     const page = String(Math.trunc(record.pageNumber));
-    return query === page || query === `page ${page}`;
+    return query === page || query === t("page $1", [page]);
   }
   return false;
 }
 
 function formatParagraphCount(totalCount, visibleCount, isLimited) {
-  const unit = totalCount === 1 ? 'paragraph' : 'paragraphs';
+  const count = totalCount === 1 ? t('$1 paragraph', [totalCount]) : t('$1 paragraphs', [totalCount]);
   return isLimited
-    ? `${totalCount} ${unit} · first ${visibleCount} shown`
-    : `${totalCount} ${unit}`;
+    ? t('$1 · first $2 shown', [count, visibleCount])
+    : count;
 }
 
 function formatSectionCount(totalCount, startNumber, endNumber, isLimited) {
-  const unit = totalCount === 1 ? 'section' : 'sections';
+  const count = totalCount === 1 ? t('$1 section', [totalCount]) : t('$1 sections', [totalCount]);
   return isLimited
-    ? `${totalCount} ${unit} · ${startNumber}-${endNumber} shown`
-    : `${totalCount} ${unit}`;
+    ? t('$1 · $2-$3 shown', [count, startNumber, endNumber])
+    : count;
 }
 
 function formatMatchCount(matchCount, totalCount) {
-  const matchUnit = matchCount === 1 ? 'match' : 'matches';
-  const sectionUnit = totalCount === 1 ? 'section' : 'sections';
-  return `${matchCount} ${matchUnit} of ${totalCount} ${sectionUnit}`;
+  const matches = matchCount === 1 ? t('$1 match', [matchCount]) : t('$1 matches', [matchCount]);
+  const sections = totalCount === 1 ? t('$1 section', [totalCount]) : t('$1 sections', [totalCount]);
+  return t('$1 of $2', [matches, sections]);
 }
 
 function normalizePositiveInteger(value, fallback) {
@@ -576,7 +577,7 @@ export function renderModelSetupElements(els, setup) {
   if (!els.setup) return;
   els.setup.hidden = !view.visible;
   if (els.voiceReady) els.voiceReady.hidden = !view.compactText;
-  if (view.compactText && els.voiceReady) els.voiceReady.textContent = `${view.compactText} - cached for next time`;
+  if (view.compactText && els.voiceReady) els.voiceReady.textContent = t("$1 - cached for next time", [view.compactText]);
   if (!view.visible) return;
   els.setup.classList?.toggle?.('is-error', Boolean(view.isError));
   if (els.setupTitle) els.setupTitle.textContent = view.title;
@@ -591,12 +592,12 @@ export function renderModelSetupElements(els, setup) {
 export function getModelDownloadProgress(event, downloads) {
   if (!['download', 'progress', 'done'].includes(event?.status) || !Number.isFinite(event?.loaded)
     || !Number.isFinite(event?.total) || event.total <= 0) return null;
-  downloads.set(event.file || event.name || 'voice model', { loaded: event.loaded, total: event.total, verified: event.status === 'done' });
+  downloads.set(event.file || event.name || t("voice model"), { loaded: event.loaded, total: event.total, verified: event.status === 'done' });
   const files = [...downloads.values()];
   const loaded = files.reduce((sum, file) => sum + file.loaded, 0), total = files.reduce((sum, file) => sum + file.total, 0);
-  const file = String(event.file || event.name || 'voice model').split('/').pop();
-  const amount = (loaded, total) => `${(loaded / 1_000_000).toFixed(1)} / ${(total / 1_000_000).toFixed(1)} MB`;
+  const file = String(event.file || event.name || t("voice model")).split('/').pop();
+  const amount = (loaded, total) => t("$1 / $2 MB", [(loaded / 1_000_000).toFixed(1), (total / 1_000_000).toFixed(1)]);
   return { progress: 5 + Math.round(85 * loaded / total), detail: event.status === 'done'
-    ? files.every(file => file.verified) ? `Verified ${file}. Preparing voice…` : `Downloading voice files: ${amount(loaded, total)}`
-    : `Downloading ${file}: ${amount(event.loaded, event.total)}` };
+    ? files.every(file => file.verified) ? t("Verified $1. Preparing voice…", [file]) : t("Downloading voice files: $1", [amount(loaded, total)])
+    : t("Downloading $1: $2", [file, amount(event.loaded, event.total)]) };
 }

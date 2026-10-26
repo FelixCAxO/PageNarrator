@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "อ่านหน้าเว็บและไฟล์ PDF ด้วยเสียงบนอุปกรณ์ในท้องถิ่นและการเน้นแบบซิงโครไนซ์"
+  },
+  "actionTitle": {
+    "message": "ดูหน้านี้"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "ตรวจพบภาษา: $language$ Kokoro รองรับภาษาอังกฤษ หากต้องการอ่านข้อความนี้ ให้เลือก OmniVoice และ $language$ ในการตั้งค่าเสียง",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "ตรวจพบภาษา: $language$ ($percentage$%)",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "ไม่สามารถระบุภาษาได้อย่างแน่ชัด"
+  },
+  "onboardingQuickWinTitle": {
+    "message": "อ่านผ่านทางเลือก"
+  },
+  "onboardingQuickWinBody": {
+    "message": "เลือกสองคําในหน้าแล้วเลือก Read Selected"
+  },
+  "onboardingQuickWinCta": {
+    "message": "อ่านข้อความที่เลือก"
+  },
+  "onboardingFullPageTitle": {
+    "message": "อ่านหน้าเว็บ"
+  },
+  "onboardingFullPageBody": {
+    "message": "เลือกหน้าอ่านเพื่อเริ่มอ่าน"
+  },
+  "onboardingFullPageCta": {
+    "message": "อ่านทั้งหน้า"
+  },
+  "onboardingDismiss": {
+    "message": "ข้าม"
+  },
+  "reviewPromptTitle": {
+    "message": "ให้คะแนน PageNarrator"
+  },
+  "reviewPromptBody": {
+    "message": "รีวิวของคุณช่วยให้ผู้อ่านอื่น ๆ เลือก"
+  },
+  "reviewNever": {
+    "message": "ไม่ต้องแสดงอีก"
+  },
+  "reviewLater": {
+    "message": "ภายหลัง"
+  },
+  "reviewReview": {
+    "message": "ให้คะแนน"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ หน้าโหลด",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ หน้าโหลด",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "การโหลดเอกสาร ..."
+  },
+  "ui_ffb67f19": {
+    "message": "ดาวน์โหลด PDF..."
+  },
+  "ui_abc76c7c": {
+    "message": "เปิดใหม่ PDF..."
+  },
+  "ui_824a0948": {
+    "message": "หน้า $arg1$ ของ $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "การทํางาน..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ เสียง",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "เสียง"
+  },
+  "ui_85d257a6": {
+    "message": "การประมวลผล: WebGPU ( dedicated GPU)"
+  },
+  "ui_ea65fbf2": {
+    "message": "การประมวลผล: WebGPU (รวม GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "การประมวลผล: WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "การประมวลผล: CPU / WebAssembly (ช้ากว่า)"
+  },
+  "ui_5c338a74": {
+    "message": "การประมวลผลที่แสดงหลังจากที่การอ่านเริ่มต้น"
+  },
+  "ui_c513493a": {
+    "message": "การเตรียมเสียงในท้องถิ่น... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "การเตรียมการเสียงล้มเหลว ลองอีกครั้ง"
+  },
+  "ui_523c0c96": {
+    "message": "ดาวน์โหลดไฟล์เสียงที่หายไปจาก Hugging Face ก่อนการติดตั้ง"
+  },
+  "ui_8036af59": {
+    "message": "ลองอีกครั้ง"
+  },
+  "ui_fb625aee": {
+    "message": "เตรียมเสียง"
+  },
+  "ui_b9328a4d": {
+    "message": "ส่วน: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "ส่วน: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "สามารถใช้ได้เมื่อการอ่านเริ่มต้น"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript จะปรากฏเมื่อข้อความโหลด"
+  },
+  "ui_fe92f855": {
+    "message": "หน้าปัจจุบัน"
+  },
+  "ui_bf0c7feb": {
+    "message": "การเตรียม..."
+  },
+  "ui_3d77a20f": {
+    "message": "การเตรียมเสียง... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "อ่านต่อ"
+  },
+  "ui_44f9bf2d": {
+    "message": "หยุดชั่วคราว"
+  },
+  "ui_f3de41d3": {
+    "message": "พร้อมอ่าน"
+  },
+  "ui_9283b625": {
+    "message": "การเตรียมเสียง ..."
+  },
+  "ui_5ee7339b": {
+    "message": "กำลังอ่าน"
+  },
+  "ui_de281feb": {
+    "message": "หยุดชั่วคราว"
+  },
+  "ui_a7b2cec3": {
+    "message": "เสร็จแล้ว"
+  },
+  "ui_5d640b9c": {
+    "message": "ต้องดำเนินการ"
+  },
+  "ui_4d1cf041": {
+    "message": "หญิงอเมริกัน"
+  },
+  "ui_faf95838": {
+    "message": "อเมริกัน ผู้ชาย"
+  },
+  "ui_f3768d40": {
+    "message": "ผู้หญิงอังกฤษ"
+  },
+  "ui_4139054c": {
+    "message": "เลือกเสียงภาษาอังกฤษ Kokoro ภาษาอื่น ๆ ไม่สนับสนุน"
+  },
+  "ui_c0c171d2": {
+    "message": "ไม่สามารถเสร็จสิ้นการดําเนินการนี้"
+  },
+  "ui_02e8a8a4": {
+    "message": "การระบุข้อความในหน้า $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ หน้าหลังจากหน้านี้",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ หน้าหลังหน้านี้",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "ปกติ"
+  },
+  "ui_99f0d384": {
+    "message": "เร็วขึ้น"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$s น้อยลง",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "การอ่าน: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "อ่านข้อความที่เลือก"
+  },
+  "ui_865bf5ae": {
+    "message": "อ่านข้อความที่เลือก"
+  },
+  "ui_213e90fa": {
+    "message": "ลองอีกครั้ง"
+  },
+  "ui_1dbc8cae": {
+    "message": "อนุญาตให้เข้าถึงเว็บไซต์"
+  },
+  "ui_450f715d": {
+    "message": "อ่านส่วน $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "การเล่นเสียงล้มเหลว"
+  },
+  "ui_248b7c43": {
+    "message": "ไม่สามารถตรวจจับข้อความบทความ"
+  },
+  "ui_48ca3593": {
+    "message": "ไม่สามารถดึงข้อความจากหน้า $arg1$ ของ PDF ได้",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "ไม่มีหน้าโหลด"
+  },
+  "ui_8bdfb3a1": {
+    "message": "ข้อความปรากฏเมื่อการอ่านเริ่มต้น"
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "อ่านหน้านี้ด้วยเสียงดัง"
+  },
+  "ui_758bbc44": {
+    "message": "อ่านหน้าเว็บ"
+  },
+  "ui_a174ecb1": {
+    "message": "0% เต็มรูปแบบ"
+  },
+  "ui_e527eba2": {
+    "message": "การเตรียมเสียง - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "การเตรียมเสียง ..."
+  },
+  "ui_78d44090": {
+    "message": "ปิดการอ่านปัจจุบัน"
+  },
+  "ui_98847cfb": {
+    "message": "หยุดอ่าน..."
+  },
+  "ui_e100f46d": {
+    "message": "กำลังหยุด…"
+  },
+  "ui_4b7f7705": {
+    "message": "หยุด"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% เต็มรูปแบบ",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "การอ่านเสร็จสิ้น"
+  },
+  "ui_2f0dcc5d": {
+    "message": "อ่านอีกครั้ง"
+  },
+  "ui_329cfb9e": {
+    "message": "100% เต็มรูปแบบ"
+  },
+  "ui_76fc465e": {
+    "message": "สิ่งบางอย่างผิดพลาด"
+  },
+  "ui_0d4b0da7": {
+    "message": "อ่านข้อความที่เลือก"
+  },
+  "ui_242bb2e3": {
+    "message": "อ่านข้อความที่เลือก..."
+  },
+  "ui_10905ea3": {
+    "message": "การเตรียมข้อความที่เลือก"
+  },
+  "ui_a2df426f": {
+    "message": "เลือกข้อความหยุด"
+  },
+  "ui_915b9541": {
+    "message": "อ่านหน้าปัจจุบัน"
+  },
+  "ui_50880cb0": {
+    "message": "การอ่านหน้า..."
+  },
+  "ui_e8bf303d": {
+    "message": "การเตรียมหน้าปัจจุบัน"
+  },
+  "ui_59ad3c41": {
+    "message": "การเตรียมเสียง"
+  },
+  "ui_af82140f": {
+    "message": "การอ่านหยุด"
+  },
+  "ui_1ede4e42": {
+    "message": "เสียงพร้อม"
+  },
+  "ui_63338bd9": {
+    "message": "การตั้งค่าเสียงล้มเหลว"
+  },
+  "ui_cedd5bba": {
+    "message": "การตั้งค่าแบบจําลองล้มเหลว"
+  },
+  "ui_a7f38d4e": {
+    "message": "การเตรียมเสียงในท้องถิ่น; ไฟล์ที่หายไปดาวน์โหลดจาก Hugging Face"
+  },
+  "ui_430dc39d": {
+    "message": "การประเมินเวลา..."
+  },
+  "ui_06a382b7": {
+    "message": "เปิดบทความแล้วอ่านหน้า"
+  },
+  "ui_37bc7086": {
+    "message": "คำ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "คำ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "มิน"
+  },
+  "ui_5dca8675": {
+    "message": "0 ส่วน"
+  },
+  "ui_2d292516": {
+    "message": "ส่วน $arg1$ ของ $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "อ่านต่อที่ $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "ข้อความที่เลือก"
+  },
+  "ui_8212a19a": {
+    "message": "PDFเอกสาร"
+  },
+  "ui_cb3b43ef": {
+    "message": "หน้าที่เต็ม"
+  },
+  "ui_e13844b5": {
+    "message": "บทความเฉพาะ"
+  },
+  "ui_6cae863f": {
+    "message": "คำที่เหลือ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "คำที่เหลือ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "ส่วนที่เหลือ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "ส่วนที่เหลือ: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "หน้า $arg1$ · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "หน้า $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "ย่อหน้า: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "ย่อหน้า: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · ครั้งแรก $arg2$ แสดง",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ แสดง",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "ผลการค้นหา: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "ผลการค้นหา: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ ของ $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - cached สําหรับครั้งต่อไป",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "รูปแบบเสียง"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "ตรวจสอบ $arg1$ การเตรียมความพร้อมเสียง...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "ดาวน์โหลดไฟล์เสียง: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "ดาวน์โหลด $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "การตั้งค่า GPU ไม่ประสบความสําเร็จ การรีเซ็ตด้วย CPU/WebAssembly..."
+  },
+  "ui_f0fc3524": {
+    "message": "ดาวน์โหลด $arg1$...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "เตรียมความพร้อม $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "ตรวจสอบ GPU สนับสนุน..."
+  },
+  "ui_a1f035db": {
+    "message": "ตรวจสอบ cache ของเบราว์เซอร์"
+  },
+  "ui_412b5f0e": {
+    "message": "การตั้งค่าครั้งเดียว"
+  },
+  "ui_91d30309": {
+    "message": "ไม่สามารถเตรียมเสียงที่ร้องขอได้"
+  },
+  "ui_b9775b3a": {
+    "message": "ประสบการณ์ - คุณภาพไม่ได้รับการตรวจสอบ"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - แก้ไข",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "คุณภาพเสียงปรับได้หลังจาก $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "การประมวลผลเสียง: GPU (WebGPU) พร้อมการตั้งค่าที่เป็นมิตรกับ CPU"
+  },
+  "ui_3411bb9b": {
+    "message": "การประมวลผลเสียง: GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "การประมวลผลเสียง: CPU เท่านั้น (WebAssembly) เพราะ WebGPU ไม่สามารถใช้ได้"
+  },
+  "ui_9e335d53": {
+    "message": "การประมวลผลเสียง: CPU เท่านั้น (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "การประมวลผลเสียง: ระบบเสียง (เบราว์เซอร์หรือระบบปฏิบัติการ)"
+  },
+  "ui_815f1834": {
+    "message": "การประมวลผลเสียง: ตรวจสอบเมื่อการอ่านเริ่มต้น"
+  },
+  "ui_19f02581": {
+    "message": "กำลังใช้ OmniVoice รุ่นทดลองผ่าน WebGPU"
+  },
+  "ui_f7c3a723": {
+    "message": "ไฟล์โมเดลดาวน์โหลดจาก Hugging Face ส่วนเสียงพูดสร้างบนอุปกรณ์นี้"
+  },
+  "ui_411e02b2": {
+    "message": "หาก WebGPU ใช้งานไม่ได้ ให้เลือก Kokoro"
+  },
+  "ui_3581ebdf": {
+    "message": "เสียง Kokoro: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "ไฟล์เสียงที่ขาดหายจะดาวน์โหลดจาก Hugging Face เมื่อเตรียมเสียงหรือเริ่มอ่าน"
+  },
+  "ui_6813181e": {
+    "message": "เสียงพูดสร้างบนอุปกรณ์นี้ และใช้ไฟล์แคชซ้ำแบบออฟไลน์ได้จนกว่าจะล้างไฟล์"
+  },
+  "ui_95b6ef87": {
+    "message": "คุณภาพทดลอง: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "หมายเลข $arg1$ เสียงที่มีอยู่",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "Skip รหัส snippets"
+  },
+  "ui_9d9f28af": {
+    "message": "หน้านี้มีรหัสสปินจํานวนมาก เพลิดเพลินไปกับ $arg1$ นาทีของรหัสสําหรับเรื่องราวที่ราบรื่น",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "หน้านี้มีรหัสสปินจํานวนมาก เพลิดเพลินไปกับ $arg1$ นาทีของรหัสสําหรับเรื่องราวที่ราบรื่นขึ้น",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "อัตโนมัติ"
+  },
+  "ui_361987ac": {
+    "message": "คุณภาพสูง"
+  },
+  "ui_c0cc603d": {
+    "message": "สมดุล"
+  },
+  "ui_5b602dbf": {
+    "message": "ประหยัดแบตเตอรี่"
+  },
+  "ui_157606b3": {
+    "message": "โหลดล่วงหน้าแล้ว 1 ส่วน"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ ส่วนที่อัพโหลดแล้ว",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "การเล่นขั้นสูงใน"
+  },
+  "ui_4ddd1cf4": {
+    "message": "ปิดการเล่นขั้นสูง"
+  },
+  "ui_95c9f0ef": {
+    "message": "แปลงเสียงเบราว์เซอร์อัตโนมัติ"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$ ชิ้นส่วนตัวละคร, $arg3$, $arg4$, $arg5$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "ไม่สามารถเข้าถึงหน้านี้"
+  },
+  "ui_be75ad01": {
+    "message": "การดําเนินการ readerEngine best-effort ไม่ประสบความสําเร็จ"
+  },
+  "ui_eb6988d3": {
+    "message": "ไม่สามารถโหลดตําแหน่งรีเซ็ต"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator ไม่สามารถเริ่มต้นได้"
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator ผู้เล่น"
+  },
+  "ui_9d65bbdb": {
+    "message": "เลือกรูปแบบเสียง"
+  },
+  "ui_e6334598": {
+    "message": "โมเดลเสียง"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (ค่าเริ่มต้น)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (รุ่นทดลอง)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "มีเสียงภาษาอังกฤษสิบเสียง การตั้งค่าครั้งแรกใช้ประมาณ 93 MB สำหรับ CPU หรือ 326 MB สำหรับ GPU เสียงเพิ่มเติมใช้ประมาณ 0.5 MB โดยจะเก็บเสียงที่คุณบันทึกไว้"
+  },
+  "ui_2c04fde6": {
+    "message": "การตั้งค่าเสียง"
+  },
+  "ui_9a73db9b": {
+    "message": "ภาษา"
+  },
+  "ui_2070a9f8": {
+    "message": "โหลดเสียง"
+  },
+  "ui_c39c8623": {
+    "message": "ประเภทเสียง"
+  },
+  "ui_d8a26cb9": {
+    "message": "หญิง"
+  },
+  "ui_487d36f0": {
+    "message": "ชาย"
+  },
+  "ui_a2a40f30": {
+    "message": "รูปแบบเสียง"
+  },
+  "ui_16383585": {
+    "message": "เลือกการเปลี่ยนแปลงเสียง การเปลี่ยนแปลงจะใช้ในส่วนถัดไป กําหนดความเร็วด้วยความเร็วในการเล่น"
+  },
+  "ui_d975568d": {
+    "message": "กระซิบ"
+  },
+  "ui_3d7af8ef": {
+    "message": "ความเร็วในการเล่น"
+  },
+  "ui_c58a3963": {
+    "message": "บันทึกโดยอัตโนมัติ การเปลี่ยนแปลงเสียงใช้กับส่วนถัดไปในขณะที่อ่าน"
+  },
+  "ui_71365cb1": {
+    "message": "การเตรียมความพร้อมเสียงท้องถิ่น"
+  },
+  "ui_c197c7e2": {
+    "message": "ข้าม"
+  },
+  "ui_dad1a20b": {
+    "message": "ตอนนี้อ่าน"
+  },
+  "ui_30ea6e2f": {
+    "message": "ส่วนก่อนหน้า"
+  },
+  "ui_c2954bc2": {
+    "message": "ก่อนหน้า"
+  },
+  "ui_dce2da08": {
+    "message": "ถัดไป"
+  },
+  "ui_0c341bc6": {
+    "message": "เสียง Kokoro ในตัวทำงานบนอุปกรณ์ OmniVoice ก็เช่นกัน ไฟล์เสียงที่ขาดหายจะดาวน์โหลดจาก Hugging Face ข้อความที่อ่านจะอยู่บนอุปกรณ์นี้ การตั้งค่า URL และชื่อหน้าเว็บ ตำแหน่งการอ่าน และข้อความสั้น ๆ จะเก็บไว้บนอุปกรณ์"
+  },
+  "ui_3452d125": {
+    "message": "รายละเอียดความเป็นส่วนตัว"
+  },
+  "ui_1eb4158c": {
+    "message": "การตั้งค่าขั้นสูง"
+  },
+  "ui_ce305438": {
+    "message": "การหยุดพัก การปรับข้อความ และการไฮไลต์"
+  },
+  "ui_67231237": {
+    "message": "การหยุดพักระหว่างส่วน"
+  },
+  "ui_8f517045": {
+    "message": "ประสิทธิภาพ"
+  },
+  "ui_34c199e6": {
+    "message": "การประมวลผล"
+  },
+  "ui_bec07b52": {
+    "message": "CPU / WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "ปล่อยหน่วยความจําเสียงเมื่อเล่น"
+  },
+  "ui_231b3e4b": {
+    "message": "ข้ามส่วนโค้ด"
+  },
+  "ui_456ac053": {
+    "message": "พื้นที่สี"
+  },
+  "ui_10cd7856": {
+    "message": "สีคํา"
+  },
+  "ui_1e4dbab9": {
+    "message": "ความทึบของพื้นที่"
+  },
+  "ui_1688a6f4": {
+    "message": "ความทึบของคำ"
+  },
+  "ui_0583096b": {
+    "message": "ข้อความถอดเสียง"
+  },
+  "ui_89a5470c": {
+    "message": "คิวการอ่าน"
+  },
+  "ui_a106cd77": {
+    "message": "ค้นหาส่วน"
+  },
+  "ui_ee3d49e1": {
+    "message": "แรก"
+  },
+  "ui_30035f15": {
+    "message": "หมายเลขส่วน"
+  },
+  "ui_41d0c56b": {
+    "message": "ไป"
+  },
+  "ui_e40e2439": {
+    "message": "สุดท้าย"
+  },
+  "ui_bd9126df": {
+    "message": "ไม่มีส่วนที่จับคู่ ลองค้นหาอีก"
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator เครื่องอ่าน"
+  },
+  "ui_c5fbc06e": {
+    "message": "อนุญาตให้เข้าถึงหน้า"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator ไอคอนการขยายตัว"
+  },
+  "ui_5a3d9c47": {
+    "message": "เปิด PageNarrator จากหน้า"
+  },
+  "ui_94a4b160": {
+    "message": "คลิกที่ไอคอนส่วนขยาย PageNarrator ในขณะที่หน้าใช้งานแล้วเลือกอ่านหน้า"
+  },
+  "ui_4be7c01e": {
+    "message": "ดาวน์โหลดไฟล์เสียงที่หายไปเมื่อใช้ครั้งแรก การพูดจะทํางานในท้องถิ่น"
+  },
+  "ui_3d04a00a": {
+    "message": "การเตรียมเสียงท้องถิ่น; ไฟล์ที่หายไปดาวน์โหลดจาก Hugging Face..."
+  },
+  "ui_048ca959": {
+    "message": "ขั้นตอนการกู้คืน"
+  },
+  "ui_0ec24245": {
+    "message": "รายละเอียด"
+  },
+  "ui_4ff448da": {
+    "message": "การอ่านต่อ"
+  },
+  "ui_cb2eed93": {
+    "message": "รีสอร์ทในตําแหน่งที่บันทึกไว้"
+  },
+  "ui_ded3954b": {
+    "message": "การบันทึกตําแหน่งการอ่าน"
+  },
+  "ui_24299867": {
+    "message": "เริ่มใหม่"
+  },
+  "ui_d71c7401": {
+    "message": "คําแนะนําการอ่าน"
+  },
+  "ui_d5c02828": {
+    "message": "หน้านี้มีรหัสสปินจํานวนมาก"
+  },
+  "ui_336b89fb": {
+    "message": "ข้ามโค้ด"
+  },
+  "ui_299fab6d": {
+    "message": "บทความที่ค้นพบ"
+  },
+  "ui_a9898369": {
+    "message": "อ่าน: บทความเท่านั้น"
+  },
+  "ui_3065e144": {
+    "message": "เริ่มต้นด้วย"
+  },
+  "ui_7ac012cc": {
+    "message": "เล่นอ่าน"
+  },
+  "ui_8edce20a": {
+    "message": "ความก้าวหน้าในการอ่าน"
+  },
+  "ui_949ea37c": {
+    "message": "0 ช่องที่เหลือ"
+  },
+  "ui_1250127e": {
+    "message": "PDF การนําทางหน้าเว็บ"
+  },
+  "ui_e83d9196": {
+    "message": "หน้า"
+  },
+  "ui_27ba99fc": {
+    "message": "ผ่านหน้าปัจจุบัน PDF"
+  },
+  "ui_dbd1ad47": {
+    "message": "การตั้งค่าผู้อ่าน"
+  },
+  "ui_1a27bec5": {
+    "message": "ภาษาจะถูกตรวจจับเมื่อการอ่านเริ่มต้น"
+  },
+  "ui_52ff662d": {
+    "message": "ข้อกําหนดอุปกรณ์"
+  },
+  "ui_fd02dfc2": {
+    "message": "แนะนำ:"
+  },
+  "ui_b0555d92": {
+    "message": "NVIDIA RTX 30 Series GPU หรือใหม่กว่าพร้อม 8 GB + VRAM และ 8 GB + RAM ระบบ"
+  },
+  "ui_0d393abc": {
+    "message": "ใช้ Chromium 120 หรือสูงกว่า Kokoro มีการล้มเหลว CPU น้อยลง ระดับฮาร์ดแวร์ทางกายภาพยังไม่ได้รับการตรวจสอบ"
+  },
+  "ui_f31ba722": {
+    "message": "Timing, การทําความสะอาด, เสียง"
+  },
+  "ui_a879e367": {
+    "message": "ส่วนการพักผ่อน"
+  },
+  "ui_07e1c336": {
+    "message": "สไตล์ Highlight"
+  },
+  "ui_9525b78e": {
+    "message": "กำหนดเอง"
+  },
+  "ui_e0955632": {
+    "message": "อ่านพื้นที่"
+  },
+  "ui_90571eca": {
+    "message": "คําปัจจุบัน"
+  },
+  "ui_ea585567": {
+    "message": "การทําความสะอาด"
+  },
+  "ui_0dc6b4aa": {
+    "message": "ปิด"
+  },
+  "ui_d6fbffc9": {
+    "message": "เคล็ดลับและ transkripts"
+  },
+  "ui_21fd85e4": {
+    "message": "แคสติ้ง & Transcript"
+  },
+  "ui_d6c98891": {
+    "message": "ส่วนปัจจุบันการค้นหาการคัดลอกและการควบคุมการกระโดดสามารถใช้ได้ในโหมดขั้นสูง"
+  },
+  "ui_0eac1f07": {
+    "message": "เรียกดู"
+  },
+  "ui_44d76dee": {
+    "message": "transcript เต็มรูปแบบ"
+  },
+  "ui_ab5783a6": {
+    "message": "0 ข้อ"
+  },
+  "ui_d58a5a9a": {
+    "message": "เคล็ดลับการนําทาง"
+  },
+  "ui_2d877b6c": {
+    "message": "ส่วน"
+  },
+  "ui_03205ed1": {
+    "message": "ค้นหาส่วน"
+  },
+  "ui_27654275": {
+    "message": "ค้นหา transkript หรือหน้าเว็บ"
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF การควบคุม"
+  },
+  "ui_88828491": {
+    "message": "หน้า 1 ของ 1"
+  },
+  "ui_8570fe3a": {
+    "message": "Zoom ออก"
+  },
+  "ui_a3583899": {
+    "message": "Zoom ใน"
+  },
+  "ui_2b3553eb": {
+    "message": "รอบซ้าย"
+  },
+  "ui_2eaecb74": {
+    "message": "รอบขวา"
+  },
+  "ui_b6ab6b07": {
+    "message": "แฟชั่น"
+  },
+  "ui_69acd800": {
+    "message": "พอดีความกว้าง"
+  },
+  "ui_607af25f": {
+    "message": "พอดีหน้า"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF หน้า"
+  },
+  "ui_ab32ceb0": {
+    "message": "รุ่นทดลอง มีรายการภาษา 646 รายการซึ่งมีคุณภาพต่างกัน ต้องใช้ WebGPU ที่รองรับ fp16 และดาวน์โหลดประมาณ 1.35 GB เลือกเสียง รูปแบบ หรือเสียงกระซิบ"
+  },
+  "ui_ab4a698f": {
+    "message": "เปิดจากหน้า"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome ไม่ให้การเข้าถึงแท็บที่ใช้งานอยู่"
+  },
+  "ui_67aad8a8": {
+    "message": "เปิดหน้าคลิกที่ไอคอน PageNarrator จากนั้นเลือกอ่านหน้า"
+  },
+  "ui_724c0e56": {
+    "message": "เปิดจากหน้า"
+  },
+  "ui_4f96b3e0": {
+    "message": "หน้า Chrome ที่ได้รับการป้องกันไม่สามารถอ่านได้ เปิดหน้าเว็บหรือ PDF"
+  },
+  "ui_0cddc760": {
+    "message": "หน้าเปิด"
+  },
+  "ui_30274c11": {
+    "message": "การเข้าถึงหน้าเว็บที่จําเป็น"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator ต้องการเข้าถึงเว็บไซต์นี้"
+  },
+  "ui_2b54b790": {
+    "message": "อนุญาตให้เข้าถึงเว็บไซต์จากไอคอน PageNarrator แล้วลองอีกครั้ง"
+  },
+  "ui_57906b45": {
+    "message": "การอนุญาตให้เข้าถึง"
+  },
+  "ui_b48f6457": {
+    "message": "บันทึกเบราว์เซอร์ฟรีแล้วรีท"
+  },
+  "ui_75eca5ea": {
+    "message": "การจัดเก็บฟรี"
+  },
+  "ui_99e92621": {
+    "message": "เลือกเสียงสําหรับภาษาของหน้านี้"
+  },
+  "ui_997f787a": {
+    "message": "เลือกเสียง"
+  },
+  "ui_50a8c46f": {
+    "message": "แท็บที่ใช้งานปิดก่อนที่การอ่านสามารถเริ่มต้นได้"
+  },
+  "ui_e64862ef": {
+    "message": "แท็บปิด เปิดหน้าใหม่และรีท"
+  },
+  "ui_39f600ae": {
+    "message": "ไม่มีข้อความที่เลือก"
+  },
+  "ui_79f7dfca": {
+    "message": "ไม่มีข้อความที่เลือก"
+  },
+  "ui_b7a079b0": {
+    "message": "เลือกข้อความ"
+  },
+  "ui_522bcc26": {
+    "message": "เลือกข้อความที่คุณต้องการฟังแล้วเลือก Read Selected"
+  },
+  "ui_580dc44e": {
+    "message": "การรับรู้ข้อความที่จําเป็น"
+  },
+  "ui_ce175449": {
+    "message": "บางข้อความ PDF ไม่สามารถอ่านได้อย่างน่าเชื่อถือ"
+  },
+  "ui_f7c03bfe": {
+    "message": "ใช้ข้อความ PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "ใช้การรับรู้ข้อความ (OCR) หรือ PDF กับชั้นข้อความที่สมบูรณ์"
+  },
+  "ui_281501a3": {
+    "message": "เสร็จสิ้น CAPTCHA ในหน้าแล้วรีท"
+  },
+  "ui_d1c2931f": {
+    "message": "ลงชื่อเข้าสู่เว็บไซต์แล้วรีท"
+  },
+  "ui_744be623": {
+    "message": "สัญญาณใน"
+  },
+  "ui_3c4b4f30": {
+    "message": "ไม่มีบทความที่สามารถอ่านได้พบ"
+  },
+  "ui_fb499b08": {
+    "message": "ไม่มีข้อความบทความที่สามารถอ่านได้"
+  },
+  "ui_a1fad21c": {
+    "message": "ลองหน้าอื่น ๆ"
+  },
+  "ui_b0ddc925": {
+    "message": "เลือกส่วนและเลือกอ่านที่เลือกหรือเปิดบทความอื่น"
+  },
+  "ui_d20c5459": {
+    "message": "เสียงไม่ได้เสร็จสิ้นการโหลด"
+  },
+  "ui_eee6a1ad": {
+    "message": "เลือก เตรียมเสียง เพื่อรีเซ็ตการตั้งค่า"
+  },
+  "ui_eab3cf34": {
+    "message": "การพูดรุ่นล้มเหลว"
+  },
+  "ui_4cad964d": {
+    "message": "การสร้างเสียงหยุดก่อนที่เสียงพร้อม"
+  },
+  "ui_2519f9e6": {
+    "message": "แก้ไขหรือเลือกเสียงอื่น"
+  },
+  "ui_1844c6fe": {
+    "message": "ไม่สนับสนุน PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "PDF นี้เสียหายหรือไม่ได้รับการสนับสนุน"
+  },
+  "ui_5679bf2f": {
+    "message": "ลองอื่น PDF"
+  },
+  "ui_b8183083": {
+    "message": "ไม่สามารถดาวน์โหลด PDF ตรวจสอบลิงก์และเชื่อมต่อของคุณ"
+  },
+  "ui_ce24479d": {
+    "message": "ไม่สามารถเปิด PDF นี้"
+  }
+}

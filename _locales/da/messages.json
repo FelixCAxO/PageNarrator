@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "Læs websider og PDF'er højt med lokale stemmer på enheden og synkroniseret fremhævning."
+  },
+  "actionTitle": {
+    "message": "Lyt til denne side"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "Registreret sprog: $language$. Kokoro understøtter engelsk. Vælg OmniVoice og $language$ i stemmeindstillingerne for at læse teksten op.",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "Registreret sprog: $language$ ($percentage$ %).",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "Sproget kunne ikke identificeres sikkert."
+  },
+  "onboardingQuickWinTitle": {
+    "message": "Læs en udvalgt passage"
+  },
+  "onboardingQuickWinBody": {
+    "message": "Vælg to sætninger på siden, og vælg derefter Læs valgt."
+  },
+  "onboardingQuickWinCta": {
+    "message": "Læs markeringen op"
+  },
+  "onboardingFullPageTitle": {
+    "message": "Læs siden op"
+  },
+  "onboardingFullPageBody": {
+    "message": "Vælg Læs side for at begynde at læse."
+  },
+  "onboardingFullPageCta": {
+    "message": "Læs hele siden op"
+  },
+  "onboardingDismiss": {
+    "message": "Spring over"
+  },
+  "reviewPromptTitle": {
+    "message": "Bedøm PageNarrator"
+  },
+  "reviewPromptBody": {
+    "message": "Din anmeldelse hjælper andre læsere med at vælge."
+  },
+  "reviewNever": {
+    "message": "Aldrig"
+  },
+  "reviewLater": {
+    "message": "Senere"
+  },
+  "reviewReview": {
+    "message": "Anmeld"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ side indlæst",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ sider indlæst",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "Lading af dokumenter..."
+  },
+  "ui_ffb67f19": {
+    "message": "Opladning PDF ..."
+  },
+  "ui_abc76c7c": {
+    "message": "Genåbning PDF ..."
+  },
+  "ui_824a0948": {
+    "message": "Side $arg1$ af $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "Arbejde..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ stemmer",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "Stemme"
+  },
+  "ui_85d257a6": {
+    "message": "Forarbejdning: WebGPU (dedikeret til GPU)"
+  },
+  "ui_ea65fbf2": {
+    "message": "Behandling: WebGPU (integreret GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "Forarbejdning: WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "Behandling: CPU / WebAssembly (langsommere)"
+  },
+  "ui_5c338a74": {
+    "message": "Forarbejdning vises efter læsning begynder."
+  },
+  "ui_c513493a": {
+    "message": "Forberedelse af lokal stemme... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "Lydforberedelsen mislykkedes. prøv igen."
+  },
+  "ui_523c0c96": {
+    "message": "Manglende stemmefiler download fra Hugging Face før installation."
+  },
+  "ui_8036af59": {
+    "message": "Prøv igen"
+  },
+  "ui_fb625aee": {
+    "message": "Forbered stemme"
+  },
+  "ui_b9328a4d": {
+    "message": "Afsnit: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "Afsnit: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "Tilgængelig, når læsningen begynder"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript vises, når tekst indlæses."
+  },
+  "ui_fe92f855": {
+    "message": "Nuværende side"
+  },
+  "ui_bf0c7feb": {
+    "message": "Forberedelse..."
+  },
+  "ui_3d77a20f": {
+    "message": "Forberedelse af stemme... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "Fortsæt"
+  },
+  "ui_44f9bf2d": {
+    "message": "Pause"
+  },
+  "ui_f3de41d3": {
+    "message": "Klar til oplæsning"
+  },
+  "ui_9283b625": {
+    "message": "Forberedelse af stemmen..."
+  },
+  "ui_5ee7339b": {
+    "message": "Læser"
+  },
+  "ui_de281feb": {
+    "message": "På pause"
+  },
+  "ui_a7b2cec3": {
+    "message": "Færdig"
+  },
+  "ui_5d640b9c": {
+    "message": "Kræver handling"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikansk kvinde"
+  },
+  "ui_faf95838": {
+    "message": "Amerikansk mand"
+  },
+  "ui_f3768d40": {
+    "message": "Britiske kvinder"
+  },
+  "ui_4139054c": {
+    "message": "Vælg en engelsk Kokoro stemme. Andre sprog understøttes ikke."
+  },
+  "ui_c0c171d2": {
+    "message": "Kunne ikke fuldføre denne handling."
+  },
+  "ui_02e8a8a4": {
+    "message": "Gennemgang af tekst på side $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ side efter denne side",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ sider efter denne side",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "Normal"
+  },
+  "ui_99f0d384": {
+    "message": "Hurtigere"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$s langsommere",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "Læser: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "Læs den valgte tekst"
+  },
+  "ui_865bf5ae": {
+    "message": "Læs markeringen op"
+  },
+  "ui_213e90fa": {
+    "message": "Prøv igen"
+  },
+  "ui_1dbc8cae": {
+    "message": "Tillad adgang til webstedet"
+  },
+  "ui_450f715d": {
+    "message": "Læs afsnit $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "Audio playback mislykkedes"
+  },
+  "ui_248b7c43": {
+    "message": "Kan ikke finde tekst"
+  },
+  "ui_48ca3593": {
+    "message": "Teksten på PDF-side $arg1$ kunne ikke udtrækkes",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "Ingen side indlæst"
+  },
+  "ui_8bdfb3a1": {
+    "message": "Tekst vises, når læsningen begynder."
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "Læs denne side højt"
+  },
+  "ui_758bbc44": {
+    "message": "Læs siden op"
+  },
+  "ui_a174ecb1": {
+    "message": "0 % fuldstændig"
+  },
+  "ui_e527eba2": {
+    "message": "Forberedelse af stemme - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "Forberedelse af stemmen..."
+  },
+  "ui_78d44090": {
+    "message": "Stop nuværende læsning"
+  },
+  "ui_98847cfb": {
+    "message": "Stop læsning..."
+  },
+  "ui_e100f46d": {
+    "message": "Stopper..."
+  },
+  "ui_4b7f7705": {
+    "message": "Stop"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% færdig",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "Afsluttet læsning"
+  },
+  "ui_2f0dcc5d": {
+    "message": "Læs op igen"
+  },
+  "ui_329cfb9e": {
+    "message": "100% fuldstændig"
+  },
+  "ui_76fc465e": {
+    "message": "Noget gik galt"
+  },
+  "ui_0d4b0da7": {
+    "message": "Læs den valgte tekst"
+  },
+  "ui_242bb2e3": {
+    "message": "Læs den valgte tekst."
+  },
+  "ui_10905ea3": {
+    "message": "Forberedelse af udvalgt tekst"
+  },
+  "ui_a2df426f": {
+    "message": "Udvalgt tekst pause"
+  },
+  "ui_915b9541": {
+    "message": "Læs den aktuelle side"
+  },
+  "ui_50880cb0": {
+    "message": "Læs side..."
+  },
+  "ui_e8bf303d": {
+    "message": "Forberedelse af den aktuelle side"
+  },
+  "ui_59ad3c41": {
+    "message": "Forberedelse af stemme"
+  },
+  "ui_af82140f": {
+    "message": "Læsning pauser"
+  },
+  "ui_1ede4e42": {
+    "message": "Stemmen klar"
+  },
+  "ui_63338bd9": {
+    "message": "Stemmeindstilling mislykkedes"
+  },
+  "ui_cedd5bba": {
+    "message": "Modellen er mislykket."
+  },
+  "ui_a7f38d4e": {
+    "message": "Forberedelse af lokal stemme; manglende filer download fra Hugging Face."
+  },
+  "ui_430dc39d": {
+    "message": "Beregning af tid..."
+  },
+  "ui_06a382b7": {
+    "message": "Åbn en artikel, og læs siden"
+  },
+  "ui_37bc7086": {
+    "message": "Ord: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "Ord: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "Min"
+  },
+  "ui_5dca8675": {
+    "message": "0 sektioner"
+  },
+  "ui_2d292516": {
+    "message": "Sektion $arg1$ af $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "Fortsæt ved $arg1$ %",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "Udvalgt tekst"
+  },
+  "ui_8212a19a": {
+    "message": "PDF dokumentation"
+  },
+  "ui_cb3b43ef": {
+    "message": "Fuld side"
+  },
+  "ui_e13844b5": {
+    "message": "Kun artikel"
+  },
+  "ui_6cae863f": {
+    "message": "Ord tilbage: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "Ord tilbage: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "Dele tilbage: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "Dele tilbage: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "Side $arg1$ · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "Hjemmeside $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "Afsnit: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "Afsnit: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · første $arg2$ vist",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ viste",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "Resultater: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "Resultater: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ af $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - cachet til næste gang",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "Stemmemodel"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "Verificeret $arg1$. forberedelse af stemme...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "Download af stemmefiler: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "Download af $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "GPU opsætning mislykkedes. Genoprettelse med CPU/WebAssembly..."
+  },
+  "ui_f0fc3524": {
+    "message": "Download af $arg1$...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "Forbered $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "Tjek GPU support..."
+  },
+  "ui_a1f035db": {
+    "message": "Tjek browser cache..."
+  },
+  "ui_412b5f0e": {
+    "message": "En gangs opbygning"
+  },
+  "ui_91d30309": {
+    "message": "Kan ikke forberede den ønskede stemme."
+  },
+  "ui_b9775b3a": {
+    "message": "Eksperimentel - kvalitet ikke valideret"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - tilpasset",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "Lydkvalitet justeret efter $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "Stemmebehandling: GPU (WebGPU) med CPU-venlige indstillinger."
+  },
+  "ui_3411bb9b": {
+    "message": "Stemmebehandling: GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "Stemmebehandling: Kun CPU (WebAssembly) fordi WebGPU ikke er tilgængelig."
+  },
+  "ui_9e335d53": {
+    "message": "Stemmebehandling: Kun CPU (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "Stemmebehandling: System stemme (browser eller operativsystem)."
+  },
+  "ui_815f1834": {
+    "message": "Stemmebehandling: Tjekket, når læsningen begynder."
+  },
+  "ui_19f02581": {
+    "message": "Bruger eksperimentel OmniVoice med WebGPU."
+  },
+  "ui_f7c3a723": {
+    "message": "Modelfiler hentes fra Hugging Face. Talen genereres på denne enhed."
+  },
+  "ui_411e02b2": {
+    "message": "Vælg Kokoro, hvis WebGPU ikke er tilgængelig."
+  },
+  "ui_3581ebdf": {
+    "message": "Kokoro-stemme: $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "Manglende stemmefiler hentes fra Hugging Face, når du forbereder stemmen eller læser."
+  },
+  "ui_6813181e": {
+    "message": "Talen genereres på denne enhed. Cachelagrede filer kan genbruges offline, indtil de slettes."
+  },
+  "ui_95b6ef87": {
+    "message": "Eksperimentel kvalitet: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "$arg1$ stemme er tilgængelig.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "Skip kode snippets?"
+  },
+  "ui_9d9f28af": {
+    "message": "Denne side har mange kodesnippets. Skip omkring $arg1$ min af kode for en glattere fortælling.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "Denne side har mange kodesnippets. Skip omkring $arg1$ minutter af kode for en glattere fortælling.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "Automatisk"
+  },
+  "ui_361987ac": {
+    "message": "Høj kvalitet"
+  },
+  "ui_c0cc603d": {
+    "message": "Balanceret"
+  },
+  "ui_5b602dbf": {
+    "message": "Batterisparer"
+  },
+  "ui_157606b3": {
+    "message": "1 afsnit forudindlæst"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ sektioner forudindlæst",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "Den progressive playback"
+  },
+  "ui_4ddd1cf4": {
+    "message": "Progressiv playback af"
+  },
+  "ui_95c9f0ef": {
+    "message": "Automatisk browsersprogskifte"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$-karakterstykker, $arg3$, $arg4$, $arg5$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "Kan ikke få adgang til denne side."
+  },
+  "ui_be75ad01": {
+    "message": "Best-effort readerEngine operationen mislykkedes."
+  },
+  "ui_eb6988d3": {
+    "message": "Kan ikke genindlæse stillingen"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator ikke kunne initialisere."
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator spiller"
+  },
+  "ui_9d65bbdb": {
+    "message": "Vælg stemme model"
+  },
+  "ui_e6334598": {
+    "message": "Stemmemodel"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (standard)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (eksperimentel)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "Ti engelske stemmer. Første opsætning: ca. 93 MB til CPU eller 326 MB til GPU. En ekstra stemme kræver ca. 0,5 MB. Din gemte stemme bevares."
+  },
+  "ui_2c04fde6": {
+    "message": "Stemmeindstillinger"
+  },
+  "ui_9a73db9b": {
+    "message": "Sprog"
+  },
+  "ui_2070a9f8": {
+    "message": "Lade stemmer..."
+  },
+  "ui_c39c8623": {
+    "message": "Stemmetype"
+  },
+  "ui_d8a26cb9": {
+    "message": "Kvindelig"
+  },
+  "ui_487d36f0": {
+    "message": "Mandlig"
+  },
+  "ui_a2a40f30": {
+    "message": "Stemmevariant"
+  },
+  "ui_16383585": {
+    "message": "Vælg en lydvariation. Ændringerne gælder i næste afsnit. Indstil tempoet med afspilningshastigheden."
+  },
+  "ui_d975568d": {
+    "message": "Hvisken"
+  },
+  "ui_3d7af8ef": {
+    "message": "Afspilningshastighed"
+  },
+  "ui_c58a3963": {
+    "message": "Lydændringer gælder for det næste afsnit, mens du læser."
+  },
+  "ui_71365cb1": {
+    "message": "Forbered din lokale stemme"
+  },
+  "ui_c197c7e2": {
+    "message": "Spring over"
+  },
+  "ui_dad1a20b": {
+    "message": "Læs nu"
+  },
+  "ui_30ea6e2f": {
+    "message": "Tidligere afsnit"
+  },
+  "ui_c2954bc2": {
+    "message": "Tilbage"
+  },
+  "ui_dce2da08": {
+    "message": "Næste"
+  },
+  "ui_0c341bc6": {
+    "message": "De indbyggede Kokoro-stemmer kører lokalt. Det gør OmniVoice også. Manglende stemmefiler hentes fra Hugging Face. Den oplæste tekst bliver på denne enhed. Indstillinger, sidernes webadresser, titler, læseposition og et kort tekstuddrag gemmes lokalt."
+  },
+  "ui_3452d125": {
+    "message": "Oplysninger om privatliv"
+  },
+  "ui_1eb4158c": {
+    "message": "Avancerede indstillinger"
+  },
+  "ui_ce305438": {
+    "message": "Pauser, tekstoprydning, fremhævning"
+  },
+  "ui_67231237": {
+    "message": "Pause mellem sektionerne"
+  },
+  "ui_8f517045": {
+    "message": "Ydeevne"
+  },
+  "ui_34c199e6": {
+    "message": "Behandling"
+  },
+  "ui_bec07b52": {
+    "message": "CPU og WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "Frigør stemmehukommelse, når du er idle"
+  },
+  "ui_231b3e4b": {
+    "message": "Spring kodestykker over"
+  },
+  "ui_456ac053": {
+    "message": "Farveområde"
+  },
+  "ui_10cd7856": {
+    "message": "Ordet farve"
+  },
+  "ui_1e4dbab9": {
+    "message": "Læseområdets opacitet"
+  },
+  "ui_1688a6f4": {
+    "message": "Ordets opacitet"
+  },
+  "ui_0583096b": {
+    "message": "Transskription"
+  },
+  "ui_89a5470c": {
+    "message": "Læsekø"
+  },
+  "ui_a106cd77": {
+    "message": "Søg sektioner"
+  },
+  "ui_ee3d49e1": {
+    "message": "Første"
+  },
+  "ui_30035f15": {
+    "message": "Sektionsnummer"
+  },
+  "ui_41d0c56b": {
+    "message": "Gå"
+  },
+  "ui_e40e2439": {
+    "message": "Sidste"
+  },
+  "ui_bd9126df": {
+    "message": "Ingen matchende sektioner. Prøv en anden søgning."
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator læsemaskine"
+  },
+  "ui_c5fbc06e": {
+    "message": "Tilladelse til sideadgang"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator udvidelse ikon"
+  },
+  "ui_5a3d9c47": {
+    "message": "Åbn PageNarrator fra siden"
+  },
+  "ui_94a4b160": {
+    "message": "Klik på ikonet for udvidelsen PageNarrator, mens siden er aktiv, og vælg derefter Læs side."
+  },
+  "ui_4be7c01e": {
+    "message": "Manglende stemmefiler downloades ved første brug. Tale kører lokalt."
+  },
+  "ui_3d04a00a": {
+    "message": "Forberedelse af lokal stemme; manglende filer download fra Hugging Face..."
+  },
+  "ui_048ca959": {
+    "message": "Genopretningstrin"
+  },
+  "ui_0ec24245": {
+    "message": "Detaljer"
+  },
+  "ui_4ff448da": {
+    "message": "Fortsæt læsningen"
+  },
+  "ui_cb2eed93": {
+    "message": "Tilbage i den gemte position"
+  },
+  "ui_ded3954b": {
+    "message": "Beskyttede læsepositioner"
+  },
+  "ui_24299867": {
+    "message": "Start forfra"
+  },
+  "ui_d71c7401": {
+    "message": "Læs forslag"
+  },
+  "ui_d5c02828": {
+    "message": "Denne side har mange kode snippets."
+  },
+  "ui_336b89fb": {
+    "message": "Spring kode over"
+  },
+  "ui_299fab6d": {
+    "message": "Opdaget artikel"
+  },
+  "ui_a9898369": {
+    "message": "Læs: Kun artikel"
+  },
+  "ui_3065e144": {
+    "message": "Begynder med"
+  },
+  "ui_7ac012cc": {
+    "message": "Læser spiller"
+  },
+  "ui_8edce20a": {
+    "message": "Læs fremskridt"
+  },
+  "ui_949ea37c": {
+    "message": "0 knopper tilbage"
+  },
+  "ui_1250127e": {
+    "message": "PDF side navigation"
+  },
+  "ui_e83d9196": {
+    "message": "Side"
+  },
+  "ui_27ba99fc": {
+    "message": "Skift nuværende PDF side"
+  },
+  "ui_dbd1ad47": {
+    "message": "Læserindstillinger"
+  },
+  "ui_1a27bec5": {
+    "message": "Sproget opdages, når læsningen begynder."
+  },
+  "ui_52ff662d": {
+    "message": "Device krav"
+  },
+  "ui_fd02dfc2": {
+    "message": "Anbefalet:"
+  },
+  "ui_b0555d92": {
+    "message": "en dedikeret NVIDIA RTX 30 serie GPU eller nyere, med 8 GB + VRAM og 8 GB + system RAM."
+  },
+  "ui_0d393abc": {
+    "message": "Brug Chromium 120 eller nyere. Kokoro har en langsommere CPU faldback."
+  },
+  "ui_f31ba722": {
+    "message": "Timing, rengøring og stemmer"
+  },
+  "ui_a879e367": {
+    "message": "Sektionens pauser"
+  },
+  "ui_07e1c336": {
+    "message": "Fremhæve stil"
+  },
+  "ui_9525b78e": {
+    "message": "Tilpasset"
+  },
+  "ui_e0955632": {
+    "message": "Læs område"
+  },
+  "ui_90571eca": {
+    "message": "Nuværende ord"
+  },
+  "ui_ea585567": {
+    "message": "Læs rengøring"
+  },
+  "ui_0dc6b4aa": {
+    "message": "Fra"
+  },
+  "ui_d6fbffc9": {
+    "message": "Transkript og sammenfatning"
+  },
+  "ui_21fd85e4": {
+    "message": "Kilde & transkripsion"
+  },
+  "ui_d6c98891": {
+    "message": "Nuværende sektion, transkriptsøgning og hoppekontroller er tilgængelige i avanceret tilstand."
+  },
+  "ui_0eac1f07": {
+    "message": "Gennemse"
+  },
+  "ui_44d76dee": {
+    "message": "Fuld transkription"
+  },
+  "ui_ab5783a6": {
+    "message": "0 afsnit"
+  },
+  "ui_d58a5a9a": {
+    "message": "Køge Navigation"
+  },
+  "ui_2d877b6c": {
+    "message": "Afsnit"
+  },
+  "ui_03205ed1": {
+    "message": "Find sektionen"
+  },
+  "ui_27654275": {
+    "message": "Søg efter transkripter eller sider."
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF kontrol"
+  },
+  "ui_88828491": {
+    "message": "Side 1 af 1"
+  },
+  "ui_8570fe3a": {
+    "message": "Zoom ud"
+  },
+  "ui_a3583899": {
+    "message": "Zoom på"
+  },
+  "ui_2b3553eb": {
+    "message": "Rotation til venstre"
+  },
+  "ui_2eaecb74": {
+    "message": "Rotation til højre"
+  },
+  "ui_b6ab6b07": {
+    "message": "Passer til mode"
+  },
+  "ui_69acd800": {
+    "message": "Tilpas til bredde"
+  },
+  "ui_607af25f": {
+    "message": "Tilpas til side"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF sider"
+  },
+  "ui_ab32ceb0": {
+    "message": "Eksperimentel. 646 sprogposter med varierende kvalitet. Kræver WebGPU med fp16 og ca. 1,35 GB download. Vælg stemme, variant eller hvisken."
+  },
+  "ui_ab4a698f": {
+    "message": "Åbent fra siden"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome har ikke givet adgang til den aktive fane."
+  },
+  "ui_67aad8a8": {
+    "message": "Åbn siden, klik på ikonet PageNarrator, og vælg derefter Læs side."
+  },
+  "ui_724c0e56": {
+    "message": "Åbent fra side"
+  },
+  "ui_4f96b3e0": {
+    "message": "Beskyttede Chrome-sider kan ikke læses. Åbn en webside eller PDF."
+  },
+  "ui_0cddc760": {
+    "message": "Åbne sider"
+  },
+  "ui_30274c11": {
+    "message": "Behov for sideadgang"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator har brug for adgang til dette websted."
+  },
+  "ui_2b54b790": {
+    "message": "Tillad adgang til webstedet via PageNarrator-ikonet, og prøv igen."
+  },
+  "ui_57906b45": {
+    "message": "Tillad adgang"
+  },
+  "ui_b48f6457": {
+    "message": "Gratis browser opbevaring, derefter retry."
+  },
+  "ui_75eca5ea": {
+    "message": "Gratis opbevaring"
+  },
+  "ui_99e92621": {
+    "message": "Vælg en stemme for sidens sprog."
+  },
+  "ui_997f787a": {
+    "message": "Vælg stemme"
+  },
+  "ui_50a8c46f": {
+    "message": "Den aktive fane lukket, før læsning kunne begynde."
+  },
+  "ui_e64862ef": {
+    "message": "Flikken er lukket. Åbn siden igen og retry."
+  },
+  "ui_39f600ae": {
+    "message": "Ingen udvalgt tekst"
+  },
+  "ui_79f7dfca": {
+    "message": "Ingen tekst er valgt."
+  },
+  "ui_b7a079b0": {
+    "message": "Vælg tekst"
+  },
+  "ui_522bcc26": {
+    "message": "Vælg den tekst, du vil høre, og vælg derefter Læs valgt."
+  },
+  "ui_580dc44e": {
+    "message": "Tekstilkendegivelse kræves"
+  },
+  "ui_ce175449": {
+    "message": "Nogle PDF tekst kunne ikke læses pålideligt."
+  },
+  "ui_f7c03bfe": {
+    "message": "Brug af en tekstbaseret PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "Brug tekstgenkendelse (OCR) eller en PDF med et komplet tekstlag."
+  },
+  "ui_281501a3": {
+    "message": "Udfyld CAPTCHA på siden, og gentag derefter."
+  },
+  "ui_d1c2931f": {
+    "message": "Log ind på hjemmesiden, så retry."
+  },
+  "ui_744be623": {
+    "message": "Mærke i"
+  },
+  "ui_3c4b4f30": {
+    "message": "Ingen læselige artikler fundet"
+  },
+  "ui_fb499b08": {
+    "message": "Der blev ikke fundet nogen læselig tekst."
+  },
+  "ui_a1fad21c": {
+    "message": "Prøv en anden side"
+  },
+  "ui_b0ddc925": {
+    "message": "Vælg et afsnit, og vælg Læs valgt, eller åbn en anden artikel."
+  },
+  "ui_d20c5459": {
+    "message": "Stemmen var ikke færdig med at lade."
+  },
+  "ui_eee6a1ad": {
+    "message": "Vælg Forbered stemme til at genindstille opsætningen."
+  },
+  "ui_eab3cf34": {
+    "message": "Talegenerationen mislykkedes"
+  },
+  "ui_4cad964d": {
+    "message": "Speech generation stoppede, før lyd var klar."
+  },
+  "ui_2519f9e6": {
+    "message": "Returnér eller vælg en anden stemme."
+  },
+  "ui_1844c6fe": {
+    "message": "Ikke understøttet PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "Denne PDF er beskadiget eller ikke understøttet."
+  },
+  "ui_5679bf2f": {
+    "message": "Prøv en anden PDF"
+  },
+  "ui_b8183083": {
+    "message": "Kan ikke downloade PDF. tjek linket og din forbindelse."
+  },
+  "ui_ce24479d": {
+    "message": "Kan ikke åbne denne PDF."
+  }
+}

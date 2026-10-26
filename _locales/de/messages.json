@@ -1,0 +1,1291 @@
+{
+  "extensionDescription": {
+    "message": "Lesen Sie Webseiten und PDFs laut mit lokalen Geräte-Stimmen und synchronisiertem Highlighting."
+  },
+  "actionTitle": {
+    "message": "Hören Sie diese Seite"
+  },
+  "languageSuggestionOmniVoice": {
+    "message": "$language$ erkannt. Kokoro unterstützt Englisch. Wählen Sie in den Stimmeinstellungen OmniVoice und $language$, um diesen Text vorzulesen.",
+    "description": "Shown before reading when the page language is not supported by the selected Kokoro engine.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      }
+    }
+  },
+  "languageDetected": {
+    "message": "$language$ erkannt ($percentage$%).",
+    "description": "The percentage is the share of text in the detected language, not a calibrated confidence score.",
+    "placeholders": {
+      "language": {
+        "content": "$1",
+        "example": "German"
+      },
+      "percentage": {
+        "content": "$2",
+        "example": "99"
+      }
+    }
+  },
+  "languageDetectionUncertain": {
+    "message": "Die Sprache konnte nicht sicher erkannt werden."
+  },
+  "onboardingQuickWinTitle": {
+    "message": "Lesen Sie eine ausgewählte Passage"
+  },
+  "onboardingQuickWinBody": {
+    "message": "Wählen Sie auf der Seite zwei Sätze aus, und wählen Sie dann Auswahl vorlesen aus."
+  },
+  "onboardingQuickWinCta": {
+    "message": "Auswahl vorlesen"
+  },
+  "onboardingFullPageTitle": {
+    "message": "Seite vorlesen"
+  },
+  "onboardingFullPageBody": {
+    "message": "Wählen Sie Seite lesen, um mit dem Lesen zu beginnen."
+  },
+  "onboardingFullPageCta": {
+    "message": "Ganze Seite vorlesen"
+  },
+  "onboardingDismiss": {
+    "message": "Überspringen"
+  },
+  "reviewPromptTitle": {
+    "message": "PageNarrator bewerten"
+  },
+  "reviewPromptBody": {
+    "message": "Ihre Bewertung hilft anderen Lesern zu wählen."
+  },
+  "reviewNever": {
+    "message": "Nie"
+  },
+  "reviewLater": {
+    "message": "Später"
+  },
+  "reviewReview": {
+    "message": "Bewerten"
+  },
+  "ui_43b7293a": {
+    "message": "$arg1$ Seite geladen",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ba72f3a3": {
+    "message": "$arg1$ Seiten geladen",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3e8b2a3a": {
+    "message": "Laden von Dokumenten..."
+  },
+  "ui_ffb67f19": {
+    "message": "Laden PDF ..."
+  },
+  "ui_abc76c7c": {
+    "message": "Wiedereröffnung PDF ..."
+  },
+  "ui_824a0948": {
+    "message": "Seite $arg1$ von $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_c08b976a": {
+    "message": "Arbeiten ..."
+  },
+  "ui_059a0144": {
+    "message": "$arg1$ Stimmen",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_27d1a499": {
+    "message": "Stimme"
+  },
+  "ui_85d257a6": {
+    "message": "Verarbeitung: WebGPU (auf GPU gewidmet)"
+  },
+  "ui_ea65fbf2": {
+    "message": "Verarbeitung: WebGPU (integriert GPU)"
+  },
+  "ui_4e4b8680": {
+    "message": "Verarbeitung: WebGPU"
+  },
+  "ui_7d6c19ce": {
+    "message": "Verarbeitung: CPU / WebAssembly (langsamer)"
+  },
+  "ui_5c338a74": {
+    "message": "Verarbeitung angezeigt nach dem Lesen beginnt."
+  },
+  "ui_c513493a": {
+    "message": "Vorbereitung der lokalen Stimme... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_642babee": {
+    "message": "Stimmvorbereitung fehlgeschlagen. versuchen Sie es erneut."
+  },
+  "ui_523c0c96": {
+    "message": "Fehlende Sprachdateien heruntergeladen von Hugging Face vor der Installation."
+  },
+  "ui_8036af59": {
+    "message": "Erneut versuchen"
+  },
+  "ui_fb625aee": {
+    "message": "Stimme vorbereiten"
+  },
+  "ui_b9328a4d": {
+    "message": "Abschnitte: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c88f9f9a": {
+    "message": "Abschnitte: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_a133c549": {
+    "message": "Verfügbar, wenn das Lesen beginnt"
+  },
+  "ui_1d9bdb7f": {
+    "message": "Transcript erscheint, wenn Text geladen wird."
+  },
+  "ui_fe92f855": {
+    "message": "Aktuelle Seite"
+  },
+  "ui_bf0c7feb": {
+    "message": "Vorbereitung ..."
+  },
+  "ui_3d77a20f": {
+    "message": "Vorbereitung der Stimme... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_454d1d8a": {
+    "message": "Fortsetzen"
+  },
+  "ui_44f9bf2d": {
+    "message": "Pause"
+  },
+  "ui_f3de41d3": {
+    "message": "Bereit zum Vorlesen"
+  },
+  "ui_9283b625": {
+    "message": "Vorbereitung der Stimme..."
+  },
+  "ui_5ee7339b": {
+    "message": "Vorlesen läuft"
+  },
+  "ui_de281feb": {
+    "message": "Pausiert"
+  },
+  "ui_a7b2cec3": {
+    "message": "Fertig"
+  },
+  "ui_5d640b9c": {
+    "message": "Aktion erforderlich"
+  },
+  "ui_4d1cf041": {
+    "message": "amerikanische frau"
+  },
+  "ui_faf95838": {
+    "message": "Amerikanischer Mann"
+  },
+  "ui_f3768d40": {
+    "message": "Britische Frauen"
+  },
+  "ui_4139054c": {
+    "message": "Wählen Sie eine englische Kokoro Stimme. Andere Sprachen werden nicht unterstützt."
+  },
+  "ui_c0c171d2": {
+    "message": "Diese Aktion konnte nicht abgeschlossen werden."
+  },
+  "ui_02e8a8a4": {
+    "message": "Text auf der Seite $arg1$ erkennen...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_32d520cc": {
+    "message": "$arg1$ Seite nach dieser Seite",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_0cf8b1f7": {
+    "message": "$arg1$ Seiten nach dieser Seite",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_58de2772": {
+    "message": "Normal"
+  },
+  "ui_99f0d384": {
+    "message": "Schneller"
+  },
+  "ui_f6adf6a7": {
+    "message": "$arg1$s langsamer",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_2c9ef2b2": {
+    "message": "Anzeige: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6ae318e1": {
+    "message": "Lesen Sie ausgewählten Text"
+  },
+  "ui_865bf5ae": {
+    "message": "Auswahl vorlesen"
+  },
+  "ui_213e90fa": {
+    "message": "Erneut versuchen"
+  },
+  "ui_1dbc8cae": {
+    "message": "Grant Website Zugang"
+  },
+  "ui_450f715d": {
+    "message": "Lesen Sie Abschnitt $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_531cf49f": {
+    "message": "Audio Playback fehlschlägt."
+  },
+  "ui_248b7c43": {
+    "message": "Artikeltext nicht finden"
+  },
+  "ui_48ca3593": {
+    "message": "Text von PDF-Seite $arg1$ konnte nicht extrahiert werden",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_70cc9cc6": {
+    "message": "Keine Seite geladen"
+  },
+  "ui_8bdfb3a1": {
+    "message": "Text erscheint, wenn das Lesen beginnt."
+  },
+  "ui_cb023e12": {
+    "message": "$arg1$m $arg2$s",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_1d64555b": {
+    "message": "$arg1$h $arg2$m",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_d3f69559": {
+    "message": "Lesen Sie diese Seite laut"
+  },
+  "ui_758bbc44": {
+    "message": "Seite vorlesen"
+  },
+  "ui_a174ecb1": {
+    "message": "0 % vollständig"
+  },
+  "ui_e527eba2": {
+    "message": "Vorbereitung der Stimme - $arg1$%$arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_365406c5": {
+    "message": "Vorbereitung der Stimme..."
+  },
+  "ui_78d44090": {
+    "message": "Aktuelles Lesen stoppen"
+  },
+  "ui_98847cfb": {
+    "message": "Stoppt das Lesen..."
+  },
+  "ui_e100f46d": {
+    "message": "Wird angehalten..."
+  },
+  "ui_4b7f7705": {
+    "message": "Stoppen"
+  },
+  "ui_a8d7b6e8": {
+    "message": "$arg1$% vollständig",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5376d4e7": {
+    "message": "Abgeschlossenes Lesen"
+  },
+  "ui_2f0dcc5d": {
+    "message": "Erneut vorlesen"
+  },
+  "ui_329cfb9e": {
+    "message": "100% vollständig"
+  },
+  "ui_76fc465e": {
+    "message": "Etwas ging falsch"
+  },
+  "ui_0d4b0da7": {
+    "message": "Lesen des ausgewählten Textes"
+  },
+  "ui_242bb2e3": {
+    "message": "Lesen Sie ausgewählten Text..."
+  },
+  "ui_10905ea3": {
+    "message": "Vorbereitung ausgewählter Texte"
+  },
+  "ui_a2df426f": {
+    "message": "ausgewählter Text unterbrochen"
+  },
+  "ui_915b9541": {
+    "message": "Aktuelle Seite lesen"
+  },
+  "ui_50880cb0": {
+    "message": "Seite lesen..."
+  },
+  "ui_e8bf303d": {
+    "message": "Vorbereitung der aktuellen Seite"
+  },
+  "ui_59ad3c41": {
+    "message": "Vorbereitung der Stimme"
+  },
+  "ui_af82140f": {
+    "message": "Lesen Pause"
+  },
+  "ui_1ede4e42": {
+    "message": "Stimme bereit"
+  },
+  "ui_63338bd9": {
+    "message": "Voice Setup fehlgeschlagen"
+  },
+  "ui_cedd5bba": {
+    "message": "Das Modell ist gescheitert."
+  },
+  "ui_a7f38d4e": {
+    "message": "Vorbereitung der lokalen Stimme; fehlende Dateien herunterladen von Hugging Face."
+  },
+  "ui_430dc39d": {
+    "message": "Zeit zu schätzen..."
+  },
+  "ui_06a382b7": {
+    "message": "Öffnen Sie einen Artikel, dann lesen Sie die Seite"
+  },
+  "ui_37bc7086": {
+    "message": "Wörter: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b2a5d1af": {
+    "message": "Wörter: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c98f4557": {
+    "message": "Min"
+  },
+  "ui_5dca8675": {
+    "message": "0 Abschnitte"
+  },
+  "ui_2d292516": {
+    "message": "Abschnitt $arg1$ von $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_bbd7de9d": {
+    "message": "Bei $arg1$ % fortsetzen",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_4dd870fb": {
+    "message": "ausgewählter Text"
+  },
+  "ui_8212a19a": {
+    "message": "PDF Unterlagen"
+  },
+  "ui_cb3b43ef": {
+    "message": "Vollseite"
+  },
+  "ui_e13844b5": {
+    "message": "Artikel nur"
+  },
+  "ui_6cae863f": {
+    "message": "Verbleibende Wörter: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_eb822f18": {
+    "message": "Verbleibende Wörter: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c145caa0": {
+    "message": "Verbleibende Abschnitte: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c10d9105": {
+    "message": "Verbleibende Abschnitte: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5ec76abe": {
+    "message": "Seite $arg1$ · $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0290cbb9": {
+    "message": "Seite $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_03e76f30": {
+    "message": "Absätze: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_68542679": {
+    "message": "Absätze: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_bff757bc": {
+    "message": "$arg1$ · zuerst $arg2$ gezeigt",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_ac6e697a": {
+    "message": "$arg1$ · $arg2$-$arg3$ gezeigt",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      }
+    }
+  },
+  "ui_267187b3": {
+    "message": "Treffer: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_61f83343": {
+    "message": "Treffer: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_359557ff": {
+    "message": "$arg1$ von $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_eaa7e488": {
+    "message": "$arg1$ - Cache für das nächste Mal",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_5670c878": {
+    "message": "Stimmmodell"
+  },
+  "ui_801e9a8a": {
+    "message": "$arg1$ / $arg2$ MB",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_0b4d6296": {
+    "message": "Überprüft $arg1$. Vorbereitung der Stimme ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_c2fd9f2f": {
+    "message": "Herunterladen von Sprachdateien: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_6027988e": {
+    "message": "Herunterladen $arg1$: $arg2$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      }
+    }
+  },
+  "ui_3f7e2cfe": {
+    "message": "GPU Setup fehlgeschlagen. Wiederherstellung mit CPU/WebAssembly..."
+  },
+  "ui_f0fc3524": {
+    "message": "Download von $arg1$...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_9d82453c": {
+    "message": "Vorbereitung $arg1$ ...",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_04b7d092": {
+    "message": "Überprüfen Sie GPU Support..."
+  },
+  "ui_a1f035db": {
+    "message": "Überprüfen der Browser-Cache"
+  },
+  "ui_412b5f0e": {
+    "message": "Einmalige Einrichtung"
+  },
+  "ui_91d30309": {
+    "message": "Er konnte die angeforderte Stimme nicht vorbereiten."
+  },
+  "ui_b9775b3a": {
+    "message": "Experimentell - Qualität nicht validiert"
+  },
+  "ui_c6b4d959": {
+    "message": "$arg1$ - angepasst",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ad24ebab": {
+    "message": "Sprachqualität nach $arg1$ angepasst.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_aa682200": {
+    "message": "Sprachverarbeitung: GPU (WebGPU) mit CPU-freundlichen Einstellungen."
+  },
+  "ui_3411bb9b": {
+    "message": "Sprachverarbeitung: GPU (WebGPU)"
+  },
+  "ui_078077a9": {
+    "message": "Sprachverarbeitung: Nur CPU (WebAssembly) weil WebGPU nicht verfügbar ist."
+  },
+  "ui_9e335d53": {
+    "message": "Sprachverarbeitung: Nur CPU (WebAssembly)"
+  },
+  "ui_8646aeef": {
+    "message": "Sprachverarbeitung: Systemsprach (Browser oder Betriebssystem)"
+  },
+  "ui_815f1834": {
+    "message": "Sprachverarbeitung: geprüft, wenn das Lesen beginnt."
+  },
+  "ui_19f02581": {
+    "message": "Experimentelles OmniVoice wird auf WebGPU verwendet."
+  },
+  "ui_f7c3a723": {
+    "message": "Modelldateien werden von Hugging Face heruntergeladen. Die Spracherzeugung bleibt auf diesem Gerät."
+  },
+  "ui_411e02b2": {
+    "message": "Wählen Sie Kokoro, wenn WebGPU nicht verfügbar ist."
+  },
+  "ui_3581ebdf": {
+    "message": "Kokoro-Stimme: $arg1$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b6f3e0b5": {
+    "message": "Fehlende Sprachdateien werden beim Vorbereiten oder Vorlesen von Hugging Face heruntergeladen."
+  },
+  "ui_6813181e": {
+    "message": "Die Sprachausgabe läuft auf diesem Gerät. Gespeicherte Dateien können offline weiterverwendet werden, bis sie gelöscht werden."
+  },
+  "ui_95b6ef87": {
+    "message": "Experimentelle Qualität: $arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_3c2745dc": {
+    "message": "Die Nummer $arg1$ steht zur Verfügung.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_b7e3509c": {
+    "message": "Skip-Code für Snippets"
+  },
+  "ui_9d9f28af": {
+    "message": "Diese Seite hat viele Code-Snippets. Skip etwa $arg1$ min von Code für eine glattere Erzählung.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ee180b24": {
+    "message": "Diese Seite hat viele Code-Snippets. Skip etwa $arg1$ Minuten Code für eine reibungslose Erzählung.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_126befb6": {
+    "message": "Automatisch"
+  },
+  "ui_361987ac": {
+    "message": "Hohe Qualität"
+  },
+  "ui_c0cc603d": {
+    "message": "Ausgewogen"
+  },
+  "ui_5b602dbf": {
+    "message": "Energiesparmodus"
+  },
+  "ui_157606b3": {
+    "message": "1 Abschnitt vorgeladen"
+  },
+  "ui_32bba2de": {
+    "message": "$arg1$ Sektionen vorgeladen",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_01414b42": {
+    "message": "Der progressive Playback"
+  },
+  "ui_4ddd1cf4": {
+    "message": "Progressive Playback abgeschaltet"
+  },
+  "ui_95c9f0ef": {
+    "message": "Automatisches Browser-Sprachschalten"
+  },
+  "ui_c86df72a": {
+    "message": "$arg1$: $arg2$-Zeichenstücke, $arg3$, $arg4$, $arg5$.",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      },
+      "arg2": {
+        "content": "$2"
+      },
+      "arg3": {
+        "content": "$3"
+      },
+      "arg4": {
+        "content": "$4"
+      },
+      "arg5": {
+        "content": "$5"
+      }
+    }
+  },
+  "ui_c0557bfe": {
+    "message": "Ich konnte diese Seite nicht aufrufen."
+  },
+  "ui_be75ad01": {
+    "message": "Best-effort readerEngine Operation gescheitert."
+  },
+  "ui_eb6988d3": {
+    "message": "Kann nicht wiederholen Position Laden"
+  },
+  "ui_1b842ad5": {
+    "message": "PageNarrator wurde nicht initialisiert."
+  },
+  "ui_87d977c4": {
+    "message": "PageNarrator Spieler"
+  },
+  "ui_9d65bbdb": {
+    "message": "Wählen Sie ein Stimmmodell"
+  },
+  "ui_e6334598": {
+    "message": "Sprachmodell"
+  },
+  "ui_38319e92": {
+    "message": "Kokoro (Standard)"
+  },
+  "ui_a476bebf": {
+    "message": "OmniVoice (experimentell)"
+  },
+  "ui_6c6b4ee0": {
+    "message": "Zehn englische Stimmen. Erste Einrichtung: etwa 93 MB für CPU oder 326 MB für GPU. Jede weitere Stimme benötigt etwa 0,5 MB. Ihre gespeicherte Stimme bleibt erhalten."
+  },
+  "ui_2c04fde6": {
+    "message": "Stimmeinstellungen"
+  },
+  "ui_9a73db9b": {
+    "message": "Sprache"
+  },
+  "ui_2070a9f8": {
+    "message": "Laden von Stimmen..."
+  },
+  "ui_c39c8623": {
+    "message": "Stimmtyp"
+  },
+  "ui_d8a26cb9": {
+    "message": "Weiblich"
+  },
+  "ui_487d36f0": {
+    "message": "Männlich"
+  },
+  "ui_a2a40f30": {
+    "message": "Stimmvariante"
+  },
+  "ui_16383585": {
+    "message": "Wählen Sie eine Sprachvariante. Änderungen gelten im nächsten Abschnitt. Setzen Sie das Tempo mit Wiedergabegeschwindigkeit."
+  },
+  "ui_d975568d": {
+    "message": "Flüstern"
+  },
+  "ui_3d7af8ef": {
+    "message": "Wiedergabegeschwindigkeit"
+  },
+  "ui_c58a3963": {
+    "message": "Sprachänderungen gelten für den nächsten Abschnitt während des Lesens."
+  },
+  "ui_71365cb1": {
+    "message": "Vorbereiten Sie Ihre lokale Stimme"
+  },
+  "ui_c197c7e2": {
+    "message": "Überspringen"
+  },
+  "ui_dad1a20b": {
+    "message": "Jetzt lesen"
+  },
+  "ui_30ea6e2f": {
+    "message": "Vorheriger Abschnitt"
+  },
+  "ui_c2954bc2": {
+    "message": "Zurück"
+  },
+  "ui_dce2da08": {
+    "message": "Weiter"
+  },
+  "ui_0c341bc6": {
+    "message": "Die integrierten Kokoro-Stimmen laufen lokal. OmniVoice ebenfalls. Fehlende Sprachdateien werden von Hugging Face heruntergeladen. Der vorgelesene Text bleibt auf diesem Gerät. Einstellungen, Seiten-URLs, Titel, Leseposition und ein kurzer Textauszug bleiben lokal."
+  },
+  "ui_3452d125": {
+    "message": "Datenschutzdetails"
+  },
+  "ui_1eb4158c": {
+    "message": "Erweiterte Einstellungen"
+  },
+  "ui_ce305438": {
+    "message": "Pausen, Textbereinigung, Hervorhebung"
+  },
+  "ui_67231237": {
+    "message": "Pause zwischen den Abschnitten"
+  },
+  "ui_8f517045": {
+    "message": "Leistung"
+  },
+  "ui_34c199e6": {
+    "message": "Verarbeitung"
+  },
+  "ui_bec07b52": {
+    "message": "CPU / WebAssembly"
+  },
+  "ui_e92f8761": {
+    "message": "Sprachgedächtnis freigeben, wenn Sie idle sind"
+  },
+  "ui_231b3e4b": {
+    "message": "Codeblöcke überspringen"
+  },
+  "ui_456ac053": {
+    "message": "Farbgebiet"
+  },
+  "ui_10cd7856": {
+    "message": "Wort Farbe"
+  },
+  "ui_1e4dbab9": {
+    "message": "Deckkraft des Lesebereichs"
+  },
+  "ui_1688a6f4": {
+    "message": "Deckkraft des Wortes"
+  },
+  "ui_0583096b": {
+    "message": "Transkript"
+  },
+  "ui_89a5470c": {
+    "message": "Lesewarteschlange"
+  },
+  "ui_a106cd77": {
+    "message": "Suchabschnitte"
+  },
+  "ui_ee3d49e1": {
+    "message": "Anfang"
+  },
+  "ui_30035f15": {
+    "message": "Sektionsnummer"
+  },
+  "ui_41d0c56b": {
+    "message": "Los"
+  },
+  "ui_e40e2439": {
+    "message": "Ende"
+  },
+  "ui_bd9126df": {
+    "message": "Keine entsprechenden Abschnitte.Versuchen Sie eine andere Suche."
+  },
+  "ui_620574c4": {
+    "message": "PageNarrator Lesegerät"
+  },
+  "ui_c5fbc06e": {
+    "message": "Grant Seite Zugang"
+  },
+  "ui_0a05ab9f": {
+    "message": "PageNarrator Erweiterung Icon"
+  },
+  "ui_5a3d9c47": {
+    "message": "Öffnen Sie PageNarrator von der Seite"
+  },
+  "ui_94a4b160": {
+    "message": "Klicken Sie auf das Symbol der Erweiterung PageNarrator, während die Seite aktiv ist, und wählen Sie dann Seite lesen aus."
+  },
+  "ui_4be7c01e": {
+    "message": "Fehlende Sprachdateien beim ersten Gebrauch herunterladen. Sprache läuft lokal."
+  },
+  "ui_3d04a00a": {
+    "message": "Vorbereitung der lokalen Stimme; fehlende Dateien herunterladen von Hugging Face..."
+  },
+  "ui_048ca959": {
+    "message": "Wiederherstellungsschritte"
+  },
+  "ui_0ec24245": {
+    "message": "Details"
+  },
+  "ui_4ff448da": {
+    "message": "Weiterlesen →"
+  },
+  "ui_cb2eed93": {
+    "message": "Zurück in der gespeicherten Position"
+  },
+  "ui_ded3954b": {
+    "message": "Leseposition gerettet"
+  },
+  "ui_24299867": {
+    "message": "Von vorn beginnen"
+  },
+  "ui_d71c7401": {
+    "message": "Lesen Vorschlag"
+  },
+  "ui_d5c02828": {
+    "message": "Diese Seite enthält viele Code-Snippets."
+  },
+  "ui_336b89fb": {
+    "message": "Code überspringen"
+  },
+  "ui_299fab6d": {
+    "message": "Entdeckt Artikel"
+  },
+  "ui_a9898369": {
+    "message": "Lesen: nur Artikel"
+  },
+  "ui_3065e144": {
+    "message": "beginnt mit"
+  },
+  "ui_7ac012cc": {
+    "message": "Leser spielt"
+  },
+  "ui_8edce20a": {
+    "message": "Weiterlesen Fortschritte"
+  },
+  "ui_949ea37c": {
+    "message": "0 Chunks übrig geblieben"
+  },
+  "ui_1250127e": {
+    "message": "PDF Seite Navigation"
+  },
+  "ui_e83d9196": {
+    "message": "Seite"
+  },
+  "ui_27ba99fc": {
+    "message": "Aktuelle Seite überspringen PDF"
+  },
+  "ui_dbd1ad47": {
+    "message": "Reader Einstellungen"
+  },
+  "ui_1a27bec5": {
+    "message": "Sprache wird erkannt, wenn das Lesen beginnt."
+  },
+  "ui_52ff662d": {
+    "message": "Geräteanforderungen"
+  },
+  "ui_fd02dfc2": {
+    "message": "Empfohlen:"
+  },
+  "ui_b0555d92": {
+    "message": "eine dedizierte NVIDIA RTX 30 Serie GPU oder neuer, mit 8 GB+ VRAM und 8 GB+ SystemRAM."
+  },
+  "ui_0d393abc": {
+    "message": "Verwenden Sie Chromium 120 oder neuer. Kokoro hat einen langsamen CPU Fallback."
+  },
+  "ui_f31ba722": {
+    "message": "Timing, Reinigung und Stimmen"
+  },
+  "ui_a879e367": {
+    "message": "Abschnitt Pause"
+  },
+  "ui_07e1c336": {
+    "message": "Highlight Stil"
+  },
+  "ui_9525b78e": {
+    "message": "Benutzerdefiniert"
+  },
+  "ui_e0955632": {
+    "message": "Lesebereich"
+  },
+  "ui_90571eca": {
+    "message": "Aktuelles Wort"
+  },
+  "ui_ea585567": {
+    "message": "Reinigung lesen"
+  },
+  "ui_0dc6b4aa": {
+    "message": "Aus"
+  },
+  "ui_d6fbffc9": {
+    "message": "Reihenfolge und Transkript Zusammenfassung"
+  },
+  "ui_21fd85e4": {
+    "message": "Quelle & Transkript"
+  },
+  "ui_d6c98891": {
+    "message": "Der aktuelle Abschnitt, die Transkriptsuche und die Sprungsteuerungen sind im Erweiterten Modus verfügbar."
+  },
+  "ui_0eac1f07": {
+    "message": "Durchsuchen"
+  },
+  "ui_44d76dee": {
+    "message": "Vollständige Transkription"
+  },
+  "ui_ab5783a6": {
+    "message": "0 Absätze"
+  },
+  "ui_d58a5a9a": {
+    "message": "Nachfolge Navigation"
+  },
+  "ui_2d877b6c": {
+    "message": "Abschnitt"
+  },
+  "ui_03205ed1": {
+    "message": "Abschnitt finden"
+  },
+  "ui_27654275": {
+    "message": "Suche nach Transkripten oder Seiten..."
+  },
+  "ui_f4154041": {
+    "message": "PageNarrator PDF"
+  },
+  "ui_b7689f29": {
+    "message": "PDF Kontrolle"
+  },
+  "ui_88828491": {
+    "message": "Seite 1 von 1"
+  },
+  "ui_8570fe3a": {
+    "message": "Zoom aus"
+  },
+  "ui_a3583899": {
+    "message": "Zoom auf"
+  },
+  "ui_2b3553eb": {
+    "message": "Rotation links"
+  },
+  "ui_2eaecb74": {
+    "message": "Rotation rechts"
+  },
+  "ui_b6ab6b07": {
+    "message": "Fit Mode"
+  },
+  "ui_69acd800": {
+    "message": "An Breite anpassen"
+  },
+  "ui_607af25f": {
+    "message": "An Seite anpassen"
+  },
+  "ui_9f9cf525": {
+    "message": "PDF Seiten"
+  },
+  "ui_ab32ceb0": {
+    "message": "Experimentell. 646 Spracheinträge mit unterschiedlicher Qualität. Erfordert WebGPU mit fp16 und etwa 1,35 GB Downloads. Wählen Sie Stimme, Variante oder Flüstern."
+  },
+  "ui_ab4a698f": {
+    "message": "Öffnen von der Seite"
+  },
+  "ui_68fbfc28": {
+    "message": "Chrome gewährte keinen Zugriff auf das aktive Tab."
+  },
+  "ui_67aad8a8": {
+    "message": "Öffnen Sie die Seite, klicken Sie auf das Symbol PageNarrator und wählen Sie dann Seite lesen aus."
+  },
+  "ui_724c0e56": {
+    "message": "Öffnen von der Seite"
+  },
+  "ui_4f96b3e0": {
+    "message": "Geschützte Chrome-Seiten können nicht gelesen werden. Öffnen Sie eine Webseite oder PDF."
+  },
+  "ui_0cddc760": {
+    "message": "offene Seite"
+  },
+  "ui_30274c11": {
+    "message": "Seite Zugriff erforderlich"
+  },
+  "ui_ce6d1fa8": {
+    "message": "PageNarrator muss auf diese Seite zugreifen."
+  },
+  "ui_2b54b790": {
+    "message": "Erlauben Sie den Websitezugriff über das PageNarrator-Symbol und versuchen Sie es erneut."
+  },
+  "ui_57906b45": {
+    "message": "Zugang gewähren"
+  },
+  "ui_b48f6457": {
+    "message": "Freie Browser-Speicher, dann retry."
+  },
+  "ui_75eca5ea": {
+    "message": "Kostenlose Lagerung"
+  },
+  "ui_99e92621": {
+    "message": "Wählen Sie eine Stimme für die Sprache dieser Seite."
+  },
+  "ui_997f787a": {
+    "message": "Wählen Sie Ihre Stimme"
+  },
+  "ui_50a8c46f": {
+    "message": "Die aktive Registerkarte wurde geschlossen, bevor das Lesen beginnen konnte."
+  },
+  "ui_e64862ef": {
+    "message": "Die Registerkarte ist geschlossen. öffnen Sie die Seite erneut und retry."
+  },
+  "ui_39f600ae": {
+    "message": "Kein ausgewählter Text"
+  },
+  "ui_79f7dfca": {
+    "message": "Kein Text ist ausgewählt."
+  },
+  "ui_b7a079b0": {
+    "message": "Text auswählen"
+  },
+  "ui_522bcc26": {
+    "message": "Wählen Sie den Text aus, den Sie hören möchten, und wählen Sie dann Auswahl vorlesen aus."
+  },
+  "ui_580dc44e": {
+    "message": "Textanerkennung erforderlich"
+  },
+  "ui_ce175449": {
+    "message": "Einige PDF Text konnte nicht zuverlässig gelesen werden."
+  },
+  "ui_f7c03bfe": {
+    "message": "Verwenden eines textbasierten PDF"
+  },
+  "ui_cde1ae87": {
+    "message": "Verwenden Sie die Texterkennung (OCR) oder eine PDF mit einer vollständigen Textebene."
+  },
+  "ui_281501a3": {
+    "message": "Füllen Sie die CAPTCHA auf der Seite aus, und führen Sie es erneut aus."
+  },
+  "ui_d1c2931f": {
+    "message": "Melden Sie sich auf der Website an, dann retry."
+  },
+  "ui_744be623": {
+    "message": "Zeichen in"
+  },
+  "ui_3c4b4f30": {
+    "message": "Kein lesbarer Artikel gefunden"
+  },
+  "ui_fb499b08": {
+    "message": "Kein lesbarer Artikeltext gefunden."
+  },
+  "ui_a1fad21c": {
+    "message": "Versuchen Sie eine andere Seite"
+  },
+  "ui_b0ddc925": {
+    "message": "Wählen Sie einen Abschnitt aus und wählen Sie Auswahl vorlesen aus oder öffnen Sie einen anderen Artikel."
+  },
+  "ui_d20c5459": {
+    "message": "Die Stimme beendete das Laden nicht."
+  },
+  "ui_eee6a1ad": {
+    "message": "Wählen Sie Vorbereiten der Stimme, um die Setup-Einstellung zu überprüfen."
+  },
+  "ui_eab3cf34": {
+    "message": "Sprachgeneration gescheitert"
+  },
+  "ui_4cad964d": {
+    "message": "Die Sprachgeneration wurde gestoppt, bevor das Audio fertig war."
+  },
+  "ui_2519f9e6": {
+    "message": "Wiederholen oder wählen Sie eine andere Stimme."
+  },
+  "ui_1844c6fe": {
+    "message": "Nicht unterstützt PDF"
+  },
+  "ui_4a8aceae": {
+    "message": "Dieser PDF ist beschädigt oder nicht unterstützt."
+  },
+  "ui_5679bf2f": {
+    "message": "Versuchen Sie ein anderes PDF"
+  },
+  "ui_b8183083": {
+    "message": "Kann nicht herunterladen PDF. Überprüfen Sie den Link und Ihre Verbindung."
+  },
+  "ui_ce24479d": {
+    "message": "Kann nicht öffnen diese PDF."
+  }
+}

@@ -6,7 +6,7 @@ import { findStartChunkIndex, findStartChunkIndexByText } from './reading-start.
 import { applyReadingPreferences } from './reading-filters.js';
 import { createCodeCleanupSuggestion } from './reading-suggestions.js';
 import { detectPageLanguage } from './language-detection.js';
-import { getUnsupportedLanguageMessage, normalizeLanguageCode } from './language-voice-options.js';
+import { getDetectedLanguageSuggestion, getUnsupportedLanguageMessage, normalizeLanguageCode } from './language-voice-options.js';
 import { createSpeechEngineHandoff } from './speech-engine-handoff.js';
 import {
   clearSpeechPreloadState,
@@ -376,7 +376,13 @@ export function createReadLoopOrchestrator({
       }
       const detectedLanguage = await detectPageLanguage(articleTextSample);
       if (stopIfRequested()) return;
-      if (detectedLanguage.reliable) {
+      const suggestion = getDetectedLanguageSuggestion(detectedLanguage, resolveSelectedVoice()?.engine || 'kokoro');
+      await renderLanguageStatus(detectedLanguage);
+      if (suggestion && !suggestion.supported) {
+        setReadingState('error', { message: getUnsupportedLanguageMessage(suggestion.code) });
+        return;
+      }
+      if (suggestion?.supported) {
         state.selectedLanguageCode = normalizeLanguageCode(detectedLanguage.code);
         setLanguageSelectValue(state.selectedLanguageCode);
         await populateVoices();

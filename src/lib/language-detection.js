@@ -19,8 +19,12 @@ export async function detectPageLanguage(text, { i18n = globalThis.chrome?.i18n 
     return createUnknownDetection();
   }
 
-  const result = await i18n.detectLanguage(sample);
-  const [best, second = { percentage: 0 }] = result?.languages || [];
+  let result;
+  try { result = await i18n.detectLanguage(sample); }
+  catch { return createUnknownDetection(); }
+  const [best, second = { percentage: 0 }] = (result?.languages || [])
+    .filter(item => typeof item?.language === 'string' && Number.isFinite(item.percentage))
+    .sort((left, right) => right.percentage - left.percentage);
 
   if (!best?.language) return createUnknownDetection();
 
@@ -30,7 +34,7 @@ export async function detectPageLanguage(text, { i18n = globalThis.chrome?.i18n 
     code: best.language,
     percent,
     margin,
-    reliable: best.language !== 'und' && percent >= RELIABLE_PERCENT && margin >= RELIABLE_MARGIN,
+    reliable: result.isReliable === true && best.language !== 'und' && percent >= RELIABLE_PERCENT && margin >= RELIABLE_MARGIN,
   };
 }
 

@@ -85,17 +85,17 @@ describe('production website smoke audit', () => {
     }, fetchPage)).resolves.toEqual({ path: '/pricing', errors: [] });
   });
 
-  it('rejects a stale build-only install page', async () => {
+  it('rejects a stale install page with missing source instructions', async () => {
     const contract = loadPageContracts(publicDir).find(({ path }) => path === '/chrome-extension');
     const html = readFileSync(join(publicDir, 'chrome-extension.html'), 'utf8');
     const current = await auditPage('https://pagenarrator.com', contract, async () => new Response(html));
     expect(current.errors).toEqual([]);
-    const stale = html.replaceAll('pagenarrator-1.0.1.zip', 'source preview')
-      .replaceAll('https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.1', 'https://github.com/FelixCAxO/PageNarrator');
+    const stale = html.replaceAll('Previous release downloads are no longer available', 'Old downloads are available')
+      .replaceAll('https://github.com/FelixCAxO/PageNarrator', 'https://example.invalid');
     const result = await auditPage('https://pagenarrator.com', contract, async () => new Response(stale));
     expect(result.errors).toEqual(expect.arrayContaining([
-      'missing text: pagenarrator-1.0.1.zip',
-      'missing link: https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.1',
+      'missing text: Previous release downloads are no longer available',
+      'missing link: https://github.com/FelixCAxO/PageNarrator',
     ]));
   });
 

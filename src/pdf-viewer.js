@@ -1,3 +1,4 @@
+import { t, localizeDocument } from './lib/i18n.js';
 import { renderPdfOcrTextLayer } from './lib/pdf-ocr-text-layer.js';
 import { createLogger, createSuppressedErrorHandler } from './lib/logger.js';
 import * as pdfjs from './pdf/pdf-engine.js';
@@ -37,11 +38,15 @@ import { getPdfDisplayTitle } from './lib/pdf-document-title.js';
 import { normalizePositive } from './lib/number-validation.js';
 
 const pdfViewerLogger = createLogger('pdf-viewer');
+localizeDocument(document);
+function loadedPagesLabel(count) {
+  return count === 1 ? t('$1 page loaded', [count]) : t('$1 pages loaded', [count]);
+}
 const suppressPdfViewerError = createSuppressedErrorHandler(pdfViewerLogger, 'Best-effort PDF viewer operation failed.');
 const pagesEl = document.getElementById('pdf-pages');
 const statusEl = document.getElementById('pdf-status');
 const pdfOcr = createPdfOcr({ onStatus: (text) => {
-  statusEl.textContent = text || `${pdfDocument?.numPages || 0} ${pdfDocument?.numPages === 1 ? 'page' : 'pages'} loaded`;
+  statusEl.textContent = text || loadedPagesLabel(pdfDocument?.numPages || 0);
 } });
 const PDF_PAGE_SESSION_STORAGE_PREFIX = 'pagenarrator-pdf-last-page:';
 // Report every 5% change in a page's visible share, not only entering and leaving, so the
@@ -184,7 +189,7 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
 pdfReadyPromise = renderPdf().catch((error) => {
   pdfViewerLogger.error('PDF viewer failed to render document.', error);
   const recovery = classifyPdfLoadError(error);
-  if (!statusEl.textContent || statusEl.textContent === 'Loading document...' || statusEl.textContent === 'Loading PDF...') {
+  if (!statusEl.textContent || statusEl.textContent === t("Loading document...") || statusEl.textContent === t("Loading PDF...")) {
     statusEl.textContent = recovery.message;
   }
   throw error;
@@ -196,7 +201,7 @@ async function repairPdfDocument(reason = 'worker-crash') {
 
   pdfViewerLogger.warn(`Initiating PDF viewer self-repair (${reason})...`);
   const previousStatus = statusEl.textContent;
-  statusEl.textContent = 'Reopening PDF...';
+  statusEl.textContent = t("Reopening PDF...");
 
   pdfRepairPromise = (async () => {
     const savedPage = pdfToolbarState.currentPage || 1;
@@ -225,8 +230,8 @@ async function repairPdfDocument(reason = 'worker-crash') {
       syncProtectedPdfHighlightPages();
       await reconcilePdfRenderWindow(savedPage);
     }
-    if (statusEl.textContent === 'Reopening PDF...') {
-      statusEl.textContent = previousStatus || `${pdfDocument?.numPages || 0} ${pdfDocument?.numPages === 1 ? 'page' : 'pages'} loaded`;
+    if (statusEl.textContent === t("Reopening PDF...")) {
+      statusEl.textContent = previousStatus || loadedPagesLabel(pdfDocument?.numPages || 0);
     }
   })().finally(() => {
     pdfRepairPromise = null;
@@ -258,7 +263,7 @@ async function renderPdf({ targetPage = null } = {}) {
   const sourceUrl = getPdfSourceUrl({ url: location.href });
   if (!sourceUrl || sourceUrl === location.href) throw new Error('No PDF source URL found.');
 
-  statusEl.textContent = 'Loading PDF...';
+  statusEl.textContent = t("Loading PDF...");
   const wasmUrl = getPdfWasmUrl(chrome.runtime);
   const cMapUrl = getPdfCMapUrl(chrome.runtime);
   const standardFontDataUrl = getPdfStandardFontDataUrl(chrome.runtime);
@@ -299,7 +304,7 @@ async function renderPdf({ targetPage = null } = {}) {
   renderPdfToolbar();
   applyPdfDisplayTitle(pdf, sourceUrl);
 
-  statusEl.textContent = `${pdf.numPages} ${pdf.numPages === 1 ? 'page' : 'pages'} loaded`;
+  statusEl.textContent = loadedPagesLabel(pdf.numPages);
   pageElements.clear();
   pageBaseViewports.clear();
   visiblePageIntersections.clear();
@@ -714,7 +719,7 @@ function renderPdfToolbar({ forcePageInputValue = false } = {}) {
 
 function updatePdfPageInputA11y(view) {
   if (!toolbarEls.pageInput) return;
-  toolbarEls.pageInput.setAttribute('aria-label', `Page ${view.currentPage || 1} of ${view.pageCount || 1}`);
+  toolbarEls.pageInput.setAttribute('aria-label', t("Page $1 of $2", [view.currentPage || 1, view.pageCount || 1]));
 }
 
 function scheduleVisiblePageUpdate() {

@@ -1,6 +1,6 @@
 # Release checklist
 
-The source version is 1.0.1. The private repository was recreated with one initial commit; previous release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
+The source version is 1.0.1. The repository was recreated with one initial commit; previous release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
 
 ## Public source repository
 

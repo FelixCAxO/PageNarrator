@@ -35,6 +35,7 @@ describe('language detection', () => {
         async detectLanguage(sample) {
           expect(sample.length).toBeGreaterThanOrEqual(80);
           return {
+            isReliable: true,
             languages: [
               { language: 'sv', percentage: 72 },
               { language: 'da', percentage: 18 },
@@ -84,5 +85,17 @@ describe('language detection', () => {
     expect(shouldAutoSelectDetectedLanguage(weak)).toBe(false);
     expect(shouldAutoSelectDetectedLanguage(unknown)).toBe(false);
     expect(shouldAutoSelectDetectedLanguage(ambiguous)).toBe(false);
+  });
+
+  it('respects Chrome reliability and tolerates unavailable detection without stopping reading', async () => {
+    const text = 'A long enough article containing ordinary words for language identification. '.repeat(3);
+    expect((await detectPageLanguage(text, { i18n: { detectLanguage: async () => ({
+      isReliable: false, languages: [{ language: 'en', percentage: 100 }],
+    }) } })).reliable).toBe(false);
+    expect(await detectPageLanguage(text, { i18n: { detectLanguage: async () => { throw new Error('Unavailable'); } } }))
+      .toEqual({ code: 'und', percent: 0, margin: 0, reliable: false });
+    expect(await detectPageLanguage(text, { i18n: { detectLanguage: async () => ({ isReliable: true,
+      languages: [{ language: 'fr', percentage: 4 }, { language: 'en', percentage: 96 }],
+    }) } })).toMatchObject({ code: 'en', percent: 96, reliable: true });
   });
 });

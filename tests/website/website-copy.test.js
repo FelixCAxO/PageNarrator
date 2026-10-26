@@ -24,15 +24,15 @@ const internalJargon = [
 ];
 
 describe('website copy', () => {
-  it('offers the released ZIP and source build without claiming Store availability', () => {
+  it('offers source installation without linking to removed releases or claiming Store availability', () => {
     const document = documents.get('chrome-extension.html');
     expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator"]')).toBeTruthy();
     const text = bodyText('chrome-extension.html');
     for (const name of ['chrome-extension.html', 'support.html']) {
       expect(bodyText(name), name).not.toMatch(/repository is currently private|repository access is required|(?:already have|with) repository access|preview access/i);
     }
-    expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.1"]')).toBeTruthy();
-    expect(text).toContain('pagenarrator-1.0.1.zip');
+    expect(document.querySelector('a[href*="/releases/tag/"]')).toBeNull();
+    expect(text).toContain('Previous release downloads are no longer available');
     expect(text).toContain('Chrome Web Store listing is not available yet');
     for (const step of ['Node.js 22.13+ (22.x) or 24+', 'npm ci', 'npm run build', 'chrome://extensions', 'Load unpacked', 'dist/']) {
       expect(text, step).toContain(step);

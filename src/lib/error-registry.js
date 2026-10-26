@@ -1,3 +1,5 @@
+import { t } from './i18n.js';
+
 export const ERROR_REGISTRY = Object.freeze({
   tab_url_hidden: {
     code: 'tab_url_hidden',
@@ -116,13 +118,13 @@ export const ERROR_REGISTRY = Object.freeze({
 
 export function getErrorRecord(code, fallback = {}) {
   const record = ERROR_REGISTRY[code];
-  if (record) return { ...record };
-  const message = fallback.message || 'Could not complete this action.';
+  if (record) return Object.fromEntries(Object.entries(record).map(([key, value]) => [key, key === 'code' ? value : t(value)]));
+  const message = fallback.message ? t(fallback.message) : t('Could not complete this action.');
   return {
     code: code || 'unknown',
-    cause: fallback.cause || message,
+    cause: fallback.cause ? t(fallback.cause) : message,
     message,
-    actionLabel: fallback.actionLabel || '',
-    recoveryHint: fallback.recoveryHint || message,
+    actionLabel: t(fallback.actionLabel || ''),
+    recoveryHint: fallback.recoveryHint ? t(fallback.recoveryHint) : message,
   };
 }

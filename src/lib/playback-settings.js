@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 import { STORAGE_KEYS } from './storage-keys.js';
 import { normalizeOmniVoiceSettings } from './omnivoice-settings.js';
 import {
@@ -40,11 +41,11 @@ export function clampSectionPauseSeconds(value) {
 
 export function formatSectionPauseLabel(sectionPauseSeconds) {
   const value = clampSectionPauseSeconds(sectionPauseSeconds);
-  if (value === DEFAULT_SECTION_PAUSE_SECONDS) return 'Normal';
-  if (value < DEFAULT_SECTION_PAUSE_SECONDS) return 'Faster';
+  if (value === DEFAULT_SECTION_PAUSE_SECONDS) return t("Normal");
+  if (value < DEFAULT_SECTION_PAUSE_SECONDS) return t('Faster');
 
   const seconds = value.toFixed(value % 1 === 0 ? 0 : 1);
-  return `${seconds}s slower`;
+  return t("$1s slower", [seconds]);
 }
 
 export function normalizeTtsBackendPreference(value) {

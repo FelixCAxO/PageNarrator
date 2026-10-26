@@ -1,0 +1,1982 @@
+{
+  "ui_43b7293a": {
+    "source": "$1 page loaded",
+    "locations": [
+      "src/pdf-viewer.js:43"
+    ]
+  },
+  "ui_ba72f3a3": {
+    "source": "$1 pages loaded",
+    "locations": [
+      "src/pdf-viewer.js:43"
+    ]
+  },
+  "ui_3e8b2a3a": {
+    "source": "Loading document...",
+    "locations": [
+      "src/pdf-viewer.js:192",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_ffb67f19": {
+    "source": "Loading PDF...",
+    "locations": [
+      "src/pdf-viewer.js:192",
+      "src/pdf-viewer.js:266"
+    ]
+  },
+  "ui_abc76c7c": {
+    "source": "Reopening PDF...",
+    "locations": [
+      "src/pdf-viewer.js:204",
+      "src/pdf-viewer.js:233"
+    ]
+  },
+  "ui_824a0948": {
+    "source": "Page $1 of $2",
+    "locations": [
+      "src/pdf-viewer.js:722",
+      "src/lib\\pdf-reading-progress.js:9"
+    ]
+  },
+  "ui_c08b976a": {
+    "source": "Working…",
+    "locations": [
+      "src/popup.js:107"
+    ]
+  },
+  "ui_059a0144": {
+    "source": "$1 voice",
+    "locations": [
+      "src/popup.js:138"
+    ]
+  },
+  "ui_27d1a499": {
+    "source": "Voice",
+    "locations": [
+      "src/popup.js:138",
+      "src/lib\\reader-engine-voice-settings-controller.js:233",
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_85d257a6": {
+    "source": "Processing: WebGPU (dedicated GPU)",
+    "locations": [
+      "src/popup.js:152"
+    ]
+  },
+  "ui_ea65fbf2": {
+    "source": "Processing: WebGPU (integrated GPU)",
+    "locations": [
+      "src/popup.js:154"
+    ]
+  },
+  "ui_4e4b8680": {
+    "source": "Processing: WebGPU",
+    "locations": [
+      "src/popup.js:155"
+    ]
+  },
+  "ui_7d6c19ce": {
+    "source": "Processing: CPU / WebAssembly (slower)",
+    "locations": [
+      "src/popup.js:157"
+    ]
+  },
+  "ui_5c338a74": {
+    "source": "Processing shown after reading starts.",
+    "locations": [
+      "src/popup.js:158",
+      "src/popup.html"
+    ]
+  },
+  "ui_c513493a": {
+    "source": "Preparing local voice… $1%",
+    "locations": [
+      "src/popup.js:184"
+    ]
+  },
+  "ui_642babee": {
+    "source": "Voice preparation failed. Try again.",
+    "locations": [
+      "src/popup.js:186"
+    ]
+  },
+  "ui_523c0c96": {
+    "source": "Missing voice files download from Hugging Face before setup.",
+    "locations": [
+      "src/popup.js:187",
+      "src/popup.html"
+    ]
+  },
+  "ui_8036af59": {
+    "source": "Retry",
+    "locations": [
+      "src/popup.js:189",
+      "src/lib/error-registry.js:pdf_network.actionLabel",
+      "src/lib/error-registry.js:pdf_unknown.actionLabel"
+    ]
+  },
+  "ui_fb625aee": {
+    "source": "Prepare voice",
+    "locations": [
+      "src/popup.js:189",
+      "src/popup.html"
+    ]
+  },
+  "ui_b9328a4d": {
+    "source": "$1 section",
+    "locations": [
+      "src/popup.js:193",
+      "src/lib\\reader-engine-view.js:543",
+      "src/lib\\reader-engine-view.js:551"
+    ]
+  },
+  "ui_c88f9f9a": {
+    "source": "$1 sections",
+    "locations": [
+      "src/popup.js:193",
+      "src/lib\\reader-engine-view.js:543",
+      "src/lib\\reader-engine-view.js:551"
+    ]
+  },
+  "ui_a133c549": {
+    "source": "Available when reading starts",
+    "locations": [
+      "src/popup.js:193",
+      "src/popup.html",
+      "src/popup.html"
+    ]
+  },
+  "ui_1d9bdb7f": {
+    "source": "Transcript appears when text loads.",
+    "locations": [
+      "src/popup.js:206",
+      "src/lib\\reader-engine-view.js:7",
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_fe92f855": {
+    "source": "Current page",
+    "locations": [
+      "src/popup.js:286",
+      "src/popup.html"
+    ]
+  },
+  "ui_bf0c7feb": {
+    "source": "Preparing…",
+    "locations": [
+      "src/popup.js:292",
+      "src/popup.js:293",
+      "src/popup.js:457",
+      "src/popup.html"
+    ]
+  },
+  "ui_3d77a20f": {
+    "source": "Preparing voice… $1%",
+    "locations": [
+      "src/popup.js:292"
+    ]
+  },
+  "ui_454d1d8a": {
+    "source": "Resume",
+    "locations": [
+      "src/popup.js:297",
+      "src/lib\\reader-engine-view.js:100",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_44f9bf2d": {
+    "source": "Pause",
+    "locations": [
+      "src/popup.js:297",
+      "src/lib\\reader-engine-view.js:83",
+      "src/popup.html"
+    ]
+  },
+  "ui_f3de41d3": {
+    "source": "Ready to read",
+    "locations": [
+      "src/popup.js:303",
+      "src/popup.js:303",
+      "src/lib\\reader-engine-view.js:33",
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_9283b625": {
+    "source": "Preparing voice…",
+    "locations": [
+      "src/popup.js:303"
+    ]
+  },
+  "ui_5ee7339b": {
+    "source": "Reading",
+    "locations": [
+      "src/popup.js:303",
+      "src/lib\\reader-engine-reading-state-renderer.js:74",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_de281feb": {
+    "source": "Paused",
+    "locations": [
+      "src/popup.js:303",
+      "src/lib\\reader-engine-reading-state-renderer.js:74",
+      "src/lib\\reader-engine-view.js:97"
+    ]
+  },
+  "ui_a7b2cec3": {
+    "source": "Finished",
+    "locations": [
+      "src/popup.js:303"
+    ]
+  },
+  "ui_5d640b9c": {
+    "source": "Needs attention",
+    "locations": [
+      "src/popup.js:303",
+      "src/lib\\reader-engine-error-notices.js:68",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_4d1cf041": {
+    "source": "American female",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_faf95838": {
+    "source": "American male",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_f3768d40": {
+    "source": "British female",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_4139054c": {
+    "source": "Choose an English Kokoro voice. Other languages are not supported.",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:77"
+    ]
+  },
+  "ui_c0c171d2": {
+    "source": "Could not complete this action.",
+    "locations": [
+      "src/lib\\error-registry.js:122"
+    ]
+  },
+  "ui_02e8a8a4": {
+    "source": "Recognizing text on page $1...",
+    "locations": [
+      "src/lib\\pdf-ocr.js:31"
+    ]
+  },
+  "ui_32d520cc": {
+    "source": "$1 page after this page",
+    "locations": [
+      "src/lib\\pdf-reading-progress.js:10"
+    ]
+  },
+  "ui_0cf8b1f7": {
+    "source": "$1 pages after this page",
+    "locations": [
+      "src/lib\\pdf-reading-progress.js:10"
+    ]
+  },
+  "ui_58de2772": {
+    "source": "Normal",
+    "locations": [
+      "src/lib\\playback-settings.js:44",
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_99f0d384": {
+    "source": "Faster",
+    "locations": [
+      "src/lib\\playback-settings.js:45"
+    ]
+  },
+  "ui_f6adf6a7": {
+    "source": "$1s slower",
+    "locations": [
+      "src/lib\\playback-settings.js:48"
+    ]
+  },
+  "ui_2c9ef2b2": {
+    "source": "Reading: $1",
+    "locations": [
+      "src/lib\\reader-engine-article-summary-controller.js:22"
+    ]
+  },
+  "ui_6ae318e1": {
+    "source": "Read selected text",
+    "locations": [
+      "src/lib\\reader-engine-error-notices.js:12"
+    ]
+  },
+  "ui_865bf5ae": {
+    "source": "Read selected",
+    "locations": [
+      "src/lib\\reader-engine-error-notices.js:15",
+      "src/lib\\reader-engine-view.js:136",
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_213e90fa": {
+    "source": "Try again",
+    "locations": [
+      "src/lib\\reader-engine-error-notices.js:18",
+      "src/lib\\reader-engine-error-notices.js:21",
+      "src/lib\\reader-engine-error-notices.js:42",
+      "src/lib\\reader-engine-view.js:138",
+      "src/lib\\reader-engine-view.js:177",
+      "src/lib\\reader-engine-voice-runtime-controller.js:264",
+      "src/lib/error-registry.js:tab_closed.actionLabel",
+      "src/lib/error-registry.js:captcha.actionLabel",
+      "src/lib/error-registry.js:model_setup_failed.actionLabel",
+      "src/lib/error-registry.js:tts_generation_failed.actionLabel"
+    ]
+  },
+  "ui_1dbc8cae": {
+    "source": "Grant site access",
+    "locations": [
+      "src/lib\\reader-engine-error-notices.js:24"
+    ]
+  },
+  "ui_450f715d": {
+    "source": "Read section $1",
+    "locations": [
+      "src/lib\\reader-engine-queue-renderer.js:41"
+    ]
+  },
+  "ui_531cf49f": {
+    "source": "Audio playback failed.",
+    "locations": [
+      "src/lib\\reader-engine-read-controls-controller.js:88"
+    ]
+  },
+  "ui_248b7c43": {
+    "source": "Could not detect article text",
+    "locations": [
+      "src/lib\\reader-engine-read-lifecycle.js:10"
+    ]
+  },
+  "ui_48ca3593": {
+    "source": "Could not extract text from PDF page $1",
+    "locations": [
+      "src/lib\\reader-engine-read-lifecycle.js:239"
+    ]
+  },
+  "ui_70cc9cc6": {
+    "source": "No page loaded",
+    "locations": [
+      "src/lib\\reader-engine-view.js:5",
+      "src/reader-engine.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_8bdfb3a1": {
+    "source": "Text appears when reading starts.",
+    "locations": [
+      "src/lib\\reader-engine-view.js:6",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_cb023e12": {
+    "source": "$1m $2s",
+    "locations": [
+      "src/lib\\reader-engine-view.js:19"
+    ]
+  },
+  "ui_1d64555b": {
+    "source": "$1h $2m",
+    "locations": [
+      "src/lib\\reader-engine-view.js:22"
+    ]
+  },
+  "ui_d3f69559": {
+    "source": "Read this page aloud",
+    "locations": [
+      "src/lib\\reader-engine-view.js:32",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_758bbc44": {
+    "source": "Read page",
+    "locations": [
+      "src/lib\\reader-engine-view.js:37",
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a174ecb1": {
+    "source": "0% complete",
+    "locations": [
+      "src/lib\\reader-engine-view.js:40",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_e527eba2": {
+    "source": "Preparing voice - $1%$2",
+    "locations": [
+      "src/lib\\reader-engine-view.js:49"
+    ]
+  },
+  "ui_365406c5": {
+    "source": "Preparing voice...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:51",
+      "src/lib\\reader-engine-view.js:61"
+    ]
+  },
+  "ui_78d44090": {
+    "source": "Stopping current read",
+    "locations": [
+      "src/lib\\reader-engine-view.js:68"
+    ]
+  },
+  "ui_98847cfb": {
+    "source": "Stopping read...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:69"
+    ]
+  },
+  "ui_e100f46d": {
+    "source": "Stopping...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:71"
+    ]
+  },
+  "ui_4b7f7705": {
+    "source": "Stop",
+    "locations": [
+      "src/lib\\reader-engine-view.js:84",
+      "src/lib\\reader-engine-view.js:101",
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a8d7b6e8": {
+    "source": "$1% complete",
+    "locations": [
+      "src/lib\\reader-engine-view.js:86",
+      "src/lib\\reader-engine-view.js:103"
+    ]
+  },
+  "ui_5376d4e7": {
+    "source": "Finished reading",
+    "locations": [
+      "src/lib\\reader-engine-view.js:112"
+    ]
+  },
+  "ui_2f0dcc5d": {
+    "source": "Read again",
+    "locations": [
+      "src/lib\\reader-engine-view.js:114"
+    ]
+  },
+  "ui_329cfb9e": {
+    "source": "100% complete",
+    "locations": [
+      "src/lib\\reader-engine-view.js:116"
+    ]
+  },
+  "ui_76fc465e": {
+    "source": "Something went wrong",
+    "locations": [
+      "src/lib\\reader-engine-view.js:124"
+    ]
+  },
+  "ui_0d4b0da7": {
+    "source": "Reading selected text",
+    "locations": [
+      "src/lib\\reader-engine-view.js:144"
+    ]
+  },
+  "ui_242bb2e3": {
+    "source": "Reading selected text...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:145"
+    ]
+  },
+  "ui_10905ea3": {
+    "source": "Preparing selected text",
+    "locations": [
+      "src/lib\\reader-engine-view.js:146",
+      "src/lib\\reader-engine-view.js:147"
+    ]
+  },
+  "ui_a2df426f": {
+    "source": "Selected text paused",
+    "locations": [
+      "src/lib\\reader-engine-view.js:148"
+    ]
+  },
+  "ui_915b9541": {
+    "source": "Reading current page",
+    "locations": [
+      "src/lib\\reader-engine-view.js:153"
+    ]
+  },
+  "ui_50880cb0": {
+    "source": "Reading page...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:154"
+    ]
+  },
+  "ui_e8bf303d": {
+    "source": "Preparing current page",
+    "locations": [
+      "src/lib\\reader-engine-view.js:155"
+    ]
+  },
+  "ui_59ad3c41": {
+    "source": "Preparing voice",
+    "locations": [
+      "src/lib\\reader-engine-view.js:156",
+      "src/lib\\reader-engine-view.js:187",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_af82140f": {
+    "source": "Reading paused",
+    "locations": [
+      "src/lib\\reader-engine-view.js:157"
+    ]
+  },
+  "ui_1ede4e42": {
+    "source": "Voice ready",
+    "locations": [
+      "src/lib\\reader-engine-view.js:166",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_63338bd9": {
+    "source": "Voice setup failed",
+    "locations": [
+      "src/lib\\reader-engine-view.js:174",
+      "src/lib/error-registry.js:model_setup_failed.title"
+    ]
+  },
+  "ui_cedd5bba": {
+    "source": "Model setup failed.",
+    "locations": [
+      "src/lib\\reader-engine-view.js:176",
+      "src/lib\\reader-engine-voice-runtime-controller.js:264"
+    ]
+  },
+  "ui_a7f38d4e": {
+    "source": "Preparing local voice; missing files download from Hugging Face.",
+    "locations": [
+      "src/lib\\reader-engine-view.js:189"
+    ]
+  },
+  "ui_430dc39d": {
+    "source": "Estimating time...",
+    "locations": [
+      "src/lib\\reader-engine-view.js:190",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_06a382b7": {
+    "source": "Open an article, then read the page",
+    "locations": [
+      "src/lib\\reader-engine-view.js:206",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_37bc7086": {
+    "source": "$1 word",
+    "locations": [
+      "src/lib\\reader-engine-view.js:218"
+    ]
+  },
+  "ui_b2a5d1af": {
+    "source": "$1 words",
+    "locations": [
+      "src/lib\\reader-engine-view.js:218"
+    ]
+  },
+  "ui_c98f4557": {
+    "source": "min",
+    "locations": [
+      "src/lib\\reader-engine-view.js:218"
+    ]
+  },
+  "ui_5dca8675": {
+    "source": "0 sections",
+    "locations": [
+      "src/lib\\reader-engine-view.js:260",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_2d292516": {
+    "source": "Section $1 of $2",
+    "locations": [
+      "src/lib\\reader-engine-view.js:327"
+    ]
+  },
+  "ui_bbd7de9d": {
+    "source": "Resume at $1%",
+    "locations": [
+      "src/lib\\reader-engine-view.js:330"
+    ]
+  },
+  "ui_4dd870fb": {
+    "source": "Selected text",
+    "locations": [
+      "src/lib\\reader-engine-view.js:346"
+    ]
+  },
+  "ui_8212a19a": {
+    "source": "PDF document",
+    "locations": [
+      "src/lib\\reader-engine-view.js:347"
+    ]
+  },
+  "ui_cb3b43ef": {
+    "source": "Full page",
+    "locations": [
+      "src/lib\\reader-engine-view.js:348"
+    ]
+  },
+  "ui_e13844b5": {
+    "source": "Article only",
+    "locations": [
+      "src/lib\\reader-engine-view.js:349"
+    ]
+  },
+  "ui_6cae863f": {
+    "source": "$1 word left",
+    "locations": [
+      "src/lib\\reader-engine-view.js:365",
+      "src/lib\\reader-engine-view.js:373"
+    ]
+  },
+  "ui_eb822f18": {
+    "source": "$1 words left",
+    "locations": [
+      "src/lib\\reader-engine-view.js:365",
+      "src/lib\\reader-engine-view.js:373"
+    ]
+  },
+  "ui_c145caa0": {
+    "source": "$1 chunk left",
+    "locations": [
+      "src/lib\\reader-engine-view.js:376"
+    ]
+  },
+  "ui_c10d9105": {
+    "source": "$1 chunks left",
+    "locations": [
+      "src/lib\\reader-engine-view.js:376"
+    ]
+  },
+  "ui_5ec76abe": {
+    "source": "Page $1 · $2",
+    "locations": [
+      "src/lib\\reader-engine-view.js:469",
+      "src/lib\\reader-engine-view.js:504"
+    ]
+  },
+  "ui_0290cbb9": {
+    "source": "page $1",
+    "locations": [
+      "src/lib\\reader-engine-view.js:530"
+    ]
+  },
+  "ui_03e76f30": {
+    "source": "$1 paragraph",
+    "locations": [
+      "src/lib\\reader-engine-view.js:536"
+    ]
+  },
+  "ui_68542679": {
+    "source": "$1 paragraphs",
+    "locations": [
+      "src/lib\\reader-engine-view.js:536"
+    ]
+  },
+  "ui_bff757bc": {
+    "source": "$1 · first $2 shown",
+    "locations": [
+      "src/lib\\reader-engine-view.js:538"
+    ]
+  },
+  "ui_ac6e697a": {
+    "source": "$1 · $2-$3 shown",
+    "locations": [
+      "src/lib\\reader-engine-view.js:545"
+    ]
+  },
+  "ui_267187b3": {
+    "source": "$1 match",
+    "locations": [
+      "src/lib\\reader-engine-view.js:550"
+    ]
+  },
+  "ui_61f83343": {
+    "source": "$1 matches",
+    "locations": [
+      "src/lib\\reader-engine-view.js:550"
+    ]
+  },
+  "ui_359557ff": {
+    "source": "$1 of $2",
+    "locations": [
+      "src/lib\\reader-engine-view.js:552"
+    ]
+  },
+  "ui_eaa7e488": {
+    "source": "$1 - cached for next time",
+    "locations": [
+      "src/lib\\reader-engine-view.js:580"
+    ]
+  },
+  "ui_5670c878": {
+    "source": "voice model",
+    "locations": [
+      "src/lib\\reader-engine-view.js:595",
+      "src/lib\\reader-engine-view.js:598",
+      "src/lib\\reader-engine-voice-runtime-controller.js:279",
+      "src/lib\\reader-engine-voice-runtime-controller.js:279"
+    ]
+  },
+  "ui_801e9a8a": {
+    "source": "$1 / $2 MB",
+    "locations": [
+      "src/lib\\reader-engine-view.js:599"
+    ]
+  },
+  "ui_0b4d6296": {
+    "source": "Verified $1. Preparing voice…",
+    "locations": [
+      "src/lib\\reader-engine-view.js:601"
+    ]
+  },
+  "ui_c2fd9f2f": {
+    "source": "Downloading voice files: $1",
+    "locations": [
+      "src/lib\\reader-engine-view.js:601"
+    ]
+  },
+  "ui_6027988e": {
+    "source": "Downloading $1: $2",
+    "locations": [
+      "src/lib\\reader-engine-view.js:602"
+    ]
+  },
+  "ui_3f7e2cfe": {
+    "source": "GPU setup failed. Retrying with CPU/WebAssembly...",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:112"
+    ]
+  },
+  "ui_f0fc3524": {
+    "source": "Downloading $1...",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:229"
+    ]
+  },
+  "ui_9d82453c": {
+    "source": "Preparing $1...",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:232"
+    ]
+  },
+  "ui_04b7d092": {
+    "source": "Checking GPU support...",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:258"
+    ]
+  },
+  "ui_a1f035db": {
+    "source": "Checking browser cache...",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:258"
+    ]
+  },
+  "ui_412b5f0e": {
+    "source": "One-time setup",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:259",
+      "src/lib\\reader-engine-voice-runtime-controller.js:267"
+    ]
+  },
+  "ui_91d30309": {
+    "source": "Could not prepare the requested voice.",
+    "locations": [
+      "src/lib\\reader-engine-voice-runtime-controller.js:286"
+    ]
+  },
+  "ui_b9775b3a": {
+    "source": "Experimental - quality not validated",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:106"
+    ]
+  },
+  "ui_c6b4d959": {
+    "source": "$1 - adjusted",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:262"
+    ]
+  },
+  "ui_ad24ebab": {
+    "source": "Voice quality adjusted after $1.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:267"
+    ]
+  },
+  "ui_aa682200": {
+    "source": "Voice processing: GPU (WebGPU) with CPU-friendly settings.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:290"
+    ]
+  },
+  "ui_3411bb9b": {
+    "source": "Voice processing: GPU (WebGPU).",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:291"
+    ]
+  },
+  "ui_078077a9": {
+    "source": "Voice processing: CPU only (WebAssembly) because WebGPU is unavailable.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:294"
+    ]
+  },
+  "ui_9e335d53": {
+    "source": "Voice processing: CPU only (WebAssembly).",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:295"
+    ]
+  },
+  "ui_8646aeef": {
+    "source": "Voice processing: system voice (browser or operating system).",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:297"
+    ]
+  },
+  "ui_815f1834": {
+    "source": "Voice processing: checked when reading starts.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:299",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_19f02581": {
+    "source": "Using experimental OmniVoice on WebGPU.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:431"
+    ]
+  },
+  "ui_f7c3a723": {
+    "source": "Model files download from Hugging Face; speech stays on this device.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:431"
+    ]
+  },
+  "ui_411e02b2": {
+    "source": "Choose Kokoro if WebGPU is unavailable.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:431"
+    ]
+  },
+  "ui_3581ebdf": {
+    "source": "Using Kokoro $1 voice.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:433"
+    ]
+  },
+  "ui_b6f3e0b5": {
+    "source": "Missing voice files download from Hugging Face when you prepare or read.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:433"
+    ]
+  },
+  "ui_6813181e": {
+    "source": "Speech runs on this device; cached files can be reused offline unless cleared.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:433"
+    ]
+  },
+  "ui_95b6ef87": {
+    "source": "Experimental quality: $1.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:434"
+    ]
+  },
+  "ui_3c2745dc": {
+    "source": "No $1 voice is available.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:435"
+    ]
+  },
+  "ui_b7e3509c": {
+    "source": "Skip code snippets?",
+    "locations": [
+      "src/lib\\reading-suggestions.js:26",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_9d9f28af": {
+    "source": "This page has many code snippets. Skip about $1 min of code for smoother narration.",
+    "locations": [
+      "src/lib\\reading-suggestions.js:28"
+    ]
+  },
+  "ui_ee180b24": {
+    "source": "This page has many code snippets. Skip about $1 mins of code for smoother narration.",
+    "locations": [
+      "src/lib\\reading-suggestions.js:29"
+    ]
+  },
+  "ui_126befb6": {
+    "source": "Auto",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:24",
+      "src/popup.html",
+      "src/popup.html"
+    ]
+  },
+  "ui_361987ac": {
+    "source": "High quality",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:25",
+      "src/popup.html"
+    ]
+  },
+  "ui_c0cc603d": {
+    "source": "Balanced",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:26",
+      "src/popup.html"
+    ]
+  },
+  "ui_5b602dbf": {
+    "source": "Battery saver",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:27",
+      "src/popup.html"
+    ]
+  },
+  "ui_157606b3": {
+    "source": "1 section preloaded",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:52"
+    ]
+  },
+  "ui_32bba2de": {
+    "source": "$1 sections preloaded",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:52"
+    ]
+  },
+  "ui_01414b42": {
+    "source": "progressive playback on",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:53"
+    ]
+  },
+  "ui_4ddd1cf4": {
+    "source": "progressive playback off",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:53"
+    ]
+  },
+  "ui_95c9f0ef": {
+    "source": "automatic browser voice switching off",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:54"
+    ]
+  },
+  "ui_c86df72a": {
+    "source": "$1: $2-character chunks, $3, $4, $5.",
+    "locations": [
+      "src/lib\\tts-performance-profile.js:56"
+    ]
+  },
+  "ui_c0557bfe": {
+    "source": "Could not access this page.",
+    "locations": [
+      "src/lib\\ui-error-messages.js:26"
+    ]
+  },
+  "ui_be75ad01": {
+    "source": "Best-effort readerEngine operation failed.",
+    "locations": [
+      "src/app\\reader-engine\\reader-engine-session.js:158"
+    ]
+  },
+  "ui_eb6988d3": {
+    "source": "Could not load resume position",
+    "locations": [
+      "src/app\\reader-engine\\reader-engine-session.js:376"
+    ]
+  },
+  "ui_1b842ad5": {
+    "source": "PageNarrator failed to initialize.",
+    "locations": [
+      "src/app\\reader-engine\\reader-engine-session.js:1015"
+    ]
+  },
+  "ui_87d977c4": {
+    "source": "PageNarrator player",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_9d65bbdb": {
+    "source": "Choose voice model",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_e6334598": {
+    "source": "Voice model",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_38319e92": {
+    "source": "Kokoro (default)",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a476bebf": {
+    "source": "OmniVoice (experimental)",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_6c6b4ee0": {
+    "source": "Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/lib/omnivoice-settings.js"
+    ]
+  },
+  "ui_2c04fde6": {
+    "source": "Voice settings",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_9a73db9b": {
+    "source": "Language",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_2070a9f8": {
+    "source": "Loading voices…",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_c39c8623": {
+    "source": "Voice type",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d8a26cb9": {
+    "source": "Female",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_487d36f0": {
+    "source": "Male",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a2a40f30": {
+    "source": "Voice variation",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_16383585": {
+    "source": "Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d975568d": {
+    "source": "Whisper",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_3d7af8ef": {
+    "source": "Playback speed",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_c58a3963": {
+    "source": "Saved automatically. Voice changes apply to the next section while reading.",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_71365cb1": {
+    "source": "Prepare local voice",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_c197c7e2": {
+    "source": "Skip",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_dad1a20b": {
+    "source": "Now reading",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_30ea6e2f": {
+    "source": "Previous section",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_c2954bc2": {
+    "source": "Back",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_dce2da08": {
+    "source": "Next",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0c341bc6": {
+    "source": "Built-in Kokoro voices run locally. OmniVoice does too. Missing voice files download from Hugging Face. Narrated text stays on this device. Settings, page URLs, titles, reading position, and a short text excerpt stay local.",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_3452d125": {
+    "source": "Privacy details",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_1eb4158c": {
+    "source": "Advanced settings",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_ce305438": {
+    "source": "Timing, cleanup, highlights",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_67231237": {
+    "source": "Pause between sections",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_8f517045": {
+    "source": "Performance",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_34c199e6": {
+    "source": "Processing",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_bec07b52": {
+    "source": "CPU / WebAssembly",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_e92f8761": {
+    "source": "Release voice memory when idle",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_231b3e4b": {
+    "source": "Skip code snippets",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_456ac053": {
+    "source": "Area color",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_10cd7856": {
+    "source": "Word color",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_1e4dbab9": {
+    "source": "Area opacity",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_1688a6f4": {
+    "source": "Word opacity",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0583096b": {
+    "source": "Transcript",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_89a5470c": {
+    "source": "Reading queue",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a106cd77": {
+    "source": "Search sections",
+    "locations": [
+      "src/popup.html",
+      "src/popup.html"
+    ]
+  },
+  "ui_ee3d49e1": {
+    "source": "First",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_30035f15": {
+    "source": "Section number",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_41d0c56b": {
+    "source": "Go",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_e40e2439": {
+    "source": "Last",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_bd9126df": {
+    "source": "No matching sections. Try another search.",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_620574c4": {
+    "source": "PageNarrator reader engine",
+    "locations": [
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_c5fbc06e": {
+    "source": "Grant page access",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0a05ab9f": {
+    "source": "PageNarrator extension icon",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_5a3d9c47": {
+    "source": "Open PageNarrator from the page",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_94a4b160": {
+    "source": "Click the PageNarrator extension icon while the page is active, then choose Read page.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_4be7c01e": {
+    "source": "Missing voice files download on first use. Speech runs locally.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_3d04a00a": {
+    "source": "Preparing local voice; missing files download from Hugging Face...",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_048ca959": {
+    "source": "Recovery steps",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0ec24245": {
+    "source": "Details",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_4ff448da": {
+    "source": "Resume reading",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_cb2eed93": {
+    "source": "Resume at saved position",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_ded3954b": {
+    "source": "Saved reading position",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_24299867": {
+    "source": "Start over",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d71c7401": {
+    "source": "Reading suggestion",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d5c02828": {
+    "source": "This page has many code snippets.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_336b89fb": {
+    "source": "Skip code",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_299fab6d": {
+    "source": "Detected article",
+    "locations": [
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a9898369": {
+    "source": "Reading: Article only",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_3065e144": {
+    "source": "Starts with",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_7ac012cc": {
+    "source": "Reading player",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_8edce20a": {
+    "source": "Reading progress",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_949ea37c": {
+    "source": "0 chunks left",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_1250127e": {
+    "source": "PDF page navigation",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_e83d9196": {
+    "source": "Page",
+    "locations": [
+      "src/reader-engine.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_27ba99fc": {
+    "source": "Skip current PDF page",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_dbd1ad47": {
+    "source": "Reader settings",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_1a27bec5": {
+    "source": "Language will be detected when reading starts.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_52ff662d": {
+    "source": "Device requirements",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_fd02dfc2": {
+    "source": "Recommended:",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_b0555d92": {
+    "source": "a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0d393abc": {
+    "source": "Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_f31ba722": {
+    "source": "Timing, cleanup, voices",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_a879e367": {
+    "source": "Section pauses",
+    "locations": [
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_07e1c336": {
+    "source": "Highlight style",
+    "locations": [
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_9525b78e": {
+    "source": "Custom",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_e0955632": {
+    "source": "Read area",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_90571eca": {
+    "source": "Current word",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_ea585567": {
+    "source": "Reading cleanup",
+    "locations": [
+      "src/reader-engine.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0dc6b4aa": {
+    "source": "Off",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d6fbffc9": {
+    "source": "Queue and transcript summary",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_21fd85e4": {
+    "source": "Queue & transcript",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d6c98891": {
+    "source": "Current section, transcript search, and jump controls are available in Advanced mode.",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_0eac1f07": {
+    "source": "Browse",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_44d76dee": {
+    "source": "Full transcript",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_ab5783a6": {
+    "source": "0 paragraphs",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_d58a5a9a": {
+    "source": "Queue navigation",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_2d877b6c": {
+    "source": "Section",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_03205ed1": {
+    "source": "Find section",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_27654275": {
+    "source": "Search transcript or page...",
+    "locations": [
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_f4154041": {
+    "source": "PageNarrator PDF",
+    "locations": [
+      "src/pdf-viewer.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_b7689f29": {
+    "source": "PDF controls",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_88828491": {
+    "source": "Page 1 of 1",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_8570fe3a": {
+    "source": "Zoom out",
+    "locations": [
+      "src/pdf-viewer.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_a3583899": {
+    "source": "Zoom in",
+    "locations": [
+      "src/pdf-viewer.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_2b3553eb": {
+    "source": "Rotate left",
+    "locations": [
+      "src/pdf-viewer.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_2eaecb74": {
+    "source": "Rotate right",
+    "locations": [
+      "src/pdf-viewer.html",
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_b6ab6b07": {
+    "source": "Fit mode",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_69acd800": {
+    "source": "Fit width",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_607af25f": {
+    "source": "Fit page",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_9f9cf525": {
+    "source": "PDF pages",
+    "locations": [
+      "src/pdf-viewer.html"
+    ]
+  },
+  "ui_ab32ceb0": {
+    "source": "Experimental. 646 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper.",
+    "locations": [
+      "src/lib/omnivoice-settings.js"
+    ]
+  },
+  "ui_ab4a698f": {
+    "source": "Open from the page",
+    "locations": [
+      "src/lib/error-registry.js:tab_url_hidden.title"
+    ]
+  },
+  "ui_68fbfc28": {
+    "source": "Chrome did not grant access to the active tab.",
+    "locations": [
+      "src/lib/error-registry.js:tab_url_hidden.cause"
+    ]
+  },
+  "ui_67aad8a8": {
+    "source": "Open the page, click the PageNarrator icon, then choose Read page.",
+    "locations": [
+      "src/lib/error-registry.js:tab_url_hidden.message",
+      "src/lib/error-registry.js:tab_url_hidden.recoveryHint"
+    ]
+  },
+  "ui_724c0e56": {
+    "source": "Open from page",
+    "locations": [
+      "src/lib/error-registry.js:tab_url_hidden.actionLabel"
+    ]
+  },
+  "ui_4f96b3e0": {
+    "source": "Protected Chrome pages cannot be read. Open a webpage or PDF.",
+    "locations": [
+      "src/lib/error-registry.js:unscriptable_url.message",
+      "src/lib/error-registry.js:unscriptable_url.recoveryHint"
+    ]
+  },
+  "ui_0cddc760": {
+    "source": "Open page",
+    "locations": [
+      "src/lib/error-registry.js:unscriptable_url.actionLabel"
+    ]
+  },
+  "ui_30274c11": {
+    "source": "Page access needed",
+    "locations": [
+      "src/lib/error-registry.js:host_permission_required.title"
+    ]
+  },
+  "ui_ce6d1fa8": {
+    "source": "PageNarrator needs access to this site.",
+    "locations": [
+      "src/lib/error-registry.js:host_permission_required.cause"
+    ]
+  },
+  "ui_2b54b790": {
+    "source": "Allow site access from the PageNarrator icon, then retry.",
+    "locations": [
+      "src/lib/error-registry.js:host_permission_required.message",
+      "src/lib/error-registry.js:host_permission_required.recoveryHint"
+    ]
+  },
+  "ui_57906b45": {
+    "source": "Grant access",
+    "locations": [
+      "src/lib/error-registry.js:host_permission_required.actionLabel"
+    ]
+  },
+  "ui_b48f6457": {
+    "source": "Free browser storage, then retry.",
+    "locations": [
+      "src/lib/error-registry.js:storage_quota.message",
+      "src/lib/error-registry.js:storage_quota.recoveryHint"
+    ]
+  },
+  "ui_75eca5ea": {
+    "source": "Free storage",
+    "locations": [
+      "src/lib/error-registry.js:storage_quota.actionLabel"
+    ]
+  },
+  "ui_99e92621": {
+    "source": "Choose a voice for this page’s language.",
+    "locations": [
+      "src/lib/error-registry.js:voice_language_mismatch.message",
+      "src/lib/error-registry.js:voice_language_mismatch.recoveryHint"
+    ]
+  },
+  "ui_997f787a": {
+    "source": "Choose voice",
+    "locations": [
+      "src/lib/error-registry.js:voice_language_mismatch.actionLabel"
+    ]
+  },
+  "ui_50a8c46f": {
+    "source": "The active tab closed before reading could start.",
+    "locations": [
+      "src/lib/error-registry.js:tab_closed.cause"
+    ]
+  },
+  "ui_e64862ef": {
+    "source": "The tab closed. Reopen the page and retry.",
+    "locations": [
+      "src/lib/error-registry.js:tab_closed.message",
+      "src/lib/error-registry.js:tab_closed.recoveryHint"
+    ]
+  },
+  "ui_39f600ae": {
+    "source": "No selected text",
+    "locations": [
+      "src/lib/error-registry.js:empty_selection.title"
+    ]
+  },
+  "ui_79f7dfca": {
+    "source": "No text is selected.",
+    "locations": [
+      "src/lib/error-registry.js:empty_selection.cause",
+      "src/lib/error-registry.js:empty_selection.message"
+    ]
+  },
+  "ui_b7a079b0": {
+    "source": "Select text",
+    "locations": [
+      "src/lib/error-registry.js:empty_selection.actionLabel"
+    ]
+  },
+  "ui_522bcc26": {
+    "source": "Select the text you want to hear, then choose Read selected.",
+    "locations": [
+      "src/lib/error-registry.js:empty_selection.recoveryHint"
+    ]
+  },
+  "ui_580dc44e": {
+    "source": "Text recognition required",
+    "locations": [
+      "src/lib/error-registry.js:scanned_pdf_unsupported.title"
+    ]
+  },
+  "ui_ce175449": {
+    "source": "Some PDF text could not be read reliably.",
+    "locations": [
+      "src/lib/error-registry.js:scanned_pdf_unsupported.cause",
+      "src/lib/error-registry.js:scanned_pdf_unsupported.message"
+    ]
+  },
+  "ui_f7c03bfe": {
+    "source": "Use a text-based PDF",
+    "locations": [
+      "src/lib/error-registry.js:scanned_pdf_unsupported.actionLabel"
+    ]
+  },
+  "ui_cde1ae87": {
+    "source": "Use text recognition (OCR) or a PDF with a complete text layer.",
+    "locations": [
+      "src/lib/error-registry.js:scanned_pdf_unsupported.recoveryHint"
+    ]
+  },
+  "ui_281501a3": {
+    "source": "Complete the CAPTCHA on the page, then retry.",
+    "locations": [
+      "src/lib/error-registry.js:captcha.message",
+      "src/lib/error-registry.js:captcha.recoveryHint"
+    ]
+  },
+  "ui_d1c2931f": {
+    "source": "Sign in to the site, then retry.",
+    "locations": [
+      "src/lib/error-registry.js:login_wall.message",
+      "src/lib/error-registry.js:login_wall.recoveryHint"
+    ]
+  },
+  "ui_744be623": {
+    "source": "Sign in",
+    "locations": [
+      "src/lib/error-registry.js:login_wall.actionLabel"
+    ]
+  },
+  "ui_3c4b4f30": {
+    "source": "No readable article found",
+    "locations": [
+      "src/lib/error-registry.js:article_text_not_found.title"
+    ]
+  },
+  "ui_fb499b08": {
+    "source": "No readable article text was found.",
+    "locations": [
+      "src/lib/error-registry.js:article_text_not_found.cause",
+      "src/lib/error-registry.js:article_text_not_found.message"
+    ]
+  },
+  "ui_a1fad21c": {
+    "source": "Try another page",
+    "locations": [
+      "src/lib/error-registry.js:article_text_not_found.actionLabel"
+    ]
+  },
+  "ui_b0ddc925": {
+    "source": "Select a passage and choose Read selected, or open another article.",
+    "locations": [
+      "src/lib/error-registry.js:article_text_not_found.recoveryHint"
+    ]
+  },
+  "ui_d20c5459": {
+    "source": "The voice did not finish loading.",
+    "locations": [
+      "src/lib/error-registry.js:model_setup_failed.cause",
+      "src/lib/error-registry.js:model_setup_failed.message"
+    ]
+  },
+  "ui_eee6a1ad": {
+    "source": "Choose Prepare voice to retry setup.",
+    "locations": [
+      "src/lib/error-registry.js:model_setup_failed.recoveryHint"
+    ]
+  },
+  "ui_eab3cf34": {
+    "source": "Speech generation failed",
+    "locations": [
+      "src/lib/error-registry.js:tts_generation_failed.title"
+    ]
+  },
+  "ui_4cad964d": {
+    "source": "Speech generation stopped before audio was ready.",
+    "locations": [
+      "src/lib/error-registry.js:tts_generation_failed.cause",
+      "src/lib/error-registry.js:tts_generation_failed.message"
+    ]
+  },
+  "ui_2519f9e6": {
+    "source": "Retry, or choose another voice.",
+    "locations": [
+      "src/lib/error-registry.js:tts_generation_failed.recoveryHint"
+    ]
+  },
+  "ui_1844c6fe": {
+    "source": "Unsupported PDF",
+    "locations": [
+      "src/lib/error-registry.js:pdf_corrupt.title"
+    ]
+  },
+  "ui_4a8aceae": {
+    "source": "This PDF is damaged or unsupported.",
+    "locations": [
+      "src/lib/error-registry.js:pdf_corrupt.cause",
+      "src/lib/error-registry.js:pdf_corrupt.message",
+      "src/lib/error-registry.js:pdf_corrupt.recoveryHint"
+    ]
+  },
+  "ui_5679bf2f": {
+    "source": "Try another PDF",
+    "locations": [
+      "src/lib/error-registry.js:pdf_corrupt.actionLabel"
+    ]
+  },
+  "ui_b8183083": {
+    "source": "Could not download the PDF. Check the link and your connection.",
+    "locations": [
+      "src/lib/error-registry.js:pdf_network.message",
+      "src/lib/error-registry.js:pdf_network.recoveryHint"
+    ]
+  },
+  "ui_ce24479d": {
+    "source": "Could not open this PDF.",
+    "locations": [
+      "src/lib/error-registry.js:pdf_unknown.message",
+      "src/lib/error-registry.js:pdf_unknown.recoveryHint"
+    ]
+  }
+}
