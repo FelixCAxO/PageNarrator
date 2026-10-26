@@ -53,7 +53,7 @@ export function loadRedirectContracts(directory = publicDir) {
   const pathRedirects = readFileSync(join(directory, '_redirects'), 'utf8')
     .split(/\r?\n/)
     .map((line) => line.trim())
-    .filter(Boolean)
+    .filter(line => line && !line.startsWith('#'))
     .map((line) => {
       const [source, destination, status] = line.split(/\s+/);
       return { source, destination, status: Number.parseInt(status, 10) };

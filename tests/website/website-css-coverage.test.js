@@ -9,7 +9,7 @@ const pages = readdirSync(publicDir).filter((name) => name.endsWith('.html'));
 // PostCSS is already installed by Vite; use its parser rather than splitting CSS blocks.
 const postcss = createRequire(import.meta.url)('postcss');
 
-const headingFont = 'https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,600..800&display=swap';
+const headingFont = '/assets/fonts/newsreader.css';
 
 // The August copy rewrite dropped the font link from Support, Contact, Privacy and Terms,
 // so their headings fell back to Georgia while every other page used Newsreader.
@@ -17,7 +17,7 @@ it('loads the heading font on every page that uses the site stylesheet', () => {
   const missing = pages.filter((name) => {
     const document = new JSDOM(readFileSync(join(publicDir, name), 'utf8')).window.document;
     const hrefs = [...document.querySelectorAll('link[rel="stylesheet"]')].map((link) => link.getAttribute('href'));
-    return hrefs.some((href) => href.startsWith('/assets/')) && !hrefs.includes(headingFont);
+    return hrefs.some((href) => href.startsWith('/assets/')) && !hrefs.some(href => href.split('?')[0] === headingFont);
   });
   expect(missing).toEqual([]);
 });

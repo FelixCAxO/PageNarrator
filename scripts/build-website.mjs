@@ -16,13 +16,13 @@ export function buildWebsite(sourceDir = join(root, 'website/public'), outputDir
     .filter(({ indexable, path }) => indexable || path === '/404')
     .map(({ path }) => path === '/' ? 'index.html' : `${path.slice(1)}.html`);
   const files = [...pages, '_headers', '_redirects', 'robots.txt', 'sitemap.xml',
-    'favicon.ico', 'apple-touch-icon.png', 'og-image.jpg'];
+    'favicon.ico', 'apple-touch-icon.png', 'og-image.jpg', 'assets/fonts/OFL-Newsreader.txt'];
   function collectAssets(directory, prefix = 'assets') {
     for (const entry of readdirSync(directory, { withFileTypes: true })) {
       if (entry.name.startsWith('.') || /(?:^|[-_.])(?:debug|test|fixture|private)(?:[-_.]|$)/i.test(entry.name)) continue;
       const path = join(prefix, entry.name);
       if (entry.isDirectory()) collectAssets(join(source, path), path);
-      else if (entry.isFile() && ['.css', '.png', '.jpg', '.webp', '.ico', '.svg', '.wav'].includes(extname(entry.name))) files.push(path);
+      else if (entry.isFile() && ['.css', '.png', '.jpg', '.webp', '.ico', '.svg', '.wav', '.woff2'].includes(extname(entry.name))) files.push(path);
     }
   }
   collectAssets(join(source, 'assets'));

@@ -14,7 +14,7 @@
   "scripts": {
     "dev": "vite",
     "dev:website": "cd website && wrangler pages dev public",
-    "build:website": "node scripts/build-website.mjs",
+    "build:website": "node scripts/build-website-assets.mjs && node scripts/build-localized-homepages.mjs && node scripts/build-website.mjs",
     "predeploy:website": "npm run build:website",
     "deploy:website": "wrangler pages deploy artifacts/website --project-name=pagenarrator-site --branch=main",
     "test": "vitest run",

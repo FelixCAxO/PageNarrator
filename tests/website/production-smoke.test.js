@@ -28,9 +28,9 @@ describe('production website smoke audit', () => {
   });
 
   it('derives every page and redirect from the deployed website sources', () => {
-    expect(loadPageContracts(publicDir)).toHaveLength(15);
-    expect(loadPageContracts(publicDir).filter(({ indexable }) => indexable)).toHaveLength(14);
-    expect(loadRedirectContracts(publicDir)).toHaveLength(20);
+    expect(loadPageContracts(publicDir)).toHaveLength(40);
+    expect(loadPageContracts(publicDir).filter(({ indexable }) => indexable)).toHaveLength(39);
+    expect(loadRedirectContracts(publicDir)).toHaveLength(47);
   });
 
   it('requires unknown URLs to return HTTP 404 with the not-found page, not a soft 404', async () => {

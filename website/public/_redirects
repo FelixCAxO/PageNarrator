@@ -17,3 +17,33 @@
 /changelog.html /changelog 301
 /activate.html /chrome-extension 301
 /activate /chrome-extension 301
+
+# BEGIN LOCALIZED HOMEPAGE REDIRECTS
+/en / 301
+/en.html / 301
+/de.html /de 301
+/pl.html /pl 301
+/it.html /it 301
+/cs.html /cs 301
+/pt-br.html /pt-br 301
+/pt-pt.html /pt-pt 301
+/sv.html /sv 301
+/da.html /da 301
+/fi.html /fi 301
+/ro.html /ro 301
+/sk.html /sk 301
+/et.html /et 301
+/bg.html /bg 301
+/zh-cn.html /zh-cn 301
+/ru.html /ru 301
+/ko.html /ko 301
+/tr.html /tr 301
+/th.html /th 301
+/uk.html /uk 301
+/vi.html /vi 301
+/id.html /id 301
+/es.html /es 301
+/fr.html /fr 301
+/nl.html /nl 301
+/ja.html /ja 301
+# END LOCALIZED HOMEPAGE REDIRECTS

@@ -4,12 +4,12 @@
   "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
   "version": "1.0.1",
   "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
-  "capturedAt": "2026-10-25T22:14:05.705Z",
+  "capturedAt": "2026-10-26T07:45:57.502Z",
   "nodeVersion": "v22.23.3",
   "inputPackage": {
     "fileCount": 330,
-    "bytes": 74879258,
-    "sha256": "4db0951987ff477144976f50120c4d759103300684063ab6a6f30ef3b4fd928a"
+    "bytes": 74899275,
+    "sha256": "dfa468029422f4d9638e9b29dc3d5783b9a16e6122de7a87d6ed5de9bbfc759d"
   },
   "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
   "sourceSha256": {
@@ -19,7 +19,7 @@
     "src/pdf-viewer.html": "7432363b1a41f6eeca741fe31a8d07879a1566071c33203bf2534a9ae94f8fcf",
     "src/pdf-viewer.css": "d81684b2a17881be8d4ed5c21a3e6624edef394a7ada9b89eff6fefecadde0ee",
     "src/pdf-viewer.js": "bdaee215bc4a4cd4b3f3ea8c983ebefa52330aff54326a61e2288eef3c4c347d",
-    "website/public/cws-demo.html": "223d3307c0e9835420599b960752ad4d1250c0db5ae8ea0a7c27f75c02d94bd2",
+    "website/public/cws-demo.html": "c684671986eb2a0e58b2505f7756428d8ed0df7796f3fd0eb14509a99168ffcd",
     "scripts/capture-current-product-media.mjs": "2a23e1d4174cb0ef19aecefe80c36fe27eaf4c09ff5cbf441d1867addf2f79cc"
   },
   "brandIconSha256": "6c24e1381eb7ecc01f93ba369a764bb33ea3d037635d04c7e97c9ce63048803c",
@@ -28,8 +28,8 @@
   "images": [
     {
       "name": "screenshot-01-toolbar-player-idle.png",
-      "sha256": "273097055f4f94f124b9550182cd4147640a0a0c34758b2f1bce701d074b85b6",
-      "rawCaptureSha256": "2719ef900f4baafdc6fce4ef2c6ec0cb23b94627547fccdc1ff10ff909d2384b",
+      "sha256": "1d63ec9511bbf089cb3dbcdb6271ccc50c170c4acc3e48a86b2dd46b5ba4c5c4",
+      "rawCaptureSha256": "c9ea47e3df4055a57502f7389c153deee0e5d0694893596c101d0b6d893de2a1",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -45,8 +45,8 @@
     },
     {
       "name": "screenshot-02-toolbar-player-reading.png",
-      "sha256": "957bebfdd6f80a5386526888db81f8a9fe4fef7e6bae07385e247f55657d6cef",
-      "rawCaptureSha256": "34b78bcab9b75502a86df5a44157574ac4dd74f89c9b97957156260445dc097e",
+      "sha256": "bc29ce928471dd44aa88665f1443b6efb1ba14c00c4a0600405c30022cb07812",
+      "rawCaptureSha256": "696e97fcf7f0b1e23b5d919b5e759608f4674dca73e1baee140dc42b09b0256a",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -65,8 +65,8 @@
     },
     {
       "name": "screenshot-03-toolbar-player-settings.png",
-      "sha256": "ef8b63cac3184aa356b6ab8048cf582d46dbf8db8d23e87c4314039a71cb2712",
-      "rawCaptureSha256": "b0e6bb3c19c0d93bd924ed20c1d8b41387f97b5bb155155983270bc5bd116594",
+      "sha256": "e9673a1dbefeff8614e8dc8ab05e456b2b902c59675298969dbfd2b834b65adc",
+      "rawCaptureSha256": "441e33b82a3e4abd52e9ea571690c724dd99707b93ed1de80c9dcc51fafe6dac",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Paused",
@@ -86,8 +86,8 @@
     },
     {
       "name": "screenshot-04-toolbar-player-pdf.png",
-      "sha256": "300aa274b0c5ee137dfbcc6c3e07e27948546386b1341c086d9573621b8f6178",
-      "rawCaptureSha256": "cdc51d48b0adb499977f06d2f9080aad014e569ae484f792705b35bbd828588d",
+      "sha256": "1b919fe6522e7ff5516ebb8d9a46d5e2b353cc9c973fc66ea1bcc2a5ff0441ae",
+      "rawCaptureSha256": "cbba2fcdb58ba33b05206a3721ac0b6750b404049db271b2cbfbeef25fec48d9",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -107,7 +107,7 @@
     {
       "name": "screenshot-05-omnivoice-controls.png",
       "sha256": "3e0cdce883667ce0fb2ac1e52cfc0b6471a4f10a1f466abd7414a401e175d1c9",
-      "rawCaptureSha256": "594a3af5c860a75dfe73e3e1d721c7e917806a3fee263ddc0393e45128bdd113",
+      "rawCaptureSha256": "ae43fbd3ea07900d5b538864150a3eeab83b4a079cc409c2ac6635cf7bfeb2ca",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",

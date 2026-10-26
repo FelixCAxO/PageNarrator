@@ -70,6 +70,14 @@ All 25 languages, including both Portuguese variants, received an assistant revi
 
 There are now 325 messages per locale. `scripts/install-ui-translations.mjs` can rebuild all locales without ignored draft files, a translation model or networking. Regression checks cover that rebuild, earlier meaning-changing errors, substituted captions and the hardware caveat. This is an AI linguistic review; independent native-speaker validation remains outstanding.
 
+### Localized website pages
+
+The website has a static landing page for every requested language: English at `/`, and localized pages such as `/sv`, `/de`, `/ja`, `/zh-cn`, `/pt-br` and `/pt-pt`. There are 26 locale versions for the 25 languages. Each contains translated marketing text, metadata, image descriptions and navigation, with a keyboard-accessible language menu and reciprocal `hreflang` links. Each page is its own canonical URL; `x-default` points to the English homepage. The sitemap contains these pages alongside the existing English guides, for 39 canonical public URLs. Installation instructions and the other guides remain in English, which the localized landing pages state.
+
+`website/locales/home.json` stores the authored translations and the date of the last significant content change. `scripts/build-localized-homepages.mjs` generates the public HTML, language links, canonical redirects and sitemap; `--check` rejects stale output. There are no runtime translation requests, scripts or language-based redirects. `npm run build:website` generates the responsive hero assets and locale pages, then packages only public website files. Run `node scripts/build-homepage-css.mjs` after changing shared CSS and commit the resulting fingerprint; ordinary production builds do not require a browser download.
+
+Website fonts are self-hosted Newsreader WOFF2 subsets from Google Fonts, with the SIL Open Font License included. The hero has explicit dimensions, responsive sources and high fetch priority. The 480-pixel variant is approximately 14 KB, compared with the previous 89 KB lossless image. Content-addressed images, font files and the scoped homepage stylesheet have immutable cache rules. Browser checks cover all locales at 320, 768 and 1366 pixels, language-menu navigation and the absence of external runtime requests.
+
 To maintain the catalogs:
 
 1. Run `node scripts/sync-ui-catalog.mjs` after changing UI copy. It regenerates the English catalog and `config/ui-message-sources.json` from wired call sites, HTML markers, model help and error records.

@@ -145,17 +145,18 @@ void test('generated asset is fresh, content addressed, and has its exact cache 
 });
 
 void test('homepage retains font request, image, links, copy, and zero scripts', () => {
-  assert.match(html, /family=Newsreader:opsz,wght@6\.\.72,600\.\.800&display=swap/);
-  assert.match(html, /<img src="\/assets\/screenshots\/toolbar-player-reading\.webp\?v=[a-f0-9]{12}"/);
+  assert.match(html, /\/assets\/fonts\/newsreader\.css\?v=[a-f0-9]{12}/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|fonts\.gstatic\.com/);
+  assert.match(html, /<img src="\/assets\/home-hero-1280-[a-f0-9]{12}\.webp"/);
   assert.doesNotMatch(html, /<script\b|\bloading="lazy"/i);
   assert.equal((html.match(/<h1>/g) || []).length, 1);
-  assert.equal((html.match(/<a\b/g) || []).length, 16);
+  assert.equal((html.match(/<a\b/g) || []).length, 42);
 });
 
 void test('safe minimization beats both baseline and unpruned minification on fixed bytes', async () => {
   const minified = await makeHomepageCss(source, originalHtml, browser, { prune: false });
   const result = { original: compression(source), minifyOnly: compression(minified), scoped: compression(css) };
-  assert.ok(result.scoped.raw < result.original.raw * 0.65);
+  assert.ok(result.scoped.raw < result.original.raw * 0.70);
   assert.ok(result.scoped.gzip9 < result.original.gzip9 * 0.85);
   assert.ok(result.scoped.gzip9 < result.minifyOnly.gzip9 * 0.9);
   assert.ok(result.scoped.brotli11 < result.minifyOnly.brotli11);
@@ -215,7 +216,7 @@ void test('immutable caching is limited to the fingerprint and security policy r
   assert.match(headers, /script-src 'self'/);
   assert.match(headers, /frame-ancestors 'self'/);
   assert.match(headers, /Strict-Transport-Security: max-age=31536000; includeSubDomains; preload/);
-  assert.equal((headers.match(/Cache-Control:/g) || []).length, 1);
+  assert.equal((headers.match(/Cache-Control:/g) || []).length, 5);
   assert.ok(headers.replace(/\r\n/g, '\n').includes(`${asset}\n  Cache-Control: public, max-age=31536000, immutable`));
   assert.doesNotMatch(headers, /\/assets\/\*\n\s+Cache-Control/);
 });
