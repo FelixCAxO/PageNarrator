@@ -63,7 +63,9 @@ The current operator-math gate passes and successfully collects all six unchange
 
 The bound OmniVoice development matrix resolved all 76 originally flagged normal samples, with 640 normal and 600 whisper target samples passing its automatic screening and 40 exact restart replays. Cantonese and Thai whisper were subsequently retained at the maintainer's request with a visible word-loss warning; their word accuracy is not qualified. Those automatic results do not replace native listening or the independent human review protocol.
 
-Public release qualification still lacks the required voice/PDF human review receipts and physical-device distributions. No v1.0.2 waiver is recorded. Source publication and preparing paired release archives do not turn those missing checks into passes.
+The packaged-extension rerun retained three failed OmniVoice continuity timing cases under the unchanged 500 ms handoff bound. Background GPU activity was observed during the run; its effect was not isolated. On 2026-10-27 the maintainer chose to continue and leave these timing checks unqualified. This decision does not qualify performance or change any threshold.
+
+Public release qualification still lacks the required voice/PDF human review receipts and physical-device distributions. No waiver of those v1.0.2 requirements is recorded. Source publication and preparing paired release archives do not turn those missing checks into passes.
 
 ## Run checks
 

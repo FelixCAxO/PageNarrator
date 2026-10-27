@@ -144,7 +144,7 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
     await popup.locator('#popup-settings summary').click();
     await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
     await expect(popup.locator('#popup-omnivoice-settings')).toBeVisible();
-    await expect(popup.locator('#popup-language option')).toHaveCount(646);
+    await expect(popup.locator('#popup-language option')).toHaveCount(32);
     await expect(popup.locator('#popup-voice')).toBeHidden();
     await selectNativeOption(popup.locator('#popup-language'), 'sv');
     await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'male');
