@@ -42,6 +42,14 @@ it('passes the real PDF page count through session wiring into reading and pause
         state, progressLabel: 'Page 8 of 401', remainingLabel: '393 pages after this page',
       }));
     }
+    renderer.setReadingState('error', { message: 'OmniVoice requires WebGPU with shader-f16 support.', errorCode: 'voice_setup' });
+    renderer.broadcastPlayerState({ syncRequestId: 'reopened-popup' });
+    expect(sendMessage).toHaveBeenLastCalledWith(expect.objectContaining({
+      state: 'error', message: 'OmniVoice requires WebGPU with shader-f16 support.', errorCode: 'voice_setup', syncRequestId: 'reopened-popup',
+    }));
+    renderer.setReadingState('idle');
+    renderer.broadcastPlayerState();
+    expect(sendMessage).toHaveBeenLastCalledWith(expect.objectContaining({ message: '', errorCode: '' }));
   } finally {
     dom.window.close();
     capture.deps = null;

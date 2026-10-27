@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "PDF-i lehed"
   },
-  "ui_ab32ceb0": {
-    "message": "Katsetusjärgus. 646 keelekirjet; kvaliteet varieerub. Vajab fp16 toega WebGPU-d ja umbes 1,35 GB allalaadimist. Vali hääl, variant või sosistamine."
+  "ui_6b68e4c5": {
+    "message": "Katsetusjärgus. 32 keelekirjet; kvaliteet varieerub. Vajab fp16 toega WebGPU-d ja umbes 1,35 GB allalaadimist. Vali hääl, variant või sosistamine."
   },
   "ui_ab4a698f": {
     "message": "Ava leht"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Seda PDF-i ei saanud avada."
+  },
+  "ui_e59ac0eb": {
+    "message": "Loe algusest"
+  },
+  "ui_35a4186c": {
+    "message": "Hoiatus: sosistamine võib selles keeles sõnu välja jätta. Võrrelge ettelugemist tekstiga."
   }
 }

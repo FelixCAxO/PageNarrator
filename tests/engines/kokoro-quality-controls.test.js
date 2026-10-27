@@ -1,8 +1,9 @@
-import { mkdtemp, readFile, writeFile, rm, realpath } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile, rm, realpath } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, sep } from 'node:path';
 import { expect, it } from 'vitest';
-import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip } from '../../scripts/lib/kokoro-quality-controls.mjs';
+import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip, verifyQualityBuild } from '../../scripts/lib/kokoro-quality-controls.mjs';
+import { hashDirectory } from '../../scripts/weak-hardware/run-provenance.mjs';
 
 it('pins the existing validation/test split and selects bounded voice/category groups without merging partitions', async () => {
   const bytes = await readFile('tests/voice/fixtures/quality-corpus.json'); expect(hashQualityBytes(bytes)).toBe(QUALITY_CORPUS_SHA256);
@@ -46,6 +47,25 @@ it('resumes only the exact pinned raw float32 and WAV bytes, detecting corruptio
     await expect(reusableQualityClip(directory, 'sample', 'changed-source')).rejects.toThrow('different');
     const raw = await readFile(join(directory, record.raw.file)); raw[0] ^= 1; await writeFile(join(directory, record.raw.file), raw);
     await expect(reusableQualityClip(directory, 'sample', 'frozen')).rejects.toThrow('corrupted');
+  } finally {
+    const absolute = await realpath(directory), parent = await realpath(tmpdir());
+    if (!absolute.startsWith(`${parent}${sep}pn-quality-control-`)) throw new Error('Refusing cleanup outside the created test directory.');
+    await rm(absolute, { recursive: true, force: true });
+  }
+});
+
+it('rejects an absent or stale packaged worker even when source pins have not changed', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'pn-quality-control-'));
+  try {
+    const dist = join(directory, 'dist'); await mkdir(dist);
+    await writeFile(join(dist, 'worker.js'), 'old-worker');
+    const frozen = { directory: dist, ...await hashDirectory(dist) };
+    await verifyQualityBuild(directory, frozen);
+    const other = join(directory, 'other-build'); await mkdir(other); await writeFile(join(other, 'worker.js'), 'different-worker');
+    await expect(verifyQualityBuild(directory, frozen, other)).rejects.toThrow('frozen build');
+    await expect(verifyQualityBuild(directory, undefined)).rejects.toThrow('isolated quality build');
+    await writeFile(join(dist, 'worker.js'), 'new-worker');
+    await expect(verifyQualityBuild(directory, frozen)).rejects.toThrow('frozen build');
   } finally {
     const absolute = await realpath(directory), parent = await realpath(tmpdir());
     if (!absolute.startsWith(`${parent}${sep}pn-quality-control-`)) throw new Error('Refusing cleanup outside the created test directory.');

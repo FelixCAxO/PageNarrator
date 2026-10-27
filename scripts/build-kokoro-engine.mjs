@@ -9,7 +9,7 @@ const files = ['native/kokoro-engine.cpp', 'native/ocr-engine.cpp', 'native/engi
 const output = new URL('../public/native/kokoro-engine.wasm', import.meta.url), metadata = new URL('../public/native/kokoro-engine.json', import.meta.url);
 const hash = url => createHash('sha256').update(readFileSync(url)).digest('hex');
 const exports = ['pn_abi_version', 'pn_unary', 'pn_ocr_unary', 'pn_ocr_binary', 'pn_ocr_matmul', 'pn_ocr_conv', 'pn_ocr_reduce', 'pn_ocr_pool', 'pn_ocr_resize', 'pn_ocr_index', 'pn_ocr_concat', 'pn_ocr_gather', 'pn_ocr_norm', 'pn_ocr_softmax', 'pn_ocr_argmax', 'pn_ocr_copy',
-  'pn_kokoro_unary', 'pn_kokoro_layer_norm', 'pn_kokoro_lstm', 'pn_kokoro_stft', 'pn_kokoro_snake', 'pn_kokoro_cumsum', 'pn_kokoro_scatter', 'pn_kokoro_conv_transpose',
+  'pn_kokoro_unary', 'pn_kokoro_layer_norm', 'pn_kokoro_lstm', 'pn_kokoro_stft', 'pn_kokoro_resize_linear', 'pn_kokoro_snake', 'pn_kokoro_cumsum', 'pn_kokoro_scatter', 'pn_kokoro_conv_transpose',
   'pn_kokoro_dynamic_quantize', 'pn_kokoro_dequantize', 'pn_kokoro_matmul_integer', 'pn_kokoro_conv_integer', 'pn_kokoro_dynamic_lstm', 'pn_kokoro_cast', 'pn_kokoro_compare', 'pn_kokoro_where', 'pn_kokoro_pad', 'pn_kokoro_gather', 'pn_kokoro_integer_binary', 'pn_kokoro_range', 'pn_kokoro_fill', 'pn_kokoro_power', '__heap_base'];
 const flags = ['c++', '-target', 'wasm32-freestanding', '-std=c++20', '-O3', '-msimd128', '-ffp-contract=off', '-fno-exceptions', '-fno-rtti', '-fno-builtin', '-nostdlib',
   `-Wl,-z,stack-size=65536,--no-entry,${exports.map(name => `--export=${name}`).join(',')},--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all`];

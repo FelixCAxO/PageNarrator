@@ -11,15 +11,16 @@ describe('release metadata', () => {
     const packageLock = JSON.parse(read('package-lock.json'));
     const manifest = JSON.parse(read('manifest.json'));
 
-    expect(packageJson.version).toBe('1.0.1');
+    expect(packageJson.version).toBe('1.0.2');
     expect(packageLock.version).toBe(packageJson.version);
     expect(packageLock.packages[''].version).toBe(packageJson.version);
     expect(manifest.version).toBe(packageJson.version);
   });
 
-  it('documents the release notes and retained PDF highlight policy', () => {
+  it('documents the unreleased candidate, latest published release and retained PDF highlight policy', () => {
     const changelog = read('website/public/changelog.html');
     const readerUi = read('docs/reader-ui.md');
+    expect(read('CHANGELOG.md')).toContain('## 1.0.2 (unreleased)');
 
     expect(changelog).toContain('Version 1.0.1');
     expect(changelog).toContain('Version 1.0.0');

@@ -16,6 +16,11 @@ static float round_even(float x) {
   return x != x ? x : __builtin_elementwise_roundeven(x);
 }
 static float hyperbolic(float x) {
+  // Avoid subtracting nearly equal exponentials, preserving tiny recurrent states and -0.
+  if (__builtin_fabsf(x) <= .125f) {
+    const double v=x,z=v*v;
+    return static_cast<float>(v*(1.0+z*(-1.0/3.0+z*(2.0/15.0+z*(-17.0/315.0+z*(62.0/2835.0+z*(-1382.0/155925.0+z*(21844.0/6081075.0))))))));
+  }
   const float e = exponential(-2.0f * __builtin_fabsf(x)), y = (1.0f-e)/(1.0f+e);
   return x < 0.0f ? -y : y;
 }
@@ -54,6 +59,7 @@ extern "C" int pn_kokoro_unary(const float* input,float* out,const u32* p) {
         if(__builtin_fabsf(x)>1000000000.0f)return 1;
         y=static_cast<float>(sine(static_cast<double>(x)+(p[1]==6?1.57079632679489661923:0.0)));break;
       case 7:y=.5f*x*(1.0f+hyperbolic(.7978845608028654f*(x+.044715f*x*x*x)));break;
+      case 8:y=hyperbolic(x);break;
     }out[i]=y;
   }return 0;
 }
@@ -88,11 +94,32 @@ extern "C" void pn_kokoro_lstm(const float* input,const float* w,const float* r,
   }
 }
 
+extern "C" void pn_kokoro_resize_linear(const float* input,float* out,const u32* p) {
+  const u32 batches=p[0],channels=p[1],length=p[2],width=p[3];
+  for(u32 n=0;n<batches;n++)for(u32 c=0;c<channels;c++)for(u32 x=0;x<width;x++) {
+    const float raw=coordinate(x,length,width,float_bits(p[4]),p[5]);
+    const float position=raw<0.0f?0.0f:raw>length-1?static_cast<float>(length-1):raw;
+    const u32 left=static_cast<u32>(position),right=left+1<length?left+1:left;
+    const u32 low[3]={left,c,n},high[3]={right,c+1<channels?c+1:c,n+1<batches?n+1:n},sizes[3]={length,channels,batches};
+    const float lower[3]={left==right?0.5f:static_cast<float>(right)-position,c==high[1]?0.5f:1.0f,n==high[2]?0.5f:1.0f};
+    const float upper[3]={left==right?0.5f:position-static_cast<float>(left),c==high[1]?0.5f:0.0f,n==high[2]?0.5f:0.0f};
+    float sum=0.0f;
+    // Rank-three Resize accumulates trilinear corners in x/y/z order, even for singleton axes.
+    for(int corner=0;corner<8;corner++) {
+      float weight=1.0f;u32 offset=0,stride=1;
+      for(u32 axis=0;axis<3;axis++){const bool next=(corner>>axis)&1;weight*=next?upper[axis]:lower[axis];offset+=(next?high[axis]:low[axis])*stride;stride*=sizes[axis];}
+      sum+=input[offset]*weight;
+    }
+    out[(n*channels+c)*width+x]=sum;
+  }
+}
+
 extern "C" void pn_kokoro_stft(const float* input,const float* window,float* out,const u32* p) {
   constexpr double pi=3.14159265358979323846;
   for(u32 b=0;b<p[0];++b)for(u32 frame=0;frame<p[4];++frame)for(u32 bin=0;bin<p[5];++bin){double real=0.0,imaginary=0.0;
     const bool real_bin=bin==0||(p[2]%2==0&&bin==p[2]/2);
-    for(u32 j=0;j<p[2];++j){const double value=static_cast<double>(input[b*p[1]+frame*p[3]+j])*static_cast<double>(window[j]),angle=-2.0*pi*bin*j/p[2];
+    for(u32 j=0;j<p[2];++j){const float windowed=input[b*p[1]+frame*p[3]+j]*window[j];
+      const double value=windowed,angle=-2.0*pi*bin*j/p[2];
       if(real_bin)real+=value*(bin==0||j%2==0?1.0:-1.0);
       else {real+=value*sine(angle+pi/2.0);imaginary+=value*sine(angle);}
     }

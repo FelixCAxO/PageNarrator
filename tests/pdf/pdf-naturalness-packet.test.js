@@ -21,7 +21,7 @@ describe('text naturalness packet output', () => {
   it.each(['original', 'pdfjs-oracle'])('writes the default %s artifact with exclusive creation', async backend => {
     const generate = vi.fn(async () => authored), mkdir = vi.fn(), writeFile = vi.fn();
     const packet = await writer(generate, mkdir, writeFile)({ backend });
-    expect(generate).toHaveBeenCalledExactlyOnceWith({ backend });
+    expect(generate).toHaveBeenCalledExactlyOnceWith({ backend, benchmark: 'historical-v1', goldPath: undefined });
     expect(mkdir).toHaveBeenCalledExactlyOnceWith(path.join(root, 'artifacts'), { recursive: true });
     expect(writeFile).toHaveBeenCalledExactlyOnceWith(path.join(root, 'artifacts', `pdf-naturalness-${backend}.json`), `${JSON.stringify(packet, null, 2)}\n`, { flag: 'wx' });
     expect(packet.passages).toBe(authored); expect(packet.backend).toBe(backend);
@@ -45,8 +45,8 @@ describe('text naturalness packet output', () => {
     const branch = `${driver.slice(start, driver.indexOf('  } else {', start))}  }`;
     const process = { argv: ['node', 'unit-script', '--write-naturalness-packet'], stdout: { write: vi.fn() } };
     const write = vi.fn(async () => ({ passages: authored }));
-    await new Function('process', 'backend', 'outputFile', 'writePdfNaturalnessPacket', `return (async () => { ${branch} })();`)(process, 'original', 'unit-output.json', write);
-    expect(write).toHaveBeenCalledExactlyOnceWith({ backend: 'original', outputFile: 'unit-output.json' });
+    await new Function('process', 'backend', 'benchmark', 'outputFile', 'writePdfNaturalnessPacket', `return (async () => { ${branch} })();`)(process, 'original', 'historical-v1', 'unit-output.json', write);
+    expect(write).toHaveBeenCalledExactlyOnceWith({ backend: 'original', benchmark: 'historical-v1', outputFile: 'unit-output.json' });
   });
   it('hashes the exact case-preserving transcript shown to reviewers', async () => {
     const body = driver.slice(driver.indexOf('export async function generatePdfNaturalnessPacket('), driver.indexOf('\nexport function selectPdfNaturalnessPassage('))

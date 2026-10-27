@@ -145,8 +145,11 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(document.getElementById('popup-voice-model-help').textContent).toContain('1.35 GB');
     expect(document.getElementById('popup-backend-preference').closest('label').hidden).toBe(true);
     const language = document.getElementById('popup-language');
-    expect(language.options).toHaveLength(646);
+    expect(language.options).toHaveLength(32);
     expect([...language.options].map(option => option.value)).toContain('arb');
+    expect([...language.options].map(option => option.value)).not.toContain('sol');
+    const labels = [...language.options].map(option => option.textContent);
+    expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'en')));
     language.value = 'sv';
     language.dispatchEvent(new dom.window.Event('change'));
     await vi.waitFor(() => expect(storageData.playbackSettings.language).toBe('sv'));
@@ -168,6 +171,19 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(document.getElementById('popup-voice').value).toBe('am_michael');
     expect(document.getElementById('popup-omnivoice-settings').hidden).toBe(true);
     dom.window.close();
+  });
+
+  it.each(['en', 'sv'])('restores saved whisper after populating the %s language picker', async (language) => {
+    const harness = createPopupHarness({ storage: { playbackSettings: {
+      ttsEngine: 'omnivoice', language, omniVoice: { gender: 'male', variation: 4, whisper: true },
+    } } });
+    await harness.popupApp.init();
+    const whisper = harness.document.getElementById('popup-omnivoice-whisper');
+    expect(whisper.checked).toBe(true);
+    expect(whisper.disabled).toBe(false);
+    expect(harness.document.getElementById('popup-language').value).toBe(language);
+    expect(harness.document.getElementById('popup-omnivoice-variation').value).toBe('4');
+    harness.dom.window.close();
   });
 
   it.each(['read', 'prepare'])('saves the chosen voice model before %s', async (action) => {
@@ -294,6 +310,31 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(actionReq).toBeDefined();
     expect(actionReq.action).toEqual({ type: READER_ACTION_TYPES.READ_SELECTED });
     expect(actionReq.tab).toMatchObject({ id: 42, url: 'https://news.example.test/article' });
+  });
+
+  it.each([
+    { id: 42, url: 'https://news.example.test/article', title: 'Article' },
+    { id: 42, url: 'chrome-extension://pagenarrator/src/pdf-viewer.html?src=https%3A%2F%2Fexample.test%2Fbook.pdf#page=7', title: 'Book' },
+  ])('offers Read from start after Stop and forwards $title as its target', async tab => {
+    const harness = createPopupHarness({ tab });
+    await harness.popupApp.init();
+    const { document, broadcastState, sentMessages } = harness;
+    const fromStart = document.getElementById('read-from-start');
+    expect(fromStart.disabled).toBe(false);
+    broadcastState({ state: 'reading', currentChunk: 6, totalChunks: 20, title: tab.title });
+    expect(fromStart.closest('[hidden]')).not.toBeNull();
+    document.getElementById('popup-stop').click();
+    await vi.waitFor(() => expect(sentMessages.some(message => message.action?.type === READER_ACTION_TYPES.STOP)).toBe(true));
+    broadcastState({ state: 'idle' });
+    expect(fromStart.closest('[hidden]')).toBeNull();
+    expect(fromStart.textContent).toBe('Read from start');
+    fromStart.click();
+    await vi.waitFor(() => expect(sentMessages.at(-1)).toMatchObject({
+      type: MESSAGE_TYPES.READER_ENGINE_ACTION_REQUEST,
+      action: { type: READER_ACTION_TYPES.READ_FROM_START },
+      tab: { id: tab.id, url: tab.url },
+    }));
+    harness.dom.window.close();
   });
 
   it('self-repairs by injecting content script when content script ping fails', async () => {

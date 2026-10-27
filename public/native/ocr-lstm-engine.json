@@ -17,9 +17,9 @@
   ],
   "sources": {
     "ocr-lstm-engine.cpp": "b2a9d8f29f96e9bfd7a4d072f9bb93c5e4dc289de4648b1e700e917cd0504559",
-    "ocr-engine.cpp": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+    "ocr-engine.cpp": "4f4b675af7c645f1ed730b9bd721bc361f3a4ed2daba357b3ed8a8a5ddf262e0",
     "engine.cpp": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616"
   },
-  "wasmSha256": "19d70d02da9c35ad9002a10e691d766d15975520c099125ee3dc26dc9fc9aaca",
+  "wasmSha256": "78a0b6549d96af2a6493424ce7d152c898e793693c475e8b026c32d55969a7b1",
   "imports": []
 }

@@ -1,4 +1,4 @@
-import { getMessage, t, languageName } from './i18n.js';
+import { getMessage, t, languageName, localizeLanguageOptions } from './i18n.js';
 import {
   clampPlaybackSpeed,
   clampSectionPauseSeconds,
@@ -29,8 +29,8 @@ import {
   getTtsPerformanceProfileConfig,
 } from './tts-performance-profile.js';
 import { DEFAULT_RUNTIME_POLICY } from '../tts/runtime/default-runtime-policy.js';
-import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP } from './omnivoice-settings.js';
-import { OMNIVOICE_LANGUAGES, getOmniVoiceLanguage } from '../tts/omnivoice/languages.js';
+import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './omnivoice-settings.js';
+import { getOmniVoiceLanguageOptions, getOmniVoiceLanguage } from '../tts/omnivoice/languages.js';
 import {
   saveIdleReleaseDiagnostic,
   savePlaybackSpeed,
@@ -76,11 +76,11 @@ export function createReaderEngineVoiceSettingsController({
 
   function populateLanguageOptions() {
     els.language.replaceChildren();
-    const languages = els.ttsEngine?.value === 'omnivoice' ? OMNIVOICE_LANGUAGES : getLanguageOptions();
-    for (const language of languages) {
+    const languages = els.ttsEngine?.value === 'omnivoice' ? getOmniVoiceLanguageOptions(getSelectedLanguageCode()) : getLanguageOptions();
+    for (const language of localizeLanguageOptions(languages)) {
       const option = document.createElement('option');
       option.value = language.code;
-      option.textContent = languageName(language.code, language.label);
+      option.textContent = language.label;
       els.language.appendChild(option);
     }
     if (!languages.some((language) => language.code === getSelectedLanguageCode())) {
@@ -220,6 +220,8 @@ export function createReaderEngineVoiceSettingsController({
     if (els.language?.closest('label')) els.language.closest('label').hidden = !omni;
     if (els.kokoroRequirements) els.kokoroRequirements.hidden = omni;
     if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[omni ? 'omnivoice' : 'kokoro']);
+    if (omni && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(getSelectedLanguageCode())) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
+    renderOmniVoiceSettings(getOmniVoiceSettings());
     if (!els.voiceSettingsSummary) return;
     const language = getLanguageOption(getSelectedLanguageCode());
     const selectedVoice = resolveSelectedVoice();
@@ -468,15 +470,18 @@ export function createReaderEngineVoiceSettingsController({
 
   function getOmniVoiceSettings() {
     return normalizeOmniVoiceSettings({ gender: els.omniVoiceGender?.value,
-      variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked });
+      variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked }, getSelectedLanguageCode());
   }
 
   function renderOmniVoiceSettings(settings = {}) {
-    const config = normalizeOmniVoiceSettings(settings);
+    const config = normalizeOmniVoiceSettings(settings, getSelectedLanguageCode());
     if (els.omniVoiceGender) els.omniVoiceGender.value = config.gender;
     if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(config.variation);
     if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${config.variation} / 10`;
-    if (els.omniVoiceWhisper) els.omniVoiceWhisper.checked = config.whisper;
+    if (els.omniVoiceWhisper) {
+      els.omniVoiceWhisper.checked = config.whisper;
+      els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(getSelectedLanguageCode());
+    }
   }
 
   function renderVoiceEngineSetting(settings = {}) {

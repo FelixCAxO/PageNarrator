@@ -12,7 +12,7 @@
   "integration": [
     "npm run verify:fast",
     "node scripts/assert-release-package.mjs dist",
-    "npm run test:e2e",
+    "npm run test:e2e:local",
     "npx playwright test tests/e2e/popup-read.e2e.js --project=extension --repeat-each=2 --workers=1 --output=artifacts/integration-repeat",
     "npm run test:e2e:real-model -- --workers=1 --output=artifacts/integration-real-model"
   ],
@@ -29,9 +29,13 @@
     "npm run test:pdf-corpus",
     "npm run test:pdf-acceptance",
     "node scripts/verify-kokoro-numerics.mjs",
+    {
+      "command": "node scripts/verify-voice-quality.mjs",
+      "gateId": "human-listening-reviews"
+    },
     "npm run build",
     "node scripts/assert-release-package.mjs dist",
-    "npm run test:e2e",
+    "npm run test:e2e:local",
     "npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model",
     "npm run test:live:no-build",
     "npm run probe:tts:lower-spec:no-build",

@@ -14,6 +14,7 @@ import { KOKORO_DATA } from '../src/tts/kokoro/model-data.js';
 import { browserAdapterConfiguration, verifyBrowserAdapter } from './lib/browser-adapter.mjs';
 import { runKokoroWorkerBenchmark } from './lib/kokoro-worker-benchmark.mjs';
 import { runKokoroQualityCandidate } from './lib/kokoro-quality-candidate.mjs';
+import { readQualityFreeze } from './lib/kokoro-quality-controls.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const option = (name, fallback) => process.argv.includes(name) ? process.argv[process.argv.indexOf(name) + 1] : fallback;
@@ -22,6 +23,7 @@ const serialCpu = process.argv.includes('--serial-cpu'), captureDirectory = opti
 if ((serialCpu || captureDirectory) && !benchmark) throw new Error('Serial CPU control and raw audio capture require the benchmark lane.');
 const qualityRequestPath = option('--quality-request', null), qualityRequest = qualityRequestPath ? JSON.parse(await readFile(qualityRequestPath)) : null;
 if (qualityRequest && benchmark) throw new Error('Quality capture and allocation-instrumented performance are separate runs.');
+const qualityBuild = qualityRequest ? (await readQualityFreeze(root, qualityRequest.manifest)).packagedBuild : null;
 if (!Number.isInteger(repeats) || repeats < 1 || repeats > 5 || !['stream', 'batch'].includes(mode)) throw new Error('Benchmark requires 1–5 warm repetitions and stream or batch mode.');
 const corpusBytes = await readFile(resolve(root, 'tests/fixtures/kokoro-connected-prose.json'));
 if (createHash('sha256').update(corpusBytes).digest('hex') !== 'da954a98973a691563523d22111806e73898e6141498e62f4bf5a3a24c3e56b7') throw new Error('Frozen connected-prose fixture changed.');
@@ -78,9 +80,14 @@ const server = createServer(async (request, response) => {
     const pathname = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
     if (pathname === '/') { response.writeHead(200, { 'Content-Type': 'text/html' }); response.end('<!doctype html><title>Original Kokoro app registry</title>'); return; }
     if (pathname === '/favicon.ico') { response.writeHead(204); response.end(); return; }
+    if (qualityBuild && pathname === '/src/tts/kokoro/worker-client.js') {
+      response.writeHead(307, { Location: '/packaged/assets/worker-client.js' }); response.end(); return;
+    }
     const data = pathname.startsWith('/data/') ? files.find(entry => entry.path === pathname.slice(6)) : null;
-    const file = data ? resolve(cacheDirectory, data.path) : resolve(root, `.${pathname}`);
-    if (!data && (!file.startsWith(`${root}${sep}`) || !['/src/', '/public/native/kokoro-engine.wasm', '/public/native/kokoro-parallel.wasm', '/public/native/kokoro-parallel.json', '/public/assets/phonemizer/', '/scripts/lib/kokoro-performance-worker.mjs'].some(prefix => pathname.startsWith(prefix))
+    const packaged = qualityBuild && pathname.startsWith('/packaged/');
+    const file = data ? resolve(cacheDirectory, data.path) : packaged ? resolve(qualityBuild.directory, `.${pathname.slice('/packaged'.length)}`) : resolve(root, `.${pathname}`);
+    if (packaged && (!file.startsWith(`${qualityBuild.directory}${sep}`) || !['.js', '.wasm', '.bin', '.json'].includes(extname(file)))) throw new Error('Unexpected packaged path.');
+    if (!data && !packaged && (!file.startsWith(`${root}${sep}`) || !['/src/', '/public/native/kokoro-engine.wasm', '/public/native/kokoro-parallel.wasm', '/public/native/kokoro-parallel.json', '/public/assets/phonemizer/', '/scripts/lib/kokoro-performance-worker.mjs'].some(prefix => pathname.startsWith(prefix))
       || !['.js', '.mjs', '.wasm', '.bin', '.json'].includes(extname(file)))) throw new Error('Unexpected local path.');
     const metadata = await stat(file);
     response.writeHead(200, { 'Content-Length': metadata.size, 'Content-Type': ['.js', '.mjs'].includes(extname(file)) ? 'text/javascript' : 'application/octet-stream', 'Access-Control-Allow-Origin': '*' });
@@ -130,13 +137,13 @@ try {
     return info ? { vendor: info.vendor, architecture: info.architecture, device: info.device, description: info.description } : null;
   });
   if (devices.includes('webgpu')) verifyBrowserAdapter(report.adapter, adapterConfiguration);
-  await page.evaluate(async ({ benchmark, serialCpu }) => {
-    globalThis.chrome = { runtime: { getURL: path => new URL(`/public/${path}`, location.href).href } };
+  await page.evaluate(async ({ benchmark, serialCpu, packaged }) => {
+    globalThis.chrome = { runtime: { getURL: path => new URL(`/${packaged ? 'packaged' : 'public'}/${path}`, location.href).href } };
     const NativeWorker = Worker;
     globalThis.workerEvents = []; globalThis.performanceWorkers = [];
     globalThis.Worker = class extends NativeWorker {
       constructor(...args) {
-        const helper = new URL(args[0], location.href).pathname.endsWith('/cpu-pool-worker.js');
+        const helper = /\/cpu-pool-worker(?:-[\w-]+)?\.js$/u.test(new URL(args[0], location.href).pathname);
         if (benchmark && !helper) args[0] = new URL('/scripts/lib/kokoro-performance-worker.mjs', location.href);
         super(...args); this.probeId = workerEvents.filter(event => event.event === 'created').length + 1;
         workerEvents.push({ event: 'created', id: this.probeId, role: helper ? 'helper' : 'coordinator', url: String(args[0]) });
@@ -158,7 +165,7 @@ try {
     };
     globalThis.registry = await import(new URL('/src/tts/voices/voice-registry.js', location.href).href);
     await registry.configureOnnxRuntime();
-  }, { benchmark, serialCpu });
+  }, { benchmark, serialCpu, packaged: !!qualityBuild });
   for (const device of devices) {
     offline = false;
     if (qualityRequest) {

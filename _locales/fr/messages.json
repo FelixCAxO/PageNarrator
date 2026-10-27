@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "Pages du PDF"
   },
-  "ui_ab32ceb0": {
-    "message": "Expérimental. 646 entrées de langues, de qualité variable. Nécessite WebGPU avec fp16 et environ 1,35 GB de téléchargements. Choisissez une voix, une variante ou le chuchotement."
+  "ui_6b68e4c5": {
+    "message": "Expérimental. 32 entrées de langues, de qualité variable. Nécessite WebGPU avec fp16 et environ 1,35 GB de téléchargements. Choisissez une voix, une variante ou le chuchotement."
   },
   "ui_ab4a698f": {
     "message": "Ouvrir la page"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Impossible d’ouvrir ce PDF."
+  },
+  "ui_e59ac0eb": {
+    "message": "Lire depuis le début"
+  },
+  "ui_35a4186c": {
+    "message": "Attention : le chuchotement peut omettre des mots dans cette langue. Comparez la lecture au texte."
   }
 }

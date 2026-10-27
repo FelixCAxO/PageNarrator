@@ -2,12 +2,14 @@ import { describe, expect, it, vi } from 'vitest';
 import { createOmniVoiceRuntime, estimateOmniVoiceFrames, omniVoiceUnmaskSchedule, unmaskOmniVoiceTokens } from '../../src/tts/omnivoice/runtime.js';
 import { halfToFloat } from '../../src/engines/tensor-format.js';
 import { applyOmniVoiceRmsNormCorrection } from '../../src/tts/omnivoice/rmsnorm-correction.js';
+import { getOmniVoiceSpeakerReference } from '../../src/tts/omnivoice/speakers.js';
 
 vi.mock('../../src/tts/omnivoice/rmsnorm-correction.js', () => ({ applyOmniVoiceRmsNormCorrection: vi.fn(async bytes => ({
   bytes, version: 'verified-test-graph', norms: 113, originalSha256: 'original', modifiedSha256: 'corrected',
 })) }));
 
 const request = { text: 'Hej!', lang: 'sv', instruct: '女, 青年, 低音调', speed: 1, seed: 42, numStep: 2 };
+const reference = getOmniVoiceSpeakerReference(request);
 const config = { num_audio_codebook: 8, audio_vocab_size: 1025, audio_mask_id: 1024, sampling_rate: 24000, frame_rate: 75 };
 
 function fixture() {
@@ -30,7 +32,8 @@ function fixture() {
     return { audio_logits: new Tensor('float32', logits, [1, 8, length, 1025]) };
   }) };
   const decoder = { release: vi.fn(async () => {}), run: vi.fn(async ({ audio_codes }) => {
-    expect(audio_codes.dims).toEqual([1, 8, 24]);
+    expect(audio_codes.dims.slice(0, 2)).toEqual([1, 8]);
+    expect(audio_codes.dims[2]).toBeGreaterThan(0);
     expect([...audio_codes.data].every(token => token === 3n)).toBe(true);
     return { audio_values: new Tensor('float32', new Float32Array([0.2, -0.3, 0.1]), [1, 1, 3]) };
   }) };
@@ -102,6 +105,10 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     expect([0.5, 1, 1.5].map(speed => estimateOmniVoiceFrames(text, speed))).toEqual(frames);
   });
 
+  it('keeps the final German word duration when generated reference frames have already been rounded', () => {
+    expect(estimateOmniVoiceFrames('Heute lesen wir eine kurze Geschichte. Das Buch liegt auf dem Tisch.',1)).toBe(103);
+  });
+
   it.each([1, 2, 24, 64])('unmasks every token exactly once in %i steps', steps => {
     const counts = omniVoiceUnmaskSchedule(280, steps);
     expect(counts).toHaveLength(steps);
@@ -141,10 +148,10 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     expect(f.main.getDiagnostics).not.toHaveBeenCalled();
     expect(f.runtime.getDiagnostics().main).toEqual({ hostWeightBytes: 100 });
     expect(f.tokenizer.encode.mock.calls.map(([text]) => text)).toEqual([
-      '<|lang_start|>sv<|lang_end|><|instruct_start|>女, 青年, 低音调<|instruct_end|>', '<|text_start|>Hej!<|text_end|>',
+      '<|denoise|><|lang_start|>sv<|lang_end|><|instruct_start|>女, 青年, 低音调<|instruct_end|>', `<|text_start|>${reference.text} Hej!<|text_end|>`,
     ]);
     expect(result).toMatchObject({ pcm: new Float32Array([0.2, -0.3, 0.1]), sampleRate: 24000,
-      speaker: { referenceHash: null, referenceFrames: 0, anchorHash: expect.any(String) } });
+      speaker: { referenceHash: reference.hash, referenceFrames: reference.frames, anchorHash: reference.hash } });
     expect(f.main.run).toHaveBeenCalledTimes(4);
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
     await f.runtime.dispose();
@@ -167,7 +174,7 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     });
     await f.runtime.init('https://model.test');
     await f.runtime.synthesize(input);
-    expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${spoken}<|text_end|>`, { add_special_tokens: false });
+    expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} ${spoken}<|text_end|>`, { add_special_tokens: false });
     expect(input.text).toBe(text);
     for (const speed of [0.5, 1, 1.5]) expect(estimateOmniVoiceFrames(text, speed)).toBe(estimateOmniVoiceFrames(spoken, speed));
     await f.runtime.dispose();
@@ -182,13 +189,43 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     await f.runtime.init('https://model.test');
     const first = await f.runtime.synthesize(firstRequest);
     const second = await f.runtime.synthesize(secondRequest);
-    expect(f.tokenizer.encode).toHaveBeenCalledWith('<|text_start|>Hello α 2!<|text_end|>', { add_special_tokens: false });
-    expect(f.tokenizer.encode).toHaveBeenCalledWith('<|text_start|>Hello α 2! World β 3.<|text_end|>', { add_special_tokens: false });
+    expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} Hello α 2!<|text_end|>`, { add_special_tokens: false });
+    expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} World β 3.<|text_end|>`, { add_special_tokens: false });
     expect(second.speaker.referenceHash).toBe(first.speaker.anchorHash);
     expect(firstRequest.text).toBe('  𝖧𝖾𝗅𝗅𝗈 𝛂 𝟚!  ');
     expect(secondRequest.text).toBe('𝖶𝗈𝗋𝗅𝖽 𝛃 𝟛.');
     await f.runtime.dispose();
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
+  });
+
+  it('preserves Turkish Bugün pronunciation without changing document text or other languages', async () => {
+    const f = fixture(), text = 'Bugün kısa bir hikâye okuyoruz. Bugünkü kitap burada.';
+    f.decoder.run.mockImplementation(async () => ({ audio_values: new f.ort.Tensor('float32', Float32Array.of(0.2, -0.3, 0.1), [1, 1, 3]) }));
+    await f.runtime.init('https://model.test');
+    for (const lang of ['tr', 'en']) {
+      const input = Object.freeze({ ...request, lang, text });
+      await f.runtime.synthesize(input);
+      const speaker = getOmniVoiceSpeakerReference(input);
+      expect(f.tokenizer.encode).toHaveBeenLastCalledWith(`<|text_start|>${speaker.text} ${lang === 'tr' ? 'bugün kısa bir hikâye okuyoruz. bugünkü kitap burada.' : text}<|text_end|>`, { add_special_tokens: false });
+      expect(input.text).toBe(text);
+    }
+    await f.runtime.dispose();
+  });
+
+  it('renders whisper from the same decoded speaker and keeps its backing speech reproducible', async () => {
+    const f = fixture();
+    const audio = Float32Array.from({ length: 12000 }, (_, i) => 0.12 * Math.sin(2 * Math.PI * 150 * i / 24000));
+    f.decoder.run.mockImplementation(async () => ({ audio_values: new f.ort.Tensor('float32', audio, [1, 1, audio.length]) }));
+    await f.runtime.init('https://model.test');
+    const normal = await f.runtime.synthesize(request);
+    const whisper = await f.runtime.synthesize({ ...request, whisper: true });
+    expect(whisper.speaker).toEqual(normal.speaker);
+    expect(whisper.backingPcmSha256).toBe(normal.backingPcmSha256);
+    expect(whisper.pcm).not.toEqual(normal.pcm);
+    expect(whisper.pcm).toHaveLength(normal.pcm.length);
+    expect(normal.pcm).toEqual(audio);
+    expect((await f.runtime.synthesize({ ...request, whisper: true })).pcm).toEqual(whisper.pcm);
+    await f.runtime.dispose();
   });
 
   it('conditions every later sentence on the first speaker and resets when voice attributes change', async () => {
@@ -205,18 +242,20 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     const third = await f.runtime.synthesize({ ...request, text: 'Hey!' });
     expect(second.speaker.referenceHash).toBe(first.speaker.anchorHash);
     expect(third.speaker.referenceHash).toBe(first.speaker.anchorHash);
-    expect(f.tokenizer.encode).toHaveBeenCalledWith('<|text_start|>Hej! Hey!<|text_end|>', { add_special_tokens: false });
+    expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} Hey!<|text_end|>`, { add_special_tokens: false });
     expect(f.tokenizer.encode).toHaveBeenCalledWith(expect.stringMatching(/^<\|denoise\|>/), { add_special_tokens: false });
     const conditioned = feeds[4];
-    expect(conditioned.length).toBe(6 + 24 + 24);
-    expect([...conditioned.mask]).toEqual([...Array(6).fill(0), ...Array(48).fill(1)]);
-    expect([...conditioned.positions]).toEqual(Array.from({ length: 54 }, (_, i) => BigInt(i)));
+    expect(conditioned.length).toBe(6 + reference.frames + 24);
+    expect([...conditioned.mask]).toEqual([...Array(6).fill(0), ...Array(reference.frames + 24).fill(1)]);
+    expect([...conditioned.positions]).toEqual(Array.from({ length: conditioned.length }, (_, i) => BigInt(i)));
     for (let book = 0; book < 8; book += 1) {
-      expect([...conditioned.ids.slice(book * conditioned.length + 6, book * conditioned.length + 30)]).toEqual(Array(24).fill(3n));
-      expect([...conditioned.ids.slice(book * conditioned.length + 30, (book + 1) * conditioned.length)]).toEqual(Array(24).fill(1024n));
+      expect([...conditioned.ids.slice(book * conditioned.length + 6, book * conditioned.length + 6 + reference.frames)])
+        .toEqual([...reference.codes.slice(book * reference.frames, (book + 1) * reference.frames)]);
+      expect([...conditioned.ids.slice(book * conditioned.length + 6 + reference.frames, (book + 1) * conditioned.length)]).toEqual(Array(24).fill(1024n));
     }
     const changed = await f.runtime.synthesize({ ...request, instruct: '男, 青年, 低音调' });
-    expect(changed.speaker.referenceHash).toBeNull();
+    expect(changed.speaker.id).toBe('male-1');
+    expect(changed.speaker.referenceHash).not.toBe(reference.hash);
     await f.runtime.dispose();
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
   });
@@ -315,13 +354,13 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     f.decoder.run.mockResolvedValueOnce({ audio_values: new f.ort.Tensor('float32', new Float32Array(24000).fill(1), [1, 1, 24000]) });
     await expect(f.runtime.synthesize(request)).rejects.toMatchObject({ name: 'OmniVoiceAudioQualityError' });
     const recovered = await f.runtime.synthesize(request);
-    expect(recovered.speaker.referenceHash).toBeNull();
+    expect(recovered.speaker.referenceHash).toBe(reference.hash);
     expect(recovered.speaker.anchorHash).toBeTruthy();
     await f.runtime.dispose();
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
   });
 
-  it.each([{ ...request, speed: NaN }, { ...request, numStep: 0 }, { ...request, lang: 'unsupported' }, { ...request, lang: undefined }, { ...request, lang: 'ar' }, { ...request, text: '' },
+  it.each([{ ...request, speed: NaN }, { ...request, numStep: 0 }, { ...request, whisper: 'true' }, { ...request, lang: 'unsupported' }, { ...request, lang: undefined }, { ...request, lang: 'ar' }, { ...request, text: '' },
     { ...request, text: 'abc '.repeat(2000) }])('rejects invalid or oversized requests without inference', async bad => {
     const f = fixture();
     await f.runtime.init('https://model.test');

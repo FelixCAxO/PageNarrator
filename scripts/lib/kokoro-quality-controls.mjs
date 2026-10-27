@@ -1,10 +1,13 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 // Independent development assessment data. Never imported by the speech runtime.
 import { createHash } from 'node:crypto';
-import { readFile, readdir, mkdir, writeFile } from 'node:fs/promises';
-import { resolve } from 'node:path';
+import { spawnSync } from 'node:child_process';
+import { readFile, readdir, mkdir, mkdtemp, writeFile } from 'node:fs/promises';
+import { resolve, sep } from 'node:path';
 import { KOKORO_DATA } from '../../src/tts/kokoro/model-data.js';
 import { waveBytes } from './kokoro-speech-acceptance.mjs';
+import { hashDirectory } from '../weak-hardware/run-provenance.mjs';
+import { assertReleasePackage } from '../assert-release-package.mjs';
 
 export const QUALITY_CORPUS_SHA256 = '6c2766a0a670e6e84cb1d0fbfc71cef531f078c25662317c09e56af038c5233c';
 export const hashQualityBytes = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -75,12 +78,14 @@ export async function qualitySourcePins(root) {
     'public/assets/phonemizer/english.wasm', 'public/assets/phonemizer/pronunciations.bin', 'scripts/lib/kokoro-quality-controls.mjs',
     'scripts/lib/kokoro-quality-candidate.mjs', 'scripts/lib/kokoro-legacy-quality.mjs', 'scripts/probe-kokoro-quality.mjs', 'scripts/probe-kokoro-registry.mjs'];
   sources.push('scripts/lib/kokoro-speech-acceptance.mjs', 'scripts/lib/browser-adapter.mjs', 'scripts/kokoro-asr-review.py');
+  sources.push('config/voice-quality-protocol.json', 'scripts/voice-listening-reviews.mjs', 'scripts/verify-voice-quality.mjs', 'scripts/lib/voice-quality-assessment.mjs');
   return Object.fromEntries(await Promise.all(sources.sort().map(async path => [path, hashQualityBytes(await readFile(resolve(root, path)))])));
 }
 export async function qualityLegacyPins(root) {
   const sources = ['package-lock.json', 'node_modules/kokoro-js/package.json', 'node_modules/kokoro-js/dist/kokoro.js',
     'node_modules/phonemizer/package.json', 'node_modules/phonemizer/dist/phonemizer.js', 'node_modules/@huggingface/transformers/package.json',
-    'node_modules/@huggingface/transformers/dist/transformers.node.mjs', 'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs'];
+    'node_modules/@huggingface/transformers/dist/transformers.node.mjs', 'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs',
+    'scripts/lib/kokoro-quality-controls.mjs', 'scripts/lib/kokoro-speech-acceptance.mjs'];
   for (const file of KOKORO_DATA.files.filter(entry => entry.path.startsWith('voices/'))) {
     const path = `node_modules/kokoro-js/${file.path}`, bytes = await readFile(resolve(root, path));
     if (bytes.length !== file.bytes || hashQualityBytes(bytes) !== file.sha256) throw new Error(`Installed legacy style differs from pinned model data: ${file.path}.`);
@@ -96,13 +101,26 @@ export async function makeQualityFreeze(root, cacheDirectory) {
   if (hashQualityBytes(bytes) !== QUALITY_CORPUS_SHA256) throw new Error('Frozen quality corpus changed.');
   const corpus = JSON.parse(bytes), expectedSpoken = Object.fromEntries([...corpus.validation, ...corpus.test].map(entry => [entry.id, spoken[entry.id] ? choices(spoken[entry.id]) : [entry.text]]));
   for (const file of KOKORO_DATA.files) { const data = await readFile(resolve(cacheDirectory, file.path)); if (data.length !== file.bytes || hashQualityBytes(data) !== file.sha256) throw new Error(`Unverified quality data ${file.path}.`); }
+  const sourcePins = await qualitySourcePins(root);
+  await mkdir(resolve(root, 'artifacts'), { recursive: true });
+  const directory = await mkdtemp(resolve(root, 'artifacts/kokoro-quality-build-'));
+  const build = spawnSync(process.execPath, [resolve(root, 'node_modules/vite/bin/vite.js'), 'build'], {
+    cwd: root, env: { ...process.env, PN_OUT_DIR: directory }, stdio: 'inherit', windowsHide: true });
+  if (build.status !== 0) throw new Error('Could not build the frozen quality candidate.', { cause: build.error });
+  await assertReleasePackage(directory);
+  if (JSON.stringify(sourcePins) !== JSON.stringify(await qualitySourcePins(root))) throw new Error('Candidate source changed while building the quality freeze.');
   return { schema: 1, frozenAt: new Date().toISOString(), corpusSha256: QUALITY_CORPUS_SHA256, corpus, expectedSpoken,
-    data: KOKORO_DATA, sourcePins: await qualitySourcePins(root), legacyPins: await qualityLegacyPins(root),
+    data: KOKORO_DATA, sourcePins, packagedBuild: { directory, ...await hashDirectory(directory) }, legacyPins: await qualityLegacyPins(root),
     rules: { speed: 1, mode: 'stream', sampleRate: 24000, minimumRms: .001, requiredTranscriptWordEdits: 0, requireFinalThreeWords: true,
       unknownNetwork: 'blocked', legacyBackend: 'Unmodified public KokoroTTS stream with ONNX Runtime Node CPU, matching q8/fp32 raw graph and exact pinned bundled styles. Public loader has no session-options argument; runtime thread defaults remain unchanged. No cross-backend speed or PCM claim.',
       finalPartition: 'No tuning on test output. Preserve failures; a repaired candidate requires a new independently frozen holdout or an explicit regression label.',
       listenerStudy: { status: 'not performed', listenersRequired: 20, dimensions: ['intelligibility', 'voice identity', 'pronunciation', 'prosody'], minimumClustered95PercentLowerBound: -.25 },
       scope: 'Text-to-PCM pipeline comparison; ASR is diagnostic. No article/PDF handoff, highlighting, audible latency, performance or 20-listener acceptance is inferred.' } };
+}
+export async function verifyQualityBuild(root, expected, directory = expected?.directory) {
+  if (!directory || !resolve(directory).startsWith(`${resolve(root)}${sep}`)) throw new Error('Missing isolated quality build.');
+  const actual = await hashDirectory(directory);
+  if (!expected.sha256 || actual.sha256 !== expected.sha256) throw new Error('Packaged quality worker differs from its frozen build.');
 }
 export async function readQualityFreeze(root, path, { candidate = true, legacy = true } = {}) {
   const bytes = await readFile(path), digest = (await readFile(`${path}.sha256`, 'utf8')).trim();
@@ -110,6 +128,7 @@ export async function readQualityFreeze(root, path, { candidate = true, legacy =
   const freeze = JSON.parse(bytes);
   if (freeze.schema !== 1 || freeze.corpusSha256 !== QUALITY_CORPUS_SHA256 || hashQualityBytes(await readFile(resolve(root, 'tests/voice/fixtures/quality-corpus.json'))) !== QUALITY_CORPUS_SHA256) throw new Error('Quality freeze/corpus mismatch.');
   if (candidate && JSON.stringify(freeze.sourcePins) !== JSON.stringify(await qualitySourcePins(root))) throw new Error('Candidate source changed after quality freeze.');
+  if (candidate) await verifyQualityBuild(root, freeze.packagedBuild);
   if (legacy && JSON.stringify(freeze.legacyPins) !== JSON.stringify(await qualityLegacyPins(root))) throw new Error('Legacy executable/source changed after quality freeze.');
   return freeze;
 }

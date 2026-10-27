@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "Páginas do PDF"
   },
-  "ui_ab32ceb0": {
-    "message": "Experimental. 646 entradas de idiomas; a qualidade varia. Requer WebGPU com fp16 e cerca de 1,35 GB de downloads. Escolha uma voz, variação ou sussurro."
+  "ui_6b68e4c5": {
+    "message": "Experimental. 32 entradas de idiomas; a qualidade varia. Requer WebGPU com fp16 e cerca de 1,35 GB de downloads. Escolha uma voz, variação ou sussurro."
   },
   "ui_ab4a698f": {
     "message": "Abrir página"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Não foi possível abrir este PDF."
+  },
+  "ui_e59ac0eb": {
+    "message": "Ler do início"
+  },
+  "ui_35a4186c": {
+    "message": "Aviso: o sussurro pode omitir palavras neste idioma. Confira a leitura com o texto."
   }
 }

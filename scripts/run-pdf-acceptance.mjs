@@ -12,6 +12,7 @@ import { loadPdfBenchmarkGold } from '../tests/helpers/pdf-benchmark-gold.js';
 import { loadPdfLibraryBenchmarkGold } from '../tests/helpers/pdf-library-benchmark-gold.js';
 import { releaseGateWaiver } from './lib/release-policy.mjs';
 import { PDF_NATURALNESS_SAMPLE } from '../tests/fixtures/pdf-naturalness-sample.js';
+import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../tests/fixtures/pdf-library-naturalness-sample.js';
 import {
   createPageHighlighter,
   HIGHLIGHT_WORD_TRAIL,
@@ -91,11 +92,14 @@ export async function resolvePdfAcceptanceCandidate({ rootDir = ROOT_DIR, env = 
 
 export async function runPdfAcceptance({ writeReport = false, goldPath,
   benchmark = 'library-v1',
-  backend, outputFile = null, reportIncompleteNaturalness = false } = {}) {
+  backend, outputFile = null, reportIncompleteNaturalness = false,
+  naturalnessRatingsPath = process.env.PN_PDF_NATURALNESS_RATINGS } = {}) {
   backend ??= process.env.PN_PDF_ACCEPTANCE_BACKEND ?? (benchmark === 'library-v1' ? 'original-browser' : 'original');
   if (!['library-v1', 'historical-v1'].includes(benchmark)) throw new Error('Unknown PDF acceptance benchmark.');
   const candidateIdentity = await resolvePdfAcceptanceCandidate();
-  if (benchmark === 'library-v1') return runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputFile, candidateIdentity });
+  if (typeof reportIncompleteNaturalness !== 'boolean') throw new TypeError('Naturalness reporting option must be boolean.');
+  if (benchmark === 'library-v1') return runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputFile, candidateIdentity,
+    naturalnessRatingsPath, reportIncompleteNaturalness });
   if (backend === 'original-browser') throw new Error('The browser acceptance backend is available for library-v1. Historical mode retains original and pdfjs-oracle.');
   if (typeof reportIncompleteNaturalness !== 'boolean') throw new TypeError('Naturalness reporting option must be boolean.');
   const { records: benchmarkRecords, goldEvidence } = loadPdfBenchmarkGold({ goldPath });
@@ -233,17 +237,28 @@ async function readAcceptanceSourcePins(backendSourcePins, extraFiles = []) {
   return pins;
 }
 
-async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputFile, candidateIdentity }) {
+async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputFile, candidateIdentity,
+  naturalnessRatingsPath, reportIncompleteNaturalness }) {
   const { records, routingControls, goldEvidence, benchmarkId } = loadPdfLibraryBenchmarkGold({ goldPath });
   const releaseVersion = JSON.parse(await readFile(path.join(ROOT_DIR, 'package.json'), 'utf8')).version;
-  const naturalnessWaiver = releaseGateWaiver('human-listening-reviews', releaseVersion);
-  if (!naturalnessWaiver) throw new Error('Library PDF human-review requirements need an explicit release policy.');
+  const naturalnessWaiver = naturalnessRatingsPath ? null : releaseGateWaiver('human-listening-reviews', releaseVersion);
+  if (!naturalnessWaiver && !naturalnessRatingsPath && !reportIncompleteNaturalness) {
+    throw new Error('Library PDF human reviews are required. Set PN_PDF_NATURALNESS_RATINGS to the imported current review receipts.');
+  }
+  const ratingRecords = naturalnessRatingsPath ? JSON.parse(await readFile(naturalnessRatingsPath, 'utf8')) : [];
+  let ratingFixtureError = null;
+  if (!naturalnessWaiver) {
+    try { validateNaturalnessRatings(ratingRecords, PDF_LIBRARY_NATURALNESS_SAMPLE); }
+    catch (error) { if (!reportIncompleteNaturalness) throw error; ratingFixtureError = error.message; }
+  }
   const backendSession = await loadPdfAcceptanceBackend(backend);
   const { engine: pdfjs, identity: backendIdentity } = backendSession;
   let report;
   try {
     const extraPins = ['tests/helpers/pdf-library-benchmark-gold.js', 'tests/fixtures/pdf-library-acceptance-manifest.json',
-      'config/release-policy.json', 'scripts/lib/release-policy.mjs', 'package.json'];
+      'tests/fixtures/pdf-library-naturalness-sample.js',
+      'config/release-policy.json', 'scripts/lib/release-policy.mjs', 'package.json',
+      ...(naturalnessRatingsPath ? [path.resolve(naturalnessRatingsPath)] : [])];
     const implementationPins = await readAcceptanceSourcePins(backendIdentity.sourcePins, extraPins);
     configurePdfWorker(pdfjs);
     const pages = [], chunks = [], words = [], verifiedInputs = new Map();
@@ -269,6 +284,7 @@ async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputF
           failedCheckpoint: checkpoint.failedCheckpoint,
           narrationErrors: countNarrationErrors(pageText.speech, record.forbiddenNarration),
           transcriptHash: sha256(normalizeText(pageText.speech)),
+          naturalnessTranscriptHash: sha256(selectPdfNaturalnessPassage(pageText.speech)),
           forbiddenSpans: record.forbiddenNarration.length,
           narrationStartPage: record.narrationStartPage ?? null });
         chunks.push(...grounding.chunks); words.push(...grounding.words);
@@ -295,8 +311,12 @@ async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputF
       nativeRoutingControls.push(result);
     }
     const imageOnly = await evaluateImageOnlyFixtures(pdfjs);
-    const score = scorePdfAcceptance({ pages, passages: [], chunks, words, imageOnly }, { naturalnessWaiver });
+    const passages = naturalnessWaiver ? [] : bindPdfNaturalnessRatings(PDF_LIBRARY_NATURALNESS_SAMPLE, pages, ratingRecords);
+    const score = scorePdfAcceptance({ pages, passages, chunks, words, imageOnly },
+      { naturalnessWaiver, reportIncompleteNaturalness, ratingFixtureError });
     const failureDetails = {
+      ...(score.naturalness.evidence ? { naturalness: score.naturalness.evidence.records.filter(record => !record.qualified)
+        .map(({ id, issues }) => ({ id, issues })) } : {}),
       evaluation: pages.filter(page => !page.evaluated).map(({ id, emptyOutput, error }) => ({ id, emptyOutput: Boolean(emptyOutput), error })),
       readingOrder: pages.filter(page => !page.readingOrder).map(({ id, failedCheckpoint }) => ({ id, failedCheckpoint })),
       narration: pages.filter(page => page.narrationErrors).map(({ id, narrationErrors }) => ({ id, narrationErrors })),
@@ -330,7 +350,7 @@ async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputF
       nativeRoutingControlCounts: { expected: routingControls.length, evaluated: nativeRoutingControls.filter(row => row.probes?.length === 2).length,
         passed: nativeRoutingControls.filter(row => row.passed).length },
       failures: Object.entries(failureDetails).flatMap(([metric, entries]) => entries.map(entry => ({ metric, ...(typeof entry === 'string' ? { id: entry } : entry) }))),
-      naturalnessEvidence: [], imageOnlyEvidence: imageOnly,
+      naturalnessEvidence: passages, imageOnlyEvidence: imageOnly,
       forbiddenNarrationCoverage: { pagesWithChecks: pages.filter(page => page.forbiddenSpans > 0).length,
         expectedPagesWithChecks: records.filter(record => record.forbiddenNarration.length > 0).length,
         expectedSpans: records.reduce((sum, record) => sum + record.forbiddenNarration.length, 0) },
@@ -422,6 +442,19 @@ export function evaluateReadingOrder(pageText, checkpoints) {
   return matchesOrderedCheckpoints(pageText?.speech || '', checkpoints);
 }
 
+export function bindPdfNaturalnessRatings(samples, pages, ratingRecords) {
+  const pagesById = new Map(pages.map(page => [page.id, page]));
+  const rows = Array.isArray(ratingRecords) ? ratingRecords : [];
+  return samples.map(sample => {
+    const rating = rows.find(row => row?.passageId === sample.id);
+    const currentTranscriptSha256 = pagesById.get(sample.pdfId)?.naturalnessTranscriptHash ?? null;
+    return { id: sample.id, transcriptHashMatches: Boolean(currentTranscriptSha256 && rating?.transcriptSha256 === currentTranscriptSha256),
+      transcriptSha256: rating?.transcriptSha256 ?? null, ratedTranscriptSha256: rating?.transcriptSha256 ?? null,
+      currentTranscriptSha256, ratingRecordCount: rows.filter(row => row?.passageId === sample.id).length,
+      ratings: Array.isArray(rating?.ratings) ? rating.ratings : [], reviews: Array.isArray(rating?.reviews) ? rating.reviews : [] };
+  });
+}
+
 export function validateNaturalnessRatings(ratingRecords, samples) {
   if (!Array.isArray(ratingRecords) || ratingRecords.length !== samples.length) {
     throw new Error(`Naturalness ratings fixture must contain exactly ${samples.length} records.`);
@@ -467,28 +500,38 @@ function countBenchmarkCategories(records) {
   return counts;
 }
 
-export async function generatePdfNaturalnessPacket({ backend = process.env.PN_PDF_ACCEPTANCE_BACKEND ?? 'original' } = {}) {
-  if (backend === 'original-browser') throw new Error('Historical naturalness packets retain original and pdfjs-oracle backends.');
-  const { engine: pdfjs } = await loadPdfAcceptanceBackend(backend);
-  configurePdfWorker(pdfjs);
-  const recordsById = new Map(PDF_ACCEPTANCE_BENCHMARK.map((record) => [record.id, record]));
+export async function generatePdfNaturalnessPacket({ backend, benchmark = 'historical-v1', goldPath } = {}) {
+  if (!['library-v1', 'historical-v1'].includes(benchmark)) throw new Error('Unknown PDF naturalness benchmark.');
+  const library = benchmark === 'library-v1';
+  backend ??= process.env.PN_PDF_ACCEPTANCE_BACKEND ?? (library ? 'original-browser' : 'original');
+  if (!library && backend === 'original-browser') throw new Error('Historical naturalness packets retain original and pdfjs-oracle backends.');
+  const records = library ? loadPdfLibraryBenchmarkGold({ goldPath }).records : PDF_ACCEPTANCE_BENCHMARK;
+  const samples = library ? PDF_LIBRARY_NATURALNESS_SAMPLE : PDF_NATURALNESS_SAMPLE;
+  const recordsById = new Map(records.map(record => [record.id, record]));
   const passages = [];
-
-  for (const sample of PDF_NATURALNESS_SAMPLE) {
-    const record = recordsById.get(sample.pdfId);
-    if (!record) throw new Error(`Unknown naturalness PDF identity: ${sample.pdfId}.`);
-    const bytes = await loadVerifiedPdf(record);
-    const page = await readBenchmarkPage(bytes, record.pageNumber, pdfjs);
-    const pageText = await getProductionPageText(bytes, record, page, pdfjs);
-    const transcript = selectPdfNaturalnessPassage(pageText.speech);
-    passages.push({
-      passageId: sample.id,
-      transcript,
-      transcriptSha256: sha256(transcript),
-      categories: [...sample.categories],
-    });
+  const session = await loadPdfAcceptanceBackend(backend), { engine: pdfjs } = session;
+  try {
+    configurePdfWorker(pdfjs);
+    for (const sample of samples) {
+      const record = recordsById.get(sample.pdfId);
+      if (!record) throw new Error(`Unknown naturalness PDF identity: ${sample.pdfId}.`);
+      const bytes = await loadVerifiedPdf(record);
+      const page = await readBenchmarkPage(bytes, record.pageNumber, pdfjs);
+      const pageText = record.privateFilePath
+        ? await getLibraryProductionPageText(bytes, record, pdfjs)
+        : await getProductionPageText(bytes, record, page, pdfjs);
+      const transcript = selectPdfNaturalnessPassage(pageText.speech);
+      passages.push({
+        passageId: sample.id,
+        transcript,
+        transcriptSha256: sha256(transcript),
+        categories: [...sample.categories],
+      });
+    }
+  } finally {
+    const integrity = await session.dispose?.();
+    if (integrity && !integrity.pass) throw new Error('Naturalness packet backend integrity failed.');
   }
-
   return passages;
 }
 
@@ -496,14 +539,16 @@ export function selectPdfNaturalnessPassage(speech) {
   return chunkText(normalizeTextPreservingCase(speech), 900, { targetMinLen: 650 })[0] || '';
 }
 
-export async function writePdfNaturalnessPacket({ backend = process.env.PN_PDF_ACCEPTANCE_BACKEND ?? 'original', outputFile = null } = {}) {
-  const passages = await generatePdfNaturalnessPacket({ backend });
+export async function writePdfNaturalnessPacket({ backend, benchmark = 'historical-v1', goldPath, outputFile = null } = {}) {
+  backend ??= process.env.PN_PDF_ACCEPTANCE_BACKEND ?? (benchmark === 'library-v1' ? 'original-browser' : 'original');
+  const passages = await generatePdfNaturalnessPacket({ backend, benchmark, goldPath });
   const packet = {
-    backend,
+    backend, ...(benchmark === 'library-v1' ? { benchmark } : {}),
     rubric: 'Score 1-5 for line-wrap repair, split-word repair, punctuation, and structural pauses only. Ignore voice timbre. Use integer scores.',
     passages,
   };
-  const destination = outputFile ? path.resolve(outputFile) : path.join(ROOT_DIR, 'artifacts', `pdf-naturalness-${backend}.json`);
+  const destination = outputFile ? path.resolve(outputFile) : path.join(ROOT_DIR, 'artifacts',
+    `pdf-naturalness-${benchmark === 'library-v1' ? 'library-v1-' : ''}${backend}.json`);
   await mkdir(path.dirname(destination), { recursive: true });
   await writeFile(destination, `${JSON.stringify(packet, null, 2)}\n`, { flag: 'wx' });
   return packet;
@@ -734,11 +779,12 @@ if (process.argv[1] && pathToFileURL(path.resolve(process.argv[1])).href === imp
   const backend = process.argv.find(value => value.startsWith('--backend='))?.slice('--backend='.length)
     ?? process.env.PN_PDF_ACCEPTANCE_BACKEND;
   const outputFile = process.argv.find(value => value.startsWith('--output='))?.slice('--output='.length) ?? null;
+  const benchmark = process.argv.find(value => value.startsWith('--benchmark='))?.slice('--benchmark='.length)
+    ?? (process.argv.includes('--write-naturalness-packet') ? 'historical-v1' : 'library-v1');
   if (process.argv.includes('--write-naturalness-packet')) {
-    const packet = await writePdfNaturalnessPacket({ backend, outputFile });
+    const packet = await writePdfNaturalnessPacket({ backend, benchmark, outputFile });
     process.stdout.write(`Wrote ${packet.passages.length} blind naturalness passages for ${backend}.\n`);
   } else {
-    const benchmark = process.argv.find(value => value.startsWith('--benchmark='))?.slice('--benchmark='.length) ?? 'library-v1';
     const report = await runPdfAcceptance({ writeReport: process.argv.includes('--write-report'), backend, outputFile,
       benchmark,
       reportIncompleteNaturalness: process.argv.includes('--report-incomplete-naturalness') });

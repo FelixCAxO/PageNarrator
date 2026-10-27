@@ -1,7 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { writeFile } from 'node:fs/promises';
-import { DEADLINE_ROWS, deadlineTableHtml, tablePdfItems, WRAPPED_SWEDISH_ROWS, wrappedSwedishTableItems } from '../fixtures/reading-order-fixtures.js';
+import { DEADLINE_ROWS, deadlineTableHtml, tablePdfItems, WRAPPED_SWEDISH_ROWS, wrappedSwedishTableItems, SECURITY_TABLE_ROWS, securityTableItems, studyTableFixture } from '../fixtures/reading-order-fixtures.js';
 import { buildPdfBytes } from '../helpers/pdf-test-generator.js';
+import { buildSidenoteReadingOrderPattern } from '../helpers/sidenote-reading-order-patterns.js';
 import { getDomWordIndexForSpeechWord } from '../../src/lib/reading-model.js';
 import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';
 import { buildCorpusFlowReport } from './corpus-flow-invariants.js';
@@ -11,21 +12,27 @@ import {
 
 // Speech omits standalone slash/dash separators; cell words and dates must stay intact.
 const normalize = (text) => text.replace(/\s+[/\-]\s+/gu, ' ').replace(/\s+/gu, ' ');
+const sidenoteFixture = buildSidenoteReadingOrderPattern({ parameters: {
+  side: 'right', anchorParagraph: 1, noteLines: 5, bodyLines: 3, noteFontRatio: 0.8,
+  sourceOrder: 'columns', fragmentation: 'lines', scale: 1, rotation: 0,
+} });
 
-for (const { format, table, cells } of [
-  { format: 'PDF', table: 'deadline', cells: DEADLINE_ROWS.flat() },
+for (const { format, table, cells, pdfItems, width, height = 792, name } of [
+  { format: 'PDF', table: 'deadline', cells: DEADLINE_ROWS.flat(), pdfItems: () => tablePdfItems().sort((a, b) => a.x - b.x || a.y - b.y), width: 1000 },
   { format: 'webpage', table: 'deadline', cells: DEADLINE_ROWS.flat() },
-  { format: 'PDF', table: 'wrapped Swedish', cells: WRAPPED_SWEDISH_ROWS.flat(2) },
+  { format: 'PDF', table: 'wrapped Swedish', cells: WRAPPED_SWEDISH_ROWS.flat(2), pdfItems: wrappedSwedishTableItems, width: 856 },
+  { format: 'PDF', table: 'four-column security', cells: SECURITY_TABLE_ROWS.flat(2), pdfItems: securityTableItems, width: 924 },
+  { format: 'PDF', table: 'numbered questions and answers', cells: studyTableFixture().cells.flat(2), pdfItems: () => studyTableFixture().items, width: 640 },
+  { format: 'PDF', table: 'paragraph sidenote', cells: sidenoteFixture.expectedText, pdfItems: () => sidenoteFixture.items, width: 540, height: 900,
+    name: 'PDF reads a sidenote after its paragraph with matching word highlights' },
 ]) {
-  test(`${format} narrates the ${table} table in row order with matching word highlights`, async ({}, testInfo) => {
+  test(name || `${format} narrates the ${table} table in row order with matching word highlights`, async ({}, testInfo) => {
     const { context, cleanup } = await launchExtensionContext({ hostPermissions: ['http://reading-order.test/*'] });
     try {
       await seedFlowTestFlags(context);
       let page;
       if (format === 'PDF') {
-        const bytes = table === 'deadline'
-          ? buildPdfBytes(tablePdfItems().sort((a, b) => a.x - b.x || a.y - b.y), { width: 1000 })
-          : buildPdfBytes(wrappedSwedishTableItems(), { width: 856 });
+        const bytes = buildPdfBytes(pdfItems(), { width, height });
         page = await openPdfViewer(context, `data:application/pdf;base64,${Buffer.from(bytes).toString('base64')}`);
         await expect(page.locator('#pdf-status')).toContainText('1 page loaded');
       } else {

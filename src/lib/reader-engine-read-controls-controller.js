@@ -42,6 +42,11 @@ export function createReaderEngineReadControlsController({
     onReadSelected?.({ tab });
   }
 
+  function handleReadFromStartAction({ tab = null } = {}) {
+    if (['reading', 'paused', 'preparing'].includes(state.readingState)) return;
+    onPrimaryRead?.({ tab, startMode: 'top', resumeConfirmed: true });
+  }
+
   function handleErrorRecoveryAction(action, { tab = null } = {}) {
     if (action === 'read-selected') return handleReadSelectedAction({ tab });
     if (action === 'support') {
@@ -210,6 +215,7 @@ export function createReaderEngineReadControlsController({
   return {
     handlePrimaryAction,
     handleReadSelectedAction,
+    handleReadFromStartAction,
     handleErrorRecoveryAction,
     pauseReading,
     resumeReading,

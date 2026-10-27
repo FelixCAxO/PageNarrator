@@ -651,6 +651,14 @@ const LANGUAGES = [
 
 export const OMNIVOICE_LANGUAGES = Object.freeze(LANGUAGES.map(([code, label]) => Object.freeze({ code, label, lang: code })));
 const BY_CODE = new Map(LANGUAGES.flatMap(([code, , iso], index) => [[code, OMNIVOICE_LANGUAGES[index]], [iso, OMNIVOICE_LANGUAGES[index]]]));
+const COMMON_CODES = new Set('en sv da no fi is de nl fr es pt it el pl cs sk hu ro bg uk ru tr arb he hi id vi th zh yue ja ko'.split(' '));
+const COMMON_LANGUAGES = Object.freeze(OMNIVOICE_LANGUAGES.filter(({ code }) => COMMON_CODES.has(code)));
+
+export function getOmniVoiceLanguageOptions(selectedCode = '') {
+  const selected = getOmniVoiceLanguage(selectedCode);
+  return selected && !COMMON_CODES.has(selected.code) ? [...COMMON_LANGUAGES, selected] : COMMON_LANGUAGES;
+}
+
 /** @param {unknown} code */
 export function getOmniVoiceLanguage(code) {
   const value = typeof code === 'string' ? code.trim().toLowerCase().split('-')[0] : '';

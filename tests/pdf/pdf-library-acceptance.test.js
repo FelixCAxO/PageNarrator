@@ -2,7 +2,8 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
 import { scorePdfAcceptance } from '../../scripts/pdf-acceptance-metrics.mjs';
 import { releaseGateWaiver } from '../../scripts/lib/release-policy.mjs';
-import { runPdfAcceptance } from '../../scripts/run-pdf-acceptance.mjs';
+import { bindPdfNaturalnessRatings, runPdfAcceptance } from '../../scripts/run-pdf-acceptance.mjs';
+import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../fixtures/pdf-library-naturalness-sample.js';
 
 const waiver = releaseGateWaiver('human-listening-reviews', '1.0.0');
 
@@ -18,6 +19,22 @@ function evidence() {
     words: Array.from({ length: 100 }, (_, i) => ({ aligned: i < 95 })),
     imageOnly: [{ expectedImageOnly: true, code: 'scanned_pdf_unsupported' }, { expectedImageOnly: false, code: null }] };
 }
+
+it('qualifies bound human panels without a waiver and rejects stale, missing and ambiguous receipts', () => {
+  const input = evidence(), samples = PDF_LIBRARY_NATURALNESS_SAMPLE, transcriptSha256 = 'a'.repeat(64);
+  samples.forEach((sample, index) => Object.assign(input.pages[index], { id: sample.pdfId, naturalnessTranscriptHash: transcriptSha256 }));
+  const records = samples.map(sample => ({ passageId: sample.id, transcriptSha256, ratings: [4, 5], median: 4.5,
+    categories: [...sample.categories], reviews: ['test-panel-a', 'test-panel-b'].map(reviewerId => ({ kind: 'human', reviewerId,
+      reviewedAt: '2026-10-26T12:00:00.000Z', transcriptSha256 })) }));
+  const evaluate = rows => scorePdfAcceptance({ ...input, passages: bindPdfNaturalnessRatings(samples, input.pages, rows) }, { reportIncompleteNaturalness: true });
+  expect(evaluate(records)).toMatchObject({ passed: true, naturalness: { average: 4.5, evidence: { qualifiedPassages: 50 } } });
+  input.pages[0].naturalnessTranscriptHash = 'b'.repeat(64);
+  expect(evaluate(records)).toMatchObject({ passed: false, naturalness: { evidence: { qualifiedPassages: 49 } } });
+  expect(() => scorePdfAcceptance({ ...input, passages: bindPdfNaturalnessRatings(samples, input.pages, records) })).toThrow('stale transcript');
+  input.pages[0].naturalnessTranscriptHash = transcriptSha256;
+  expect(evaluate(records.slice(1)).naturalness.evidence.records[0].issues).toEqual(expect.arrayContaining([expect.objectContaining({ code: 'missing-rating' })]));
+  expect(evaluate([...records, records[0]]).naturalness.evidence.records[0].issues).toEqual(expect.arrayContaining([expect.objectContaining({ code: 'ambiguous-rating' })]));
+});
 const driver = readFileSync(new URL('../../scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
 function contextualReader(iteratePdfSpeechChunks) {
   const start = driver.indexOf('async function getLibraryProductionPageText(');
@@ -158,6 +175,13 @@ acceptance('measures all100 library/authored pages under the unchanged automatic
   expect(report.pages).toHaveLength(100); expect(report.goldEvidence.privateRecords).toBe(90);
   expect(report.nativeRoutingControls).toHaveLength(2);
   expect(report.nativeRoutingControlCounts).toEqual({ expected: 2, evaluated: 2, passed: 2 });
-  expect(report.naturalness).toMatchObject({ status: 'waived', verified: false, average: null });
+  const version = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8')).version;
+  if (report.naturalness.status === 'waived') {
+    expect(releaseGateWaiver('human-listening-reviews', version)).not.toBeNull();
+    expect(report.naturalness).toMatchObject({ verified: false, average: null });
+  } else {
+    expect(report.naturalness.passages).toBe(50);
+    expect(report.naturalness.average).toBeGreaterThanOrEqual(4);
+  }
   expect(report.passed, JSON.stringify(report.failureDetails)).toBe(true);
 }, 10 * 60_000);

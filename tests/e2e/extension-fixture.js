@@ -257,7 +257,7 @@ export async function seedReadableTabTarget(context, page, {
   return tabId;
 }
 
-export async function startReadFromToolbarPopup(context, page, { closePopup = true, selected = false } = {}) {
+export async function startReadFromToolbarPopup(context, page, { closePopup = true, selected = false, fromStart = false } = {}) {
   await page.bringToFront().catch((error) => {
     console.warn('Could not bring PageNarrator target page to front before opening the popup.', error);
   });
@@ -290,7 +290,7 @@ export async function startReadFromToolbarPopup(context, page, { closePopup = tr
     readableTabTarget: { tabId: tab.id, tabSnapshot: tab, createdAt: Date.now() },
   }), { id: tabId, title: await page.title(), url: page.url() });
   await serviceWorker.evaluate((id) => chrome.tabs.update(id, { active: true }), tabId);
-  const startButton = popup.locator(selected ? '#read-selected' : '#start-reading');
+  const startButton = popup.locator(fromStart ? '#read-from-start' : selected ? '#read-selected' : '#start-reading');
   await startButton.click();
   // A previous read can still report finished while this click awaits settings
   // and dispatch. Keep the popup alive until its action has actually completed.

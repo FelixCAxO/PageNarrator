@@ -19,9 +19,14 @@ export function createReaderEngineReadingStateRenderer({
   onRendered = () => {},
   onError = () => {},
 } = {}) {
+  let readingError = { message: '', errorCode: '' };
+
   function setReadingState(nextState, options = {}) {
     const previousReadingState = state.readingState;
     session.setReadingState(nextState);
+    readingError = nextState === 'error'
+      ? { message: options.message || '', errorCode: options.errorCode || '' }
+      : { message: '', errorCode: '' };
     if (Number.isFinite(options.totalChunks)) state.totalChunks = options.totalChunks;
     if (Number.isFinite(options.currentChunk)) state.currentChunk = options.currentChunk;
 
@@ -98,7 +103,7 @@ export function createReaderEngineReadingStateRenderer({
       || state.modelSetupState?.phase === 'loading';
   }
 
-  function broadcastPlayerState({ message = '', errorCode = '', syncRequestId = '' } = {}) {
+  function broadcastPlayerState({ message = readingError.message, errorCode = readingError.errorCode, syncRequestId = '' } = {}) {
     chrome.runtime.sendMessage({
       type: MESSAGE_TYPES.READER_STATE_CHANGED,
       state: state.readingState,

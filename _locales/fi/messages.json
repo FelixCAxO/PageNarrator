@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "PDF-sivut"
   },
-  "ui_ab32ceb0": {
-    "message": "Kokeellinen. 646 kielimerkintää; laatu vaihtelee. Vaatii WebGPU:n, fp16-tuen ja noin 1,35 GB latauksia. Valitse ääni, muunnelma tai kuiskaus."
+  "ui_6b68e4c5": {
+    "message": "Kokeellinen. 32 kielimerkintää; laatu vaihtelee. Vaatii WebGPU:n, fp16-tuen ja noin 1,35 GB latauksia. Valitse ääni, muunnelma tai kuiskaus."
   },
   "ui_ab4a698f": {
     "message": "Avaa sivu"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Tätä PDF:ää ei voitu avata."
+  },
+  "ui_e59ac0eb": {
+    "message": "Lue alusta"
+  },
+  "ui_35a4186c": {
+    "message": "Varoitus: Kuiskaus voi jättää sanoja pois tällä kielellä. Vertaa luentaa tekstiin."
   }
 }

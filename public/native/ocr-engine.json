@@ -15,8 +15,8 @@
     "-nostdlib",
     "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all"
   ],
-  "sourceSha256": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+  "sourceSha256": "4f4b675af7c645f1ed730b9bd721bc361f3a4ed2daba357b3ed8a8a5ddf262e0",
   "sharedSourceSha256": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616",
-  "wasmSha256": "c6a66b4280a899dc5e0a0a0c0d99128cb0ac59ce16f9c443af3b2f3643618d45",
+  "wasmSha256": "38911a9af174a6d0c54aa0d97512633bd4c7988f8cda545a6ede69555d4f4ba5",
   "imports": []
 }

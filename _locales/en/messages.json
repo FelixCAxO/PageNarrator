@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "PDF pages"
   },
-  "ui_ab32ceb0": {
-    "message": "Experimental. 646 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper."
+  "ui_6b68e4c5": {
+    "message": "Experimental. 32 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper."
   },
   "ui_ab4a698f": {
     "message": "Open from the page"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Could not open this PDF."
+  },
+  "ui_e59ac0eb": {
+    "message": "Read from start"
+  },
+  "ui_35a4186c": {
+    "message": "Warning: Whisper can omit words in this language. Check the reading against the text."
   }
 }

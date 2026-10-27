@@ -6,6 +6,8 @@ import { getOmniVoiceLanguage } from './languages.js';
 import * as browserInference from '../../engines/browser-inference.js';
 import { assertOmniVoiceAudio } from './audio-quality.js';
 import { applyOmniVoiceRmsNormCorrection } from './rmsnorm-correction.js';
+import { getOmniVoiceSpeakerReference } from './speakers.js';
+import { renderOmniVoiceWhisper } from './whisper.js';
 
 const MAIN = 'omnivoice-main-kv-fp16-b1.onnx';
 const DECODER = 'omnivoice-decoder-webgpu.onnx';
@@ -68,16 +70,19 @@ function characterWeight(char) {
   return SCRIPT_WEIGHTS.find(([end]) => code <= end)?.[1] ?? (code > 0x20000 ? 3 : 1);
 }
 
-/** @param {string} text */
-function normalizeSpokenText(text) {
+/** @param {string} text @param {string} [lang] */
+function normalizeSpokenText(text, lang) {
   // Mathematical letter styling is visual; retain other compatibility characters such as superscripts.
-  return text.replace(/[\u{1D400}-\u{1D7FF}]/gu, char => char.normalize('NFKC')).normalize('NFC');
+  const normalized = text.replace(/[\u{1D400}-\u{1D7FF}]/gu, char => char.normalize('NFKC')).normalize('NFC');
+  // The space-prefixed title-case BPE token mispronounces this Turkish word during cloning.
+  return lang === 'tr' ? normalized.replace(/(?<!\p{L})Bugün/gu, 'bugün') : normalized;
 }
 
 /** @param {string} text @param {number} speed */
 export function estimateOmniVoiceFrames(text, speed) {
   // The decoder emits 960 samples per code frame (25 Hz); bundle metadata incorrectly says 75 Hz.
   const weight = [...normalizeSpokenText(text)].reduce((total, char) => total + characterWeight(char), 0);
+  // Generated references use this same rule; calibrating from their rounded frames loses target frames.
   const estimate = weight * 25 / 14.1;
   return Math.max(1, Math.floor((estimate < 50 ? 50 * (estimate / 50) ** (1 / 3) : estimate) / speed));
 }
@@ -159,7 +164,8 @@ export function unmaskOmniVoiceTokens(conditional, unconditional, codes, frames,
 }
 
 /** @param {any} deps */
-export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log = () => {}, gpu = globalThis.navigator?.gpu, decoderRuntime = browserInference }) {
+export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log = () => {}, gpu = globalThis.navigator?.gpu, decoderRuntime = browserInference,
+  getSpeaker = getOmniVoiceSpeakerReference }) {
   /** @type {any} */
   let main = null;
   /** @type {any} */
@@ -174,14 +180,11 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
   let disposal = null;
   let retired = false;
   let generation = 0;
-  /** @type {{ key: string, text: string, codes: BigInt64Array, frames: number, hash: string }|null} */
-  let speaker = null;
 
   async function releaseSessions() {
     const sessions = [main, decoder];
     main = decoder = null;
     mainGraphCorrection = null;
-    speaker = null;
     const results = await Promise.allSettled(sessions.filter(Boolean).map(session => session.release()));
     for (const result of results) if (result.status === 'rejected') log('cleanup', String(result.reason));
   }
@@ -281,17 +284,16 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     const { text, lang, instruct, speed, seed, numStep } = request;
     if (typeof text !== 'string' || !text.trim() || typeof lang !== 'string' || getOmniVoiceLanguage(lang)?.code !== lang || typeof instruct !== 'string'
       || !Number.isFinite(speed) || speed < 0.5 || speed > 1.5 || !Number.isInteger(seed)
+      || (request.whisper !== undefined && typeof request.whisper !== 'boolean')
       || !Number.isInteger(numStep) || numStep < 1 || numStep > 64) throw new Error('Invalid OmniVoice request.');
     if (!loading) throw new Error('OmniVoice runtime is not initialized.');
     const current = generation;
     await loading;
     checkAbort(current);
-    const timings = { inferenceMs: 0, unmaskMs: 0, decoderMs: 0 };
-    const spokenText = normalizeSpokenText(text);
+    const timings = { inferenceMs: 0, unmaskMs: 0, decoderMs: 0, whisperMs: 0 };
+    const spokenText = normalizeSpokenText(text, lang);
+    const reference = getSpeaker(request);
     const frames = estimateOmniVoiceFrames(spokenText, speed);
-    const speakerKey = JSON.stringify([lang, instruct, seed]);
-    if (speaker?.key !== speakerKey) speaker = null;
-    const reference = speaker;
     /** @param {string} value @returns {number[]} */
     const encode = (value) => Array.from(tokenizer.encode(value, { add_special_tokens: false }));
     const prefix = [...encode(`${reference ? '<|denoise|>' : ''}<|lang_start|>${lang}<|lang_end|><|instruct_start|>${instruct || 'None'}<|instruct_end|>`),
@@ -328,21 +330,27 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
         checkAbort(current);
         const output = result.audio_values;
         if (output.type !== 'float32' || output.dims[0] !== 1 || output.dims[1] !== 1 || output.dims.length !== 3) throw new Error('Unexpected OmniVoice audio shape.');
-        const pcm = new Float32Array(await output.getData());
+        let pcm = new Float32Array(await output.getData());
         checkAbort(current);
         assertOmniVoiceAudio(pcm, 24000);
         timings.decoderMs = performance.now() - decoderStart;
-        // Keep one bounded, generated speaker reference, as in upstream long-form inference.
-        // Never roll it forward: each sentence must use the same voice, not accumulate drift.
-        if (!speaker && prefix.length + frames <= 512) {
-          const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', codes));
+        const backingPcmSha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', pcm)), value => value.toString(16).padStart(2, '0')).join('');
+        checkAbort(current);
+        if (request.whisper === true) {
+          const whisperStart = performance.now();
+          pcm = renderOmniVoiceWhisper(pcm, seed, lang);
+          timings.whisperMs = performance.now() - whisperStart;
           checkAbort(current);
-          speaker = { key: speakerKey, text: spokenText.trim(), codes: codes.slice(), frames,
-            hash: Array.from(digest, value => value.toString(16).padStart(2, '0')).join('') };
+          assertOmniVoiceAudio(pcm, 24000);
         }
-        return { pcm, sampleRate: 24000, timings, speaker: {
+        // The reference builder runs without a preset; playback never derives identity from document text.
+        const anchorHash = reference?.hash || Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', codes)), value => value.toString(16).padStart(2, '0')).join('');
+        checkAbort(current);
+        return { pcm, sampleRate: 24000, timings, backingPcmSha256, speaker: {
+          id: reference?.id || null,
+          referenceId: reference?.referenceId || null, referenceLanguage: reference?.lang || null,
           referenceHash: reference?.hash || null, referenceFrames: reference?.frames || 0,
-          anchorHash: speaker?.hash || null,
+          anchorHash,
         } };
       } finally {
         input.dispose();

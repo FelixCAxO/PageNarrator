@@ -64,7 +64,17 @@ Empty or exceptional readable pages stay in the 100-page denominator and fail. S
 
 Checkpoint matching accepts segmentation differences within eight complete tokens per side. Prefixes, missing letters, reordering, and reused overlapping matches fail. Scoring removes numeric citations and explicit prose URL tokens. Quoted URLs in leading code calls/assignments, including hosts and parameters, remain required. URL-only prose checkpoints fail; adjacent body words remain required. Never rewrite candidate narration for scoring.
 
-Naturalness is `waived` for v1.0.0 under the dated [policy](../config/release-policy.json), with a null score. Numerical gates are unchanged. `npm run report:pdf-acceptance` writes a new report under `artifacts/pdf-acceptance/library-v1/` with counts, failed pages, pins, and waiver. Explicit output paths refuse overwrite.
+Naturalness is `waived` only for explicitly covered versions under the dated [policy](../config/release-policy.json), with a null score. V1.0.2 requires current independent reviews. Numerical gates are unchanged. `npm run report:pdf-acceptance` writes a new report under `artifacts/pdf-acceptance/library-v1/` with counts, failed pages, pins, and review evidence. Explicit output paths refuse overwrite.
+
+### Library human-review receipts
+
+The fixed 50-passage sample uses 40 library pages ranked by SHA-256 of their existing public fixture IDs, plus all ten authored controls. Selection never depends on candidate output or ratings; the original 100-page order benchmark and gold remain unchanged. `tests/fixtures/pdf-library-naturalness-sample.js` defines the roster.
+
+Generate a private packet with `node scripts/run-pdf-acceptance.mjs --write-naturalness-packet --benchmark=library-v1 --backend=original-browser --output=artifacts/pdf-review-packet.json`. Create the local blind form with `node scripts/pdf-naturalness-reviews.mjs --packet artifacts/pdf-review-packet.json --html artifacts/pdf-review.html`. Keep transcripts, original human responses and reviewer identities out of Git and public releases.
+
+Two independent humans score each passage from 1–5 for structural reading quality; disagreements greater than one point require a third independent reviewer. Import their unchanged responses with `node scripts/pdf-naturalness-reviews.mjs --packet artifacts/pdf-review-packet.json --review RESPONSE_A.json --review RESPONSE_B.json --output artifacts/pdf-review-ratings.json`, adding a third response when needed. Preserve the generated provenance receipt and original responses. Set `PN_PDF_NATURALNESS_RATINGS` to that ratings file before the release gate.
+
+Acceptance recomputes every sampled transcript through the current parser and rejects stale hashes, missing or duplicate panels, invalid reviewer identities and changed inputs. The unchanged naturalness threshold is an average passage-panel score of at least 4. `--report-incomplete-naturalness` produces a failing diagnostic report when evidence is missing; it grants no waiver or quality pass. These text-structure reviews do not establish speech audio quality or replace listening reviews.
 
 Reports separate commit identity from byte verification. Checkouts use their own HEAD and reject conflicting IDs. Exports without Git need a full validated `PN_CANDIDATE_ID` or `GITHUB_SHA`, labelled externally supplied. An ancestor repository cannot supply HEAD; broken local Git is an error. Identity, implementation, input, and reference pins must stay stable during evaluation. Canonical packaging separately binds exported bytes to the commit.
 

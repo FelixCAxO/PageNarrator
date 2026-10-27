@@ -12,7 +12,7 @@ export async function runKokoroQualityCandidate({ root, page, device, requestPat
     for (const entry of request.entries) {
       const key = `${request.partition}-${entry.voice}-${entry.id}-candidate-${lane}`;
       const fingerprint = qualityFingerprint({ corpus: freeze.corpusSha256, entry, dtype, lane, data: freeze.data,
-        sourcePins: freeze.sourcePins, policy: 'Actual app registry/worker, raw fixture text into stream, phase correction enabled.' });
+        sourcePins: freeze.sourcePins, packagedBuild: freeze.packagedBuild, policy: 'Actual app registry/worker, raw fixture text into stream, phase correction enabled.' });
       let record = await reusableQualityClip(request.outputDirectory, key, fingerprint);
       if (!record) {
         const value = await page.evaluate(async ({ device, entry }) => {
@@ -36,8 +36,10 @@ export async function runKokoroQualityCandidate({ root, page, device, requestPat
   } finally { await page.evaluate(() => registry.releaseVoiceModel()); }
   const ownership = await page.evaluate(() => ({ created: workerEvents.filter(value => value.event === 'created').length, terminated: workerEvents.filter(value => value.event === 'terminated').length,
     coordinators: workerEvents.filter(value => value.event === 'created' && value.role === 'coordinator').length,
-    helpers: workerEvents.filter(value => value.event === 'created' && value.role === 'helper').length }));
+    helpers: workerEvents.filter(value => value.event === 'created' && value.role === 'helper').length,
+    workers: workerEvents.filter(value => value.event === 'created').map(value => value.url) }));
   if (ownership.created !== ownership.terminated) throw new Error('Quality worker survived disposal.');
+  if (!ownership.created || ownership.workers.some(url => !new URL(url).pathname.startsWith('/packaged/assets/'))) throw new Error('Quality capture did not execute the frozen packaged workers.');
   const parallelCpu = device === 'wasm' && report.cpuCapabilities?.isolated && report.cpuCapabilities.sharedArrayBuffer && report.cpuCapabilities.atomicsWait && report.cpuCapabilities.logicalCores >= 4;
   if (ownership.created && (ownership.coordinators !== 1 || ownership.helpers !== (parallelCpu ? 3 : 0))) throw new Error('Actual quality worker selection differs from the frozen production capability policy.');
   await readQualityFreeze(root, request.manifest);

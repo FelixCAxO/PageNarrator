@@ -167,6 +167,7 @@ export function createReaderEngineChromeAdapter({
         actions: {
           handlePrimaryAction: (...args) => { void Promise.resolve(handlePrimaryAction(...args)).catch(suppressReaderEngineError); },
           handleReadSelectedAction: (...args) => { void Promise.resolve(handleReadSelectedAction(...args)).catch(suppressReaderEngineError); },
+          handleReadFromStartAction: (...args) => { void Promise.resolve(handleReadFromStartAction(...args)).catch(suppressReaderEngineError); },
           stopReading: () => { void Promise.resolve(stopReading()).catch(suppressReaderEngineError); },
           skipToNextChunk: () => { void Promise.resolve(skipToNextChunk()).catch(suppressReaderEngineError); },
           skipToPreviousChunk: () => { void Promise.resolve(skipToPreviousChunk()).catch(suppressReaderEngineError); },
@@ -216,6 +217,7 @@ export function createReaderEngineChromeAdapter({
       const trackActiveVoiceSynthesisSegments = (...args) => voiceRuntimeController.trackActiveVoiceSynthesisSegments(...args);
       const handlePrimaryAction = (...args) => readControlsController.handlePrimaryAction(...args);
       const handleReadSelectedAction = (...args) => readControlsController.handleReadSelectedAction(...args);
+      const handleReadFromStartAction = (...args) => readControlsController.handleReadFromStartAction(...args);
       const handleErrorRecoveryAction = (...args) => readControlsController.handleErrorRecoveryAction(...args);
       const waitForReadPause = (...args) => readControlsController.waitForReadPause(...args);
       const waitBetweenSections = (...args) => readControlsController.waitBetweenSections(...args);

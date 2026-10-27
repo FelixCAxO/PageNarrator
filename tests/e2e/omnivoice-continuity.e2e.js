@@ -56,7 +56,7 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
             if (data.result?.pcm) job.pcmSha256 = crypto.subtle.digest('SHA-256', data.result.pcm.slice().buffer)
               .then(bytes => Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, '0')).join(''));
             // Corrupt one real worker reply: no static may reach WAV encoding,
-            // and recovery must replace the worker and its speaker reference.
+            // and recovery must replace the worker while retaining its fixed speaker reference.
             if (recoverStatic && data.result?.pcm && !globalThis.__continuity.injectedStatic) {
               globalThis.__continuity.injectedStatic = true;
               job.rejectedStaticInjection = true;
@@ -98,20 +98,23 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
     for (let index = 0; index < wavs.length; index += 1) await writeFile(testInfo.outputPath(`sentence-${index}.wav`), Buffer.from(wavs[index]));
     console.log(`[omnivoice-continuity] ${JSON.stringify({ jobs, gaps })}`);
     expect(jobs.map(job => job.text)).toEqual(recoverStatic ? [paragraphs[0], ...paragraphs] : paragraphs);
-    const expectedSteps = [24, ...paragraphs.slice(1).map(() => 12)];
+    const expectedSteps = paragraphs.map(() => 24);
     expect(jobs.map(job => job.numStep)).toEqual(recoverStatic ? [24, ...expectedSteps] : expectedSteps);
     const selectedSeed = 41 + variation;
     expect(jobs.map(job => job.seed)).toEqual(recoverStatic
-      ? [selectedSeed, ...paragraphs.map(() => selectedSeed + 1)]
+      ? [selectedSeed, selectedSeed + 1, ...paragraphs.slice(1).map(() => selectedSeed)]
       : paragraphs.map(() => selectedSeed));
     expect(jobs.every(job => job.lang === language)).toBe(true);
     expect(wavs).toHaveLength(paragraphs.length);
-    if (recoverStatic) expect(jobs[1].pcmSha256).not.toBe(jobs[0].pcmSha256);
+    if (recoverStatic) expect(jobs[1].speaker.referenceHash).toBe(jobs[0].speaker.referenceHash);
     expect(ends).toHaveLength(paragraphs.length);
     expect(jobs.every(job => job.audioSeconds > 1)).toBe(true);
     expect(Math.max(...gaps)).toBeLessThan(500);
     const playedJobs = recoverStatic ? jobs.slice(1) : jobs;
-    for (const job of playedJobs.slice(1)) expect(job.speaker?.referenceHash).toBe(playedJobs[0].speaker.anchorHash);
+    for (const job of playedJobs) {
+      expect(job.speaker?.referenceHash).toBe(playedJobs[0].speaker.anchorHash);
+      expect(job.speaker?.id).toBe(`${gender}-${variation}`);
+    }
   } finally {
     await cleanup();
     await new Promise(resolve => server.close(resolve));

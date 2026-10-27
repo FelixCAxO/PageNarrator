@@ -52,6 +52,10 @@ fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_id) l
 export const BOUNDED_TANH_SHADER = `
 fn pn_tanh(x: f32) -> f32 {
   if (x == 0.0) { return x; }
+  if (abs(x) <= 0.125) {
+    let z = x * x;
+    return x * (1.0 + z * (-1.0 / 3.0 + z * (2.0 / 15.0 + z * (-17.0 / 315.0 + z * (62.0 / 2835.0 + z * (-1382.0 / 155925.0 + z * (21844.0 / 6081075.0)))))));
+  }
   return tanh(clamp(x, -10.0, 10.0));
 }
 `;

@@ -56,6 +56,21 @@ try {
       await engine.prepareCnn();
       const kernels = await createKokoroKernels(engine);
       {
+        const values = Float32Array.from([-0, 0, -1e-9, 1e-9, -1e-7, 1e-7,
+          ...Array.from({ length: 257 }, (_, i) => (i - 128) / 1024)]);
+        const input = upload(values, [values.length]), batch = engine.batch(), out = batch.unary('Tanh', input);
+        batch.submit(); const actual = await engine.read(out);
+        compare('Small Tanh activations', actual, Float32Array.from(values, Math.tanh), 0, 1e-6);
+        if (!Object.is(actual[0], -0)) throw new Error('Tanh lost negative zero.');
+        await release(batch, [input]);
+      }
+      {
+        const inputs = [upload(Float32Array.of(1 + 2 ** -23, -1), [1, 2]), upload(Float32Array.of(1 - 2 ** -24, 1), [2])];
+        const batch = engine.batch(), out = kernels.stft(batch, ...inputs, { frameLength: 2, frameStep: 1 });
+        batch.submit(); compare('Float32 STFT window cancellation', await engine.read(out), [0, 0, 2, 0], 0, 0);
+        await release(batch, inputs);
+      }
+      {
         const real = Float32Array.of(-1, -1, 1, 1, -1, -1, -1, -1, 0, 0), imaginary = Float32Array.of(0, -0, 0, -0, 1e-7, -1e-7, 1, -1, 1, -1);
         const raw = Float32Array.from(real, (x, i) => x < 0 ? Math.atan(imaginary[i] / x) + (imaginary[i] > 0 ? Math.PI : -Math.PI) : Math.atan(imaginary[i] / x));
         const inputs = [upload(real, [real.length]), upload(imaginary, [real.length]), upload(raw, [real.length]), upload(Float32Array.of(0), []), upload(Float32Array.of(Math.PI), [])];

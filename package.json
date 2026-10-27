@@ -1,6 +1,6 @@
 {
   "name": "pagenarrator",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "PageNarrator: Chrome extension that reads any web page aloud using on-device Kokoro TTS.",
   "license": "GPL-3.0-or-later",
@@ -35,7 +35,8 @@
     "capture:cws-media": "node scripts/capture-current-product-media.mjs",
     "test:reading": "vitest run tests/reading",
     "test:profiles": "vitest run --config vitest.profiles.config.js",
-    "test:e2e": "playwright test",
+    "test:e2e": "node scripts/test-github-release.mjs",
+    "test:e2e:local": "playwright test",
     "test:models": "node scripts/download-test-models.mjs",
     "test:e2e:real-model": "cross-env PN_E2E_REAL_MODEL=1 playwright test --project=real-model",
     "test:live": "npm run build && npm run test:live:no-build",

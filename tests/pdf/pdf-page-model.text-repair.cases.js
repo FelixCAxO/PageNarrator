@@ -3,6 +3,17 @@ import { describe, expect, it } from 'vitest';
 import { createPdfPageModel } from "../../src/lib/pdf-page-model.js";
 
 describe('PDF page model', () => {
+  it.each(['och', 'eller'])('keeps Swedish shared compounds separate before %s on the same line or a wrapped line', conjunction => {
+    const text = `hård- ${conjunction} mjukvara`;
+    const sameLine = createPdfPageModel([item(`Kontrollera ${text}.`, 54, 700, 300)]);
+    const wrapped = createPdfPageModel([
+      item('Kontrollera hård-', 54, 700, 300), item(`${conjunction} mjukvara.`, 54, 684, 240),
+    ]);
+    expect(sameLine.speech).toContain(`hård ${conjunction} mjukvara`);
+    expect(wrapped.speech).toContain(`hård ${conjunction} mjukvara`);
+    expect(sameLine.anchorText).toContain(text);
+  });
+
   it.each(['air-source', 'star-forming', 'carbon-rich'])('uses the page own printed %s compound when repairing spaces and line wraps', compound => {
     const [left, right] = compound.split('-');
     const model = createPdfPageModel([

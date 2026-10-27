@@ -59,6 +59,7 @@ export function createReaderEngineMessageRouter({
 
     if (action.type === READER_ACTION_TYPES.TOGGLE_PLAYBACK) actions.handlePrimaryAction?.({ resumeConfirmed: true, tab: action.tab });
     if (action.type === READER_ACTION_TYPES.READ_SELECTED) actions.handleReadSelectedAction?.({ tab: action.tab });
+    if (action.type === READER_ACTION_TYPES.READ_FROM_START) actions.handleReadFromStartAction?.({ tab: action.tab });
     if (action.type === READER_ACTION_TYPES.STOP) actions.stopReading?.();
     if (action.type === READER_ACTION_TYPES.NEXT) actions.skipToNextChunk?.();
     if (action.type === READER_ACTION_TYPES.PREVIOUS) actions.skipToPreviousChunk?.();

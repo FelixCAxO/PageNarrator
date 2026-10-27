@@ -1,4 +1,4 @@
-import { expect, it, vi } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 import { createOmniVoiceWorker } from '../../src/tts/omnivoice/worker-client.js';
 
 async function setup() {
@@ -9,6 +9,8 @@ async function setup() {
   const reply = (id, result) => worker.onmessage({ data: { id, result } });
   return { engine, worker, onProgress, reply };
 }
+
+afterEach(() => vi.useRealTimers());
 
 it('routes progress, initialization and transferred PCM results by request ID', async () => {
   const { engine, worker, onProgress, reply } = await setup();
@@ -50,8 +52,74 @@ it('rejects pending work and frees the worker when it crashes', async () => {
   const { engine, worker } = await setup();
   const request = engine.synthesize({});
   worker.onerror();
-  await expect(request).rejects.toMatchObject({ name: 'AbortError' });
+  await expect(request).rejects.toMatchObject({ name: 'OmniVoiceWorkerError', message: 'OmniVoice worker crashed.' });
   expect(worker.terminate).toHaveBeenCalledOnce();
+});
+
+it('keeps a crash message and rejects every outstanding request', async () => {
+  const { engine, worker } = await setup();
+  const loading = engine.init('model'), synthesis = engine.synthesize({});
+  const failed = Promise.all([expect(loading).rejects.toThrow('GPU device lost'), expect(synthesis).rejects.toThrow('GPU device lost')]);
+  const preventDefault = vi.fn();
+  worker.onerror({ message: 'GPU device lost', preventDefault });
+  await failed;
+  expect(preventDefault).toHaveBeenCalledOnce();
+  expect(worker.terminate).toHaveBeenCalledOnce();
+});
+
+it('closes a worker that cannot deserialize its response', async () => {
+  const { engine, worker } = await setup();
+  const loading = engine.init('model');
+  worker.onmessageerror();
+  await expect(loading).rejects.toMatchObject({ name: 'OmniVoiceWorkerError' });
+  expect(worker.terminate).toHaveBeenCalledOnce();
+});
+
+it.each(['init', 'synthesize', 'dispose'])('bounds a hung %s request and clears its timers', async method => {
+  vi.useFakeTimers();
+  const { engine, worker } = await setup();
+  const pending = engine[method]('model');
+  const failed = expect(pending).rejects.toMatchObject({ name: 'OmniVoiceWorkerError', message: `OmniVoice ${method} timed out.` });
+  await vi.advanceTimersByTimeAsync(method === 'dispose' ? 5_000 : 180_000);
+  await failed;
+  expect(worker.terminate).toHaveBeenCalledOnce();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it('terminates synthesis that ignores stop, allowing owner disposal to finish', async () => {
+  vi.useFakeTimers();
+  const { engine, worker } = await setup();
+  const pending = engine.synthesize({});
+  const failed = expect(pending).rejects.toThrow('did not stop');
+  engine.abortGeneration();
+  await vi.advanceTimersByTimeAsync(5_000);
+  await failed;
+  await engine.dispose();
+  expect(worker.terminate).toHaveBeenCalledOnce();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it('clears the stop watchdog when cancelled synthesis replies normally', async () => {
+  vi.useFakeTimers();
+  const { engine, worker, reply } = await setup();
+  const pending = engine.synthesize({});
+  engine.abortGeneration(); reply(1);
+  await pending;
+  await vi.advanceTimersByTimeAsync(180_000);
+  expect(worker.terminate).not.toHaveBeenCalled();
+  expect(vi.getTimerCount()).toBe(0);
+});
+
+it('allows a slow model download to continue while it reports progress', async () => {
+  vi.useFakeTimers();
+  const { engine, worker, reply } = await setup();
+  const pending = engine.init('model');
+  await vi.advanceTimersByTimeAsync(179_000);
+  worker.onmessage({ data: { progress: { message: 'Downloading model…' } } });
+  await vi.advanceTimersByTimeAsync(179_000);
+  expect(worker.terminate).not.toHaveBeenCalled();
+  reply(1); await pending;
+  expect(vi.getTimerCount()).toBe(0);
 });
 
 it('terminates a cancelled model initialization without waiting for downloads', async () => {

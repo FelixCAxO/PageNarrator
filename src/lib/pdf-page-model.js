@@ -136,16 +136,15 @@ export function createPdfPageModel(items = [], {
     pageView,
   ));
   // Side notes are read after the text block they annotate, never mid-sentence.
-  const ordered = [
-    ...orderLines(classified.filter((line) => !line.sideNote), {
+  const ordered = insertSideNotesAfterTextBlocks(
+    orderLines(classified.filter((line) => !line.sideNote), {
       direction,
       pageRtl,
       yTolerance,
       bodyColumnStarts,
     }),
-    ...classified.filter((line) => line.sideNote).sort((a, b) => b.y - a.y)
-      .map((line) => formatRow(line, { role: line.role, direction })),
-  ];
+    classified.filter((line) => line.sideNote).map((line) => formatRow(line, { role: line.role, direction })),
+  );
   const observedWords = getObservedWords(ordered);
   const lines = orderMatrixNarrative(mergeListContinuations(ordered, observedWords), pageView);
   const rendered = renderPdfPageModel(lines, { pageView, observedWords });
@@ -612,16 +611,23 @@ function getTableRows(rows) {
   const tableRows = getWrappedTableRows(rows, height);
   const candidates = rows.filter((row) => !tableRows.has(row) && !row.tableContinuation)
     .map((row) => ({ row, cells: getRowCells(row, height * 2) }))
-    .filter(({ row, cells }) => cells.length >= 2 && !row.parts.some((part) => part.numericMatrix));
+    .filter(({ row, cells }) => cells.length >= 1 && !row.parts.some((part) => part.numericMatrix));
   const groups = [];
   for (const candidate of candidates.sort((a, b) => b.row.y - a.row.y)) {
     const previous = groups.at(-1)?.at(-1);
     const first = groups.at(-1)?.[0];
     const contiguous = previous && previous.row.y - candidate.row.y <= height * 5;
+    if (candidate.cells.length === 1 && !(contiguous && first.cells.length >= 2
+      && previous.row.y - candidate.row.y >= height * 2
+      && candidate.cells[0].text.split(/\s+/u).length <= 2
+      && cellsAlign(candidate.cells[0], first.cells[0], height))) continue;
     const sameShape = previous
       && candidate.cells.length <= first.cells.length
       && (first.cells.filter((cell) => /^\d+(?:[.,]\d+)?$/u.test(cell.text)).length < 2
-        || (candidate.cells.filter((cell) => /^\d+(?:[.,]\d+)?$/u.test(cell.text)).length >= 2
+        || ((candidate.cells.filter((cell) => /^\d+(?:[.,]\d+)?$/u.test(cell.text)).length >= 2
+          || (/\p{L}/u.test(first.cells[0].text) && first.cells[0].text.split(/\s+/u).length <= 2
+            && cellsAlign(candidate.cells[0], first.cells[0], height)
+            && candidate.cells.slice(1).every((cell) => isNumericMatrixValue(cell.text))))
           && candidate.cells.every((cell) => cell.text.split(/\s+/u).length <= 6)))
       && candidate.cells.every((cell) => first.cells.some((other) => cellsAlign(cell, other, height)));
     if (contiguous && sameShape) {
@@ -633,6 +639,9 @@ function getTableRows(rows) {
   }
 
   for (const group of groups.filter((candidate) => candidate.length >= 3)) {
+    const groupHeight = median(group.map(({ row }) => maximumLineHeight(row))) || height;
+    const hasTableCaption = rows.some((row) => row.y > group[0].row.y && row.y - group[0].row.y <= height * 4
+      && /^table\s+\d/iu.test(joinParts(row.parts)));
     const hasTextHeader = group[0].cells.every((cell) => /\p{L}/u.test(cell.text)
       && !/[.!?;]$/u.test(cell.text) && cell.text.split(/\s+/u).length <= 6);
     const numericDataRows = group.filter(({ cells }) => (
@@ -646,7 +655,11 @@ function getTableRows(rows) {
     const textTable = group[0].cells.every((cell) => /\p{L}/u.test(cell.text)
       && !/\d|[.!?;]$/u.test(cell.text) && cell.text.split(/\s+/u).length <= 6)
       && group.every(({ cells }, index) => cells.every((cell) => cell.text.split(/\s+/u).length <= 12)
-        && (!index || group[index - 1].row.y - group[index].row.y >= height * 2));
+        && (!index || group[index - 1].row.y - group[index].row.y >= groupHeight * (hasTableCaption ? 0.9 : 2)));
+    const datedTable = group.every(({ cells }, index) => cells.every((cell, column) => column === 0
+      ? /\p{L}/u.test(cell.text) && cell.text.split(/\s+/u).length <= 2
+      : /\b\d{1,2}\s+\p{L}{3,}\s+\d{4}\b/u.test(cell.text))
+      && (!index || group[index - 1].row.y - group[index].row.y >= groupHeight * 2));
     // Sparse numeric marks beside a paragraph can be chart axes. Without a
     // text header, numeric tables must keep the same columns on every row.
     const numericTable = numericDataRows.length >= 2
@@ -655,7 +668,11 @@ function getTableRows(rows) {
         || group.every(({ cells }) => cells.length >= 3
           && cells.filter((cell) => /^\d+(?:[.,]\d+)?$/u.test(cell.text)).length >= 2
           && cells.every((cell) => cell.text.split(/\s+/u).length <= 6)));
-    if (!numericTable && !textTable) continue;
+    const sparseNumericTable = numericDataRows.length >= 2 && group[0].cells.length >= 2
+      && group.some(({ cells }) => cells.length < group[0].cells.length)
+      && group.every(({ cells }) => /\p{L}/u.test(cells[0].text) && cells[0].text.split(/\s+/u).length <= 2
+        && cells.every((cell) => cell.text.split(/\s+/u).length <= 6));
+    if (group[0].cells.length < 2 || (!numericTable && !textTable && !datedTable && !sparseNumericTable)) continue;
     for (const [index, { row, cells }] of group.entries()) {
       row.tableCells = cells;
       row.tableId = group[0].row.parts[0].originalIndex;
@@ -688,33 +705,56 @@ function getTableRows(rows) {
 function getWrappedTableRows(rows, height) {
   const tableRows = new Set();
   const sorted = [...rows].sort((a, b) => b.y - a.y);
+  const gaps = sorted.slice(1).map((row, index) => sorted[index].y - row.y).filter((gap) => gap > height * 0.55);
+  const lineGap = Math.min(height * 1.8, (median(gaps) || height) * 1.35);
   const compactLabel = (text) => /\p{L}/u.test(text) && !/[.!?;]$/u.test(text)
     && text.split(/\s+/u).length <= 12;
+  const rowNumber = (text) => /^(\p{L}?)(\d{1,3})[.)]?\s+\p{L}/u.exec(text);
   for (const [index, header] of sorted.entries()) {
     if (tableRows.has(header) || header.tableContinuation || header.parts.some((part) => part.numericMatrix)) continue;
-    const headerCells = getRowCells(header, height * 0.5);
-    if (headerCells.length !== 2 || !headerCells.every((cell) => compactLabel(cell.text)
-      && !/\d/u.test(cell.text) && cell.text.split(/\s+/u).length <= 6)) continue;
-    const starts = headerCells.map((cell) => cell.x);
-    const bands = [{ row: header, cells: headerCells.map((cell) => [...cell.parts]), rows: [header], lineCounts: [1, 1] }];
+    const headerCells = getRowCells(header, height * 0.6);
+    const numbered = headerCells.length === 2 ? rowNumber(headerCells[0].text) : null;
+    const compactHeader = headerCells.every((cell) => compactLabel(cell.text)
+      && !/\d/u.test(cell.text) && cell.text.split(/\s+/u).length <= 6);
+    if (headerCells.length < 2 || (!numbered && (!compactLabel(headerCells[0].text)
+      || !headerCells.slice(1).every((cell) => /\p{L}/u.test(cell.text))))) continue;
+    const bands = [{ row: header, cells: headerCells.map((cell) => [...cell.parts]), rows: [header], lineCounts: headerCells.map(() => 1) }];
     let previous = header;
     let previousHasLeft = true;
     for (const row of sorted.slice(index + 1)) {
       const gap = previous.y - row.y;
       if (gap > height * 5 || tableRows.has(row) || row.tableContinuation
         || row.parts.some((part) => part.numericMatrix)) break;
-      // A header supplies stable column starts even when wrapped labels nearly fill the gutter.
-      const cells = [row.parts.filter((part) => part.x < starts[1] - height * 0.5),
-        row.parts.filter((part) => part.x >= starts[1] - height * 0.5)]
-        .map((parts) => parts.sort((a, b) => a.x - b.x));
-      if (cells.some((parts, column) => parts.length && Math.abs(parts[0].x - starts[column]) > height * 0.5)
-        || cells[0].some((part) => rightOf(part) > starts[1] - height * 0.25)) break;
-      if (!previousHasLeft && cells[0].length && !cells[1].length) break;
-      const paired = cells.every((parts) => parts.length);
-      const startsRow = paired && (bands.length === 1 || !previousHasLeft || gap > height * 1.6);
-      if (!startsRow && (bands.length === 1 || gap > height * 1.6)) break;
-      const band = startsRow ? { row, cells: [[], []], rows: [], lineCounts: [0, 0] } : bands.at(-1);
-      if (cells[0].length && !compactLabel(joinParts([...band.cells[0], ...cells[0]]))) break;
+      // Shared left, center or right edges identify columns independently of text width.
+      const cells = headerCells.map(() => []);
+      let rowCells = getRowCells(row, height * 0.6);
+      // A long label can leave less space than the usual inter-cell gap.
+      if (row.parts.length > 1 && rowCells.some((cell) => headerCells.some((other) => Math.abs(cell.x - other.x) <= height * 0.6)
+        && headerCells.slice(1).some((other) => cell.x < other.x - height * 0.6 && rightOf(cell.parts.at(-1)) > other.x))) {
+        const columns = headerCells.map(() => []);
+        for (const part of [...row.parts].sort((a, b) => a.x - b.x)) {
+          const column = headerCells.findLastIndex((cell) => part.x >= cell.x - height * 0.6);
+          if (column < 0 || (headerCells[column + 1] && rightOf(part) > headerCells[column + 1].x)) break;
+          columns[column].push(part);
+        }
+        if (columns.flat().length !== row.parts.length) break;
+        rowCells = columns.filter((parts) => parts.length).map(formatCell);
+      }
+      for (const cell of rowCells) {
+        const column = headerCells.findIndex((other) => cellsAlign(cell, other, height * 0.6));
+        if (column < 0 || cells[column].length) break;
+        cells[column].push(...cell.parts);
+      }
+      if (cells.flat().length !== row.parts.length) break;
+      if (!numbered && !previousHasLeft && cells[0].length && !cells.slice(1).some((parts) => parts.length) && gap <= lineGap) break;
+      // Question numbers anchor rows; smaller references such as F2 belong to their cell.
+      const number = rowNumber(joinParts(cells[0]));
+      const startsRow = numbered ? Boolean(number && number[1] === numbered[1] && cells[1].length)
+        : cells[0].length && (!previousHasLeft || gap > lineGap);
+      if (numbered && startsRow && Number(number[2]) !== Number(rowNumber(joinParts(bands.at(-1).cells[0]))[2]) + 1) break;
+      if (!startsRow && gap > lineGap) break;
+      const band = startsRow ? { row, cells: headerCells.map(() => []), rows: [], lineCounts: headerCells.map(() => 0) } : bands.at(-1);
+      if (!numbered && cells[0].length && !compactLabel(joinParts([...band.cells[0], ...cells[0]]))) break;
       if (startsRow) bands.push(band);
       cells.forEach((parts, column) => {
         band.cells[column].push(...parts);
@@ -724,17 +764,26 @@ function getWrappedTableRows(rows, height) {
       previous = row;
       previousHasLeft = Boolean(cells[0].length);
     }
-    // shortcut: Infer only repeated short labels beside longer wrapped descriptions; ambiguous layouts need PDF structure tags.
-    const data = [];
-    for (const band of bands.slice(1)) {
-      if (!compactLabel(joinParts(band.cells[0]))
-        || band.lineCounts[1] <= band.lineCounts[0]
-        || joinParts(band.cells[1]).split(/\s+/u).length < 12) break;
+    // Repeated short labels beside wrapped descriptions distinguish table rows from prose columns.
+    const data = [], wrappedRows = [];
+    for (const band of bands) {
+      const wrapped = band.lineCounts.slice(1).some((count) => count > band.lineCounts[0])
+        && joinParts(band.cells.slice(1).flat()).split(/\s+/u).length >= 12;
+      const validLabel = numbered ? band.cells.every((parts) => parts.length) : compactLabel(joinParts(band.cells[0]));
+      if (!validLabel || (!numbered && data.length && !wrapped && band.cells.slice(1).some((parts) => parts.length))) break;
       data.push(band);
+      if (wrapped) wrappedRows.push(band);
     }
-    if (data.length < 2) continue;
-    for (const band of [bands[0], ...data]) {
-      band.row.tableCells = band.cells.map(formatCell);
+    if (numbered ? data.length < 2 : wrappedRows.length < 2) continue;
+    const leadingHeight = median(data.flatMap((band) => band.cells[0].map((part) => part.height)));
+    const descriptionHeight = median(data.flatMap((band) => band.cells.slice(1).flat().map((part) => part.height)));
+    // Headerless definitions use comparable type; smaller margin notes keep their own flow.
+    if (!numbered && !compactHeader && (leadingHeight > descriptionHeight * 1.15 || descriptionHeight > leadingHeight * 1.15)) continue;
+    // Larger prose continuations beside smaller text are a margin note, not repeated row labels.
+    if (leadingHeight > descriptionHeight * 1.15
+      && data.slice(1).some((band) => /^\p{Ll}/u.test(joinParts(band.cells[0])))) continue;
+    for (const band of data) {
+      band.row.tableCells = band.cells.filter((parts) => parts.length).map(formatCell);
       band.row.tableId = header.parts[0].originalIndex;
       band.row.parts = band.cells.flat();
       tableRows.add(band.row);
@@ -786,13 +835,14 @@ function markInlineCodeRows(rows) {
 // that no row crosses rather than from a fixed gap size.
 function findSideNoteGutter(rows, pageWidth) {
   const height = median(rows.flatMap((row) => row.parts.map((part) => part.height))) || 10;
-  const minimumGap = Math.max(6, height * 0.5);
+  const minimumGap = Math.max(6, height * 0.75);
   const candidates = [];
   for (const row of rows) {
     const parts = [...row.parts].sort((a, b) => a.x - b.x);
     for (let index = 1; index < parts.length; index += 1) {
       const gapStart = Math.max(...parts.slice(0, index).map(rightOf));
-      if (parts[index].x - gapStart >= minimumGap) candidates.push(Math.round((gapStart + parts[index].x) / 2));
+      const localGap = Math.max(minimumGap, parts[index].height * 0.75, parts[index - 1].height * 0.75);
+      if (parts[index].x - gapStart >= localGap) candidates.push(Math.round((gapStart + parts[index].x) / 2));
     }
   }
   for (const x of new Set(candidates)) {
@@ -814,14 +864,14 @@ function findSideNoteGutter(rows, pageWidth) {
       }
       if (left.length && right.length) supporting += 1;
     }
-    if (supporting < 2 || crossing > Math.max(1, supporting * 0.5)) continue;
+    if (supporting < 1 || crossing > Math.max(1, supporting * 0.5)) continue;
     let side = sides.left.rows.length <= sides.right.rows.length * 0.35 ? 'left'
       : sides.right.rows.length <= sides.left.rows.length * 0.35 ? 'right' : '';
     if (!side && crossing === 0) {
       for (const candidate of ['left', 'right']) {
         const note = sides[candidate], main = sides[candidate === 'left' ? 'right' : 'left'];
         const heightOf = column => median(column.rows.flatMap(parts => parts.map(part => part.height)));
-        if (note.max - note.min <= (main.max - main.min) * 0.5 && heightOf(note) <= heightOf(main) * 0.8) {
+        if (note.max - note.min <= (main.max - main.min) * (2 / 3) && heightOf(note) <= heightOf(main) * 0.8) {
           side = candidate;
           break;
         }
@@ -852,8 +902,40 @@ function splitSideNote(row, gutter) {
   });
   return [
     ...(main.length ? [{ row: subRow(main), sideNote: false }] : []),
-    ...(note.length ? [{ row: subRow(note), sideNote: true }] : []),
+    ...clusterRows(note, Math.max(0.5, median(note.map((part) => part.height)) * 0.45))
+      .map((line) => ({ row: subRow(line.parts), sideNote: true })),
   ];
+}
+
+function insertSideNotesAfterTextBlocks(main, notes) {
+  const groups = [];
+  for (const note of [...notes].sort((a, b) => b.y - a.y)) {
+    const group = groups.at(-1), previous = group?.at(-1);
+    if (previous && previous.y - note.y <= maximumLineHeight(previous) * 2.2 && overlapRatio(previous, note) > 0) group.push(note);
+    else groups.push([note]);
+  }
+  const after = new Map();
+  for (const group of groups) {
+    let anchor = -1, distance = Infinity;
+    for (const [index, line] of main.entries()) {
+      if (!isNarrativeParagraph(line) || line.nonNarrativeRegion) continue;
+      const gap = Math.abs(line.y - group[0].y);
+      if (gap < distance) { anchor = index; distance = gap; }
+    }
+    if (anchor < 0) anchor = main.length - 1;
+    while (anchor >= 0 && anchor + 1 < main.length) {
+      const current = main[anchor], next = main[anchor + 1], height = maximumLineHeight(current);
+      const gap = current.y - next.y, indent = next.left - current.left;
+      // Sentence endings do not end a paragraph; spacing and indentation do.
+      if (!isNarrativeParagraph(current) || !isNarrativeParagraph(next) || gap < 0 || gap > height * 1.8
+        || Math.abs(height - maximumLineHeight(next)) > height * 0.15 || indent > height * 0.5
+        || Math.abs(indent) > height * 3) break;
+      anchor += 1;
+    }
+    if (!after.has(anchor)) after.set(anchor, []);
+    after.get(anchor).push(...group);
+  }
+  return [...(after.get(-1) || []), ...main.flatMap((line, index) => [line, ...(after.get(index) || [])])];
 }
 
 // A margin keyword that repeats words from the text beside it is a gloss;
@@ -936,7 +1018,9 @@ function markNumericMatrices(rows) {
 
 function getRowCells(row, minGap = 24) {
   const parts = [...row.parts].sort((a, b) => a.x - b.x);
-  const numericRow = parts.filter((part) => isNumericMatrixValue(part.text)).length >= 3;
+  const firstNumeric = parts.findIndex((part) => isNumericMatrixValue(part.text));
+  const numericRow = firstNumeric >= 0 && parts.filter((part) => isNumericMatrixValue(part.text)).length >= 3
+    && !parts.slice(firstNumeric).some((part) => /\p{L}/u.test(part.text));
   const cells = [];
   let current = [];
   for (const part of parts) {
@@ -966,7 +1050,7 @@ function detectBodyColumnStarts(rows, pageWidth) {
   const candidates = rows.flatMap((row) => {
     const parts = [...row.parts].sort((a, b) => a.x - b.x);
     return parts.filter((part, index) => (
-      !part.numericMatrix && (index === 0 || part.x - rightOf(parts[index - 1]) >= 10)
+      !part.numericMatrix && (index === 0 || part.x - rightOf(parts[index - 1]) >= Math.max(10, part.height * 0.75))
     ));
   });
   for (const item of candidates) {
@@ -1067,7 +1151,9 @@ function hasColumnGutter(rows, [leftStart, rightStart], boundary = rightStart - 
       run.gutterRows += 1;
     }
   }
-  return runIsColumnBlock() || (gutterRows >= 2 && gutterRows >= crossingRows);
+  return runIsColumnBlock() || (gutterRows >= 2 && gutterRows >= crossingRows)
+    || (crossingRows === 0 && run.left.filter((parts) => isWordy(joinParts(parts))).length >= 3
+      && run.right.filter((parts) => isWordy(joinParts(parts))).length >= 3);
 }
 
 function isWordy(text) {
@@ -1086,7 +1172,7 @@ function splitRow(row, {
   if (parts.length <= 1) return [formatRow(row, { direction })];
   if (bodyColumnStarts.length >= 2) {
     const groups = bodyColumnStarts.map(() => []);
-    const minimumGutter = Math.max(6, median(parts.map(part => part.height)) * 0.5);
+    const minimumGutter = Math.max(6, median(parts.map(part => part.height)) * 0.75);
     // Narrow gutters need whitespace shared by nearby prose rows, not a fixed offset.
     const boundaries = bodyColumnStarts.map((start, column) => column > 0 ? parts.filter((part, index) => {
       const gap = index > 0 ? part.x - rightOf(parts[index - 1]) : 0;
@@ -1172,7 +1258,7 @@ function formatRow(row, { role = 'paragraph', direction = '' } = {}) {
 }
 
 function classifyLines(lines, { pageView }) {
-  const heights = lines.flatMap((line) => line.parts.map((part) => part.height));
+  const heights = lines.filter((line) => !line.sideNote).flatMap((line) => line.parts.map((part) => part.height));
   const typicalHeight = median(heights) || 10;
   const top = Math.max(...lines.map((line) => line.y));
   const pageTop = Math.max(pageView?.[1] ?? 0, pageView?.[3] ?? 792);
@@ -1580,7 +1666,9 @@ function hasColumnBlock(lines) {
     // starts above where the left side ends.
     const isBlock = () => columnSide(left) && columnSide(right)
       && Math.min(...right.map((line) => line.left)) - Math.max(...left.map((line) => line.right)) >= minimumGutter
-      && Math.max(...right.map((line) => line.y)) > Math.min(...left.map((line) => line.y)) + typicalHeight * 0.5;
+      && Math.max(...right.map((line) => line.y)) > Math.min(...left.map((line) => line.y)) + typicalHeight * 0.5
+      && (Math.max(...left.map((line) => line.y)) >= Math.min(...right.map((line) => line.y)) - typicalHeight * 0.5
+        || left.some((line) => isProseLine(line) || /[-‐]$/u.test(line.text)));
     for (const line of top) {
       if (line.left < x && line.right > x) {
         if (isBlock()) return true;
@@ -1697,6 +1785,13 @@ function isIndependentColumnHeading(line, starts) {
 function extractIntroLines(lines, yTolerance, { bodyColumnStarts }) {
   const sorted = [...lines].sort((a, b) => b.y - a.y);
   let firstBodyIndex = findFirstTwoColumnBodyIndex(sorted, yTolerance, bodyColumnStarts);
+  if (firstBodyIndex > 0 && bodyColumnStarts.length >= 2) {
+    const prefix = sorted.slice(0, firstBodyIndex);
+    const columns = new Set(prefix.map(line => bodyColumnStarts.findIndex(start => Math.abs(line.left - start) <= getColumnXTolerance(sorted))));
+    columns.delete(-1);
+    // Separate starts above the first shared baseline still belong to their own columns.
+    if (columns.size >= 2 && prefix.every(line => !spansBodyColumns(line, bodyColumnStarts))) firstBodyIndex = 0;
+  }
   if (firstBodyIndex > 0 && bodyColumnStarts.length === 2) {
     // A column heading belongs with its column even above the first paired body row.
     const columnHeadingIndex = sorted.slice(0, firstBodyIndex).findIndex(line => isIndependentColumnHeading(line, bodyColumnStarts));
@@ -1865,6 +1960,7 @@ function joinWrappedText(currentText, nextLine, currentLine, observedWords) {
   const nextText = nextLine.text;
   const nextFirstWord = nextText.match(/^\p{L}[\p{L}-]*/u)?.[0] || '';
   if (currentText.endsWith('-') && nextFirstWord) {
+    if (/^(?:och|eller)$/u.test(nextFirstWord)) return `${currentText} ${nextText}`;
     return shouldPreserveLineEndHyphen(currentText, nextText, nextFirstWord, observedWords)
       ? `${currentText}${nextText}`
       : `${currentText.slice(0, -1)}${nextText}`;
@@ -1897,7 +1993,7 @@ function shouldPreserveLineEndHyphen(currentText, nextText, nextFirstWord, obser
 function repairSpacedHyphen(match, leftToken, nextToken, observedWords) {
   if (/^(?:approach|findings|purpose|value)$/iu.test(leftToken)) return `${leftToken}: ${nextToken}`;
   if (/^(?:a|an|and|by|for|in|of|on|or|the|to|with)$/iu.test(leftToken)
-    || /^(?:and|but|or)$/iu.test(nextToken)) return `${leftToken} ${nextToken}`;
+    || /^(?:and|but|or|och|eller)$/iu.test(nextToken)) return `${leftToken} ${nextToken}`;
   if (/^\p{Lu}{2,}$/u.test(leftToken) && /^\p{Lu}{2,}/u.test(nextToken)) return `${leftToken}-${nextToken}`;
   return shouldPreserveLineEndHyphen(`${leftToken}-`, nextToken, nextToken, observedWords)
     ? `${leftToken}-${nextToken}`

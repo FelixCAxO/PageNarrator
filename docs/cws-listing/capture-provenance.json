@@ -2,20 +2,20 @@
   "method": "One native X11 display capture per image; crop top 80 pixels, convert to RGB. No screenshot composition, resizing, or UI layout overrides.",
   "environment": "Isolated Playwright 1.60.0 / Chromium 148.0.7778.96 / linux / Xvfb / Openbox.",
   "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
-  "capturedAt": "2026-10-26T07:45:57.502Z",
+  "capturedAt": "2026-10-27T10:19:17.426Z",
   "nodeVersion": "v22.23.3",
   "inputPackage": {
     "fileCount": 330,
-    "bytes": 74899275,
-    "sha256": "dfa468029422f4d9638e9b29dc3d5783b9a16e6122de7a87d6ed5de9bbfc759d"
+    "bytes": 78015894,
+    "sha256": "23d3890720f44556dff55d9c32d8cec0a6a6d845af331a5be30c2950f839cbdf"
   },
   "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
   "sourceSha256": {
-    "src/popup.html": "3bf5a79b129f6ffb0f8c635616d8a5648f03ab341c6c84f3fcb4e02687cb5305",
+    "src/popup.html": "646e0bc9cd0aa18c19348ec7ed4320c60bd383e786a3e620508006e658e332b5",
     "src/popup.css": "ba31bc9c9a976735bbba81be1037f95ec45f530ae2b7ff1d4f9af4d6e8c52e21",
-    "src/popup.js": "21c750e9fc6463b1f9dc7fd1a544857ad2b02f2c4db28c632d9bbbcb1ae4159f",
+    "src/popup.js": "b0546e5aa13946f6408ecb05acd991c1b78a591a8903cbcabbe7ce0caf3221b2",
     "src/pdf-viewer.html": "7432363b1a41f6eeca741fe31a8d07879a1566071c33203bf2534a9ae94f8fcf",
     "src/pdf-viewer.css": "d81684b2a17881be8d4ed5c21a3e6624edef394a7ada9b89eff6fefecadde0ee",
     "src/pdf-viewer.js": "bdaee215bc4a4cd4b3f3ea8c983ebefa52330aff54326a61e2288eef3c4c347d",
@@ -28,8 +28,8 @@
   "images": [
     {
       "name": "screenshot-01-toolbar-player-idle.png",
-      "sha256": "1d63ec9511bbf089cb3dbcdb6271ccc50c170c4acc3e48a86b2dd46b5ba4c5c4",
-      "rawCaptureSha256": "c9ea47e3df4055a57502f7389c153deee0e5d0694893596c101d0b6d893de2a1",
+      "sha256": "0ac15fe4b597a3e2b465432ef0dba43f756f6a669a245099beb47bf139e27947",
+      "rawCaptureSha256": "021327561f42dcff119df65e4419a7308a61d4ff464a3ea2f8f3c6eb0d63c6a8",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -39,6 +39,7 @@
           "popup-voice",
           "popup-speed",
           "start-reading",
+          "read-from-start",
           "read-selected"
         ]
       }
@@ -46,7 +47,7 @@
     {
       "name": "screenshot-02-toolbar-player-reading.png",
       "sha256": "bc29ce928471dd44aa88665f1443b6efb1ba14c00c4a0600405c30022cb07812",
-      "rawCaptureSha256": "696e97fcf7f0b1e23b5d919b5e759608f4674dca73e1baee140dc42b09b0256a",
+      "rawCaptureSha256": "f3d76b5ebb27a5d535e6a05b310db13ca34a623078ed843de7b2200c33a0c494",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -66,7 +67,7 @@
     {
       "name": "screenshot-03-toolbar-player-settings.png",
       "sha256": "e9673a1dbefeff8614e8dc8ab05e456b2b902c59675298969dbfd2b834b65adc",
-      "rawCaptureSha256": "441e33b82a3e4abd52e9ea571690c724dd99707b93ed1de80c9dcc51fafe6dac",
+      "rawCaptureSha256": "abf4694282b75f92348456a5d27bc025d4b955b202263020ba46dc2db20892b1",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Paused",
@@ -87,7 +88,7 @@
     {
       "name": "screenshot-04-toolbar-player-pdf.png",
       "sha256": "1b919fe6522e7ff5516ebb8d9a46d5e2b353cc9c973fc66ea1bcc2a5ff0441ae",
-      "rawCaptureSha256": "cbba2fcdb58ba33b05206a3721ac0b6750b404049db271b2cbfbeef25fec48d9",
+      "rawCaptureSha256": "ffca2c2ed4b22336c248be16042fab50fbb726553b940d1c36f4dc08e5114887",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -106,8 +107,8 @@
     },
     {
       "name": "screenshot-05-omnivoice-controls.png",
-      "sha256": "3e0cdce883667ce0fb2ac1e52cfc0b6471a4f10a1f466abd7414a401e175d1c9",
-      "rawCaptureSha256": "ae43fbd3ea07900d5b538864150a3eeab83b4a079cc409c2ac6635cf7bfeb2ca",
+      "sha256": "60c5a4e6c9fe27ef92d8e61fcfeb07c6f7e19c6f7f0491755f58adffe2aa7916",
+      "rawCaptureSha256": "f6971d88ecf31fe1b5b4576c604d4eea8ca2ca1302e05a6e40c768217ea8f685",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",

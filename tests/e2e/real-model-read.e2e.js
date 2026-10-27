@@ -23,7 +23,7 @@ import {
 // model files and synthesizes on the host CPU/GPU, so it needs real compute:
 //   PN_E2E_REAL_MODEL=1 npx playwright test --project=real-model
 // Without the flag every test below is skipped before a browser is launched, so
-// the default `npm run test:e2e` run stays offline and deterministic.
+// `npm run test:e2e:local` stays offline and deterministic by default.
 const RUN_REAL_MODEL = /^(1|true|yes)$/i.test(process.env.PN_E2E_REAL_MODEL || '');
 const RUN_REAL_ARXIV = /^(1|true|yes)$/i.test(process.env.PN_E2E_REAL_ARXIV || '');
 const FORCE_REAL_MODEL_CPU = /^(1|true|yes)$/i.test(process.env.PN_E2E_FORCE_CPU || '');

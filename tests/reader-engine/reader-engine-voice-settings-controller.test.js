@@ -7,6 +7,28 @@ import { getReaderEngineSettingsElements } from '../../src/ui/reader-engine/elem
 describe('reader engine voice settings', () => {
   afterEach(() => vi.unstubAllGlobals());
 
+  it.each(['yue','th'])('warns about %s word loss while preserving selectable whisper and the fixed voice', async language=>{
+    const dom=new JSDOM(readFileSync(new URL('../../src/reader-engine.html',import.meta.url),'utf8'));
+    vi.stubGlobal('document',dom.window.document);
+    const els=getReaderEngineSettingsElements(dom.window.document);
+    const state={selectedLanguageCode:language,setSelectedLanguageCode(value){this.selectedLanguageCode=value;}};
+    const controller=createReaderEngineVoiceSettingsController({els,state,readerEngineStorage:{getStoredVoiceForLanguage:async()=>null}});
+    const saved={ttsEngine:'omnivoice',omniVoice:{gender:'male',variation:8,whisper:true}};
+    controller.renderVoiceEngineSetting(saved);
+    await controller.populateVoices();
+    expect(els.omniVoiceWhisper.disabled).toBe(false);
+    expect(els.omniVoiceWhisper.checked).toBe(true);
+    expect(els.voiceEngineHelp.textContent).toContain('Warning: Whisper can omit words');
+    expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
+    state.setSelectedLanguageCode('sv');
+    controller.renderVoiceEngineSetting(saved);
+    await controller.populateVoices();
+    expect(els.omniVoiceWhisper.disabled).toBe(false);
+    expect(els.voiceEngineHelp.textContent).not.toContain('Warning: Whisper can omit words');
+    expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
+    dom.window.close();
+  });
+
   it('restores a failed engine switch without overwriting the other engine\'s saved voice', async () => {
     const dom = new JSDOM(readFileSync(new URL('../../src/reader-engine.html', import.meta.url), 'utf8'));
     vi.stubGlobal('document', dom.window.document);
@@ -50,8 +72,11 @@ describe('reader engine voice settings', () => {
     els.ttsEngine.value = 'omnivoice';
     els.ttsEngine.dispatchEvent(new dom.window.Event('change'));
     await vi.waitFor(() => expect(savePlaybackSettingsSoon).toHaveBeenCalledWith({ ttsEngine: 'omnivoice', language: 'en' }));
-    expect(els.language.options).toHaveLength(646);
+    expect(els.language.options).toHaveLength(32);
     expect([...els.language.options].map(option => option.value)).toContain('yue');
+    expect([...els.language.options].map(option => option.value)).not.toContain('sol');
+    const labels = [...els.language.options].map(option => option.textContent);
+    expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'en')));
     expect(els.omniVoiceSettings.hidden).toBe(false);
     expect(els.readerSettings.open).toBe(true);
     expect(els.voiceEngineHelp.textContent).toContain('1.35 GB');

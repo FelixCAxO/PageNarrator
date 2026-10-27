@@ -69,6 +69,7 @@ export const PDF_VIEWER_MESSAGE_TYPES = Object.freeze({
 export const READER_ACTION_TYPES = Object.freeze({
   TOGGLE_PLAYBACK: 'togglePlayback',
   READ_SELECTED: 'readSelected',
+  READ_FROM_START: 'readFromStart',
   STOP: 'stop',
   NEXT: 'next',
   PREVIOUS: 'previous',

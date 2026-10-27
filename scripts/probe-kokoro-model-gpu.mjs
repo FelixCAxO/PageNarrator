@@ -92,6 +92,7 @@ try {
   for (const [variant, values] of [['candidate', pcm], ['reference', expected.data]]) await writeFile(resolve(audioDirectory, `0-af_heart-${variant}.wav`), wave(values), { flag: 'wx' });
   report.cases.push({ text, voice, speed, phones, tokens: [...ids].map(Number), samples: pcm.length, referenceMs, candidateMs: actual.elapsedMs, finite, maximumAbsolute, relativeRmse: Math.sqrt(squareError / Math.max(1e-30, squareReference)), mismatches, audioDirectory, listening: 'pending' });
   report.status = finite && !mismatches && actual.resourceCleanup && !actual.validationErrors.length && !consoleErrors.length ? 'pass' : 'fail';
+  if (report.status === 'fail') report.failureKind = finite && mismatches && actual.resourceCleanup && !actual.validationErrors.length && !consoleErrors.length ? 'pcm-mismatch' : 'execution';
   console.log(JSON.stringify(report));
 } catch (error) { report.status = 'fail'; report.failure = error.message; throw error; }
 finally {

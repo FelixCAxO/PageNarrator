@@ -169,6 +169,16 @@ it('resizes with original coordinate semantics and joins/gathers tensor data', a
   batch.submit(); near(await engine.read(resized), [1, 1.5, 2, 2, 2.5, 3, 3, 3.5, 4]); near(await engine.read(joined), [1, 2, 3, 4]);
 });
 
+it('preserves clamped linear-resize endpoints exactly before phase accumulation', async () => {
+  const first = Math.fround(0.062292364), last = Math.fround(0.1), batch = engine.batch();
+  const resized = batch.resize(upload([first, last], [1, 1, 1, 2]),
+    { sizes: [1, 1, 1, 600], mode: 'linear', coordinateMode: 'half_pixel' });
+  batch.submit();
+  const values = await engine.read(resized);
+  expect(values[0]).toBe(first);
+  expect(values.at(-1)).toBe(last);
+});
+
 it('normalizes channels, preserves softmax stability and selects first/last ties', async () => {
   const input = upload([1, 2, 3, 4], [1, 2, 2]), batch = engine.batch();
   const normalized = batch.batchNorm(input, upload([2, 3], [2]), upload([1, -1], [2]), upload([1, 2], [2]), upload([4, 9], [2]), 0);

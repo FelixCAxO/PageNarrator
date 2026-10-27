@@ -78,7 +78,7 @@ export function createKokoroCpuKernels(engine) {
     },
     unary(batch, input, operation, { alpha = .01, min = -Infinity, max = Infinity } = {}) {
       batch.check(input);
-      const code = { ...KOKORO_UNARY_OPERATIONS, Sin: 5, Cos: 6, FastGelu: 7 }[operation];
+      const code = { ...KOKORO_UNARY_OPERATIONS, Sin: 5, Cos: 6, FastGelu: 7, Tanh: 8 }[operation];
       if (code === undefined || !Number.isFinite(alpha) || Number.isNaN(min) || Number.isNaN(max) || min > max) throw new Error('Invalid speech CPU activation.');
       const output = batch.output(input.shape);
       batch.command('pn_kokoro_unary', [input, output], Uint32Array.of(input.length, code, bits(alpha), bits(min), bits(max)));

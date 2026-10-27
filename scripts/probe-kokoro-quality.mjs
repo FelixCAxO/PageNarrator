@@ -10,7 +10,7 @@ const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const option = (name, fallback = null) => process.argv.includes(name) ? process.argv[process.argv.indexOf(name) + 1] : fallback;
 if (process.argv.includes('--help')) {
   console.log('Original versus unmodified legacy full-pipeline quality diagnostic\n'
-    + '--freeze <new-manifest.json> --cache <verified-model-dir> (writes pins/rules only; no inference)\n'
+    + '--freeze <new-manifest.json> --cache <verified-model-dir> (rebuilds and pins the package; no inference)\n'
     + '--manifest <frozen-manifest.json> --cache <dir> --output <dir> --partition validation|test\n'
     + '--backend wasm|webgpu --voices af_heart|all|comma,list --cases comma,list --asr-model <offline-path>\n'
     + 'WebGPU requires explicit PN_GPU_ADAPTER_LUID and PN_GPU_VENDOR. Default validation/Heart/wasm.\n'

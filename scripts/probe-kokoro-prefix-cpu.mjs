@@ -2,6 +2,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import * as oracle from 'onnxruntime-node';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { WebGpuOnnxSession } from '../src/engines/webgpu-onnx-session.js';
@@ -10,6 +11,7 @@ import { debugOutputModel } from './lib/onnx-debug-outputs.mjs';
 import { createEnglishPhonemizer } from '../src/tts/kokoro/english-phonemizer.js';
 import { createKokoroTokenizer } from '../src/tts/kokoro/tokenizer.js';
 import { KOKORO_DATA } from '../src/tts/kokoro/model-data.js';
+import { kokoroProbeModelMode, prepareKokoroProbeModel, requireNewKokoroProbeReport } from './lib/kokoro-probe-model.mjs';
 
 const cacheIndex = process.argv.indexOf('--cache'), outputIndex = process.argv.indexOf('--outputs');
 if (cacheIndex < 0) throw new Error('Pass --cache with the verified local Kokoro data directory.');
@@ -17,7 +19,8 @@ const fp32 = process.argv.includes('--fp32'), graphFile = fp32 ? 'onnx/model.onn
 const directory = resolve(process.argv[cacheIndex + 1]), model = await readFile(resolve(directory, graphFile));
 const modelSha256 = createHash('sha256').update(model).digest('hex');
 if (modelSha256 !== KOKORO_DATA.files.find(file => file.path === graphFile).sha256) throw new Error('Unpinned Kokoro graph.');
-const graph = decodeOnnxModel(model).graph;
+const modelMode = kokoroProbeModelMode(), prepared = await prepareKokoroProbeModel(model, modelMode);
+const graph = decodeOnnxModel(prepared.bytes).graph;
 const vocoder = process.argv.includes('--vocoder'), noise = process.argv.includes('--noise');
 const selected = noise ? graph.nodes.filter(node => node.name === '/decoder/decoder/generator/STFT' || node.name === '/decoder/decoder/generator/noise_convs.0/Conv'
   || node.name.startsWith('/decoder/decoder/generator/noise_res.0/') && ['adain1.0/Add_3', 'Sin', 'convs1.0/Conv', 'adain2.0/Add_3', 'Sin_1', 'convs2.0/Conv', 'Add_2', 'Add_8'].some(suffix => node.name === `/decoder/decoder/generator/noise_res.0/${suffix}`))
@@ -32,8 +35,12 @@ const selected = noise ? graph.nodes.filter(node => node.name === '/decoder/deco
   || node.opType === 'STFT' || node.name === '/decoder/decoder/generator/istft/stft/ConvTranspose').map(node => node.outputs[0])
   : process.argv[outputIndex + 1].split(',');
 if (!selected.length) throw new Error('No intermediate outputs selected.');
-const bytes = debugOutputModel(model, selected), engine = await WasmKokoroCompute.create(await readFile(new URL('../public/native/kokoro-engine.wasm', import.meta.url)));
-const report = { status: 'incomplete', dtype: fp32 ? 'fp32' : 'q8', modelSha256, scope: 'Diagnostic actual pinned graph intermediate comparison; production stays gated', outputs: [] };
+const reportIndex = process.argv.indexOf('--output');
+const outputFile = reportIndex < 0 ? fileURLToPath(new URL(`../artifacts/engines/kokoro-cpu-${fp32 ? 'fp32-' : ''}${noise ? 'noise-' : vocoder ? 'vocoder-' : ''}${modelMode}-prefix.json`, import.meta.url)) : resolve(process.argv[reportIndex + 1]);
+await requireNewKokoroProbeReport(outputFile);
+const bytes = debugOutputModel(prepared.bytes, selected), engine = await WasmKokoroCompute.create(await readFile(new URL('../public/native/kokoro-engine.wasm', import.meta.url)));
+const report = { status: 'incomplete', dtype: fp32 ? 'fp32' : 'q8', modelSha256, modelMode, phaseCorrection: prepared.phaseCorrection,
+  scope: 'Diagnostic intermediate comparison through identical prepared graph bytes; production stays gated', outputs: [] };
 let candidate, baseline, phonemizer;
 try {
   phonemizer = await createEnglishPhonemizer({ wasmBinary: await readFile(new URL('../public/assets/phonemizer/english.wasm', import.meta.url)), pronunciationData: await readFile(new URL('../public/assets/phonemizer/pronunciations.bin', import.meta.url)) });
@@ -77,5 +84,5 @@ finally {
   await candidate?.dispose(); await baseline?.release(); phonemizer?.dispose();
   report.remainingBuffers = engine.buffers.size; report.remainingTensors = engine.tensors.size; await engine.dispose();
   await mkdir(new URL('../artifacts/engines/', import.meta.url), { recursive: true });
-  await writeFile(new URL(`../artifacts/engines/kokoro-cpu-${fp32 ? 'fp32-' : ''}${noise ? 'noise-' : vocoder ? 'vocoder-' : ''}prefix.json`, import.meta.url), `${JSON.stringify(report, null, 2)}\n`);
+  await writeFile(outputFile, `${JSON.stringify(report, null, 2)}\n`, { flag: 'wx' });
 }

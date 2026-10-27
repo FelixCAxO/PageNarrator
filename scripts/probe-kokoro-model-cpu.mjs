@@ -121,7 +121,7 @@ try {
           reference: relative(resolve(import.meta.dirname, '..'), referenceAudio), acceptance: 'diagnostic only; listening not evaluated' };
       }
       report.cases.push(record); console.log(JSON.stringify(record));
-      if (mismatches) throw new Error(`Kokoro ${dtype} independent PCM parity failed.`);
+      if (mismatches) { report.failureKind = 'pcm-mismatch'; throw new Error(`Kokoro ${dtype} independent PCM parity failed.`); }
     }
   }
   await candidate.dispose(); candidate = null;

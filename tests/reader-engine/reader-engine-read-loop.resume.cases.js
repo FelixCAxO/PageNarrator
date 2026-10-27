@@ -344,7 +344,7 @@ describe('readerEngine read loop', () => {
       expect(firstSpoken).toMatchObject({ pageNumber: 3 });
     });
 
-    it('ignores saved positions when restarting a finished read', async () => {
+    it.each(['restart', 'top'])('ignores saved positions when starting with %s', async startMode => {
       const chunks = [1, 2, 3, 4, 5].map((pageNumber) => createPdfPageChunk(pageNumber));
       const savedOnPageThree = {
         chunk: 2,
@@ -359,7 +359,7 @@ describe('readerEngine read loop', () => {
         startPage: 1,
         chunks,
         saved: savedOnPageThree,
-        startMode: 'restart',
+        startMode,
       });
 
       expect(firstSpoken).toMatchObject({ pageNumber: 1 });

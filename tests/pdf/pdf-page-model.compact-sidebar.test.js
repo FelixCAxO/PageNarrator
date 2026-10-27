@@ -18,6 +18,21 @@ function layout({ side = 'right', noteHeight = 7, noteWidth = 110, labels = fals
 }
 
 describe('compact smaller-type sidebars beside the text block', () => {
+  it.each([0.5, 1, 2].flatMap(scale => ['center', 'right'].flatMap(alignment => ['rows', 'columns', 'reverse', 'shuffled'].map(order => ({ scale, alignment, order })))))
+  ('keeps a displaced heading above short code and full-width prose: $alignment, $scale, $order', ({ scale, alignment, order }) => {
+    const source = [item('Section overview', alignment === 'right' ? 340 : 210, 820, 180, 9),
+      item('>>> read(value)', 60, 760, 110, 10), item('>>> print(result)', 60, 744, 110, 10),
+      item('>>> close()', 60, 728, 110, 10), item('A complete explanation continues across the page.', 60, 700, 420, 10)]
+      .map(part => ({ ...part, width: part.width * scale, height: part.height * scale,
+        transform: part.transform.map((value, index) => index >= 4 ? value * scale : value) }));
+    const expected = source.map(part => part.str);
+    if (order === 'columns') source.sort((a, b) => a.transform[4] - b.transform[4] || b.transform[5] - a.transform[5]);
+    if (order === 'reverse') source.reverse();
+    if (order === 'shuffled') source.push(...source.splice(0, 2));
+    const model = createPdfPageModel(source, { pageView: [0, 0, 600 * scale, 900 * scale] });
+    expect(model.orderedItems.map(part => part.str)).toEqual(expected);
+  });
+
   it.each(['left', 'right'])('keeps a long %s sidebar after the complete main text and repairs body wraps', side => {
     const source = layout({ side }), before = structuredClone(source);
     const model = createPdfPageModel(source);

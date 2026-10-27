@@ -22,6 +22,8 @@ Algorithm reference and adapted upstream material: Apache License 2.0
 New JavaScript implementation of prompt preparation, multilingual duration estimation,
 guided iterative unmasking and ONNX decoding with cancellation/resource cleanup.
 Language IDs/names and Unicode script weights are adapted from the same licensed reference.
+640 language-specific codec-token speaker references, generated locally with the pinned
+OmniVoice model and authored reference texts, are included as speaker data.
 The former vendored OmniVoice bridge is not included.
 See vendor/omnivoice/PROVENANCE.md for references and browser-specific changes.
 

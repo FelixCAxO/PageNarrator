@@ -145,7 +145,7 @@ describe('repository guardrails', () => {
       expect(gates.fast).toContain(command);
     }
     expect(gates.fast).toContain('npm run typecheck');
-    expect(gates.release).toContain('npm run test:e2e');
+    expect(gates.release).toContain('npm run test:e2e:local');
     expect(packageJson.scripts.typecheck).toBe('tsc -p tsconfig.strict.json');
     expect(packageJson.scripts.clean).toBe('node scripts/clean.mjs');
     expect(packageJson.scripts.build).toBe('vite build');

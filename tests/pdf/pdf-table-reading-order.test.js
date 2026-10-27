@@ -3,9 +3,57 @@ import * as pdfjs from 'pdfjs-dist/legacy/build/pdf.mjs';
 import { createPdfPageModel } from '../../src/lib/pdf-page-model.js';
 import { configurePdfWorker, extractPdfTextFromData } from '../../src/lib/pdf-extraction.js';
 import { buildPdfBytes } from '../helpers/pdf-test-generator.js';
-import { DEADLINE_ROWS, tablePdfItems, WRAPPED_SWEDISH_ROWS, wrappedSwedishTableItems } from '../fixtures/reading-order-fixtures.js';
+import { DEADLINE_ROWS, tablePdfItems, WRAPPED_SWEDISH_ROWS, wrappedSwedishTableItems, SECURITY_TABLE_ROWS, securityTableItems, studyTableFixture } from '../fixtures/reading-order-fixtures.js';
 
 configurePdfWorker(pdfjs);
+
+it.each([false, true].flatMap(ocr => [0.5, 1, 2].flatMap(scale => ['', 'Ö'].map(prefix => ({ ocr, scale, prefix })))))
+  ('finishes numbered question and answer cells with $prefix labels, scale $scale and OCR=$ocr', (options) => {
+    const { cells, items, width } = studyTableFixture(options);
+    const model = createPdfPageModel(items, { pageView: [0, 0, width, 792 * options.scale] });
+    expect(model.orderedItems.map(({ str }) => str)).toEqual(cells.flat(2));
+    expect(model.lines.map(({ role }) => role)).toEqual(cells.map(() => 'table-row'));
+  });
+
+it.each([false, true])('reads headerless definitions with a narrow label gutter and OCR=%s', (ocr) => {
+  const { cells, items, width } = studyTableFixture({ numbered: false, ocr });
+  expect(createPdfPageModel(items, { pageView: [0, 0, width, 792] }).orderedItems.map(({ str }) => str)).toEqual(cells.flat(2));
+});
+
+it.each([2, 3, 4, 6].flatMap(columns => [0.5, 1, 2].map(scale => ({ columns, scale }))))(
+  'reads a compact captioned text table with $columns columns at scale $scale row by row', ({ columns, scale }) => {
+    const rows = [Array.from({ length: columns }, (_, column) => column ? 'Description' : 'Method'),
+      ...['alpha', 'beta', 'gamma'].map(label => Array.from({ length: columns }, (_, column) => column ? `${label} details` : `${label}(value)`))];
+    const items = tablePdfItems(rows, { top: 700, rowGap: 13, scale }).map(item => ({ ...item, height: 10 * scale }));
+    const caption = { str: 'Table 1. Conversion methods', width: 140 * scale, height: 10 * scale,
+      transform: [1, 0, 0, 1, 30 * scale, 730 * scale] };
+    const model = createPdfPageModel([caption, ...items], { pageView: [0, 0, 1800 * scale, 792 * scale] });
+    expect(model.orderedItems.map(({ str }) => str)).toEqual([caption.str, ...rows.flat()]);
+    expect(model.lines.slice(1).every(({ role }) => role === 'table-row')).toBe(true);
+  },
+);
+
+it.each([false, true])('finishes every cell across the four-column security table with OCR=%s', (ocr) => {
+  const model = createPdfPageModel(securityTableItems({ ocr }), { pageView: [0, 0, 924, 792] });
+  expect(model.orderedItems.map(({ str }) => str)).toEqual(SECURITY_TABLE_ROWS.flat(2));
+  expect(model.lines.map(({ role }) => role)).toEqual(SECURITY_TABLE_ROWS.map(() => 'table-row'));
+});
+
+it.each([0.5, 1, 2])('reads a header and wrapped security table rows at scale %s', (scale) => {
+  const model = createPdfPageModel(securityTableItems({ scale, header: true }), { pageView: [0, 0, 924 * scale, 792 * scale] });
+  expect(model.orderedItems.map(({ str }) => str)).toEqual(['Nivå', 'Ansvar (Dhillon)', 'Hot', 'Åtgärder', ...SECURITY_TABLE_ROWS.flat(2)]);
+});
+
+it('preserves the security table row order through real PDF decoding and speech chunking', async () => {
+  const result = await extractPdfTextFromData(buildPdfBytes(securityTableItems(), { width: 924 }), { pdfjs });
+  const speech = result.chunks.map(({ speech: text }) => text).join(' ');
+  let cursor = -1;
+  for (const line of SECURITY_TABLE_ROWS.flat(2)) {
+    const position = speech.indexOf(line, cursor + 1);
+    expect(position, `Missing or out-of-order cell line: ${line}\n${speech}`).toBeGreaterThan(cursor);
+    cursor = position;
+  }
+});
 
 it.each([0.5, 1, 2])('finishes wrapped prose cells in the narrow-gutter Swedish table at scale %s', (scale) => {
   const model = createPdfPageModel(wrappedSwedishTableItems({ scale }), { pageView: [0, 0, 856 * scale, 792 * scale] });
@@ -23,8 +71,11 @@ it('repairs column-major OCR order in the narrow-gutter Swedish table', () => {
   expect(model.orderedItems.map(({ str }) => str)).toEqual(WRAPPED_SWEDISH_ROWS.flat(2));
 });
 
-it.each([false, true])('reads fragmented wrapped table cells with small position errors and OCR=%s', (ocr) => {
-  const items = wrappedSwedishTableItems({ ocr }).flatMap((item, line) => {
+it.each([false, true].flatMap((ocr) => [
+  { ocr, columns: 2, source: wrappedSwedishTableItems, rows: WRAPPED_SWEDISH_ROWS },
+  { ocr, columns: 4, source: securityTableItems, rows: SECURITY_TABLE_ROWS },
+]))('reads $columns fragmented wrapped table columns with small position errors and OCR=$ocr', ({ ocr, source, rows }) => {
+  const items = source({ ocr }).flatMap((item, line) => {
     const words = item.str.split(' ');
     const unit = (item.width - (words.length - 1) * 4) / words.join('').length;
     let x = item.x + (line % 3 - 1);
@@ -36,8 +87,33 @@ it.each([false, true])('reads fragmented wrapped table cells with small position
       return part;
     });
   });
-  const model = createPdfPageModel(items, { pageView: [0, 0, 856, 792] });
-  expect(model.orderedItems.map(({ str }) => str)).toEqual(WRAPPED_SWEDISH_ROWS.flat(2).flatMap((line) => line.split(' ')));
+  const model = createPdfPageModel(items, { pageView: [0, 0, 924, 792] });
+  expect(model.orderedItems.map(({ str }) => str)).toEqual(rows.flat(2).flatMap((line) => line.split(' ')));
+});
+
+it.each([false, true])('keeps a full-width paragraph outside the four-column table with OCR=%s', (ocr) => {
+  const items = securityTableItems({ ocr });
+  const str = 'Nästa avsnitt beskriver hur organisationen kan utvärdera sina säkerhetsåtgärder.';
+  items.push({ str, x: 48, y: 210, width: 820, height: 15, transform: [1, 0, 0, 1, 48, 210],
+    ...(ocr ? { ocrLine: items.length } : {}) });
+  const model = createPdfPageModel(items, { pageView: [0, 0, 924, 792] });
+  expect(model.orderedItems.map(({ str }) => str)).toEqual([...SECURITY_TABLE_ROWS.flat(2), str]);
+  expect(model.lines.at(-1).role).not.toBe('table-row');
+});
+
+it('keeps three wrapped prose columns with headings in column order', () => {
+  const columns = ['Overview', 'Findings', 'Discussion'].map((heading) => [heading,
+    'The team reviewed the existing process', 'and documented how information moves',
+    'between the different departments.', 'These observations explain the current',
+    'working practices and their limitations.',
+  ]);
+  const items = columns.flatMap((column, index) => column.map((str, line) => {
+    const x = 30 + index * 285, y = 700 - line * 16 - (line ? 8 : 0);
+    return { str, x, y, width: str.length * 6, height: 12, transform: [1, 0, 0, 1, x, y] };
+  }));
+  const model = createPdfPageModel(items, { pageView: [0, 0, 924, 792] });
+  expect(model.orderedItems.map(({ str }) => str)).toEqual(columns.flat());
+  expect(model.lines.some(({ role }) => role === 'table-row')).toBe(false);
 });
 
 it('keeps asymmetric prose columns with compact headings in column order', () => {

@@ -6,7 +6,8 @@ import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
-import { localizeDocument, t, languageName, messageKey } from '../../src/lib/i18n.js';
+import { localizeDocument, t, languageName, localizeLanguageOptions, messageKey } from '../../src/lib/i18n.js';
+import { OMNIVOICE_LANGUAGES } from '../../src/tts/omnivoice/languages.js';
 import { validateTranslatedCatalog } from '../../scripts/prepare-translations.mjs';
 import { VOICE_ENGINE_HELP } from '../../src/lib/omnivoice-settings.js';
 
@@ -104,6 +105,22 @@ describe('packaged UI translations', () => {
 });
 
 describe('localization behavior', () => {
+  it('keeps full OmniVoice names when the browser has no translation and sorts the displayed labels', () => {
+    for (const { code, label } of OMNIVOICE_LANGUAGES) {
+      expect(languageName(code, label, 'en'), code).not.toBe(code);
+    }
+    expect(languageName('sol', 'Solos', 'en')).toBe('Solos');
+    expect(languageName('de', 'German', 'sv')).toBe('tyska');
+    expect(languageName('invalid!', 'Full name', 'en')).toBe('Full name');
+    const options = localizeLanguageOptions(OMNIVOICE_LANGUAGES);
+    expect(options).toHaveLength(646);
+    expect(new Set(options.map(option => option.code)).size).toBe(646);
+    expect(options.find(option => option.code === 'sv').label).toBe('Swedish');
+    const labels = options.map(option => option.label);
+    expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'en')));
+    expect(OMNIVOICE_LANGUAGES[0].label).toBe('Abadi');
+  });
+
   it('preserves substituted article text literally with a missing catalog', () => {
     const i18n = { getMessage: () => '' };
     expect(t('Reading: $1', ['<b>Title</b> $2'], { i18n })).toBe('Reading: <b>Title</b> $2');

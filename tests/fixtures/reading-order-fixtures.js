@@ -55,3 +55,56 @@ export function wrappedSwedishTableItems({ scale = 1, gutter = 0, ocr = false } 
   ))).sort((a, b) => a.x - b.x || b.y - a.y);
   return items.map((item, index) => ocr ? { ...item, ocrLine: index } : item);
 }
+
+// Text and approximate line bounds from the four-column security table screenshot.
+export const SECURITY_TABLE_ROWS = [
+  [['Sociala världen'], ['Att verksamhetens uppdrag,', 'etik och säkerhetspolicy är', 'förenliga med säkerhetskraven'],
+    ['Insiderbrott; normaliserat', 'regelbrott; otydligt ansvar som', 'utnyttjas'],
+    ['Styrning, ledningens ansvar,', 'lagstiftning och regelverk som', 'NIS2 och GDPR']],
+  [['Pragmatik'], ['Organisationens normer och', 'säkerhetskultur; utbildning och', 'medvetenhet'],
+    ['Social manipulation där avsikten', 'döljs (vd-bedrägeri); varningar', 'som ignoreras'],
+    ['Utbildning, motringning, tydliga', 'kanaler för att ifrågasätta en', 'begäran']],
+  [['Semantik'], ['Följder av feltolkade data och', 'felaktigt tillämpade regler;', 'ansvar och skuld'],
+    ['Nätfiske, förfalskad avsändare,', 'manipulerade indata,', 'desinformation, förväxlingsbara', 'domännamn'],
+    ['Ursprungskontroll, verifiering', 'mot oberoende källa, tydliga', 'begrepp, ansvarsstrukturer']],
+  [['Syntax'], ['Programvara; granskning och', 'revision för dataintegritet och', 'programfel'],
+    ['Injektion, buffertöverskridning,', 'felaktig tolkning av format och', 'protokoll'],
+    ['Indatavalidering, strikta format,', 'patchning, kodgranskning']],
+  [['Empirics'], ['Teleutrustning och', 'nätverksstrategier;', 'virushantering och kryptering'],
+    ['Överbelastning, störsändning,', 'trafikanalys, sidokanaler'],
+    ['Kapacitet, redundans,', 'felrättande koder, kryptering,', 'trafikutjämning']],
+  [['Fysiska världen'], ['Hårdvara; fysisk säkerhet'],
+    ['Stöld, sabotage, kabelbrott,', 'avlyssning av röjande signaler'],
+    ['Skalskydd, redundans,', 'skärmning, tillträdeskontroll']],
+];
+
+export function securityTableItems({ scale = 1, ocr = false, header = false } = {}) {
+  const rows = header ? [[['Nivå'], ['Ansvar (Dhillon)'], ['Hot'], ['Åtgärder']], ...SECURITY_TABLE_ROWS] : SECURITY_TABLE_ROWS;
+  const tops = header ? [10, 45, 128, 210, 317, 400, 484] : [45, 128, 210, 317, 400, 484];
+  const starts = [48, 182, 418, 653];
+  const items = rows.flatMap((row, rowIndex) => row.flatMap((cell, column) => cell.map((str, line) => {
+    const x = starts[column] * scale, y = (792 - tops[rowIndex] - line * 24) * scale;
+    return { str, x, y, width: Math.min(str.length * 7.2, 220) * scale, height: 15 * scale,
+      transform: [1, 0, 0, 1, x, y] };
+  }))).sort((a, b) => a.x - b.x || b.y - a.y);
+  return items.map((item, index) => ocr ? { ...item, ocrLine: index } : item);
+}
+
+// Numbered study rows with wrapping and smaller source references beside an answer.
+export function studyTableFixture({ prefix = '', scale = 1, ocr = false, numbered = true } = {}) {
+  const cells = Array.from({ length: 3 }, (_, row) => [
+    numbered ? [`${prefix}${String(row + 1).padStart(3, '0')} Which steps belong to this`, 'part of the process?', `F2 source ${row + 1}`]
+      : [row === 1 ? 'Long label with little space' : `Concept ${row + 1}`, ...(row === 1 ? ['continued label'] : [])],
+    numbered ? [`Answer ${row + 1} starts here and`, 'continues until the whole answer is complete.']
+      : [`Description ${row + 1} starts with enough detail to explain the concept`,
+        'and continues across several lines for the reader.', `F2 source ${row + 1}`],
+  ]);
+  const items = cells.flatMap((row, rowIndex) => row.flatMap((cell, column) => cell.map((str, line) => {
+    const x = (column ? 300 : 30) * scale;
+    const y = (700 - rowIndex * 65 - line * 13 - (line === 2 ? 1.2 : 0)) * scale;
+    const width = (!numbered && !column && rowIndex === 1 && line === 0 ? 265 : Math.min(str.length * 5, column ? 300 : 250)) * scale;
+    return { str, x, y, width, height: (line === 2 ? 8 : 10) * scale, transform: [1, 0, 0, 1, x, y] };
+  })));
+  items.sort((a, b) => a.x - b.x || b.y - a.y);
+  return { cells, items: items.map((item, index) => ocr ? { ...item, ocrLine: index } : item), width: 640 * scale };
+}

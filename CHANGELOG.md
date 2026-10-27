@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.2 (unreleased)
+
+- Give each of the 32 OmniVoice languages ten fixed female and ten fixed male references, stable across documents, reading positions and retries; add normal/whisper screening and exact restart checks.
+- Render experimental whisper from the selected speaker with deterministic breath excitation; keep Cantonese and Thai whisper selectable with a word-loss warning.
+- Preserve saved whisper when reopening the popup by restoring its language before its voice controls.
+- Infer PDF table rows dynamically, including wrapped cells, compact sidebars and margin notes after their associated paragraph.
+- Read numbered study questions with their complete answers and headerless definition tables in row order; preserve Swedish shared compounds.
+- Render letters stored in symbolic Macintosh TrueType subset slots instead of missing-glyph boxes.
+- Limit the OmniVoice language picker to 32 common languages with full names, retaining an existing uncommon selection.
+- Show localized language names in locale order and retain reading errors when the player state refreshes.
+- Keep local candidate browser checks separate from tests of published GitHub downloads.
+- Add bound human-review receipts and blind review packets for the private PDF library benchmark.
+- Preserve clamped Resize borders and rank-three float32 interpolation order in the native speech engine.
+- Preserve small recurrent activations and signed zero on CPU, improve small GPU activations, and retain float32 STFT windowing precision.
+- Require independent math checks and bound blind voice reviews under the maintainer's approved speech-quality target; retain earlier PCM failures as diagnostics.
+
+This candidate is not released or qualified yet. The accepted PDF reading-order result is 97/100 on the fixed benchmark. Physical-device distributions, independent PDF/voice reviews and final release checks remain required; v1.0.1 exceptions do not carry forward. Historical PCM mismatches remain failed/unqualified diagnostics under the new correct-math-and-speech-quality target.
+
 ## 1.0.1
 
 - Show transferred bytes during voice downloads and explain first-use download sizes.

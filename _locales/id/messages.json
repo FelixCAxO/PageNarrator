@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "Halaman PDF"
   },
-  "ui_ab32ceb0": {
-    "message": "Eksperimental. 646 entri bahasa; kualitas bervariasi. Memerlukan WebGPU dengan fp16 dan unduhan sekitar 1,35 GB. Pilih suara, variasi, atau bisikan."
+  "ui_6b68e4c5": {
+    "message": "Eksperimental. 32 entri bahasa; kualitas bervariasi. Memerlukan WebGPU dengan fp16 dan unduhan sekitar 1,35 GB. Pilih suara, variasi, atau bisikan."
   },
   "ui_ab4a698f": {
     "message": "Buka halaman"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "PDF ini tidak dapat dibuka."
+  },
+  "ui_e59ac0eb": {
+    "message": "Baca dari awal"
+  },
+  "ui_35a4186c": {
+    "message": "Peringatan: Bisikan dapat melewatkan kata dalam bahasa ini. Bandingkan bacaan dengan teks."
   }
 }

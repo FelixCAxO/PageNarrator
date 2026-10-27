@@ -111,6 +111,20 @@ describe('readerEngine read-control recovery actions', () => {
     expect(events).toContain('fade');
   });
 
+  it.each(['idle', 'stopping', 'finished', 'error'])('reads from the top after %s instead of resuming or recovering the old position', readingState => {
+    const { controller, onPrimaryRead, onGrantAccess } = createController({ state: { readingState, activePrimaryAction: 'grant-access' } });
+    const tab = { id: 41, url: 'https://example.test/book.pdf#page=7' };
+    controller.handleReadFromStartAction({ tab });
+    expect(onPrimaryRead).toHaveBeenCalledExactlyOnceWith({ tab, startMode: 'top', resumeConfirmed: true });
+    expect(onGrantAccess).not.toHaveBeenCalled();
+  });
+
+  it.each(['preparing', 'reading', 'paused'])('does not start a second read from the top while %s', readingState => {
+    const { controller, onPrimaryRead } = createController({ state: { readingState } });
+    controller.handleReadFromStartAction();
+    expect(onPrimaryRead).not.toHaveBeenCalled();
+  });
+
   it('leaves streamed iterator closure to the read lifecycle cleanup owner', () => {
     const closeIterator = vi.fn(async () => ({ done: true }));
     const { controller } = createController({

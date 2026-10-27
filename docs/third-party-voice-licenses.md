@@ -2,7 +2,7 @@
 
 Catalog license review: 2026-08-26. Runtime and retained-data documentation updated: 2026-10-17.
 
-PageNarrator 1.0.1 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
+PageNarrator 1.0.2 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
 
 ## Experimental OmniVoice
 

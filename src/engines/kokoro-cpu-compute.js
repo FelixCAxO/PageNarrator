@@ -3,7 +3,7 @@ import { WasmOcrCompute } from './wasm-ocr-compute.js';
 import { WasmOcrBatch } from './wasm-ocr-operations.js';
 import { broadcastShape, broadcastStrides, tensorSize } from './tensor-shape.js';
 import { contiguousStrides, axisIndex } from './index-shape.js';
-import { convolutionPlan, liftConvolution } from './cnn-shape.js';
+import { convolutionPlan, liftConvolution, resizePlan } from './cnn-shape.js';
 import { createKokoroCpuKernels } from './kokoro-cpu-kernels.js';
 
 const TYPE_CODES = Object.freeze({ float32: 1, uint8: 2, int8: 3, int32: 6, bool: 9 });
@@ -112,14 +112,23 @@ export class WasmKokoroBatch extends WasmOcrBatch {
   }
   resize(input, options) {
     if (input.shape.length !== 3) return super.resize(input, options);
+    if ((options.scales?.length && options.scales.length !== 3) || (options.sizes?.length && options.sizes.length !== 3)) throw new RangeError('One-dimensional Resize parameters must match their rank.');
+    const liftedOptions = { ...options, scales: options.scales?.length ? [options.scales[0], options.scales[1], 1, options.scales[2]] : null,
+      sizes: options.sizes?.length ? [options.sizes[0], options.sizes[1], 1, options.sizes[2]] : null };
+    if (options.mode === 'linear') {
+      this.check(input);
+      const plan = resizePlan([input.shape[0], input.shape[1], 1, input.shape[2]], liftedOptions);
+      const output = this.output([plan.shape[0], plan.shape[1], plan.shape[3]]);
+      this.command('pn_kokoro_resize_linear', [input, output], Uint32Array.of(...input.shape, plan.shape[3], bits(plan.scales[1]), plan.coordinateMode));
+      return output;
+    }
     const view = this.view(input, [input.shape[0], input.shape[1], 1, input.shape[2]]);
-    const result = super.resize(view, { ...options, scales: options.scales?.length ? [options.scales[0], options.scales[1], 1, options.scales[2]] : null,
-      sizes: options.sizes?.length ? [options.sizes[0], options.sizes[1], 1, options.sizes[2]] : null });
+    const result = super.resize(view, liftedOptions);
     const output = this.view(result, [result.shape[0], result.shape[1], result.shape[3]]);
     this.recycle(view); this.recycle(result); return output;
   }
   unary(operation, input, options = {}) {
-    if (['Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'Sin', 'Cos'].includes(operation)) return this.engine.kokoro.unary(this, input, operation, options);
+    if (['Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'Sin', 'Cos', 'Tanh'].includes(operation)) return this.engine.kokoro.unary(this, input, operation, options);
     return super.unary(operation, input, options);
   }
   cast(input, target) {

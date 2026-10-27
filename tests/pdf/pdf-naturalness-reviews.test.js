@@ -5,6 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { JSDOM } from 'jsdom';
 import { PDF_NATURALNESS_SAMPLE } from '../fixtures/pdf-naturalness-sample.js';
+import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../fixtures/pdf-library-naturalness-sample.js';
 import { combinePdfNaturalnessReviews, createPdfNaturalnessReviewHtml, runPdfNaturalnessReviewCommand } from '../../scripts/pdf-naturalness-reviews.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
@@ -22,6 +23,23 @@ const folders = [];
 afterEach(() => { for (const folder of folders.splice(0)) rmSync(folder, { recursive: true, force: true }); });
 
 describe('blind PDF human review collection', () => {
+  it('accepts the fixed library production packet and keeps its roster separate from historical reviews', () => {
+    const libraryPacket = { ...packet, benchmark: 'library-v1', backend: 'original-browser',
+      passages: PDF_LIBRARY_NATURALNESS_SAMPLE.map(sample => {
+        const transcript = `Authored unit input for ${sample.id}.`;
+        return { passageId: sample.id, transcript, transcriptSha256: hash(transcript), categories: [...sample.categories] };
+      }) };
+    const digest = hash(JSON.stringify(libraryPacket));
+    const replies = ['test-library-a', 'test-library-b'].map(reviewerId => ({ ...response(reviewerId), packetSha256: digest,
+      passages: libraryPacket.passages.map(({ passageId, transcriptSha256 }) => ({ passageId, transcriptSha256, rating: 4 })) }));
+    const ratings = combinePdfNaturalnessReviews(libraryPacket, replies, { packetSha256: digest });
+    expect(ratings).toHaveLength(50);
+    expect(ratings[0].passageId).toBe(PDF_LIBRARY_NATURALNESS_SAMPLE[0].id);
+    expect(PDF_LIBRARY_NATURALNESS_SAMPLE.filter(sample => sample.pdfId.startsWith('library-'))).toHaveLength(40);
+    expect(createPdfNaturalnessReviewHtml(libraryPacket, digest)).toContain(libraryPacket.passages[0].transcript);
+    expect(() => combinePdfNaturalnessReviews({ ...libraryPacket, backend: 'pdfjs-oracle' }, replies, { packetSha256: digest })).toThrow();
+    expect(() => combinePdfNaturalnessReviews({ ...libraryPacket, passages: packet.passages }, replies, { packetSha256: digest })).toThrow();
+  });
   it('combines independent original responses and derives the unchanged panel medians', () => {
     const first = response('test-reviewer-a'), second = response('test-reviewer-b', 5);
     const original = JSON.stringify([first, second]);

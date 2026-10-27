@@ -44,20 +44,23 @@ describe('explicit v1.0.0 release policy', () => {
     }
   });
 
-  it('skips only the physical-tier requirement and still executes the actual software gate', () => {
+  it('skips only declared physical and human requirements while executing the software gate', () => {
     const steps = verificationSteps('release', gates.release, '1.0.0');
     const run = vi.fn(() => ({ status: 0 })), recordWaivers = vi.fn(), log = vi.fn();
     expect(runGateCommands(steps, { gateName: 'release', version: '1.0.0', run, recordWaivers, log })).toBe(0);
-    expect(steps.filter(step => step.waiver).map(step => step.command)).toEqual(['npm run requirements:tts -- --fail-on-non-pass']);
+    expect(steps.filter(step => step.waiver).map(step => step.command)).toEqual(['node scripts/verify-voice-quality.mjs', 'npm run requirements:tts -- --fail-on-non-pass']);
     const executed = run.mock.calls.map(call => call[0]);
     expect(executed).toEqual(steps.filter(step => !step.waiver).map(step => step.command));
-    expect(executed).toEqual(expect.arrayContaining(['npm test', 'npm run test:e2e',
+    expect(executed).toEqual(expect.arrayContaining(['npm test', 'npm run test:e2e:local',
       'npm run test:pdf-acceptance',
       'npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model',
       'npm run probe:tts:lower-spec:no-build', 'npm run probe:tts:lower-spec-pdf:no-build']));
     expect(gates.release.indexOf('npm run test:pdf-acceptance')).toBe(gates.release.indexOf('npm run test:pdf-corpus') + 1);
     expect(gates.fast).not.toContain('npm run test:pdf-acceptance');
-    expect(recordWaivers).toHaveBeenCalledWith('release', '1.0.0', [expect.objectContaining({ gateId: 'physical-hardware', status: 'waived', verification: 'not-performed' })]);
+    expect(recordWaivers).toHaveBeenCalledWith('release', '1.0.0', [
+      expect.objectContaining({ gateId: 'human-listening-reviews', status: 'waived', verification: 'not-performed' }),
+      expect.objectContaining({ gateId: 'physical-hardware', status: 'waived', verification: 'not-performed' }),
+    ]);
     expect(log.mock.calls.flat().find(text => text.startsWith('WAIVED'))).toContain('not verified');
   });
 

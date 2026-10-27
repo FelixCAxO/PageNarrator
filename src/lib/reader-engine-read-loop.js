@@ -382,7 +382,8 @@ export function createReadLoopOrchestrator({
         setReadingState('error', { message: getUnsupportedLanguageMessage(suggestion.code) });
         return;
       }
-      if (suggestion?.supported) {
+      // OmniVoice's language is an explicit user choice; detection must not replace it.
+      if (suggestion?.supported && resolveSelectedVoice()?.engine !== 'omnivoice') {
         state.selectedLanguageCode = normalizeLanguageCode(detectedLanguage.code);
         setLanguageSelectValue(state.selectedLanguageCode);
         await populateVoices();

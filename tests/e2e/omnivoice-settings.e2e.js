@@ -71,7 +71,7 @@ test('every OmniVoice control reaches real synthesis and survives reopening', as
     const popup = await openExtensionPage(context, 'popup');
     await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
     await popup.locator('#popup-settings summary').click();
-    await expect(popup.locator('#popup-language option')).toHaveCount(646);
+    await expect(popup.locator('#popup-language option')).toHaveCount(32);
     await expect(popup.locator('#popup-omnivoice-pitch, #popup-omnivoice-age, #popup-omnivoice-tempo')).toHaveCount(0);
     const article = await context.newPage();
     for (const item of cases) {
@@ -108,8 +108,9 @@ test('every OmniVoice control reaches real synthesis and survives reopening', as
       expect(actual.jobs).toHaveLength(1);
       expect(actual.wavs).toHaveLength(1);
       expect(actual.jobs[0]).toMatchObject({ text: texts[language], lang: language, speed: 1, seed: 41 + settings.variation });
-      const expectedTags = [settings.gender, ...(settings.whisper ? ['whisper'] : ['young adult', 'moderate pitch'])];
-      expect(actual.jobs[0].instruct).toBe(expectedTags.join(', '));
+      expect(actual.jobs[0].instruct).toBe(settings.gender);
+      expect(actual.jobs[0].speaker.id).toBe(`${settings.gender}-${settings.variation}`);
+      expect(actual.jobs[0].whisper === true).toBe(settings.whisper);
       expect(actual.plays.some(play => play.rate === (item.playbackRate || 1))).toBe(true);
       const audio = Buffer.from(actual.wavs[0]), filename = `${item.id}.wav`;
       await writeFile(testInfo.outputPath(filename), audio);
@@ -187,7 +188,7 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     await expect.poll(() => engine.evaluate(() => __liveSettings.jobs.filter(job => job.speaker).length), { timeout: 30_000 }).toBeGreaterThanOrEqual(2);
     const popup = await openExtensionPage(context, 'popup');
     await popup.locator('#popup-settings summary').click();
-    await expect(popup.locator('#popup-omnivoice-settings')).toContainText('Choose a different generated voice.');
+    await expect(popup.locator('#popup-omnivoice-settings')).toContainText('Changes apply at the next section.');
     await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
     const worker = context.serviceWorkers()[0];
     await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice.variation))).toBe(4);
@@ -200,12 +201,12 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     await writeFile(testInfo.outputPath('live-settings.json'), JSON.stringify(actual, null, 2));
     expect(actual.plays.map(job => job.text).join(' ')).toBe(paragraphs.join(' '));
     expect(actual.plays.length).toBeGreaterThanOrEqual(3);
-    expect(actual.plays[0].instruct).toBe('female, young adult, moderate pitch');
+    expect(actual.plays[0].instruct).toBe('female');
     expect(actual.plays[0].seed).toBe(42);
-    expect(actual.plays.slice(1).every(job => job.seed === 45 && job.instruct === 'female, young adult, moderate pitch')).toBe(true);
-    expect(actual.plays.map(job => job.numStep)).toEqual([24, 24, ...actual.plays.slice(2).map(() => 12)]);
-    expect(actual.plays[1].speaker.referenceHash).toBeNull();
-    expect(actual.plays.slice(2).every(job => job.speaker.referenceHash === actual.plays[1].speaker.anchorHash)).toBe(true);
+    expect(actual.plays.slice(1).every(job => job.seed === 45 && job.instruct === 'female')).toBe(true);
+    expect(actual.plays.every(job => job.numStep === 24)).toBe(true);
+    expect(actual.plays[1].speaker.referenceId).toBe('en-female-4');
+    expect(actual.plays.slice(1).every(job => job.speaker.referenceHash === actual.plays[1].speaker.anchorHash)).toBe(true);
   } finally {
     await cleanup(); server.closeAllConnections();
     await new Promise(resolve => server.close(resolve));

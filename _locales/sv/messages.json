@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "PDF-sidor"
   },
-  "ui_ab32ceb0": {
-    "message": "Experimentell. 646 språkposter med varierande kvalitet. Kräver WebGPU med fp16 och cirka 1,35 GB hämtningar. Välj röst, variant eller viskning."
+  "ui_6b68e4c5": {
+    "message": "Experimentell. 32 språkposter med varierande kvalitet. Kräver WebGPU med fp16 och cirka 1,35 GB hämtningar. Välj röst, variant eller viskning."
   },
   "ui_ab4a698f": {
     "message": "Öppna sidan"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Den här PDF-filen kunde inte öppnas."
+  },
+  "ui_e59ac0eb": {
+    "message": "Läs från början"
+  },
+  "ui_35a4186c": {
+    "message": "Varning: Viskning kan utelämna ord på det här språket. Kontrollera uppläsningen mot texten."
   }
 }

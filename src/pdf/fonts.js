@@ -223,6 +223,8 @@ function embeddedFontProgram(reader, descriptor, subtype) {
 }
 
 function symbolicTrueTypeGlyphs(metrics) {
+  // Symbolic Macintosh subsets use raw byte slots, including control-byte glyphs.
+  if (metrics.platform === 1) return Array.from({ length: 256 }, (_, code) => metrics.glyphId(code));
   // ISO 32000-1 9.6.6.4, printed p267: a (3,0) symbolic cmap uses one
   // of four byte ranges. Its glyph indices do not establish Unicode text.
   const ranges = [0, 0xf000, 0xf100, 0xf200].map(prefix =>
@@ -283,7 +285,7 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
   const unicode = unicodeId ? await readToUnicode(reader, unicodeId) : null;
   const flags = descriptor ? reader.number(reader.field(descriptor, 'Flags'), 0) : 0;
   const symbolicGlyphs = embedded && !encoding && Number.isInteger(flags) && flags >= 0 && (flags & 4) && !(flags & 32)
-    && metrics.platform === 3 && metrics.encoding === 0 ? symbolicTrueTypeGlyphs(metrics) : null;
+    && [1, 3].includes(metrics.platform) && metrics.encoding === 0 ? symbolicTrueTypeGlyphs(metrics) : null;
   const first = reader.number(reader.field(id, 'FirstChar'), 0), widthsId = reader.field(id, 'Widths');
   const widths = widthsId ? reader.array(widthsId).map(n => reader.number(n, NaN)) : null;
   if (!Number.isInteger(first) || first < 0 || widths?.some(n => !Number.isFinite(n))) throw new PdfEngineError('Invalid PDF font width table.', 'pdf_corrupt');

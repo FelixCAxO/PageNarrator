@@ -223,7 +223,9 @@ extern "C" void pn_ocr_resize(const float* input,float* out,const u32* p){
   const u32 count=p[0],ih=p[1],iw=p[2],oh=p[3],ow=p[4];const float hs=float_bits(p[5]),ws=float_bits(p[6]);
   for(u32 i=0;i<count;++i){u32 x=i%ow,y=(i/ow)%oh,plane=i/(ow*oh);const float sy=coordinate(y,ih,oh,hs,p[8]),sx=coordinate(x,iw,ow,ws,p[8]);
     if(!p[7]){out[i]=input[(plane*ih+nearest(sy,ih,p[9]))*iw+nearest(sx,iw,p[9])];continue;}
-    const float ly=__builtin_floorf(sy),lx=__builtin_floorf(sx),fy=sy-ly,fx=sx-lx;
+    // Clamp coordinates before interpolation so a replicated border is an exact copy.
+    const float cy=sy<0.0f?0.0f:sy>ih-1?static_cast<float>(ih-1):sy,cx=sx<0.0f?0.0f:sx>iw-1?static_cast<float>(iw-1):sx;
+    const float ly=__builtin_floorf(cy),lx=__builtin_floorf(cx),fy=cy-ly,fx=cx-lx;
     const u32 y0=clamp_index(static_cast<int>(ly),ih),y1=clamp_index(static_cast<int>(ly)+1,ih),x0=clamp_index(static_cast<int>(lx),iw),x1=clamp_index(static_cast<int>(lx)+1,iw);
     const float a=input[(plane*ih+y0)*iw+x0]*(1.0f-fx)+input[(plane*ih+y0)*iw+x1]*fx,b=input[(plane*ih+y1)*iw+x0]*(1.0f-fx)+input[(plane*ih+y1)*iw+x1]*fx;
     out[i]=a*(1.0f-fy)+b*fy;

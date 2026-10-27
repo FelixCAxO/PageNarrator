@@ -140,13 +140,17 @@ describe('language detection in the shipped read loop and voice settings', () =>
     expect(playKokoroSpeech).not.toHaveBeenCalled();
   });
 
-  it('automatically selects a detected language within OmniVoice', async () => {
+  it('keeps the chosen OmniVoice language while reporting a different detected language', async () => {
     els.ttsEngine.value = 'omnivoice';
+    state.selectedLanguageCode = 'sv';
+    await populateVoices();
+    populateVoices.mockClear();
     detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'zh-CN', percentage: 99 }] });
     await readLoop.readPage();
-    expect(state.selectedLanguageCode).toBe('zh');
-    expect(els.language.value).toBe('zh');
-    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:zh:') }));
+    expect(state.selectedLanguageCode).toBe('sv');
+    expect(els.language.value).toBe('sv');
+    expect(populateVoices).not.toHaveBeenCalled();
+    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:sv:') }));
     expect(els.languageStatus.textContent).toContain('Detected Chinese (99%).');
   });
 });

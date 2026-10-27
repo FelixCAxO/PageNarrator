@@ -1,4 +1,4 @@
-import { t, localizeDocument, languageName } from './lib/i18n.js';
+import { t, localizeDocument, localizeLanguageOptions } from './lib/i18n.js';
 import {
   clampPlaybackSpeed,
   clampSectionPauseSeconds,
@@ -27,8 +27,8 @@ import { getPopupRecoveryMessage } from './lib/ui-error-messages.js';
 import { DEFAULT_TITLE as ENGINE_PLACEHOLDER_TITLE, getSetupView } from './lib/reader-engine-view.js';
 import { installTrustedUiEventBoundary } from './lib/trusted-ui-events.js';
 import { isTrustedExtensionPage } from './lib/extension-message-security.js';
-import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP } from './lib/omnivoice-settings.js';
-import { OMNIVOICE_LANGUAGES } from './tts/omnivoice/languages.js';
+import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './lib/omnivoice-settings.js';
+import { getOmniVoiceLanguageOptions } from './tts/omnivoice/languages.js';
 
 const logger = createLogger('popup');
 const suppressError = createSuppressedErrorHandler(logger, 'Best-effort popup operation failed.');
@@ -42,7 +42,7 @@ export function getPopupElements(doc = globalThis.document) {
     setupStart: byId('popup-setup-start'), setupSkip: byId('popup-setup-skip'),
     player: byId('popup-player'), playerTitle: byId('popup-player-title'), progress: byId('popup-progress'),
     previous: byId('popup-previous'), toggle: byId('popup-toggle'), stop: byId('popup-stop'), next: byId('popup-next'),
-    idleActions: byId('popup-idle-actions'), start: byId('start-reading'), selected: byId('read-selected'),
+    idleActions: byId('popup-idle-actions'), start: byId('start-reading'), fromStart: byId('read-from-start'), selected: byId('read-selected'),
     settings: byId('popup-settings'), settingsSummary: byId('popup-settings-summary'), language: byId('popup-language'), voice: byId('popup-voice'),
     voiceEngineHelp: byId('popup-voice-model-help'),
     ttsEngine: byId('popup-tts-engine'), omniVoiceSettings: byId('popup-omnivoice-settings'),
@@ -82,13 +82,16 @@ export function createPopupApp({
   const getPause = () => clampSectionPauseSeconds(els.sectionPause?.value);
   const isOmniVoice = () => els.ttsEngine?.value === 'omnivoice';
   const getOmniVoiceSettings = () => normalizeOmniVoiceSettings({ gender: els.omniVoiceGender?.value,
-    variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked });
+    variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked }, els.language?.value);
 
   function renderOmniVoiceSettings(value) {
-    const settings = normalizeOmniVoiceSettings(value);
+    const settings = normalizeOmniVoiceSettings(value, els.language?.value);
     if (els.omniVoiceGender) els.omniVoiceGender.value = settings.gender;
     if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(settings.variation);
-    if (els.omniVoiceWhisper) els.omniVoiceWhisper.checked = settings.whisper;
+    if (els.omniVoiceWhisper) {
+      els.omniVoiceWhisper.checked = settings.whisper;
+      els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(els.language?.value);
+    }
     if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${settings.variation} / 10`;
   }
 
@@ -134,6 +137,7 @@ export function createPopupApp({
     if (els.backendPreference?.closest('label')) els.backendPreference.closest('label').hidden = isOmniVoice();
     if (els.performanceProfile?.closest('label')) els.performanceProfile.closest('label').hidden = isOmniVoice();
     if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[isOmniVoice() ? 'omnivoice' : 'kokoro']);
+    if (isOmniVoice() && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(els.language?.value)) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
     renderOmniVoiceSettings(getOmniVoiceSettings());
     els.settingsSummary.textContent = `${name ? t('$1 voice', [name]) : t('Voice')} · ${getSpeed().toFixed(2)}x`;
     if (els.speedOut) els.speedOut.textContent = `${getSpeed().toFixed(2)}x`;
@@ -393,7 +397,7 @@ export function createPopupApp({
     if (readStartPending) return;
     readStartPending = true;
     setPending(button, 'Starting…');
-    for (const control of [els.start, els.selected]) if (control) control.disabled = true;
+    for (const control of [els.start, els.fromStart, els.selected]) if (control) control.disabled = true;
     try {
       const tab = await getActiveTab();
       await warmContentScriptAccess(tab);
@@ -404,7 +408,7 @@ export function createPopupApp({
       showError(error);
     } finally {
       readStartPending = false;
-      for (const control of [els.start, els.selected]) if (control) control.disabled = false;
+      for (const control of [els.start, els.fromStart, els.selected]) if (control) control.disabled = false;
       clearPending(button);
     }
   }
@@ -425,8 +429,8 @@ export function createPopupApp({
     if (els.queueJump?.reportValidity()) void jumpTo(Number(els.queueJump.value) - 1);
   }
 
-  function languageOptions() {
-    const languages = isOmniVoice() ? OMNIVOICE_LANGUAGES : getLanguageOptions();
+  function languageOptions(selected) {
+    const languages = isOmniVoice() ? getOmniVoiceLanguageOptions(selected) : getLanguageOptions();
     return languages.length ? languages : [{ code: 'en', label: 'English' }];
   }
 
@@ -437,9 +441,9 @@ export function createPopupApp({
   function populateLanguages(selected = 'en') {
     if (!els.language) return;
     selected = normalizeLanguageCode(selected);
-    const options = languageOptions();
+    const options = localizeLanguageOptions(languageOptions(selected));
     const OptionConstructor = win?.Option || Option;
-    els.language.replaceChildren(...options.map((language) => new OptionConstructor(languageName(language.code, language.label), language.code)));
+    els.language.replaceChildren(...options.map((language) => new OptionConstructor(language.label, language.code)));
     els.language.value = options.some(({ code }) => code === selected) ? selected : options.find(({ code }) => code === 'en')?.code || options[0].code;
   }
 
@@ -523,8 +527,8 @@ export function createPopupApp({
     ]);
     if (!setupFlagChanged) readerSnapshot.setupPending = setupState?.[STORAGE_KEYS.VOICE_SETUP_PENDING] === true;
     if (els.ttsEngine) els.ttsEngine.value = settings.ttsEngine;
-    renderOmniVoiceSettings(settings.omniVoice);
     populateLanguages(settings.language);
+    renderOmniVoiceSettings(settings.omniVoice);
     const initialVoice = settings.voicesByLanguage?.[settings.language] || settings.voice;
     populateVoices(initialVoice);
     if (els.speed) {
@@ -561,8 +565,10 @@ export function createPopupApp({
       input?.addEventListener?.('input', () => void saveSettings().catch(suppressError));
     }
     els.start?.addEventListener?.('click', () => startRead({ type: READER_ACTION_TYPES.TOGGLE_PLAYBACK }, els.start));
+    els.fromStart?.addEventListener?.('click', () => startRead({ type: READER_ACTION_TYPES.READ_FROM_START }, els.fromStart));
     els.selected?.addEventListener?.('click', () => startRead({ type: READER_ACTION_TYPES.READ_SELECTED }, els.selected));
     if (els.start) els.start.disabled = false;
+    if (els.fromStart) els.fromStart.disabled = false;
     if (els.selected) els.selected.disabled = false;
     const revision = readerStateRevision;
     const state = await chromeApi?.runtime?.sendMessage?.({ type: MESSAGE_TYPES.READER_ENGINE_GET_STATE })?.catch?.(() => ({ state: 'idle' })) || { state: 'idle' };

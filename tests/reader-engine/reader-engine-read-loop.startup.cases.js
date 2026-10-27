@@ -125,6 +125,30 @@ describe('readerEngine read loop', () => {
     expect(order.indexOf('backend-plan-finish')).toBeLessThan(order.indexOf('profile-config'));
   });
 
+  it.each(['en', 'sv', 'de'])('keeps explicitly selected Swedish OmniVoice when detection returns %s', async detected => {
+    const previous = chrome.i18n;
+    chrome.i18n = { ...previous, detectLanguage: vi.fn(async () => ({ isReliable: true, languages: [{ language: detected, percentage: 99 }] })) };
+    const text = 'Idag läser vi en berättelse om trädgården. Fåglarna sjunger och solen skiner över de gröna träden.';
+    const state = { testSilentTtsEnabled: true, selectedLanguageCode: 'sv' };
+    const selectLanguage = vi.fn(code => { state.selectedLanguageCode = code; });
+    const states = [];
+    const orchestrator = createReadLoopOrchestrator({
+      state, readRunTracker: createRunTracker(),
+      readOrchestrator: { fillChunkBuffer: async () => true, getPlaybackTotal: () => 1, getLoadedChunkText: () => text },
+      extractActiveTab: async () => ({ tabId: 2, url: 'https://example.test/swedish', source: 'html', text, chunks: [{ speech: text }] }),
+      setReadingState: value => states.push(value), setLanguageSelectValue: selectLanguage,
+      resolveSelectedVoice: () => ({ id: `omnivoice:${state.selectedLanguageCode}`, engine: 'omnivoice', detectCode: state.selectedLanguageCode }),
+      ensureSpeechPreloadWindow: () => Promise.resolve({ result: {} }), readPreloadedSpeech: async preload => (await preload).result,
+    });
+    try {
+      await orchestrator.readPage();
+      expect(chrome.i18n.detectLanguage).toHaveBeenCalled();
+      expect(selectLanguage).not.toHaveBeenCalled();
+      expect(state.selectedLanguageCode).toBe('sv');
+      expect(states.at(-1)).toBe('finished');
+    } finally { chrome.i18n = previous; }
+  });
+
   it('marks selected-text reads as selected while preparing', async () => {
     const states = [];
     const orchestrator = createReadLoopOrchestrator({

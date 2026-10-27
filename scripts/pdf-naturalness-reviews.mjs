@@ -5,6 +5,7 @@ import path from 'node:path';
 import { parseArgs } from 'node:util';
 import { pathToFileURL } from 'node:url';
 import { PDF_NATURALNESS_SAMPLE } from '../tests/fixtures/pdf-naturalness-sample.js';
+import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../tests/fixtures/pdf-library-naturalness-sample.js';
 import { validateNaturalnessRatingPanel, validateNaturalnessReviews } from './pdf-acceptance-metrics.mjs';
 import { validateNaturalnessRatings } from './run-pdf-acceptance.mjs';
 
@@ -13,11 +14,15 @@ const reviewerKey = value => value.trim().toLowerCase();
 const escapeHtml = value => String(value).replace(/[&<>"']/gu, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
 
 function validatePacket(packet) {
-  if (packet?.backend !== 'original' || typeof packet.rubric !== 'string' || !packet.rubric.trim()
-    || !Array.isArray(packet.passages) || packet.passages.length !== PDF_NATURALNESS_SAMPLE.length) {
+  const library = packet?.benchmark === 'library-v1';
+  const samples = library ? PDF_LIBRARY_NATURALNESS_SAMPLE : PDF_NATURALNESS_SAMPLE;
+  if (packet?.backend !== (library ? 'original-browser' : 'original')
+    || packet.benchmark && !['library-v1', 'historical-v1'].includes(packet.benchmark)
+    || typeof packet.rubric !== 'string' || !packet.rubric.trim()
+    || !Array.isArray(packet.passages) || packet.passages.length !== samples.length) {
     throw new Error('Use the complete 50-passage original-backend packet.');
   }
-  for (const [index, sample] of PDF_NATURALNESS_SAMPLE.entries()) {
+  for (const [index, sample] of samples.entries()) {
     const passage = packet.passages[index];
     if (passage?.passageId !== sample.id || typeof passage.transcript !== 'string' || !passage.transcript.trim()
       || sha256(passage.transcript) !== passage.transcriptSha256
@@ -25,6 +30,7 @@ function validatePacket(packet) {
       throw new Error(`Invalid packet identity, transcript hash or categories: ${sample.id}.`);
     }
   }
+  return samples;
 }
 
 export function createPdfNaturalnessReviewHtml(packet, packetSha256) {
@@ -71,7 +77,7 @@ document.getElementById('review').addEventListener('submit', event => {
 }
 
 export function combinePdfNaturalnessReviews(packet, responses, { packetSha256, existingRatings = [] } = {}) {
-  validatePacket(packet);
+  const samples = validatePacket(packet);
   if (!/^[a-f0-9]{64}$/u.test(packetSha256 || '') || !Array.isArray(existingRatings) || !Array.isArray(responses)) throw new Error('Invalid review inputs.');
   const rows = new Map(packet.passages.map(passage => [passage.passageId, {
     passageId: passage.passageId, transcriptSha256: passage.transcriptSha256, ratings: [], reviews: [], categories: [...passage.categories],
@@ -79,7 +85,7 @@ export function combinePdfNaturalnessReviews(packet, responses, { packetSha256, 
   const seenExisting = new Set();
   for (const existing of existingRatings) {
     const row = rows.get(existing?.passageId);
-    const sample = PDF_NATURALNESS_SAMPLE.find(value => value.id === existing?.passageId);
+    const sample = samples.find(value => value.id === existing?.passageId);
     if (!row || seenExisting.has(row.passageId) || existing.transcriptSha256 !== row.transcriptSha256) throw new Error('Existing ratings have duplicate, unknown or stale transcripts.');
     validateNaturalnessRatings([existing], [sample]);
     row.ratings = [...existing.ratings];
@@ -117,7 +123,7 @@ export function combinePdfNaturalnessReviews(packet, responses, { packetSha256, 
     const sorted = [...row.ratings].sort((a, b) => a - b);
     return { ...row, median: sorted.length === 3 ? sorted[1] : (sorted[0] + sorted[1]) / 2 };
   });
-  validateNaturalnessRatings(result, PDF_NATURALNESS_SAMPLE);
+  validateNaturalnessRatings(result, samples);
   return result;
 }
 

@@ -1,6 +1,6 @@
 # Release checklist
 
-The source version is 1.0.1. The repository was recreated with one initial commit; previous release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
+The development candidate is 1.0.2 (unreleased); the latest published release is 1.0.1. The repository was recreated with one initial commit; previous release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
 
 ## Public source repository
 
@@ -64,12 +64,13 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 - Keep Cloudflare Single Redirect `54d11e0e1dc54b96b256b400ac3bbc37` for `https://www.pagenarrator.com/*` → `https://pagenarrator.com/${1}`, HTTP 301 with query strings. Path redirects stay in `_redirects`.
 - Check changelog v1.0.1 and terms preserving GPL-3.0-or-later, MIT, and Apache License 2.0 rights.
 - Verify no checkout script, price, purchase action, activation UI, or payment endpoint.
+- Keep the scoped URL rewrite `0795bb621e1343c6be34d2baa6492787` for host `pagenarrator.com` and exactly `/cws-demo` or `/cws-demo.html`, rewriting only the origin path to `/pagenarrator-removed-capture-fixture`. This prevents retained Pages asset aliases from serving an old local capture; both public URLs must return HTTP 404. Query strings and reader-facing routes are unchanged.
 - Keep the independent support mailbox Worker healthy. Follow `docs/support-mailbox.md` and verify the Gmail reply composer opens with `PageNarrator Support <support@pagenarrator.com>` in From.
 
 <details>
 <summary>Recorded Pages setup and rollback target</summary>
 
-Project `pagenarrator-site` uses repository `FelixCAxO/PageNarrator` (ID `1422933371`), branch `main`. The earlier Git setup used root `website`, command `exit 0`, output `public`, production builds on, previews/PR comments off, and watch path `website/*`. Verify and replace raw output with the filtered build before publishing.
+Project `pagenarrator-site` uses repository `FelixCAxO/PageNarrator` (ID `1422933371`), branch `main`. On 2026-10-26 its Git build settings were corrected to repository root, command `npm run build:website`, and filtered output `artifacts/website`. Production builds remain on, previews/PR comments off. Watch paths cover `website/*`, the website build/smoke scripts, locale rollout config and package metadata. Verify these settings before publishing; never restore the earlier raw `website/public` upload.
 
 Retired project `pagenarrator` points to deleted repository `1224875446` with automatic builds disabled. Retain its last successful deployment for rollback. Domain rollback needs both custom-domain associations and CNAME targets restored to `pagenarrator.pages.dev`. The September 26, 2026 smoke record checked 16 pages, 20 redirects, and 22 resources.
 

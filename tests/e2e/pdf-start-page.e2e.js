@@ -67,7 +67,7 @@ function getEngineState(context) {
   );
 }
 
-async function playAndGetStartPage(context, pdfPage) {
+async function playAndGetStartPage(context, pdfPage, { fromStart = false } = {}) {
   // Record rendered narration highlights; layout can reapply the previous
   // read's final range while the user opens the toolbar popup to start again.
   const getPlayedChunks = () => context.serviceWorkers()[0].evaluate(async () => {
@@ -76,7 +76,7 @@ async function playAndGetStartPage(context, pdfPage) {
   });
   const previousPlayCount = (await getPlayedChunks()).length;
   await pdfPage.evaluate(() => { window.__pnHighlightedPages = []; });
-  await startReadFromToolbarPopup(context, pdfPage);
+  await startReadFromToolbarPopup(context, pdfPage, { fromStart });
   await expect.poll(() => pdfPage.evaluate(() => window.__pnHighlightedPages.length), { timeout: 30_000 }).toBeGreaterThan(0);
   await expect.poll(async () => (await getPlayedChunks()).length, { timeout: 30_000 }).toBeGreaterThan(previousPlayCount);
   const speechText = (await getPlayedChunks())[previousPlayCount].speechText;
@@ -102,6 +102,25 @@ test('starts a PDF read on the page the reader scrolled to', async () => {
     await scrollViewerToPage(pdfPage, 7);
 
     expect(await playAndGetStartPage(context, pdfPage)).toBe(7);
+    await stopReading(context);
+  } finally {
+    await cleanup();
+  }
+});
+
+test('Read from start returns a stopped PDF to page 1 despite its saved position and viewport', async ({}, testInfo) => {
+  const { context, cleanup } = await launchExtensionContext({ testInfo });
+  try {
+    await seedFlowTestFlags(context);
+    const pdfPage = await openNumberedPdf(context, 12);
+    await scrollViewerToPage(pdfPage, 7);
+    expect(await playAndGetStartPage(context, pdfPage)).toBe(7);
+    await expect.poll(() => context.serviceWorkers()[0].evaluate(() => chrome.storage.local.get(null)
+      .then(all => Math.max(0, ...Object.entries(all).filter(([key]) => key.startsWith('pos:')).map(([, value]) => Number(value.pageNumber) || 0)))),
+    { timeout: 15_000 }).toBeGreaterThanOrEqual(7);
+    await stopReading(context);
+    await scrollViewerToPage(pdfPage, 9);
+    expect(await playAndGetStartPage(context, pdfPage, { fromStart: true })).toBe(1);
     await stopReading(context);
   } finally {
     await cleanup();

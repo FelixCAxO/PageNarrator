@@ -87,6 +87,26 @@ it('preserves an independent multiplicative snake scale rather than treating it 
   near(await engine.read(output), Float32Array.from(input, (x, i) => x + scale[Math.floor(i / 3)] * Math.sin(Math.fround(x * alpha[Math.floor(i / 3)])) ** 2), 1e-6);
 });
 
+it('preserves small tanh activations and signed zero without exponential cancellation', async () => {
+  const values = Float32Array.from([-0, 0, -(2 ** -149), 2 ** -149, -1e-9, 1e-9, -1e-7, 1e-7,
+    ...Array.from({ length: 257 }, (_, i) => (i - 128) / 1024)]);
+  const batch = engine.batch(), output = batch.unary('Tanh', upload(values, [values.length]));
+  batch.submit();
+  const actual = await engine.read(output), expected = Float32Array.from(values, Math.tanh);
+  expect(new Uint32Array(actual.buffer)).toEqual(new Uint32Array(expected.buffer));
+});
+
+it.each([1e-9, 1e-7, 2 ** -146])('retains a small %g recurrent candidate through both tanh stages', async value => {
+  const batch = engine.batch(), input = upload([1], [1, 1, 1]);
+  const output = engine.kokoro.lstm(batch, input, upload([0, 0, 0, value], [1, 4, 1]), upload([0, 0, 0, 0], [1, 4, 1]),
+    upload(new Float32Array(8), [1, 8]), upload([0], [1, 1, 1]), upload([0], [1, 1, 1]), { hiddenSize: 1, direction: 'forward' });
+  batch.submit();
+  const cell = Math.fround(.5 * Math.fround(Math.tanh(Math.fround(value)))), hidden = Math.fround(.5 * Math.fround(Math.tanh(cell)));
+  expect(Array.from(await engine.read(output[0]))).toEqual([hidden]);
+  expect(Array.from(await engine.read(output[1]))).toEqual([hidden]);
+  expect(Array.from(await engine.read(output[2]))).toEqual([cell]);
+});
+
 it.each([
   [[2, 3, 5], [2, 1, 1], [1, 3, 1]], [[1, 3], [2, 1], []], [[2, 3], [], [3]], [[], [], []],
 ])('fuses Snake storage while preserving every unfused float32 stage and broadcast axis: %j', async (inputShape, alphaShape, scaleShape) => {

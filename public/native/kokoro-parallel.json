@@ -14,19 +14,19 @@
     "-fno-rtti",
     "-fno-builtin",
     "-nostdlib",
-    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=pn_kokoro_unary,--export=pn_kokoro_layer_norm,--export=pn_kokoro_lstm,--export=pn_kokoro_stft,--export=pn_kokoro_snake,--export=pn_kokoro_cumsum,--export=pn_kokoro_scatter,--export=pn_kokoro_conv_transpose,--export=pn_kokoro_dynamic_quantize,--export=pn_kokoro_dequantize,--export=pn_kokoro_matmul_integer,--export=pn_kokoro_conv_integer,--export=pn_kokoro_dynamic_lstm,--export=pn_kokoro_cast,--export=pn_kokoro_compare,--export=pn_kokoro_where,--export=pn_kokoro_pad,--export=pn_kokoro_gather,--export=pn_kokoro_integer_binary,--export=pn_kokoro_range,--export=pn_kokoro_fill,--export=pn_kokoro_power,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all",
+    "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=pn_kokoro_unary,--export=pn_kokoro_layer_norm,--export=pn_kokoro_lstm,--export=pn_kokoro_stft,--export=pn_kokoro_resize_linear,--export=pn_kokoro_snake,--export=pn_kokoro_cumsum,--export=pn_kokoro_scatter,--export=pn_kokoro_conv_transpose,--export=pn_kokoro_dynamic_quantize,--export=pn_kokoro_dequantize,--export=pn_kokoro_matmul_integer,--export=pn_kokoro_conv_integer,--export=pn_kokoro_dynamic_lstm,--export=pn_kokoro_cast,--export=pn_kokoro_compare,--export=pn_kokoro_where,--export=pn_kokoro_pad,--export=pn_kokoro_gather,--export=pn_kokoro_integer_binary,--export=pn_kokoro_range,--export=pn_kokoro_fill,--export=pn_kokoro_power,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all",
     "-matomics",
     "-mbulk-memory",
     "-Wl,--shared-memory,--import-memory,--export=__stack_pointer,--export=pn_parallel_abi_version,--export=pn_kokoro_conv_integer_rows"
   ],
   "sourceSha256": {
     "native/kokoro-parallel.cpp": "c89bab166b0984672873cd6ef6ae9ea6ff61282bc2e57d626fdf4b0b59cbbe95",
-    "native/kokoro-engine.cpp": "102d593d8cec711af6be8d765bfb635788358223dc9dd105330446c67e39b278",
-    "native/ocr-engine.cpp": "8534b318ba70006ef5f30f31008e7a398e7097d3e350a222907f29bfaa09e12d",
+    "native/kokoro-engine.cpp": "41f036688201c7be7d28a827f65611bff61903a528f0ca54ea372e5ada998049",
+    "native/ocr-engine.cpp": "4f4b675af7c645f1ed730b9bd721bc361f3a4ed2daba357b3ed8a8a5ddf262e0",
     "native/engine.cpp": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616"
   },
-  "originalWasmSha256": "5f7404738e609373e235ca8de15afe582c34aeca379b31da9d5a8786f1d4d71d",
-  "wasmSha256": "af4b2536855e6a3b3add197e6bc0ef8c280763b12f53ab55ee5d874f3a0144d3",
+  "originalWasmSha256": "9ca904935ab16907f52ee8bebfbf2a7afb3e67c6c3ef1ab600f098be388c0084",
+  "wasmSha256": "34fb8c96c33bc643453e235744a47b583907e48c617ef5b380edee92183d4d90",
   "imports": [
     {
       "module": "env",

@@ -12,7 +12,7 @@ async function payload(data) {
 }
 // Authored cmap facts select independently known licensed A/B outlines. No
 // Wingdings name or glyph geometry is used to manufacture semantic Unicode.
-async function symbolicFont(pairs = [[0xf0a7, 65]]) {
+async function symbolicFont(pairs = [[0xf0a7, 65]], platform = 3) {
   const font = (await loadAsset('standard_fonts/LiberationSans-Regular.ttf')).slice(), metrics = readTrueTypeMetrics(font.slice());
   const view = new DataView(font.buffer, font.byteOffset, font.byteLength);
   let cmap;
@@ -24,7 +24,7 @@ async function symbolicFont(pairs = [[0xf0a7, 65]]) {
   mappings.push([65535, 0]);
   const count = mappings.length, subtable = cmap + 12, length = 16 + count * 8, power = 2 ** Math.floor(Math.log2(count));
   font.fill(0, cmap, subtable + length);
-  view.setUint16(cmap + 2, 1); view.setUint16(cmap + 4, 3); view.setUint16(cmap + 6, 0); view.setUint32(cmap + 8, 12);
+  view.setUint16(cmap + 2, 1); view.setUint16(cmap + 4, platform); view.setUint16(cmap + 6, 0); view.setUint32(cmap + 8, 12);
   view.setUint16(subtable, 4); view.setUint16(subtable + 2, length); view.setUint16(subtable + 6, count * 2);
   view.setUint16(subtable + 8, power * 2); view.setUint16(subtable + 10, Math.log2(power)); view.setUint16(subtable + 12, count * 2 - power * 2);
   mappings.forEach(([code, gid], i) => {
@@ -43,6 +43,21 @@ function document(font, { content = '<a7>', unicode = null, flags = 4, outline =
 const mapping = value => `begincmap 1 beginbfchar <a7> <${value}> endbfchar endcmap`;
 
 describe('embedded symbolic TrueType built-in encodings', () => {
+  it('paints Swedish letters in symbolic Macintosh control-byte slots while retaining their Unicode text', async () => {
+    const letters = [229, 228, 246];
+    const { font, originalMetrics } = await symbolicFont(letters.map((code, index) => [index + 1, code]), 1);
+    const actual = await payload(document(font, { content: '<010203>',
+      unicode: 'begincmap 3 beginbfchar <01> <00e5> <02> <00e4> <03> <00f6> endbfchar endcmap' }));
+    expect(actual.items[0].str).toBe('åäö');
+    const gids = letters.map(code => originalMetrics.glyphId(code));
+    expect(gids.every(gid => gid > 0)).toBe(true);
+    expect(actual.commands.find(command => command.op === 'text').glyphs.map(glyph => glyph.renderText))
+      .toEqual(gids.map(gid => String.fromCodePoint(privateGlyphCode(gid))));
+    const converted = readTrueTypeMetrics(actual.fonts[0].bytes);
+    expect(letters.map(code => converted.glyphId(code))).toEqual(gids);
+    expect(actual.inspection.unmappedGlyphs).toBe(0);
+  });
+
   it.each([0, 0xf000, 0xf100, 0xf200])('selects the actual glyph in the ISO byte range %i without inventing Latin text', async prefix => {
     const { font, originalMetrics } = await symbolicFont([[prefix + 167, 65]]), unchanged = font.slice();
     const actual = await payload(document(font)), glyph = actual.commands.find(command => command.op === 'text').glyphs[0];

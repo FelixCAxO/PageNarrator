@@ -51,6 +51,16 @@ describe('readerEngine message router', () => {
     expect(stopReading).toHaveBeenCalledTimes(1);
   });
 
+  it('dispatches an explicit read from start with the popup target tab', () => {
+    const handleReadFromStartAction = vi.fn();
+    const handlePrimaryAction = vi.fn();
+    const tab = { id: 55, url: 'https://example.com/book.pdf' };
+    const router = createReaderEngineMessageRouter({ actions: { handleReadFromStartAction, handlePrimaryAction } });
+    router.handleFloatingReaderAction({ type: READER_ACTION_TYPES.READ_FROM_START, tab });
+    expect(handleReadFromStartAction).toHaveBeenCalledExactlyOnceWith({ tab });
+    expect(handlePrimaryAction).not.toHaveBeenCalled();
+  });
+
   it('ignores direct floating reader runtime messages so background forwarding owns dispatch', () => {
     const stopReading = vi.fn();
     const router = createReaderEngineMessageRouter({ actions: { stopReading } });

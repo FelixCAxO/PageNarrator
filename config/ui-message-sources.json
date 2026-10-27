@@ -1734,8 +1734,8 @@
       "src/pdf-viewer.html"
     ]
   },
-  "ui_ab32ceb0": {
-    "source": "Experimental. 646 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper.",
+  "ui_6b68e4c5": {
+    "source": "Experimental. 32 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper.",
     "locations": [
       "src/lib/omnivoice-settings.js"
     ]
@@ -2001,6 +2001,18 @@
     "locations": [
       "src/lib/error-registry.js:pdf_unknown.message",
       "src/lib/error-registry.js:pdf_unknown.recoveryHint"
+    ]
+  },
+  "ui_e59ac0eb": {
+    "source": "Read from start",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
+  "ui_35a4186c": {
+    "source": "Warning: Whisper can omit words in this language. Check the reading against the text.",
+    "locations": [
+      "src/lib/omnivoice-settings.js"
     ]
   }
 }

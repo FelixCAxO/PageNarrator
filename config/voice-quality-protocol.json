@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "method": "correct-math-and-verified-speech-quality-v1",
+  "authorizedBy": "maintainer",
+  "authorizedOn": "2026-10-26",
+  "decision": "Correct math and verified speech quality",
+  "referencePcm": "Preserve comparisons and their unchanged bounds as diagnostics; failed comparisons remain failed/unqualified.",
+  "backends": ["wasm", "webgpu"],
+  "listenersRequiredPerVoiceAndBackend": 20,
+  "dimensions": ["intelligibility", "voice identity", "pronunciation", "prosody"],
+  "minimumClustered95PercentLowerBound": -0.25,
+  "bootstrapReplicates": 10000,
+  "contentErrorsAllowed": 0,
+  "humanReviews": "Required for unwaived releases. Missing, stale, incomplete or automated reviews never qualify."
+}

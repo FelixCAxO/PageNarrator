@@ -35,7 +35,7 @@ test('toolbar popup is the only player and narration survives popup close', asyn
   }
 });
 
-test('Read page resumes saved progress instead of flicking back to idle', async ({}, testInfo) => {
+test('Read page resumes progress and Read from start resets a stopped article', async ({}, testInfo) => {
   const server = await startCorpusFixtureServer({ corpusDir: fixtureDir });
   const { context, cleanup } = await launchExtensionContext({ hostPermissions: ['http://*/*'], testInfo });
   try {
@@ -54,11 +54,25 @@ test('Read page resumes saved progress instead of flicking back to idle', async 
     }), { key: `pos:${article.url()}` });
     await storagePage.close();
 
-    const popup = await startReadFromToolbarPopup(context, article, { closePopup: false });
+    let popup = await startReadFromToolbarPopup(context, article, { closePopup: false });
 
     await expect(popup.locator('#popup-status')).toHaveText('Reading', { timeout: 15_000 });
     await expect(popup.locator('#popup-player')).toBeVisible();
     await expect(popup.locator('#popup-previous')).toBeEnabled();
+    await popup.locator('#popup-stop').click();
+    await expect(popup.locator('#popup-status')).toHaveText('Ready to read', { timeout: 10_000 });
+    await popup.close();
+    popup = await openExtensionPage(context, 'popup');
+    await expect(popup.getByRole('button', { name: 'Read from start', exact: true })).toBeVisible();
+    await popup.screenshot({ path: testInfo.outputPath('read-from-start-after-stop.png'), fullPage: true });
+    const worker = context.serviceWorkers()[0];
+    const played = () => worker.evaluate(() => chrome.runtime.sendMessage({ type: 'getFlowLog' })
+      .then(response => response.log.filter(event => event.kind === 'chunk_play')));
+    const previousPlayCount = (await played()).length;
+    await popup.getByRole('button', { name: 'Read from start', exact: true }).click();
+    await expect.poll(async () => (await played()).length, { timeout: 15_000 }).toBeGreaterThan(previousPlayCount);
+    expect((await played())[previousPlayCount]).toMatchObject({ chunkIndex: 0 });
+    await expect(popup.locator('#popup-status')).toHaveText('Reading');
   } finally {
     await cleanup();
     await server.close();

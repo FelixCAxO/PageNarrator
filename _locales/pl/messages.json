@@ -1174,8 +1174,8 @@
   "ui_9f9cf525": {
     "message": "Strony PDF"
   },
-  "ui_ab32ceb0": {
-    "message": "Eksperymentalny. 646 pozycji językowych; jakość jest różna. Wymaga WebGPU z fp16 i pobrania około 1,35 GB. Wybierz głos, wariant lub szept."
+  "ui_6b68e4c5": {
+    "message": "Eksperymentalny. 32 pozycji językowych; jakość jest różna. Wymaga WebGPU z fp16 i pobrania około 1,35 GB. Wybierz głos, wariant lub szept."
   },
   "ui_ab4a698f": {
     "message": "Otwórz stronę"
@@ -1299,5 +1299,11 @@
   },
   "ui_ce24479d": {
     "message": "Nie udało się otworzyć tego pliku PDF."
+  },
+  "ui_e59ac0eb": {
+    "message": "Czytaj od początku"
+  },
+  "ui_35a4186c": {
+    "message": "Uwaga: Szept w tym języku może pomijać słowa. Porównaj odczyt z tekstem."
   }
 }

@@ -40,6 +40,8 @@ Markup was checked on 2026-09-24: ChatGPT share pages used numbered `section` tu
 
 ## PDFs
 
+The [dynamic reading order audit](pdf-reading-order-audit.md) documents the 98% target, individually identified table/prose patterns, real PDF parser checks, and the limits of synthetic accuracy claims.
+
 The PDF viewer owns rendering, selection, navigation, and highlights. Playback stays in the toolbar. The engine requests metadata and bounded text batches from the viewer. Progress uses page counts instead of scanning the whole book. Image-only pages use local English OCR; unreadable pages return an extraction error.
 
 ### Where a PDF read starts

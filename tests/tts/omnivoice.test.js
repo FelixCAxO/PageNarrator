@@ -1,14 +1,25 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createOmniVoiceTts } from '../../src/tts/omnivoice/tts.js';
-import { createOmniVoiceRequest, normalizeOmniVoiceSettings } from '../../src/lib/omnivoice-settings.js';
+import { createOmniVoiceRequest, normalizeOmniVoiceSettings, hasOmniVoiceWhisperWordLossRisk } from '../../src/lib/omnivoice-settings.js';
 import { normalizePlaybackSettings, savePlaybackSettings } from '../../src/lib/playback-settings.js';
-import { OMNIVOICE_LANGUAGES, getOmniVoiceLanguage } from '../../src/tts/omnivoice/languages.js';
+import { OMNIVOICE_LANGUAGES, getOmniVoiceLanguage, getOmniVoiceLanguageOptions } from '../../src/tts/omnivoice/languages.js';
 import { getLanguageOption, normalizeLanguageCode } from '../../src/lib/language-voice-options.js';
 
 const voice = { engine: 'omnivoice', detectCode: 'sv', omniVoice: { gender: 'male', variation: 1, whisper: true } };
 const audio = { pcm: new Float32Array([0.1, -0.1]), sampleRate: 24000 };
 
 describe('OmniVoice integration', () => {
+  it('offers a short language list while preserving an existing uncommon selection', () => {
+    const options = getOmniVoiceLanguageOptions();
+    expect(options).toHaveLength(32);
+    expect(new Set(options.map(({ code }) => code)).size).toBe(32);
+    expect(options.map(({ code }) => code)).toEqual(expect.arrayContaining(['en', 'sv', 'arb', 'zh', 'yue']));
+    expect(options.map(({ code }) => code)).not.toContain('sol');
+    expect(getOmniVoiceLanguageOptions('swe')).toBe(options);
+    expect(getOmniVoiceLanguageOptions('invalid')).toBe(options);
+    expect(getOmniVoiceLanguageOptions('sol')).toEqual([...options, getOmniVoiceLanguage('sol')]);
+  });
+
   it('ignores saved speaking pace and bounds voice variations without changing synthesis speed', () => {
     for (const variation of [0, 11, 1.5, Infinity, '4', null]) {
       expect(normalizeOmniVoiceSettings({ variation, tempo: 0.5 }).variation).toBe(1);
@@ -21,10 +32,11 @@ describe('OmniVoice integration', () => {
   it('keeps Kokoro as the default and repairs invalid voice attributes', () => {
     expect(normalizePlaybackSettings()).toMatchObject({ ttsEngine: 'kokoro', omniVoice: { gender: 'female', variation: 1, whisper: false } });
     expect(normalizeOmniVoiceSettings({ gender: 'other', pitch: NaN, age: 7, variation: Infinity, whisper: 'false' })).toEqual(normalizeOmniVoiceSettings());
-    expect(createOmniVoiceRequest(' Hej! ', voice)).toEqual({ text: 'Hej!', lang: 'sv', instruct: 'male, whisper', speed: 1, seed: 42, numStep: 24 });
-    expect(createOmniVoiceRequest('你好！', { ...voice, detectCode: 'zh' }).instruct).toBe('男，耳语');
-    expect(createOmniVoiceRequest('今日は晴れです。', { ...voice, detectCode: 'ja' }).instruct).toBe('男，耳语');
-    expect(createOmniVoiceRequest('こんにちは。', { ...voice, detectCode: 'ja' }).instruct).toBe('male, whisper');
+    expect(createOmniVoiceRequest(' Hej! ', voice)).toEqual({ text: 'Hej!', lang: 'sv', instruct: 'male', speed: 1, speakerId:'male-1', seed: 42, numStep: 24, whisper:true });
+    expect(createOmniVoiceRequest('你好！', { ...voice, detectCode: 'zh' }).instruct).toBe('男');
+    expect(createOmniVoiceRequest('今日は晴れです。', { ...voice, detectCode: 'ja' }).instruct).toBe('男');
+    expect(createOmniVoiceRequest('こんにちは。', { ...voice, detectCode: 'ja' }).instruct).toBe('male');
+    expect(createOmniVoiceRequest('Bugün kısa bir hikâye okuyoruz.', { ...voice, detectCode: 'tr' }).numStep).toBe(32);
     const legacy = { ...voice, omniVoice: { ...voice.omniVoice, pitch: 0, age: 4 } };
     expect(normalizeOmniVoiceSettings(legacy.omniVoice)).toEqual(voice.omniVoice);
     expect(createOmniVoiceRequest('Hej!', legacy)).toEqual(createOmniVoiceRequest('Hej!', voice));
@@ -36,7 +48,7 @@ describe('OmniVoice integration', () => {
     expect(OMNIVOICE_LANGUAGES).toHaveLength(646);
     expect(new Set(OMNIVOICE_LANGUAGES.map(language => language.code)).size).toBe(646);
     for (const language of OMNIVOICE_LANGUAGES) {
-      expect(createOmniVoiceRequest('Test', { ...voice, detectCode: language.code }).lang).toBe(language.code);
+      expect(createOmniVoiceRequest('Test', { ...voice, detectCode: language.code, omniVoice:{...voice.omniVoice,whisper:false} }).lang).toBe(language.code);
       expect(getLanguageOption(language.code).label).toBe(language.label);
     }
     for (const value of ['constructor', '__proto__', 'xx', 'en<|text_end|>', null, {}]) {
@@ -45,10 +57,19 @@ describe('OmniVoice integration', () => {
     }
   });
 
+  it.each(['yue','th'])('retains selectable %s whispering and saved preferences with a word-loss warning', language=>{
+    expect(createOmniVoiceRequest('Test', {...voice,detectCode:language})).toMatchObject({lang:language,whisper:true,speakerId:'male-1',seed:42});
+    expect(hasOmniVoiceWhisperWordLossRisk(language)).toBe(true);
+    expect(createOmniVoiceRequest('Test',{...voice,detectCode:language,omniVoice:{...voice.omniVoice,whisper:false}}).lang).toBe(language);
+    expect(normalizePlaybackSettings({language,omniVoice:voice.omniVoice}).omniVoice.whisper).toBe(true);
+    expect(normalizePlaybackSettings({language:'sv',omniVoice:voice.omniVoice}).omniVoice.whisper).toBe(true);
+    expect(hasOmniVoiceWhisperWordLossRisk('sv')).toBe(false);
+  });
+
   it.each([['ENG', 'en'], ['jpn', 'ja'], ['cmn', 'zh'], ['ar-EG', 'arb'], ['pt-BR', 'pt'], ['zh-TW', 'zh'], ['yue', 'yue'], ['swe', 'sv']])
     ('maps browser or ISO language %s to model ID %s', (input, canonical) => {
       expect(normalizeLanguageCode(input)).toBe(canonical);
-      expect(createOmniVoiceRequest('Test', { ...voice, detectCode: input }).lang).toBe(canonical);
+      expect(createOmniVoiceRequest('Test', { ...voice, detectCode: input, omniVoice:{...voice.omniVoice,whisper:false} }).lang).toBe(canonical);
     });
 
   it('persists engine and sliders without losing the saved Kokoro voice on unrelated writes', async () => {
@@ -83,23 +104,24 @@ describe('OmniVoice integration', () => {
       dispose: vi.fn(), abortGeneration: vi.fn() };
     const tts = createOmniVoiceTts({ loadRuntime: async () => engine });
     await Promise.all([tts.generate('Hej!', { voice }), tts.generate('Nästa mening.', { voice })]);
-    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 12]);
+    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 24]);
     const changed = { ...voice, omniVoice: { ...voice.omniVoice, variation: 4 } };
     await tts.generate('En annan röst.', { voice: changed });
     await tts.generate('Samma nya röst.', { voice: changed });
-    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 12, 24, 12]);
+    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 24, 24, 24]);
     await tts.dispose();
   });
 
-  it('does not reuse a stale continuation key after a failed voice change', async () => {
+  it('restarts after a failed voice change while retaining the requested voice', async () => {
     const engine = { init: vi.fn(), synthesize: vi.fn().mockResolvedValue({ ...audio, speaker: { anchorHash: 'speaker' } }),
       dispose: vi.fn(), abortGeneration: vi.fn() };
     const tts = createOmniVoiceTts({ loadRuntime: async () => engine });
     await tts.generate('Hej!', { voice });
     engine.synthesize.mockRejectedValueOnce(new Error('GPU failed during voice change'));
-    await expect(tts.generate('Ny röst.', { voice: { ...voice, omniVoice: { ...voice.omniVoice, gender: 'female' } } })).rejects.toThrow('GPU failed');
+    await expect(tts.generate('Ny röst.', { voice: { ...voice, omniVoice: { ...voice.omniVoice, gender: 'female' } } })).resolves.toHaveProperty('sampling_rate', 24000);
     await tts.generate('Tillbaka.', { voice });
-    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 24, 24]);
+    expect(engine.synthesize.mock.calls.map(([params]) => params.numStep)).toEqual([24, 24, 24, 24]);
+    expect(engine.synthesize.mock.calls.slice(1, 3).map(([params]) => params.speakerId)).toEqual(['female-1', 'female-1']);
     await tts.dispose();
   });
 
@@ -126,11 +148,51 @@ describe('OmniVoice integration', () => {
     expect(engine.dispose).toHaveBeenCalledTimes(1);
   });
 
-  it('recovers its queue after a GPU failure', async () => {
+  it('automatically retries the interrupted chunk on a fresh runtime after a GPU failure', async () => {
     const engine = { init: async () => {}, synthesize: vi.fn().mockRejectedValueOnce(new Error('GPU failed')).mockResolvedValue(audio), dispose: vi.fn(), abortGeneration: vi.fn() };
-    const tts = createOmniVoiceTts({ loadRuntime: async () => engine });
-    await expect(tts.generate('Hej!', { voice })).rejects.toThrow('GPU failed');
+    const loadRuntime = vi.fn(async () => engine);
+    const tts = createOmniVoiceTts({ loadRuntime });
     await expect(tts.generate('Hej!', { voice })).resolves.not.toHaveProperty('voiceRecovery');
+    expect(loadRuntime).toHaveBeenCalledTimes(2);
+    expect(engine.dispose).toHaveBeenCalledOnce();
+    expect(engine.synthesize.mock.calls[0][0]).toEqual(engine.synthesize.mock.calls[1][0]);
+    await expect(tts.generate('Hej!', { voice })).resolves.not.toHaveProperty('voiceRecovery');
+    await tts.dispose();
+  });
+
+  it('clears failed initialization so preparation can be retried without reloading the extension', async () => {
+    const broken = { init: vi.fn().mockRejectedValue(new Error('GPU unavailable')), terminate: vi.fn(), dispose: vi.fn() };
+    const fresh = { init: vi.fn(), synthesize: vi.fn().mockResolvedValue(audio), dispose: vi.fn(), abortGeneration: vi.fn() };
+    const loadRuntime = vi.fn().mockResolvedValueOnce(broken).mockResolvedValue(fresh);
+    const tts = createOmniVoiceTts({ loadRuntime });
+    await expect(tts.init()).rejects.toThrow('GPU unavailable');
+    expect(broken.terminate).toHaveBeenCalledOnce();
+    expect(broken.dispose).toHaveBeenCalledOnce();
+    await expect(tts.init()).resolves.toBe(tts);
+    await expect(tts.generate('Hej!', { voice })).resolves.toHaveProperty('sampling_rate', 24000);
+    expect(loadRuntime).toHaveBeenCalledTimes(2);
+    await tts.dispose();
+  });
+
+  it('recovers a runtime AbortError when the user has not cancelled', async () => {
+    const engine = { init: vi.fn(), synthesize: vi.fn().mockRejectedValueOnce(new DOMException('GPU operation aborted', 'AbortError')).mockResolvedValue(audio),
+      terminate: vi.fn(), dispose: vi.fn(), abortGeneration: vi.fn() };
+    const loadRuntime = vi.fn(async () => engine);
+    const tts = createOmniVoiceTts({ loadRuntime });
+    await expect(tts.generate('Hej!', { voice })).resolves.toHaveProperty('sampling_rate', 24000);
+    expect(loadRuntime).toHaveBeenCalledTimes(2);
+    await tts.dispose();
+  });
+
+  it('stops after one crash recovery and leaves a fresh path for the next read', async () => {
+    const broken = { init: vi.fn(), synthesize: vi.fn().mockRejectedValue(new Error('Device lost')), terminate: vi.fn(), dispose: vi.fn(), abortGeneration: vi.fn() };
+    const fresh = { ...broken, synthesize: vi.fn().mockResolvedValue(audio) };
+    const loadRuntime = vi.fn().mockResolvedValueOnce(broken).mockResolvedValueOnce(broken).mockResolvedValue(fresh);
+    const tts = createOmniVoiceTts({ loadRuntime });
+    await expect(tts.generate('Hej!', { voice })).rejects.toThrow('Device lost');
+    expect(broken.synthesize).toHaveBeenCalledTimes(2);
+    await expect(tts.generate('Nästa försök.', { voice })).resolves.toHaveProperty('sampling_rate', 24000);
+    expect(loadRuntime).toHaveBeenCalledTimes(3);
     await tts.dispose();
   });
 
@@ -144,11 +206,12 @@ describe('OmniVoice integration', () => {
       voiceRecovery: { selectedSeed: 42, seed: 43 } });
     expect(broken.dispose).toHaveBeenCalledOnce();
     expect(loadRuntime).toHaveBeenCalledTimes(2);
-    expect(onProgress).toHaveBeenCalledWith({ message: 'Audio check failed. Recreating this voice…' });
+    expect(onProgress).toHaveBeenCalledWith({ message: 'Audio check failed. Retrying with the same voice…' });
     expect(broken.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 42, numStep: 24 }));
     expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 43, speed: 1, numStep: 24 }));
-    await expect(tts.generate('Nästa mening.', { voice })).resolves.toHaveProperty('voiceRecovery', { selectedSeed: 42, seed: 43 });
-    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 43, numStep: 12 }));
+    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ speakerId:'male-1' }));
+    await expect(tts.generate('Nästa mening.', { voice })).resolves.not.toHaveProperty('voiceRecovery');
+    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 42, numStep: 24, speakerId:'male-1' }));
     await tts.generate('En annan röst.', { voice: { ...voice, omniVoice: { ...voice.omniVoice, variation: 10 } } });
     expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 51, numStep: 24 }));
     await tts.dispose();

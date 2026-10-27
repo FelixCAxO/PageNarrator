@@ -23,8 +23,13 @@ export function t(source, substitutions = [], options = {}) {
 }
 
 export function languageName(code, fallback = code, locale = globalThis.chrome?.i18n?.getUILanguage?.() || 'en') {
-  try { return new Intl.DisplayNames([locale.replaceAll('_', '-')], { type: 'language' }).of(code) || fallback; }
+  try { return new Intl.DisplayNames([locale.replaceAll('_', '-')], { type: 'language', fallback: 'none' }).of(code) || fallback; }
   catch { return fallback; }
+}
+
+export function localizeLanguageOptions(languages) {
+  return languages.map(language => ({ ...language, label: languageName(language.code, language.label) }))
+    .sort((a, b) => a.label.localeCompare(b.label, globalThis.chrome?.i18n?.getUILanguage?.() || 'en'));
 }
 
 export function localizeDocument(root = globalThis.document, options = {}) {

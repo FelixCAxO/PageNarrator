@@ -17,9 +17,15 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
   let queue = Promise.resolve();
   let retired = false;
   let disposal = null;
-  let speakerKey = null;
-  let speakerSeed = null;
   let initialized = false;
+  async function resetRuntime() {
+    const failed = engine;
+    engine = null;
+    initialized = false;
+    failed?.terminate?.();
+    await Promise.resolve().then(() => failed?.dispose()).catch(suppressError);
+    initPromise = null;
+  }
   return {
     capabilities: { id: 'omnivoice', local: true, streaming: false, wordTimings: false, requiresNetwork: false },
     /** @param {{signal?: AbortSignal|null}} [options] */
@@ -27,12 +33,12 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
       if (retired) return Promise.reject(new DOMException('OmniVoice was released.', 'AbortError'));
       initPromise ||= loadRuntime({ onProgress }).then(async runtime => {
         engine = runtime;
-        if (retired) { runtime.terminate?.(); await runtime.dispose(); throw new DOMException('OmniVoice was released.', 'AbortError'); }
+        if (retired) throw new DOMException('OmniVoice was released.', 'AbortError');
         await engine.init(OMNIVOICE_MODEL_BASE_URL);
         if (retired) throw new DOMException('OmniVoice was released.', 'AbortError');
         initialized = true;
         return this;
-      });
+      }).catch(async error => { await resetRuntime(); throw error; });
       if (!signal) return initPromise;
       const abort = () => { void this.dispose().catch(suppressError); };
       signal?.addEventListener('abort', abort, { once: true });
@@ -45,46 +51,33 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
       const job = queue.then(async () => {
         if (retired) throw new Error('OmniVoice has been disposed.');
         if (signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
-        await this.init();
-        if (signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
         const abort = () => engine?.abortGeneration();
         signal?.addEventListener('abort', abort, { once: true });
         try {
-          const key = JSON.stringify([params.lang, params.instruct, params.seed]);
-          let seed = speakerKey === key ? speakerSeed ?? params.seed : params.seed;
+          let seed = params.seed;
           for (let attempt = 0; attempt < 2; attempt += 1) {
             try {
-              const numStep = speakerKey === key ? 12 : params.numStep;
-              const result = await engine.synthesize({ ...params, seed, numStep });
+              await this.init({ signal });
+              if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
+              const result = await engine.synthesize({ ...params, seed });
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
               const audio = result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm);
               assertOmniVoiceAudio(audio, result.sampleRate);
-              speakerKey = result.speaker?.anchorHash ? key : null;
-              speakerSeed = speakerKey ? seed : null;
               return { audio, sampling_rate: result.sampleRate,
                 ...(seed !== params.seed ? { voiceRecovery: { selectedSeed: params.seed, seed } } : {}) };
             } catch (error) {
-              if (!(error instanceof Error) || error.name !== 'OmniVoiceAudioQualityError' || retired || signal?.aborted) throw error;
-              speakerKey = null;
-              speakerSeed = null;
-              const failed = engine;
-              engine = null;
-              initialized = false;
-              await Promise.resolve(failed.dispose()).catch(suppressError);
-              initPromise = null;
+              if (retired || signal?.aborted) throw error;
+              await resetRuntime();
               if (attempt) throw error;
-              // Repeating the same seed in a fresh worker reproduces a deterministic bad speaker.
-              seed = (seed + 1) >>> 0;
-              logger.warn('Invalid OmniVoice audio; recreating the voice once.', { selectedSeed: params.seed, seed });
-              onProgress({ message: 'Audio check failed. Recreating this voice…' });
-              if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
-              await this.init();
+              // Retry sampling with the same fixed speakerId, never substitute another voice.
+              const badAudio = error instanceof Error && error.name === 'OmniVoiceAudioQualityError';
+              if (badAudio) seed = (seed + 1) >>> 0;
+              logger.warn('OmniVoice failed; restarting with the same voice.', { error, selectedSeed: params.seed, seed, speakerId: params.speakerId });
+              onProgress({ message: badAudio ? 'Audio check failed. Retrying with the same voice…' : 'Voice engine stopped. Restarting with the same voice…' });
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
             }
           }
         } catch (error) {
-          speakerKey = null;
-          speakerSeed = null;
           if (signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
           throw error;
         } finally {

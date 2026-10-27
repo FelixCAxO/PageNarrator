@@ -171,10 +171,11 @@ export async function getStoredVoiceForLanguage(language, { storage = globalThis
  * @param {Record<string, unknown>} settings
  */
 export function normalizePlaybackSettings(settings = {}) {
+  const language = normalizeLanguageSetting(settings?.language);
   const normalized = {
     ttsEngine: normalizeTtsEngine(settings?.ttsEngine),
-    omniVoice: normalizeOmniVoiceSettings(settings?.omniVoice),
-    language: normalizeLanguageSetting(settings?.language),
+    omniVoice: normalizeOmniVoiceSettings(settings?.omniVoice, language),
+    language,
     voice: normalizeVoiceSetting(settings?.voice),
     speed: clampPlaybackSpeed(settings?.speed),
     sectionPauseSeconds: clampSectionPauseSeconds(settings?.sectionPauseSeconds),
