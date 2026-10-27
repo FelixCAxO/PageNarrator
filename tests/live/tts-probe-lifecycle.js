@@ -299,7 +299,7 @@ export async function scrollDocumentToTop(cdp, documentTarget) {
 
 export async function clearResumePosition(cdp, serviceWorkerSessionId, documentTarget) {
   await evaluateExpression(cdp, serviceWorkerSessionId,
-    `chrome.storage.local.remove(${JSON.stringify(getResumePositionStorageKey(documentTarget.url))}).then(() => true)`);
+    `chrome.storage.local.remove(${JSON.stringify(getResumePositionStorageKey(documentTarget.sourceUrl || documentTarget.url))}).then(() => true)`);
 }
 
 // Extraction correctness against the workload's authored reference.

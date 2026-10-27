@@ -158,6 +158,7 @@ export async function openProbePdfDocument(cdp, extensionId, serviceWorkerSessio
       documentType,
       title: 'PageNarrator TTS Probe PDF',
       url: viewerUrl,
+      sourceUrl: pdfUrl,
       contentSha256: sha256(bytes),
       tabId,
       targetId,

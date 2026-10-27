@@ -103,7 +103,7 @@ export async function configureProbeRead(cdp, extensionPageSessionId, documentTa
         ${JSON.stringify(PLAYBACK_SETTINGS_KEY)},
         ${JSON.stringify(TEST_HOOKS_KEY)},
         ${JSON.stringify(TEST_FORCE_KOKORO_FAILURE_KEY)},
-        ${JSON.stringify(getResumePositionStorageKey(documentTarget.url))},
+        ${JSON.stringify(getResumePositionStorageKey(documentTarget.sourceUrl || documentTarget.url))},
       ]);
       await chrome.storage.local.set({
         ${JSON.stringify(TTS_HARDWARE_PROBE_STORAGE_KEY)}: {
