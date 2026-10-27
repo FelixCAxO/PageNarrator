@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.2 (unreleased)
+## 1.0.2 (2026-10-27)
 
 - Give each of the 32 OmniVoice languages ten fixed female and ten fixed male references, stable across documents, reading positions and retries; add normal/whisper screening and exact restart checks.
 - Render experimental whisper from the selected speaker with deterministic breath excitation; keep Cantonese and Thai whisper selectable with a word-loss warning.
@@ -16,7 +16,7 @@
 - Preserve small recurrent activations and signed zero on CPU, improve small GPU activations, and retain float32 STFT windowing precision.
 - Require independent math checks and bound blind voice reviews under the maintainer's approved speech-quality target; retain earlier PCM failures as diagnostics.
 
-This candidate is not released or qualified yet. The accepted PDF reading-order result is 97/100 on the fixed benchmark. Physical-device distributions, independent PDF/voice reviews and final release checks remain required; v1.0.1 exceptions do not carry forward. Historical PCM mismatches remain failed/unqualified diagnostics under the new correct-math-and-speech-quality target.
+Published at the maintainer's explicit instruction with the limitations in the [release verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md). PDF reading order scored 97/100 on the fixed benchmark. Independent PDF/voice reviews remain pending; physical hardware qualification did not pass and three OmniVoice continuity timings remain unqualified. Historical PCM mismatches remain failed/unqualified diagnostics. Publication changes no thresholds or results and establishes no listening-quality or hardware qualification.
 
 ## 1.0.1
 

@@ -4,9 +4,9 @@
 
 Read webpages, selected text, and PDFs aloud in Chrome. Speech runs on your device. Follow the highlights, use the transcript, and resume where you stopped. Free. No account or usage quota.
 
-[Build locally](#build-and-test) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
+[Download v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
 
-This repository starts from a fresh initial commit. Previous GitHub releases and tags were removed; build from source for installation.
+Version 1.0.2 is available on GitHub. See the [release notes and verification report](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2) for changes and remaining quality and performance limits. The repository was recreated with a fresh initial commit; retired earlier release assets are no longer hosted.
 
 [Engineering decisions and results](docs/project-architecture.md#engineering-decisions)
 
@@ -17,13 +17,15 @@ Incognito access is disabled while private reading metadata lacks separate stora
 
 ## Install
 
-1. Follow [Build and test](#build-and-test) to produce the `dist/` folder.
+1. Download [pagenarrator-1.0.2.zip](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip) and extract it.
 2. Open `chrome://extensions` and enable **Developer mode**.
-3. Choose **Load unpacked** and select the `dist/` folder.
+3. Choose **Load unpacked** and select the extracted folder containing `manifest.json`.
 4. Open an article, click the PageNarrator toolbar icon, and choose **Read page**.
 5. Wait for the first voice download and setup to finish.
 
 For local PDFs, enable **Allow access to file URLs** in the extension's details. Use **Read selected** to hear a highlighted passage. Playback continues when you close the popup.
+
+To build locally instead, follow [Build and test](#build-and-test) and load the resulting `dist/` folder.
 
 ### Update an unpacked installation
 
@@ -35,7 +37,7 @@ For a source build, update the checkout, run `npm ci` and `npm run build`, and r
 
 - **Kokoro:** ten English voices. Uses WebGPU when available, with a slower CPU / WebAssembly fallback.
 - **First Kokoro setup:** about 93 MB on CPU or 326 MB on GPU, including one voice. Another voice needs about 0.5 MB. Switching processing mode can download the other model.
-- **OmniVoice:** experimental multilingual speech. Requires WebGPU with fp16 support and a separate download of about 1.35 GB. Its 646 upstream language entries have not all been checked for pronunciation or performance.
+- **OmniVoice:** experimental speech in 32 selectable languages, with ten fixed female and ten fixed male variations per language. Requires WebGPU with fp16 support and a separate download of about 1.35 GB. Native pronunciation, listening quality and performance are not fully qualified.
 - **Playback:** 0.5× to 3×, section pauses, reading cleanup, and highlight colors.
 - **PDFs:** selectable text and local English OCR. Scan quality and layout affect accuracy. Unsupported formats and resource limits return an error.
 

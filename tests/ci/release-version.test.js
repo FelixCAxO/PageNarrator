@@ -17,14 +17,15 @@ describe('release metadata', () => {
     expect(manifest.version).toBe(packageJson.version);
   });
 
-  it('documents the unreleased candidate, latest published release and retained PDF highlight policy', () => {
+  it('documents the published release, previous releases and retained PDF highlight policy', () => {
     const changelog = read('website/public/changelog.html');
     const readerUi = read('docs/reader-ui.md');
-    expect(read('CHANGELOG.md')).toContain('## 1.0.2 (unreleased)');
+    expect(read('CHANGELOG.md')).toContain('## 1.0.2 (2026-10-27)');
 
+    expect(changelog).toContain('Version 1.0.2');
     expect(changelog).toContain('Version 1.0.1');
     expect(changelog).toContain('Version 1.0.0');
-    expect(changelog.match(/<h2>Version /g)).toHaveLength(2);
+    expect(changelog.match(/<h2>Version /g)).toHaveLength(3);
     expect(readerUi).toContain('deterministic render-window management');
     expect(readerUi).toContain('CSS text-range highlight first');
     expect(readerUi).toContain('queued next-region overlay is disabled for PDFs');

@@ -97,17 +97,17 @@ describe('production website smoke audit', () => {
     }, fetchPage)).resolves.toEqual({ path: '/pricing', errors: [] });
   });
 
-  it('rejects a stale install page with missing source instructions', async () => {
+  it('rejects stale version labels and download links on the install page', async () => {
     const contract = pageContracts.find(({ path }) => path === '/chrome-extension');
     const html = readFileSync(join(publicDir, 'chrome-extension.html'), 'utf8');
     const current = await auditPage('https://pagenarrator.com', contract, async () => new Response(html));
     expect(current.errors).toEqual([]);
-    const stale = html.replaceAll('Previous release downloads are no longer available', 'Old downloads are available')
-      .replaceAll('https://github.com/FelixCAxO/PageNarrator', 'https://example.invalid');
+    const stale = html.replaceAll('Install v1.0.2', 'Install v1.0.1')
+      .replaceAll('pagenarrator-1.0.2.zip', 'pagenarrator-1.0.1.zip');
     const result = await auditPage('https://pagenarrator.com', contract, async () => new Response(stale));
     expect(result.errors).toEqual(expect.arrayContaining([
-      'missing text: Previous release downloads are no longer available',
-      'missing link: https://github.com/FelixCAxO/PageNarrator',
+      'missing text: Install v1.0.2',
+      'missing link: https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip',
     ]));
   });
 

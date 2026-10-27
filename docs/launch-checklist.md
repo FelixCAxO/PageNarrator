@@ -1,6 +1,6 @@
 # Release checklist
 
-The development candidate is 1.0.2 (unreleased); the latest published release is 1.0.1. The repository was recreated with one initial commit; previous release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
+The latest published release is 1.0.2, authorized by the maintainer on 2026-10-27 with the remaining limitations disclosed in its public verification report. The repository was recreated with one initial commit; retired earlier release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
 
 ## Public source repository
 
@@ -62,7 +62,7 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 - Check desktop and mobile pages. `npm run test:benchmarks` checks layout at 320, 375, 768, and 1366 px.
 - Verify `/pricing`, `/activate`, and `/refund` redirect to `/chrome-extension`.
 - Keep Cloudflare Single Redirect `54d11e0e1dc54b96b256b400ac3bbc37` for `https://www.pagenarrator.com/*` → `https://pagenarrator.com/${1}`, HTTP 301 with query strings. Path redirects stay in `_redirects`.
-- Check changelog v1.0.1 and terms preserving GPL-3.0-or-later, MIT, and Apache License 2.0 rights.
+- Check changelog v1.0.2 and terms preserving GPL-3.0-or-later, MIT, and Apache License 2.0 rights.
 - Verify no checkout script, price, purchase action, activation UI, or payment endpoint.
 - Keep the scoped URL rewrite `0795bb621e1343c6be34d2baa6492787` for host `pagenarrator.com` and exactly `/cws-demo` or `/cws-demo.html`, rewriting only the origin path to `/pagenarrator-removed-capture-fixture`. This prevents retained Pages asset aliases from serving an old local capture; both public URLs must return HTTP 404. Query strings and reader-facing routes are unchanged.
 - Keep the independent support mailbox Worker healthy. Follow `docs/support-mailbox.md` and verify the Gmail reply composer opens with `PageNarrator Support <support@pagenarrator.com>` in From.

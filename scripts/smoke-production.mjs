@@ -9,10 +9,10 @@ const { DOMParser } = new JSDOM('').window;
 const htmlParser = new DOMParser();
 const publicDir = fileURLToPath(new URL('../website/public/', import.meta.url));
 const requiredText = {
-  '/': ['Version 1.0.1 source is available on GitHub', '8 GB+ VRAM'],
-  '/chrome-extension': ['Install v1.0.1', 'Previous release downloads are no longer available', '93 MB', '326 MB', 'Update an unpacked installation'],
+  '/': ['Version 1.0.2 source is available on GitHub', '8 GB+ VRAM'],
+  '/chrome-extension': ['Install v1.0.2', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation'],
   '/support': ['source installation steps', 'Update without losing your place'],
-  '/changelog': ['1.0.1'],
+  '/changelog': ['Version 1.0.2', 'Fixed voices in 32 languages', 'Cantonese and Thai can omit words'],
   '/privacy': ['Chrome Web Store User Data Policy', 'Limited Use requirements', 'Built-in voice downloads', 'Online documents'],
   '/terms': ['GPL-3.0-or-later', 'MIT License', 'Apache License 2.0', 'These Terms do not restrict rights granted by those licenses'],
 };
@@ -55,8 +55,11 @@ export function loadPageContracts(directory = publicDir) {
         canonical: document.querySelector('link[rel="canonical"]')?.href,
         indexable,
         requiredText: requiredText[path] || [],
-        requiredLinks: path === '/chrome-extension'
-          ? ['https://github.com/FelixCAxO/PageNarrator'] : [],
+        requiredLinks: /\/(?:chrome-extension|changelog|support)$/u.test(path)
+          ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-source.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2',
+            ...(path.endsWith('/changelog') ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'] : [])] : [],
         forbiddenText: path === '/changelog' ? [] : ['Piper', 'browser voice', 'system voice'],
       };
       return contract;

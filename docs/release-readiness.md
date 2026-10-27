@@ -1,8 +1,8 @@
 # Verification status
 
-The development candidate is 1.0.2 (unreleased); the latest published GitHub release is 1.0.1. Previous GitHub releases were removed when the repository was recreated with a single initial commit. Chrome Web Store availability is pending.
+The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
-It fixes setup progress/cancellation, bounded PDF fallback, incognito exclusion, and stalled-worker recovery. On 2026-10-25 the maintainer explicitly extended the disclosed v1.0.0 exceptions to v1.0.1. PCM reference comparisons remain failed/unqualified; physical hardware and human/listening review requirements remain waived, not verified. The exact decisions are recorded separately in the release policy and do not cover v1.0.2.
+Version 1.0.1 fixed setup progress/cancellation, bounded PDF fallback, incognito exclusion, and stalled-worker recovery. On 2026-10-25 the maintainer explicitly extended the disclosed v1.0.0 exceptions to v1.0.1. PCM reference comparisons remain failed/unqualified; that version's physical hardware and human/listening review requirements were waived, not verified. The exact historical decisions are recorded separately in the release policy and do not cover v1.0.2.
 
 ## Recorded checks
 
