@@ -2,7 +2,7 @@
   "name": "pagenarrator",
   "version": "1.0.2",
   "private": true,
-  "description": "PageNarrator: Chrome extension that reads any web page aloud using on-device Kokoro TTS.",
+  "description": "Free, open-source text-to-speech extension for Chrome and Chromium. Read webpages and PDFs aloud with on-device AI voices. No account or usage quota.",
   "license": "GPL-3.0-or-later",
   "repository": {
     "type": "git",
