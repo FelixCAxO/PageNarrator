@@ -43,7 +43,7 @@ describe('website copy', () => {
     for (const step of ['Node.js 22.13+ (22.x) or 24+', 'npm ci', 'npm run build', 'chrome://extensions', 'Load unpacked', 'dist/']) {
       expect(text, step).toContain(step);
     }
-    expect(bodyText('index.html')).toContain('Chrome Web Store availability is pending');
+    expect(bodyText('index.html')).toMatch(/Chrome Web Store (?:availability is pending|listing is not available yet)/);
     expect(bodyText('changelog.html')).not.toMatch(/pitch, age/);
     for (const name of pages) expect(bodyText(name), name).not.toContain('private preview');
     expect(bodyText('changelog.html')).toContain('Version 1.0.1');

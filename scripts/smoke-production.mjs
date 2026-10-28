@@ -9,7 +9,7 @@ const { DOMParser } = new JSDOM('').window;
 const htmlParser = new DOMParser();
 const publicDir = fileURLToPath(new URL('../website/public/', import.meta.url));
 const requiredText = {
-  '/': ['Version 1.0.2 source is available on GitHub', '8 GB+ VRAM'],
+  '/': ['Read webpages and PDFs aloud.', 'No account or usage quota', 'Hugging Face'],
   '/chrome-extension': ['Install v1.0.2', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation'],
   '/support': ['source installation steps', 'Update without losing your place'],
   '/changelog': ['Version 1.0.2', 'Fixed voices in 32 languages', 'Cantonese and Thai can omit words'],
