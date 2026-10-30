@@ -4,6 +4,7 @@ import {
   normalizeReaderAction,
 } from '../../src/lib/core/reader-engine-message-router.js';
 import { MESSAGE_TYPES, READER_ACTION_TYPES } from '../../src/lib/message-types.js';
+import { PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS } from '../../src/lib/timing-config.js';
 
 describe('readerEngine message router', () => {
   afterEach(() => {
@@ -124,6 +125,43 @@ describe('readerEngine message router', () => {
 
     expect(sendMessage).toHaveBeenCalledTimes(3);
     expect(delays).toEqual([80, 80]);
+  });
+
+  it.each([
+    MESSAGE_TYPES.HIGHLIGHT_CHUNK, MESSAGE_TYPES.HIGHLIGHT_QUEUED,
+    MESSAGE_TYPES.SET_HIGHLIGHT_SETTINGS, MESSAGE_TYPES.FLASH_RESUME_SECTION,
+    MESSAGE_TYPES.SET_HIGHLIGHT_PAUSED, MESSAGE_TYPES.CLEAR_HIGHLIGHT,
+  ])('bounds an unresponsive background visual update (%s) without replaying it', async (type) => {
+    vi.useFakeTimers();
+    let respond;
+    const sendMessage = vi.fn(() => new Promise(resolve => { respond = resolve; }));
+    const router = createReaderEngineMessageRouter({ tabs: { sendMessage } });
+    const settled = vi.fn();
+    const message = router.sendPageMessage(9, { type }).then(settled);
+    await vi.advanceTimersByTimeAsync(PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS - 1);
+    expect(settled).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(1);
+    await message;
+    expect(settled).toHaveBeenCalledExactlyOnceWith(null);
+    expect(sendMessage).toHaveBeenCalledTimes(1);
+    respond({ ok: true });
+    await Promise.resolve();
+    expect(settled).toHaveBeenCalledTimes(1);
+    expect(vi.getTimerCount()).toBe(0);
+  });
+
+  it('preserves a pending document request until it supplies the required text', async () => {
+    vi.useFakeTimers();
+    let respond;
+    const sendMessage = vi.fn(() => new Promise(resolve => { respond = resolve; }));
+    const router = createReaderEngineMessageRouter({ tabs: { sendMessage } });
+    const settled = vi.fn();
+    const request = router.sendPageMessage(9, { type: MESSAGE_TYPES.GET_READING_START }).then(settled);
+    await vi.advanceTimersByTimeAsync(PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS * 2);
+    expect(settled).not.toHaveBeenCalled();
+    respond({ ok: true, startPosition: { pageNumber: 2 } });
+    await request;
+    expect(settled).toHaveBeenCalledExactlyOnceWith({ ok: true, startPosition: { pageNumber: 2 } });
   });
 
   it('keeps the longer PDF viewer readiness retry budget for metadata', async () => {

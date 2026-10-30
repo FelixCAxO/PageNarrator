@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Sledujte zvýraznenia, používajte prepis, pokračujte z uložených pozícií a nastavte rýchlosť od 0,5× do 3×. Čítanie pokračuje aj po zatvorení vyskakovacieho okna.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Pomoc s nastavením</a> · <a href='/privacy'>Súkromie</a>",
   "Build from source": "Zostavenie zo zdrojového kódu",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Zostavte rozšírenie lokálne. Nainštalujte Node.js 22.13+ (22.x) alebo 24+ a potom:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Zostavte rozšírenie lokálne. Nainštalujte Node.js 22.23.4+ (22.x) alebo 24.22.1+ a potom:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Naklonujte <a href='https://github.com/FelixCAxO/PageNarrator'>repozitár</a> a otvorte terminál v <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Spustite <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Spustite <code>npm run build</code>.",

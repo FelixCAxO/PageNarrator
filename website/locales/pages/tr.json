@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Vurgulamaları takip edin, metin dökümünü kullanın, kayıtlı konumdan devam edin ve hızı 0,5× ile 3× arasında ayarlayın. Açılır pencereyi kapatsanız da okuma sürer.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Kurulum yardımı</a> · <a href='/privacy'>Gizlilik</a>",
   "Build from source": "Kaynak koddan derleme",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Uzantıyı cihazınızda derleyin. Node.js 22.13+ (22.x) veya 24+ yükleyin, ardından:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Uzantıyı cihazınızda derleyin. Node.js 22.23.4+ (22.x) veya 24.22.1+ yükleyin, ardından:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "<a href='https://github.com/FelixCAxO/PageNarrator'>Depoyu</a> klonlayın ve <code>PageNarrator</code> klasöründe bir terminal açın.",
   "Run <code>npm ci</code>.": "<code>npm ci</code> komutunu çalıştırın.",
   "Run <code>npm run build</code>.": "<code>npm run build</code> komutunu çalıştırın.",

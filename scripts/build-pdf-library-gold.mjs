@@ -137,10 +137,21 @@ export function referenceCheckpoints(layoutText, rawPdfJsText, protocol, forbidd
   const omitted = new Set(forbidden.map(furnitureKey).filter(Boolean));
   const lines = String(layoutText).split(/\r?\n/u).map(value => value.trim()).filter(Boolean);
   const sourceRows = sourcePage ? sourceWordRows(sourcePage, { byBottom: true, splitGaps: true }) : [];
+  const heights = (sourcePage?.rawWords || []).map(word => word.bottom - word.top).sort((a, b) => a - b);
+  const bodyHeight = heights[Math.floor(heights.length / 2)] || 0;
+  const marginal = protocol.mainFlowCheckpoints ? (sourcePage?.rawWords || []).filter(word =>
+    word.bottom - word.top < bodyHeight * .85 && (word.x1 < sourcePage.width * .3 || word.x0 > sourcePage.width * .7)) : [];
+  const marginalText = furnitureKey(marginal.map(word => word.text).join(' '));
   const possible = []; let referenceCursor = 0;
   for (const [lineIndex, line] of lines.entries()) {
     if (omitted.has(furnitureKey(line))) continue;
+    // Independent layout order does not establish where an annotation interrupts body prose.
+    if (protocol.mainFlowCheckpoints && (/@|https?:\/\/|www\./iu.test(line)
+      || marginalText.includes(furnitureKey(line)) && furnitureKey(line))) continue;
     let text = line;
+    // Source author/year and numeric citation markers are not spoken-order anchors.
+    if (protocol.mainFlowCheckpoints) text = text.split(/\([^)]*\b(?:18|19|20)\d{2}[a-z]?\b[^)]*\)|\[\s*\d+(?:\s*[,–-]\s*\d+)*\s*\]/u)
+      .sort((a, b) => b.length - a.length)[0].trim();
     // A checkpoint boundary must not assert a fragment of a source word. Keep
     // the remaining verbatim span; do not guess joined versus compound spelling.
     if (lineIndex && /\p{L}[-\u00ad\u2010]$/u.test(lines[lineIndex - 1]) && /^\p{Ll}/u.test(text)

@@ -2,6 +2,8 @@
 
 The latest published release is 1.0.2, authorized by the maintainer on 2026-10-27 with the remaining limitations disclosed in its public verification report. The repository was recreated with one initial commit; retired earlier release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
 
+On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching local extension/source ZIPs with the same disclosed limitations as 1.0.2. This local preparation changes no gate results or thresholds and includes no push, publication, deployment or Store submission. Keep pending human reviews, unqualified hardware, failed waveform diagnostics and limited OmniVoice timing coverage visible in the accompanying verification report.
+
 ## Public source repository
 
 - Review the exact commit and all new tracked files before pushing.
@@ -14,7 +16,7 @@ The latest published release is 1.0.2, authorized by the maintainer on 2026-10-2
 
 1. Run `npm run test:models` and `npm run verify:release` from the repository root. The full gate needs the pinned private PDF library references.
 2. Record v1.0.0's waived physical hardware and human/listening reviews (2026-10-24) and accepted Kokoro duration/PCM limitation (2026-10-25). These are not passes. Keep failed/unqualified diagnostics and unchanged thresholds. All other applicable automatic checks remain required; the explicit v1.0.1 extension was authorized on 2026-10-25 and neither version grants exceptions to v1.0.2. See [policy](../config/release-policy.json) and [verification status](release-readiness.md).
-3. Run `npm run test:pdf-acceptance` against revision 05: 90 private reference pages plus ten authored controls. Reference generation alone is not a product pass. Keep results and failures. The separate historical lane is `npm run test:pdf-acceptance:historical`; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
+3. Run `npm run test:pdf-acceptance` against revision 06: 90 private reference pages plus ten authored controls. Retain revision 05 and its original 97/100 result; corrected checkpoints are regression corrections, not new holdout evidence. Reference generation alone is not a product pass. Keep results and failures. The separate historical lane is `npm run test:pdf-acceptance:historical`; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
 4. Build from a clean reviewed commit. Source packaging rejects tracked edits and stages an exact `git archive` export of HEAD. Untracked and ignored files never enter the source ZIP. A distributed source ZIP can be rebuilt only with its declared files unchanged under `SOURCE-MANIFEST.json`.
 5. Distribute `releases/pagenarrator-<version>.zip` and `releases/pagenarrator-<version>-source.zip` together. Fixed entry times make identical contents reproduce the ZIP hash. Compare the upload's SHA-256 with the tested file.
 6. Attach a public verification report to the same release. Record the exact source commit and archive hashes, tool/browser versions, commands and results, documented skips, waived checks, and accepted failures. Publish only an allowlist of summary fields: exclude private document names/text, absolute paths, browser profiles, credentials, and raw diagnostics. Link the report from the release notes and verification guide. A partial public rerun must stay separate from the historical full-gate record.

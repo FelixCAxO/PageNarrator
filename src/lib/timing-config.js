@@ -10,6 +10,7 @@ export const FAST_PLAYBACK_AUDIO_WATCHDOG_BUFFER_MS = TUNING_CONFIG.playback.fas
 export const NORMAL_PLAYBACK_AUDIO_WATCHDOG_BUFFER_MS = TUNING_CONFIG.playback.normalPlaybackWatchdogBufferMs;
 export const STREAM_SYNTHESIS_TIMEOUT_MS = TUNING_CONFIG.playback.streamSynthesisTimeoutMs;
 export const PDF_VIEWER_MESSAGE_TIMEOUT_MS = TUNING_CONFIG.playback.pdfViewerMessageTimeoutMs;
+export const PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS = TUNING_CONFIG.playback.pageHighlightMessageTimeoutMs;
 export const PDF_RENDER_UNLOAD_DELAY_MS = TUNING_CONFIG.playback.pdfRenderUnloadDelayMs;
 export const BROWSER_SPEECH_BOUNDARY_TIMEOUT_MS = TUNING_CONFIG.playback.browserSpeechBoundaryTimeoutMs;
 export const PLAYBACK_SETTINGS_WRITE_DEBOUNCE_MS = TUNING_CONFIG.playback.playbackSettingsWriteDebounceMs;

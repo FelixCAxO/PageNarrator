@@ -52,14 +52,32 @@ describe('page highlighter', () => {
     dom.window.close();
   });
 
-  it('does not invent a PDF decimal point across other content', () => {
-    const dom = createDom('<span>4</span><span>label</span><span>9</span>');
-    const entries = [...dom.window.document.querySelectorAll('span')].map(span => {
+  it.each(['super().deposit', 'super().eats', 'super().push'])('maps spoken member access to the original empty call: %s', source => {
+    const spoken = source.replace('()', '');
+    const dom = createDom(`<section class="pdf-page" data-pagenarrator-id="pdf-page-1" data-pagenarrator-pdf-text="Call ${spoken} then continue">
+      <span data-pagenarrator-pdf-order="0">Call ${source} then continue</span>
+    </section>`);
+    const highlighted = installHighlightCapture();
+    const highlighter = createPageHighlighter(dom.window.document, { pdfMode: true });
+    makeVisible(dom.window.document.querySelector('section'));
+    expect(highlighter.highlightChunkByAnchor('pdf-page-1', null)).toEqual({ ok: true });
+    for (const [index, text] of ['Call', source, 'then', 'continue'].entries()) {
+      expect(highlighter.highlightWord(index)).toEqual({ ok: true });
+      expect(getLatestHighlight(highlighted, 'pagenarrator-word-0')?.text).toBe(text);
+    }
+    highlighter.dispose();
+    dom.window.close();
+  });
+
+  it.each(['4 label 9', 'super(42).deposit'])('does not invent a PDF dotted word across other content: %s', source => {
+    const dom = createDom(`<span>${source}</span>`);
+    const node = dom.window.document.querySelector('span').firstChild;
+    const entries = tokenizeSpokenWords(source, { includeNonSpoken: true }).map(token => {
       const range = dom.window.document.createRange();
-      range.selectNodeContents(span);
-      return { text: span.textContent, range };
+      range.setStart(node, token.start); range.setEnd(node, token.end);
+      return { text: token.text, range };
     });
-    expect(findMergedPdfFragmentMatch(entries, 0, '4.9', text => text, ranges => ranges)).toBeNull();
+    expect(findMergedPdfFragmentMatch(entries, 0, source.startsWith('4') ? '4.9' : 'super.deposit', text => text, ranges => ranges)).toBeNull();
     dom.window.close();
   });
 

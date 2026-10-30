@@ -11,11 +11,14 @@ const logger = createLogger('omnivoice');
 const suppressError = createSuppressedErrorHandler(logger, 'OmniVoice cleanup failed.');
 /** @param {any} [deps] */
 export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProgress = () => {} } = {}) {
+  /** @type {Awaited<ReturnType<typeof createOmniVoiceWorker>>|null} */
   let engine = null;
+  /** @type {Promise<object>|null} */
   let initPromise = null;
   /** @type {Promise<any>} */
   let queue = Promise.resolve();
   let retired = false;
+  /** @type {Promise<void>|null} */
   let disposal = null;
   let initialized = false;
   async function resetRuntime() {
@@ -34,7 +37,7 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
       initPromise ||= loadRuntime({ onProgress }).then(async runtime => {
         engine = runtime;
         if (retired) throw new DOMException('OmniVoice was released.', 'AbortError');
-        await engine.init(OMNIVOICE_MODEL_BASE_URL);
+        await runtime.init(OMNIVOICE_MODEL_BASE_URL);
         if (retired) throw new DOMException('OmniVoice was released.', 'AbortError');
         initialized = true;
         return this;
@@ -45,8 +48,8 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
       if (signal?.aborted) abort();
       return withAbortSignal(initPromise, signal).finally(() => signal?.removeEventListener('abort', abort));
     },
-    /** @param {string} text @param {{ voice: any, signal?: AbortSignal|null }} options */
-    generate(text, { voice, signal = null }) {
+    /** @param {string} text @param {{ voice: any, signal?: AbortSignal|null, onSynthesisProgress?: any }} options */
+    generate(text, { voice, signal = null, onSynthesisProgress = null }) {
       const params = createOmniVoiceRequest(text, voice);
       const job = queue.then(async () => {
         if (retired) throw new Error('OmniVoice has been disposed.');
@@ -59,7 +62,9 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
             try {
               await this.init({ signal });
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
-              const result = await engine.synthesize({ ...params, seed });
+              const runtime = engine;
+              if (!runtime) throw new Error('OmniVoice runtime was not initialized.');
+              const result = await runtime.synthesize({ ...params, seed }, ...(onSynthesisProgress ? [{ onProgress: onSynthesisProgress }] : []));
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
               const audio = result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm);
               assertOmniVoiceAudio(audio, result.sampleRate);

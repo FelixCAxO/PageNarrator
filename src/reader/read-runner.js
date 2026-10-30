@@ -1,6 +1,6 @@
 /**
  * @param {object} [deps]
- * @param {ReturnType<import('./reader-session.js').createReaderSession>} [deps.session]
+ * @param {ReturnType<typeof import('./reader-session.js').createReaderSession>} [deps.session]
  * @param {((options: any) => Promise<any>|any)|null} [deps.extract]
  */
 export function createReadRunner({ session, extract = null } = {}) {

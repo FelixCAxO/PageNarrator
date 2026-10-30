@@ -4,6 +4,7 @@ import { constantIntegers, constantNumbers, tensorBytes } from './onnx-tensor.js
 import { GPU_BINARY_OPERATIONS, GPU_UNARY_OPERATIONS, WebGpuCompute } from './webgpu-compute.js';
 import { modelFeed } from './bounded-integers.js';
 import { fuseSnakeActivations } from './onnx-optimize.js';
+import { fuseHalfRmsNorms } from './onnx-rmsnorm.js';
 import { executeIndexNode, metadataTensor } from './onnx-metadata.js';
 import { bindExternalData } from './onnx-external-data.js';
 import { floatToHalf, halfToFloat, ONNX_TYPES, tensorArray } from './tensor-format.js';
@@ -132,6 +133,7 @@ export class WebGpuOnnxSession {
         if (name && !this.valueTypes.has(name)) this.valueTypes.set(name, node.opType === 'DynamicQuantizeLinear' ? [2, 1, 2][i] : type);
       });
     }
+    if (typeof engine.rmsNorm === 'function') this.nodes = fuseHalfRmsNorms(this.nodes, this.initializers, this.valueTypes);
     this.metadataInputs = metadataInputNames(this.nodes, this.inputNames);
   }
 
@@ -312,6 +314,7 @@ export class WebGpuOnnxSession {
         return batch.expand(asGpu(input), numbers(node.inputs[1]));
       }
       case 'FusedSnake': return batch.snake(input, asGpu(value(node.inputs[1])), asGpu(value(node.inputs[2])));
+      case 'FusedHalfRmsNorm': return batch.rmsNorm(input, asGpu(value(node.inputs[1])));
       case 'Conv': case 'ConvTranspose': {
         rejectUnknown(a, ['strides', 'dilations', 'pads', 'auto_pad', 'group', 'kernel_shape', ...(node.opType === 'ConvTranspose' ? ['output_padding'] : [])], node.opType);
         const weight = asGpu(value(node.inputs[1]));
@@ -381,7 +384,12 @@ export class WebGpuOnnxSession {
   async run(feeds, outputNames = this.outputNames) {
     if (this.closed) throw new Error('The model session has been disposed.');
     if (this.running) throw new Error('The model session already has an active inference.');
-    const plan = selectExecutionPlan(this.nodes, this.outputNames, outputNames);
+    let plan = this.lastExecutionPlan;
+    if (!Array.isArray(outputNames) || !plan || outputNames.length !== plan.outputNames.length
+      || outputNames.some((name, index) => name !== plan.outputNames[index])) {
+      plan = selectExecutionPlan(this.nodes, this.outputNames, outputNames);
+      this.lastExecutionPlan = plan;
+    }
     this.running = this.infer(feeds, plan);
     try { return await this.running; }
     finally { this.running = null; }
@@ -403,9 +411,15 @@ export class WebGpuOnnxSession {
       if (!aliases.has(data)) aliases.set(data, aliases.size);
       return aliases.get(data);
     });
-    const key = JSON.stringify([plan.outputNames, this.inputNames.map(name => [feeds[name].shape, feeds[name].bounds]), aliasIds,
+    const key = JSON.stringify([plan.outputNames, this.inputNames.map(name => feeds[name].shape), aliasIds,
       [...hostFeeds].map(name => [name, Array.from(feeds[name].data)])]);
-    const cached = this.cachedPlans.get(key);
+    let cached = this.cachedPlans.get(key);
+    // Token ranges may shrink between diffusion steps without changing any captured proof.
+    if (cached && [...cached.inputs].some(([name, tensor]) => feeds[name].bounds
+      && (!tensor.bounds || feeds[name].bounds.min < tensor.bounds.min || feeds[name].bounds.max > tensor.bounds.max))) {
+      await this.releasePlan(key);
+      cached = null;
+    }
     if (cached) {
       this.cachedPlans.delete(key); this.cachedPlans.set(key, cached); this.cachedPlan = cached;
       const written = new Set();
@@ -603,7 +617,7 @@ export class WebGpuOnnxSession {
         else if (this.weights.size) await this.engine.releaseMany([...this.weights.values()].flatMap(weight => weight.shards ? weight.shards.map(shard => shard.tensor) : [weight]));
       } catch (error) { errors.push(error); }
       this.weights.clear(); this.initializers.clear(); this.valueTypes.clear(); this.metadataInputs.clear();
-      this.nodes.length = 0; this.model = null; this.cachedPlan = null; this.cachedPlans.clear();
+      this.nodes.length = 0; this.model = null; this.cachedPlan = null; this.cachedPlans.clear(); this.lastExecutionPlan = null;
       if (errors.length === 1) throw errors[0];
       if (errors.length) throw new AggregateError(errors, 'Inference session cleanup failed.');
     })();

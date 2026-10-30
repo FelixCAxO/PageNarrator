@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "ハイライトや読み上げテキストを確認し、保存した位置から再開し、速度を0.5×〜3×に調整できます。ポップアップを閉じても読み上げは続きます。",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>セットアップのヘルプ</a> · <a href='/privacy'>プライバシー</a>",
   "Build from source": "ソースからビルド",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "拡張機能を端末内でビルドします。Node.js 22.13+（22.x）または24+をインストールしてから、次の手順を実行してください。",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "拡張機能を端末内でビルドします。Node.js 22.23.4+（22.x）または24.22.1+をインストールしてから、次の手順を実行してください。",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "<a href='https://github.com/FelixCAxO/PageNarrator'>リポジトリ</a>をクローンし、<code>PageNarrator</code>フォルダーでターミナルを開きます。",
   "Run <code>npm ci</code>.": "<code>npm ci</code>を実行します。",
   "Run <code>npm run build</code>.": "<code>npm run build</code>を実行します。",

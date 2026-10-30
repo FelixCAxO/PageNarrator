@@ -17,14 +17,14 @@ const sourceSha256 = () => Object.fromEntries(files.map(file => [file, hash(new 
 if (process.argv.includes('--check')) {
   const recorded = JSON.parse(readFileSync(metadata, 'utf8'));
   if (JSON.stringify(recorded.sourceSha256) !== JSON.stringify(sourceSha256()) || recorded.wasmSha256 !== hash(output)
-    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('Speech engine source/binary mismatch; rebuild with Zig 0.15.2.');
+    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('Speech engine source/binary mismatch; rebuild with Zig 0.17.0.');
 } else {
   const compiler = process.env.PN_ZIG || 'zig', version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to Zig 0.15.2.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to Zig 0.17.0.');
   mkdirSync(new URL('../public/native/', import.meta.url), { recursive: true });
   const built = spawnSync(compiler, [...flags, fileURLToPath(new URL(`../${files[0]}`, import.meta.url)), '-o', fileURLToPath(output)], { cwd: root, stdio: 'inherit' });
   if (built.status !== 0) throw new Error(`Speech C++ compilation failed (${built.status}).`);
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.15.2 (Clang C++)', flags, sourceSha256: sourceSha256(), wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.17.0 (Clang C++)', flags, sourceSha256: sourceSha256(), wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
 }
 if (WebAssembly.Module.imports(await WebAssembly.compile(readFileSync(output))).length) throw new Error('Speech engine must not import executable code.');
 console.log(`First-party speech C++/WASM verified: ${readFileSync(output).byteLength} bytes, no imports.`);

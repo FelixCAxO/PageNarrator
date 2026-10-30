@@ -39,23 +39,25 @@ for (const provider of ['wasm', 'webgpu']) {
             return { data: Array.from(new Float32Array(api.memory.buffer, start + 32, 3)), cleanup: true };
           }
           if (!await navigator.gpu?.requestAdapter()) return { unsupported: true };
-          const module = await import(chrome.runtime.getURL('assets/webgpu-onnx-session.js'));
+          const module = await import(chrome.runtime.getURL('assets/browser-inference.js'));
           // Vite may shorten internal export names; identify the original session by its API.
           const Session = Object.values(module).find(value => typeof value === 'function'
-            && typeof value.create === 'function' && typeof value.prototype?.run === 'function' && typeof value.prototype?.dispose === 'function');
-          if (!Session) throw new Error('Original graph session is absent from the build.');
+            && typeof value.create === 'function' && typeof value.prototype?.run === 'function' && typeof value.prototype?.release === 'function');
+          const Tensor = Object.values(module).find(value => typeof value === 'function'
+            && typeof value.prototype?.getData === 'function' && typeof value.prototype?.dispose === 'function');
+          if (!Session || !Tensor) throw new Error('Original graph session or tensor API is absent from the build.');
           const session = await Session.create(Uint8Array.from(atob(model), char => char.charCodeAt(0)));
           let data;
           try {
             const { c } = await session.run({
-              a: { data: Float32Array.from([-1, -2, 3]), shape: [3] },
-              b: { data: Float32Array.from([1, -1, 2]), shape: [3] },
+              a: new Tensor('float32', Float32Array.from([-1, -2, 3]), [3]),
+              b: new Tensor('float32', Float32Array.from([1, -1, 2]), [3]),
             });
             data = Array.from(c.data);
           } finally {
-            await session.dispose();
+            await session.release();
           }
-          return { data, cleanup: session.engine.buffers.size === 0 && session.engine.tensors.size === 0 };
+          return { data, cleanup: session.session.engine.buffers.size === 0 && session.session.engine.tensors.size === 0 };
         }, { provider, model: ADD_MODEL });
         test.skip(result.unsupported, 'Native WebGPU is unavailable on this host.');
         expect(result.data).toEqual([0, -3, 5]);

@@ -62,7 +62,7 @@ test('detects requested page languages offline with the real Chrome API and engi
   } finally { await cleanup(); }
 });
 
-for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects German offline for Kokoro and OmniVoice`, async ({}, testInfo) => {
+for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects German offline and preserves the chosen OmniVoice language`, async ({}, testInfo) => {
   test.skip(process.env.PN_E2E_LANGUAGE_DETECTION !== '1', 'Opt in to the real offline detector benchmark.');
   const root = path.resolve(process.env.PN_E2E_LANGUAGE_AUDIT_DIR || 'artifacts/omnivoice-language-retest');
   const corpus = JSON.parse(await readFile(path.join(root, 'corpus.json'), 'utf8'));
@@ -93,7 +93,7 @@ for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects Germ
     await expect(popup.locator('#popup-error')).toHaveText(suggestion);
     await expect(engine.locator('#language-status')).toContainText(suggestion);
     await expect(popup.locator('#popup-tts-engine')).toHaveValue('kokoro');
-    // The reader explicitly changes engines; detection must then select German without changing the UI locale.
+    // Changing engines preserves the explicit voice language; detection remains informational for OmniVoice.
     await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
     await expect(popup.locator('#popup-language')).toHaveValue('en');
     await popup.close();
@@ -101,12 +101,14 @@ for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects Germ
     const worker = context.serviceWorkers()[0];
     await expect.poll(async () => (await worker.evaluate(() => chrome.storage.session.get('readerEngineState')))
       .readerEngineState?.state).toBe('finished');
-    await expect(engine.locator('#language-select')).toHaveValue('de');
+    await expect(engine.locator('#language-select')).toHaveValue('en');
+    const detectedName = await engine.evaluate(() => new Intl.DisplayNames([chrome.i18n.getUILanguage()], { type: 'language' }).of('de'));
+    await expect(engine.locator('#language-status')).toContainText(detectedName);
     await expect(omnivoicePopup.locator('#popup-tts-engine')).toHaveValue('omnivoice');
     expect((await omnivoicePopup.evaluate(() => chrome.i18n.getUILanguage())).split('-')[0]).toBe(locale);
     expect(requests).toEqual([]);
     await writeFile(path.join(root, `offline-player-${locale}.json`), `${JSON.stringify({ locale, detected: 'de',
-      suggestion, kokoroRetainedUntilChoice: true, omnivoiceAutomaticallySelectedGerman: true,
+      suggestion, kokoroRetainedUntilChoice: true, omnivoicePreservedChosenLanguage: true,
       speech: 'silent flow fixture; real synthesis quality is measured separately', networkRequests: requests }, null, 2)}\n`);
   } finally { try { await cleanup(); } finally { await new Promise(resolve => server.close(resolve)); } }
 });

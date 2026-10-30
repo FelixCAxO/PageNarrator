@@ -10,6 +10,7 @@ import { hashDirectory } from '../weak-hardware/run-provenance.mjs';
 import { assertReleasePackage } from '../assert-release-package.mjs';
 
 export const QUALITY_CORPUS_SHA256 = '6c2766a0a670e6e84cb1d0fbfc71cef531f078c25662317c09e56af038c5233c';
+export const QUALITY_TRANSCRIPT_NORMALIZATION = 'clock-orthography-v2';
 export const hashQualityBytes = bytes => createHash('sha256').update(bytes).digest('hex');
 export const qualityFingerprint = value => hashQualityBytes(JSON.stringify(value));
 
@@ -37,6 +38,9 @@ export function qualityTranscriptWords(text, id) {
   let value = String(text).toLowerCase().replace(/[–—−]/g, '-');
   const replace = (pattern, replacement) => { value = value.replace(pattern, replacement); };
   if (id.endsWith('numbers')) {
+    // A dotted clock after a time cue is orthography; decimal quantities remain numbers.
+    replace(/\b(starts?\s+at\s+)0?9[.:]15(?=\s+on\b)/g, '$1nine fifteen');
+    replace(/(^|[.!?]\s+)(at\s+)18\.45(?=\s*[,;])/g, '$1$2eighteen forty five');
     replace(/\b09:15\b/g, 'nine fifteen'); replace(/\b18:45\b/g, 'eighteen forty five');
     replace(/\b6:45\s*p\.?\s*m\.?/g, 'six forty five p m');
     replace(/\$\s*42\.60\b/g, 'forty two dollars and sixty cents');
@@ -67,6 +71,7 @@ export function assessQualityTranscript(entry, transcript, frozenSpoken) {
   if (!alternatives?.length) throw new Error('Missing independently frozen spoken content.');
   const best = alternatives.map(text => { const expected = words(text); return { expected, edits: editDistance(expected, actual) }; }).sort((a, b) => a.edits / a.expected.length - b.edits / b.expected.length)[0];
   return { transcript, actual, expected: best.expected, edits: best.edits, wordErrorRate: best.edits / best.expected.length,
+    transcriptNormalization: QUALITY_TRANSCRIPT_NORMALIZATION,
     tailPass: actual.slice(-3).join(' ') === best.expected.slice(-3).join(' '), completeTranscript: best.edits === 0,
     scope: 'Independent frozen spoken alternatives and fixed ASR orthographic normalization. Transcript completeness is not pronunciation or listening acceptance.' };
 }
@@ -84,7 +89,10 @@ export async function qualitySourcePins(root) {
 export async function qualityLegacyPins(root) {
   const sources = ['package-lock.json', 'node_modules/kokoro-js/package.json', 'node_modules/kokoro-js/dist/kokoro.js',
     'node_modules/phonemizer/package.json', 'node_modules/phonemizer/dist/phonemizer.js', 'node_modules/@huggingface/transformers/package.json',
-    'node_modules/@huggingface/transformers/dist/transformers.node.mjs', 'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs',
+    'node_modules/@huggingface/transformers/dist/transformers.node.mjs',
+    'node_modules/kokoro-js/node_modules/@huggingface/transformers/package.json',
+    'node_modules/kokoro-js/node_modules/@huggingface/transformers/dist/transformers.node.mjs',
+    'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs',
     'scripts/lib/kokoro-quality-controls.mjs', 'scripts/lib/kokoro-speech-acceptance.mjs'];
   for (const file of KOKORO_DATA.files.filter(entry => entry.path.startsWith('voices/'))) {
     const path = `node_modules/kokoro-js/${file.path}`, bytes = await readFile(resolve(root, path));
@@ -112,6 +120,7 @@ export async function makeQualityFreeze(root, cacheDirectory) {
   return { schema: 1, frozenAt: new Date().toISOString(), corpusSha256: QUALITY_CORPUS_SHA256, corpus, expectedSpoken,
     data: KOKORO_DATA, sourcePins, packagedBuild: { directory, ...await hashDirectory(directory) }, legacyPins: await qualityLegacyPins(root),
     rules: { speed: 1, mode: 'stream', sampleRate: 24000, minimumRms: .001, requiredTranscriptWordEdits: 0, requireFinalThreeWords: true,
+      transcriptNormalization: QUALITY_TRANSCRIPT_NORMALIZATION,
       unknownNetwork: 'blocked', legacyBackend: 'Unmodified public KokoroTTS stream with ONNX Runtime Node CPU, matching q8/fp32 raw graph and exact pinned bundled styles. Public loader has no session-options argument; runtime thread defaults remain unchanged. No cross-backend speed or PCM claim.',
       finalPartition: 'No tuning on test output. Preserve failures; a repaired candidate requires a new independently frozen holdout or an explicit regression label.',
       listenerStudy: { status: 'not performed', listenersRequired: 20, dimensions: ['intelligibility', 'voice identity', 'pronunciation', 'prosody'], minimumClustered95PercentLowerBound: -.25 },

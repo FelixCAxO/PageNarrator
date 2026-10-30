@@ -29,16 +29,16 @@ if (process.argv.includes('--check')) {
     || recorded.wasmSha256 !== hash('public/native/kokoro-parallel.wasm')
     || JSON.stringify(recorded.flags) !== JSON.stringify(flags)
     || JSON.stringify(recorded.imports) !== JSON.stringify(imports)) {
-    throw new Error('Parallel speech source/binary mismatch; rebuild with Zig 0.15.2.');
+    throw new Error('Parallel speech source/binary mismatch; rebuild with Zig 0.17.0.');
   }
 } else {
   const compiler = process.env.PN_ZIG || 'zig';
   const version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to Zig 0.15.2.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to Zig 0.17.0.');
   mkdirSync(file('public/native/'), { recursive: true });
   const built = spawnSync(compiler, [...flags, fileURLToPath(file(sources[0])), '-o', fileURLToPath(output)], { cwd: root, stdio: 'inherit' });
   if (built.status !== 0) throw new Error(`Parallel speech C++ compilation failed (${built.status}).`);
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, parallelAbi, compiler: 'Zig 0.15.2 (Clang C++)',
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, parallelAbi, compiler: 'Zig 0.17.0 (Clang C++)',
     flags, sourceSha256: sourceSha256(), originalWasmSha256: original.wasmSha256,
     wasmSha256: hash('public/native/kokoro-parallel.wasm'), imports, maximumMemoryBytes: 536870912 }, null, 2)}\n`);
 }

@@ -50,6 +50,7 @@ export const TUNING_CONFIG = Object.freeze({
     normalPlaybackWatchdogBufferMs: 15000,
     streamSynthesisTimeoutMs: 2500,
     pdfViewerMessageTimeoutMs: 8000,
+    pageHighlightMessageTimeoutMs: 500,
     pdfRenderUnloadDelayMs: 500,
     browserSpeechBoundaryTimeoutMs: 250,
     playbackSettingsWriteDebounceMs: 150,

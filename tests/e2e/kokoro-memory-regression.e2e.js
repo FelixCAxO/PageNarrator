@@ -10,7 +10,7 @@ import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-
 test('shared runtime changes preserve exact Kokoro playback WAVs', async () => {
   test.skip(process.env.PN_E2E_MEMORY_PARITY !== '1', 'Explicit packaged baseline/candidate regression.');
   test.setTimeout(5 * 60_000);
-  const root = path.resolve('artifacts/omnivoice-memory/kokoro-parity');
+  const root = path.resolve(process.env.PN_PARITY_OUTPUT || 'artifacts/omnivoice-memory/kokoro-parity');
   await mkdir(root, { recursive: true });
   const lock = await acquireMeasurementLock({ owner: { purpose: 'Kokoro exact audio regression' } });
   const server = createServer((_, response) => {
@@ -21,7 +21,7 @@ test('shared runtime changes preserve exact Kokoro playback WAVs', async () => {
   const runs = [];
   try {
     for (const variant of ['baseline', 'candidate']) {
-      const extensionDir = variant === 'baseline' ? path.resolve('artifacts/omnivoice-memory/baseline/extension')
+      const extensionDir = variant === 'baseline' ? path.resolve(process.env.PN_PARITY_BASELINE || 'artifacts/omnivoice-memory/baseline/extension')
         : path.resolve(process.env.PN_PARITY_CANDIDATE || 'dist');
       const { context, cleanup } = await launchExtensionContext({ extensionDir, hostPermissions: ['http://127.0.0.1/*'] });
       try {

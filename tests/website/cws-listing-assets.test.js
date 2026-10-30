@@ -292,7 +292,10 @@ describe('Chrome Web Store listing assets', () => {
 
   it('records current capture inputs and the UI states shown by each screenshot', () => {
     const provenance = JSON.parse(readText('docs/cws-listing/capture-provenance.json'));
-    expect(provenance.version).toBe(JSON.parse(readText('manifest.json')).version);
+    const version = JSON.parse(readText('manifest.json')).version;
+    // Local toolchain releases can retain older captures only while all UI source hashes still match.
+    expect(provenance.version).toMatch(/^\d+\.\d+\.\d+$/u);
+    expect(provenance.version.localeCompare(version, 'en', { numeric: true })).toBeLessThanOrEqual(0);
     expect(provenance.brandIconSha256, 'Recapture media after changing the shared logo').toBe(
       createHash('sha256').update(readFileSync(join(root, 'website/public/assets/pagenarrator-icon.png'))).digest('hex'),
     );

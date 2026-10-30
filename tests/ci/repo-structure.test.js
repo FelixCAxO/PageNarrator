@@ -37,10 +37,10 @@ describe('repository structure guard', () => {
 
   it('does not keep legacy-tree exclusions after removing the legacy tree', () => {
     const viteConfig = read('vite.config.js');
-    const eslintConfig = readJson('.eslintrc.json');
+    const eslintConfig = read('eslint.config.js');
 
     expect(viteConfig).not.toContain('PageNarrator_Old');
-    expect(eslintConfig.ignorePatterns).not.toContain('PageNarrator_Old/');
+    expect(eslintConfig).not.toContain('PageNarrator_Old/');
   });
 
   it('keeps verification local without test or nightly Actions', () => {

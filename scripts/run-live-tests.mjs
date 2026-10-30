@@ -3,7 +3,6 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
-import { resolveCandidateCommitSha } from './run-verification-gate.mjs';
 
 export const LIVE_EXTENSION_PAGES_EVIDENCE_PATH = path.join('artifacts', 'live-extension-pages.json');
 

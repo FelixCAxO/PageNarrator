@@ -121,7 +121,9 @@ export function createReaderEngineChromeAdapter({
       let activeTranscript = '';
       let backendPlan = null;
       let activePageContextKey = sessionState.activePageContextKey;
+      /** @type {{id?: number, [key: string]: any}|null} */
       let panelTargetTab = null;
+      /** @type {Record<string, any>|null} */
       let lastReadOptions = null;
       let activeReadingCursor = sessionState.activeReadingCursor;
       let currentAudioWatchdog = null;
@@ -130,6 +132,7 @@ export function createReaderEngineChromeAdapter({
       let rescheduleCurrentSectionTiming = () => {};
       let selectedLanguageCode = 'en';
       let queueSearchQuery = '';
+      /** @type {ReturnType<typeof import('../../lib/tts-performance-profile.js').createTtsPerformanceGovernor>|null} */
       let ttsPerformanceGovernor = null;
       let idleReleaseEnabled = true;
       let releaseReadSessionAfterCleanup = false;
@@ -139,6 +142,7 @@ export function createReaderEngineChromeAdapter({
       let activeReadPromise = sessionState.activeReadPromise;
       /** @type {any} */
       let pendingReadPauseGate = sessionState.pendingReadPauseGate;
+      /** @type {ReturnType<typeof import('../../lib/reader-engine-read-lifecycle.js').createSectionReadyTransitionTracker>|null} */
       let ttsSectionReadyTransitionTracker = null;
       let cachedTtsHardwareProbeSummary = null;
       let testSilentTtsEnabled = false;
@@ -201,18 +205,23 @@ export function createReaderEngineChromeAdapter({
       const playbackAudioPool = createReusableAudioElementPool({
         createAudio: () => new Audio(),
       });
-      let voiceRuntimeController = null;
-      let readControlsController = null;
-      let sessionContextController = null;
-      let speechPreloadController = null;
-      let readingStateRenderer = null;
+      /** @type {ReturnType<typeof createReaderEngineVoiceRuntimeController>} */
+      let voiceRuntimeController;
+      /** @type {ReturnType<typeof createReaderEngineReadControlsController>} */
+      let readControlsController;
+      /** @type {ReturnType<typeof createReaderEngineSessionContextController>} */
+      let sessionContextController;
+      /** @type {ReturnType<typeof createReaderEngineSpeechPreloadController>} */
+      let speechPreloadController;
+      /** @type {ReturnType<typeof createReaderEngineReadingStateRenderer>} */
+      let readingStateRenderer;
       const voiceSelectionListeners = new Set();
       const setReadingState = (...args) => readingStateRenderer.setReadingState(...args);
       const ensureModel = (...args) => voiceRuntimeController.ensureModel(...args);
       const prepareTtsBackendPlanForChunking = (...args) => voiceRuntimeController.prepareTtsBackendPlanForChunking(...args);
       const releaseLoadedVoiceModel = (...args) => voiceRuntimeController.releaseLoadedVoiceModel(...args);
-      const canReleaseLoadedVoiceModel = (...args) => voiceRuntimeController.canReleaseLoadedVoiceModel(...args);
-      const handleVoiceModelVisibilityChange = (...args) => voiceRuntimeController.handleVoiceModelVisibilityChange(...args);
+      const canReleaseLoadedVoiceModel = () => voiceRuntimeController.canReleaseLoadedVoiceModel();
+      const handleVoiceModelVisibilityChange = () => voiceRuntimeController.handleVoiceModelVisibilityChange();
       const trackActiveVoiceSynthesisPromise = (...args) => voiceRuntimeController.trackActiveVoiceSynthesisPromise(...args);
       const trackActiveVoiceSynthesisSegments = (...args) => voiceRuntimeController.trackActiveVoiceSynthesisSegments(...args);
       const handlePrimaryAction = (...args) => readControlsController.handlePrimaryAction(...args);
@@ -220,19 +229,20 @@ export function createReaderEngineChromeAdapter({
       const handleReadFromStartAction = (...args) => readControlsController.handleReadFromStartAction(...args);
       const handleErrorRecoveryAction = (...args) => readControlsController.handleErrorRecoveryAction(...args);
       const waitForReadPause = (...args) => readControlsController.waitForReadPause(...args);
+      /** @type {typeof readControlsController.waitBetweenSections} */
       const waitBetweenSections = (...args) => readControlsController.waitBetweenSections(...args);
       const handleReadTabRemoved = (...args) => readControlsController.handleReadTabRemoved(...args);
       const stopReading = (...args) => readControlsController.stopReading(...args);
-      const skipToNextChunk = (...args) => readControlsController.skipToNextChunk(...args);
-      const skipToPreviousChunk = (...args) => readControlsController.skipToPreviousChunk(...args);
+      const skipToNextChunk = () => readControlsController.skipToNextChunk();
+      const skipToPreviousChunk = () => readControlsController.skipToPreviousChunk();
       const requestJump = (...args) => readControlsController.requestJump(...args);
       const loadSavedResumePosition = (...args) => sessionContextController.loadSavedResumePosition(...args);
       const saveResumeChunk = (...args) => sessionContextController.saveResumeChunk(...args);
       const refreshActiveTabContext = (...args) => sessionContextController.refreshActiveTabContext(...args);
-      const clearReadSessionBuffers = (...args) => sessionContextController.clearReadSessionBuffers(...args);
+      const clearReadSessionBuffers = () => sessionContextController.clearReadSessionBuffers();
       const configurePageHighlight = (...args) => sessionContextController.configurePageHighlight(...args);
       const compactActivePdfChunkHistory = (...args) => sessionContextController.compactActivePdfChunkHistory(...args);
-      const clearActiveSpeechPreloads = (...args) => speechPreloadController.clearActiveSpeechPreloads(...args);
+      const clearActiveSpeechPreloads = () => speechPreloadController.clearActiveSpeechPreloads();
       const readOrchestrator = createReadOrchestrator({
         state: {
           get iterator() {
@@ -378,7 +388,8 @@ export function createReaderEngineChromeAdapter({
         onLoadError: logSuppressedReaderEngineError(t("Could not load resume position")),
       });
       let pendingPlaybackSettingsWrite = null;
-      let playbackSettingsWriteTimer = null;
+      /** @type {ReturnType<typeof setTimeout>|undefined} */
+      let playbackSettingsWriteTimer;
 
       function savePlaybackSettingsSoon(settings) {
         pendingPlaybackSettingsWrite = {
@@ -710,6 +721,7 @@ export function createReaderEngineChromeAdapter({
         renderCodeSuggestion,
         getSelectedSkipCodeSnippets,
         getActiveTtsProfileConfig,
+        getPlaybackSpeed,
         clearPageHighlight,
         shouldSyncPageHighlights,
         flashResumeSection,

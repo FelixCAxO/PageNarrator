@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, readFile, writeFile, rm, realpath } from 'node:fs/promi
 import { tmpdir } from 'node:os';
 import { join, sep } from 'node:path';
 import { expect, it } from 'vitest';
-import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip, verifyQualityBuild } from '../../scripts/lib/kokoro-quality-controls.mjs';
+import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, qualityTranscriptWords, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip, verifyQualityBuild } from '../../scripts/lib/kokoro-quality-controls.mjs';
 import { hashDirectory } from '../../scripts/weak-hardware/run-provenance.mjs';
 
 it('pins the existing validation/test split and selects bounded voice/category groups without merging partitions', async () => {
@@ -21,6 +21,17 @@ it('compares independent spoken numbers while preserving incorrect values and mi
   expect(assessQualityTranscript(entry, transcript.replace('21.5', '21.6'), spoken).completeTranscript).toBe(false);
   expect(assessQualityTranscript(entry, transcript.replace(' in 2028', ''), spoken).tailPass).toBe(false);
   expect(assessQualityTranscript(entry, transcript.replace('£87.30', '£87.30 £87.30'), spoken).completeTranscript).toBe(false);
+});
+
+it('equates dotted and colon clocks in time context while retaining wrong times and decimal amounts', () => {
+  const words = text => qualityTranscriptWords(text, 'validation-numbers');
+  expect(words('starts at 9.15 on April 12')).toEqual(words('starts at 09:15 on April 12'));
+  expect(words('At 18.45, the display')).toEqual(words('At 18:45, the display'));
+  expect(words('starts at 9.16 on April 12')).not.toEqual(words('starts at 09:15 on April 12'));
+  expect(words('priced at 9.15 dollars')).toContain('9.15');
+  expect(words('priced at 9.15 on April 12')).toContain('9.15');
+  expect(words('priced at 18.45, the display')).toContain('18.45');
+  expect(words('9.15 points')).toContain('9.15');
 });
 
 it('accepts independently allowed acronym renderings without erasing a missing HTTPS letter', () => {

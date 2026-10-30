@@ -54,7 +54,7 @@ describe('release ZIP', () => {
     git(['config', 'user.email', 'test@example.invalid']);
     for (const [path, contents] of Object.entries({ 'src/worker.js': 'committed source',
       '.gitignore': 'docs/cws-listing/debug-*.png\n.cache/\n', 'package.json': '{"version":"1.0.1"}',
-      'public/index.html': 'committed page', '.eslintrc.json': '{}' })) {
+      'public/index.html': 'committed page', 'eslint.config.js': 'export default [];' })) {
       const target = join(root, path);
       mkdirSync(join(target, '..'), { recursive: true });
       writeFileSync(target, contents);
@@ -67,8 +67,8 @@ describe('release ZIP', () => {
     }
     const binary = { name: 'extension.zip', sha256: 'a'.repeat(64) };
     const archive = createSourceArchive(root, binary, commit), entries = zipEntries(archive);
-    expect(Object.keys(entries).sort()).toEqual(['.eslintrc.json', '.gitignore', 'SOURCE-MANIFEST.json', 'SOURCE-README.txt',
-      'package.json', 'public/index.html', 'src/worker.js']);
+    expect(Object.keys(entries).sort()).toEqual(['.gitignore', 'SOURCE-MANIFEST.json', 'SOURCE-README.txt',
+      'eslint.config.js', 'package.json', 'public/index.html', 'src/worker.js']);
     const manifest = JSON.parse(entries['SOURCE-MANIFEST.json']);
     expect(manifest.candidateId).toBe(commit); expect(manifest.binary).toEqual(binary);
     for (const row of manifest.files) expect(row.sha256).toBe(createHash('sha256').update(entries[row.path]).digest('hex'));

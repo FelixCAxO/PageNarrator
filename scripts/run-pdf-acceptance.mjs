@@ -322,6 +322,7 @@ async function runPdfLibraryAcceptance({ writeReport, goldPath, backend, outputF
       narration: pages.filter(page => page.narrationErrors).map(({ id, narrationErrors }) => ({ id, narrationErrors })),
       grounding: chunks.filter(chunk => !chunk.grounded).map(chunk => chunk.id),
       alignment: words.filter(word => !word.aligned).map(word => word.id),
+      alignmentDetails: words.filter(word => !word.aligned),
       imageOnly: imageOnly.filter(row => row.expectedImageOnly
         ? row.code !== 'scanned_pdf_unsupported' : row.code === 'scanned_pdf_unsupported').map(row => row.id),
       nativeRoutingControls: nativeRoutingControls.filter(row => !row.passed),
@@ -671,6 +672,7 @@ function evaluateGrounding(record, page, pageText) {
       words.push({
         id: `${record.id}:chunk-${chunkIndex + 1}:word-${speechWordIndex}`,
         aligned: Boolean(wordResult.ok && normalizeToken(actual) === normalizeToken(expected)),
+        ...(!wordResult.ok || normalizeToken(actual) !== normalizeToken(expected) ? { expected, actual, wordResult } : {}),
       });
     }
   }

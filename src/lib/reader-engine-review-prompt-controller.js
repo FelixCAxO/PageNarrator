@@ -32,6 +32,7 @@ export function createReaderEngineReviewPromptController({
   onError = () => {},
 } = {}) {
   let state = createDefaultState();
+  /** @type {Promise<void>|null} */
   let initPromise = null;
   let listenersBound = false;
   let countedThisSession = false;

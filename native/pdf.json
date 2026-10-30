@@ -1,6 +1,6 @@
 {
   "abi": 1,
-  "compiler": "Zig 0.15.2 (Clang C++)",
+  "compiler": "Zig 0.17.0 (Clang C++)",
   "flags": [
     "c++",
     "-target",
@@ -26,6 +26,6 @@
   "inlineSourceSha256": "807d99fbf800f8db8608afebe0b7f5e6aa8138cfd3cdff37c165b447b20247ba",
   "cffPathSourceSha256": "270ce7999629733ddfe7d2e55642d8a134a564104b55dfbab60ff429aa16eba4",
   "ttfPathSourceSha256": "d647d1ea64dfe455ba125472565382bd514a28677332d2dd69d28924e9aff625",
-  "wasmSha256": "288d4afcde4f47cb130ba4f98e15c8dc6f7c68347fec93df7c335abb6f5f3293",
+  "wasmSha256": "f88043c9c39020a9693366e0c9e2a22bb9d9dde0ec1713eb470736ca99938de0",
   "imports": []
 }

@@ -12,7 +12,10 @@ import { evaluateReadingOrder } from './run-pdf-acceptance.mjs';
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = path.join(root, 'artifacts/reading-order-patterns/private-sidenote-policy.json');
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-const { records, goldEvidence } = loadPdfLibraryBenchmarkGold();
+const { records, goldEvidence } = loadPdfLibraryBenchmarkGold({
+  goldPath: path.join(root, '.cache/pdf-library-v1-20261024-reference-05/gold.json'),
+  manifestPath: path.join(root, '.cache/pdf-library-v1-20261024-reference-05/manifest.public.json'),
+});
 const goldHash = hash(await readFile(goldEvidence.path));
 const sourceFiles = ['src/lib/pdf-page-model.js', 'src/lib/pdf-extraction.js', 'scripts/check-library-sidenote-policy.mjs'];
 const pins = async () => Object.fromEntries(await Promise.all(sourceFiles.map(async name => [name, hash(await readFile(path.join(root, name)))])));

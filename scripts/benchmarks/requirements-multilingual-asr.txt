@@ -1,0 +1,10 @@
+# Linux/WSL with Python 3.11; fairseq2 requires this older compatible numerical stack.
+omnilingual-asr==0.2.0
+fairseq2==0.6
+torch==2.8.0
+torchaudio==2.8.0
+numpy==1.26.4
+scipy==1.17.1
+pyarrow==25.0.1
+soundfile==0.14.0
+onnxruntime==1.31.1

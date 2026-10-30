@@ -3,6 +3,7 @@ import { BINARY_OPERATIONS, UNARY_OPERATIONS } from './native-compute.js';
 import { broadcastShape, broadcastStrides, tensorSize } from './tensor-shape.js';
 import { axisIndex, batchedMatmulPlan, contiguousStrides } from './index-shape.js';
 import { ELEMENTWISE_SHADER, MATMUL_SHADER } from './webgpu-shaders.js';
+import { halfRmsNormShader } from './webgpu-audio-shaders.js';
 import { concatPlan, convolutionPlan, poolingPlan, reductionPlan, resizePlan } from './cnn-shape.js';
 import { CONCAT_SHADER, CONV_DIRECT_SHADER, CONV_TILED_SHADER, POOL_SHADER, REDUCE_MEAN_SHADER, RESIZE_SHADER } from './webgpu-cnn-shaders.js';
 import { ARGMAX_SHADER, BATCH_NORM_SHADER, GATHER_SHADER, INDEX_SHADER, SOFTMAX_SHADER } from './webgpu-index-shaders.js';
@@ -106,6 +107,7 @@ export class WebGpuCompute {
         softmax: SOFTMAX_SHADER, concat: CONCAT_SHADER };
       this.half = Object.fromEntries(await Promise.all(Object.entries(halfDefinitions).map(async ([name, code]) =>
         [name, await this.pipeline(halfStorageShader(code), `PageNarrator half ${name}`)])));
+      for (const width of [128, 1024]) this.half[`rmsNorm${width}`] = await this.pipeline(halfRmsNormShader(width), `PageNarrator half RMSNorm ${width}`);
       for (const [name, code] of Object.entries({ index: INDEX_SHADER, gather: GATHER_SHADER, gatherTensor: GATHER_TENSOR_SHADER, checkedGatherTensor: CHECKED_GATHER_TENSOR_SHADER })) {
         this.half[name] = await this.pipeline(halfIndexShader(code), `PageNarrator half ${name}`);
       }
@@ -219,6 +221,7 @@ export class WebGpuCompute {
   batch(options) { this.checkOpen(); return new ComputeBatch(this, options); }
 
   matmul(a, b) { const batch = this.batch(); const result = batch.matmul(a, b); batch.submit(); return result; }
+  rmsNorm(input, weight) { const batch = this.batch(); const result = batch.rmsNorm(input, weight); batch.submit(); return result; }
   unary(operation, a, options) { const batch = this.batch(); const result = batch.unary(operation, a, options); batch.submit(); return result; }
   binary(operation, a, b) { const batch = this.batch(); const result = batch.binary(operation, a, b); batch.submit(); return result; }
 
@@ -612,13 +615,25 @@ class ComputeBatch {
     return output;
   }
 
+  rmsNorm(input, weight) {
+    this.checkNumeric(input, weight);
+    const width = input.shape.at(-1);
+    const pipeline = this.engine.half?.[`rmsNorm${width}`];
+    if (input.dataType !== 'float16' || weight.shape.length !== 1 || weight.length !== width || !pipeline) throw new RangeError('Unsupported half RMSNorm shape.');
+    const output = this.output(input.shape, input.dataType), rows = input.length / width;
+    const x = Math.min(rows, this.engine.device.limits.maxComputeWorkgroupsPerDimension);
+    this.dispatchTensors(pipeline, [input, weight, output], Uint32Array.of(rows, x), x, x ? Math.ceil(rows / x) : 0);
+    return output;
+  }
+
   elementwise(a, b, shape, opcode, alpha = 0, beta = 0, bounds = null) {
     const output = this.output(shape, bounds ? 'int32' : a.dataType, bounds);
     const parameters = new Uint32Array(32);
     const groups = Math.ceil(output.length / 64);
     const x = Math.min(groups, this.engine.device.limits.maxComputeWorkgroupsPerDimension);
     parameters.set([output.length, shape.length,
-      Number(a.length === output.length && b.length === output.length), opcode, floatBits(alpha), floatBits(beta), 0, x]);
+      Number((a.length === output.length || a.length === 1) && (b.length === output.length || b.length === 1)),
+      opcode, floatBits(alpha), floatBits(beta), Number(a.length === 1) + Number(b.length === 1) * 2, x]);
     parameters.set(shape, 8);
     parameters.set(broadcastStrides(a.shape, shape), 16);
     parameters.set(broadcastStrides(b.shape, shape), 24);

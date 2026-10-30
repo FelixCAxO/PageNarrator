@@ -11,7 +11,7 @@ describe('release metadata', () => {
     const packageLock = JSON.parse(read('package-lock.json'));
     const manifest = JSON.parse(read('manifest.json'));
 
-    expect(packageJson.version).toBe('1.0.2');
+    expect(packageJson.version).toBe('1.0.3');
     expect(packageLock.version).toBe(packageJson.version);
     expect(packageLock.packages[''].version).toBe(packageJson.version);
     expect(manifest.version).toBe(packageJson.version);
@@ -21,6 +21,7 @@ describe('release metadata', () => {
     const changelog = read('website/public/changelog.html');
     const readerUi = read('docs/reader-ui.md');
     expect(read('CHANGELOG.md')).toContain('## 1.0.2 (2026-10-27)');
+    expect(read('CHANGELOG.md')).toContain('## 1.0.3 (2026-10-30, local release)');
 
     expect(changelog).toContain('Version 1.0.2');
     expect(changelog).toContain('Version 1.0.1');

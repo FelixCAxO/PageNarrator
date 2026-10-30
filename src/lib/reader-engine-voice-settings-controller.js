@@ -54,6 +54,7 @@ export function createReaderEngineVoiceSettingsController({
   warmSelectedVoice = async () => {},
   onVoiceSelectionChanged = () => {},
 } = {}) {
+  /** @type {{changed: boolean, nextProfile: string, reason: string}|null} */
   let lastAdjustedProfileDecision = null;
   let ttsBackendPreference = DEFAULT_TTS_BACKEND_PREFERENCE;
   let lastDetectedLanguage = null;
@@ -264,7 +265,7 @@ export function createReaderEngineVoiceSettingsController({
         ? t("$1 - adjusted", [formatTtsPerformanceProfileOptionLabel(displayProfile)])
         : formatTtsPerformanceProfileOptionLabel(displayProfile);
       els.ttsPerformanceProfileBadge.setAttribute('aria-live', 'polite');
-      if (adjusted) {
+      if (adjusted && lastAdjustedProfileDecision) {
         els.ttsPerformanceProfileBadge.dataset.adjusted = 'true';
         const reasons = {
           'slow-model-load': t('slow model loading'),
@@ -534,7 +535,7 @@ export function createReaderEngineVoiceSettingsController({
     const governor = getTtsPerformanceGovernor();
     return Object.freeze({
       ...governor.currentConfig(),
-      ...(els.ttsEngine?.value === 'omnivoice' ? { maxChunkLength: 240, targetMinLength: 120, preloadAhead: 1, progressiveSegments: false, speechPreloadTimeoutMs: 60_000 } : {}),
+      ...(els.ttsEngine?.value === 'omnivoice' ? { maxChunkLength: 240, targetMinLength: 120, preloadAhead: 4, progressiveSegments: false, speechPreloadTimeoutMs: 60_000 } : {}),
       requestedProfile: governor.requestedProfile?.() || TTS_PERFORMANCE_PROFILE_DEFAULT,
     });
   }

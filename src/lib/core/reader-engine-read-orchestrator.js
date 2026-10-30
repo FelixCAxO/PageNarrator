@@ -1,3 +1,5 @@
+const pendingChunkReads = new WeakMap();
+
 export function createReadOrchestrator({
   state,
   getChunkWordCount = defaultWordCount,
@@ -100,15 +102,25 @@ export async function fillStreamingChunkBuffer({
   while (state.chunks.length <= target) {
     if (isStopped()) return false;
     const iterator = state.iterator;
-    const deficit = Math.max(1, target - state.chunks.length + 1);
-    const result = await iterator.next(deficit);
-    if (isStopped() || state.iterator !== iterator) return false;
-    if (result?.done) return false;
+    // Share each pull, so current speech need not wait for the entire lookahead fill.
+    const read = pendingChunkReads.get(iterator) || (async () => {
+      const deficit = Math.max(1, target - state.chunks.length + 1);
+      const result = await iterator.next(deficit);
+      if (isStopped() || state.iterator !== iterator) return false;
+      if (result?.done) return false;
 
-    const values = Array.isArray(result.value) ? result.value : [result.value];
-    for (const value of values) {
-      state.chunks.push(value);
-      state.wordCounts.push(Math.max(0, Math.trunc(Number(getChunkWordCount(value)) || 0)));
+      const values = Array.isArray(result.value) ? result.value : [result.value];
+      for (const value of values) {
+        state.chunks.push(value);
+        state.wordCounts.push(Math.max(0, Math.trunc(Number(getChunkWordCount(value)) || 0)));
+      }
+      return true;
+    })();
+    pendingChunkReads.set(iterator, read);
+    try {
+      if (!await read) return false;
+    } finally {
+      if (pendingChunkReads.get(iterator) === read) pendingChunkReads.delete(iterator);
     }
   }
 

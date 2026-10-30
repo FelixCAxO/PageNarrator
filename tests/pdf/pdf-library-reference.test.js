@@ -46,9 +46,29 @@ describe('independent library-reference selection', () => {
     expect(referenceCheckpoints(lines.join('\n'), lines.join(' '), protocol, [lines[1]])).toBeNull();
   });
 
+  it('keeps contacts and independently smaller outer annotations out of body order checkpoints', () => {
+    const note = 'A small annotation explains a term alongside the paragraph.';
+    const contact = 'e-mail: independent@example.test';
+    const text = [note, ...lines.slice(0, 3), contact, ...lines.slice(3)].join('\n');
+    const rawWords = lines.flatMap((text, index) => [{ text, x0: 180, x1: 470, top: 100 + index * 20, bottom: 110 + index * 20 }]);
+    rawWords.push({ text: note, x0: 30, x1: 140, top: 130, bottom: 137 });
+    expect(referenceCheckpoints(text, text, { ...protocol, mainFlowCheckpoints: true }, [], { width: 540, rawWords })).toEqual(lines);
+    // Equal-sized side columns remain eligible; geometry alone does not delete body text.
+    rawWords.at(-1).bottom = 140;
+    expect(referenceCheckpoints(text, text, { ...protocol, mainFlowCheckpoints: true }, [], { width: 540, rawWords })[0]).toBe(note);
+  });
+
   it('keeps complete-word verbatim spans without guessing a split word or a true compound', () => {
     const wrapped = [lines[0] + ' consis-', 'tent ' + lines[1], lines[2] + ' resource-', 'constrained ' + lines[3], lines[4]];
     expect(referenceCheckpoints(wrapped.join('\n'), wrapped.join(' '), protocol)).toEqual(lines);
+  });
+
+  it('selects verbatim prose outside citation markers without manufacturing a joined sentence', () => {
+    const cited = [...lines];
+    cited[2] += ' (Independent et al. 2024, 9). Short tail.';
+    expect(referenceCheckpoints(cited.join('\n'), cited.join(' '), { ...protocol, mainFlowCheckpoints: true })).toEqual(lines);
+    cited[2] = '[12, 14-16] ' + lines[2];
+    expect(referenceCheckpoints(cited.join('\n'), cited.join(' '), { ...protocol, mainFlowCheckpoints: true })).toEqual(lines);
   });
 
   const word = (text, top, x0 = 40) => ({ text, x0, x1: x0 + 80, top, bottom: top + 10 });

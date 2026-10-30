@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "강조 표시와 텍스트 보기를 이용하고, 저장된 위치에서 이어 읽고, 속도를 0.5×~3×로 조절하세요. 팝업을 닫아도 읽기는 계속됩니다.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>설정 도움말</a> · <a href='/privacy'>개인정보 처리방침</a>",
   "Build from source": "소스에서 빌드",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "기기에서 확장 프로그램을 빌드하세요. Node.js 22.13+ (22.x) 또는 24+를 설치한 다음 아래 단계를 따르세요.",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "기기에서 확장 프로그램을 빌드하세요. Node.js 22.23.4+ (22.x) 또는 24.22.1+를 설치한 다음 아래 단계를 따르세요.",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "<a href='https://github.com/FelixCAxO/PageNarrator'>저장소</a>를 복제하고 <code>PageNarrator</code> 폴더에서 터미널을 여세요.",
   "Run <code>npm ci</code>.": "<code>npm ci</code>를 실행하세요.",
   "Run <code>npm run build</code>.": "<code>npm run build</code>를 실행하세요.",

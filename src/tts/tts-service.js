@@ -6,6 +6,7 @@ export function createTtsService({
   navigator = globalThis.navigator,
 } = {}) {
   let voice = selectedVoice;
+  /** @type {Awaited<ReturnType<typeof selectDefaultVoiceRuntime>>|null} */
   let lastRuntimeDecision = null;
 
   return {

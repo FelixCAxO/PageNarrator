@@ -35,7 +35,7 @@ describe('public website deployment', () => {
       expect(readFileSync(join(output, file))).toEqual(readFileSync(join(source, file)));
     }
     expect(existsSync(join(source, 'cws-demo.html'))).toBe(true);
-  });
+  }, 30_000); // Full-site copies exercise content boundaries, not disk throughput.
 
   it('rejects an undeclared HTML page before replacing the previous build', () => {
     const directory = mkdtempSync(join(tmpdir(), 'pagenarrator-website-'));
@@ -48,7 +48,7 @@ describe('public website deployment', () => {
 
     expect(() => buildWebsite(source, output)).toThrow('sitemap/noindex mismatch');
     expect(readFileSync(join(output, 'index.html'), 'utf8')).toBe('PREVIOUS BUILD');
-  });
+  }, 30_000);
 
   it('refuses to overwrite the website sources or an enclosing directory', () => {
     expect(() => buildWebsite('website/public', 'website/public')).toThrow('separate');

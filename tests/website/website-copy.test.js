@@ -40,7 +40,7 @@ describe('website copy', () => {
     expect(text).toContain('original extension folder');
     expect(text).toContain('same folder path');
     expect(text).toContain('Chrome Web Store listing is not available yet');
-    for (const step of ['Node.js 22.13+ (22.x) or 24+', 'npm ci', 'npm run build', 'chrome://extensions', 'Load unpacked', 'dist/']) {
+    for (const step of ['Node.js 22.23.4+ (22.x) or 24.22.1+', 'npm ci', 'npm run build', 'chrome://extensions', 'Load unpacked', 'dist/']) {
       expect(text, step).toContain(step);
     }
     expect(bodyText('index.html')).toMatch(/Chrome Web Store (?:availability is pending|listing is not available yet)/);

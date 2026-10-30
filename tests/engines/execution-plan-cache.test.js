@@ -2,6 +2,7 @@ import { expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
 import { WasmOcrCompute } from '../../src/engines/wasm-ocr-compute.js';
+import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
 
 async function setup(budget) {
   const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
@@ -22,6 +23,34 @@ it('replays alternating shapes with changed feed values and evicts the least rec
       expect(session.cachedPlans.size).toBeLessThanOrEqual(2);
     }
   } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); expect(engine.tensors.size).toBe(0); await engine.dispose(); }
+});
+
+it('replays integer feeds inside captured bounds and revalidates expanded ranges before arithmetic', async () => {
+  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const graph = { initializers: [], inputs: [{ name: 'x', dataType: 6, dims: [2] }], outputs: [{ name: 'y', dataType: 6, dims: [2] }],
+    nodes: [{ name: 'double', opType: 'Add', inputs: ['x', 'x'], outputs: ['y'], attributes: new Map() }] };
+  const session = new WebGpuOnnxSession({ graph, functions: [] }, engine, false, 4096, 2);
+  const feeds = data => ({ x: { data: Int32Array.from(data), shape: [2] } });
+  try {
+    for (const [data, cacheHit] of [[[-100, 1024], false], [[12, 999], true], [[-101, 1024], false], [[0, 1000], true]]) {
+      expect([...(await session.run(feeds(data))).y.data]).toEqual(data.map(value => value * 2));
+      expect(session.lastRun.cacheHit).toBe(cacheHit);
+    }
+    await expect(session.run(feeds([1073741824, 1]))).rejects.toThrow(/overflow/);
+  } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); await engine.dispose(); }
+});
+
+it('reuses graph planning across feed shapes while validating every requested output list', async () => {
+  const { engine, session } = await setup(4096);
+  try {
+    await session.run({ x: { data: Float32Array.of(-1, 2), shape: [2] } });
+    const plan = session.lastExecutionPlan;
+    await session.run({ x: { data: Float32Array.of(3), shape: [1] } }, ['y']);
+    expect(session.lastExecutionPlan).toBe(plan);
+    for (const outputs of [[], ['y', 'y'], ['missing'], { toJSON: () => ['y'] }]) {
+      await expect(session.run({ x: { data: Float32Array.of(3), shape: [1] } }, outputs)).rejects.toThrow('unique declared output names');
+    }
+  } finally { await session.dispose(); await engine.dispose(); }
 });
 
 it('uploads aliased feeds once, preserves mutations and never reuses aliases for independent inputs', async () => {

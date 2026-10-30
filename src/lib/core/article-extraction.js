@@ -1,4 +1,4 @@
-import { getNoiseSelector } from '../dom-selectors.js';
+import { getNoiseSelectors } from '../dom-selectors.js';
 import { extractChatTurnSpeechChunks, extractReadableArticle } from './reading-model.js';
 import { normalizeCodeText } from '../text-normalization.js';
 import { needsTextNodeSeparator } from '../page-highlighter-search-index.js';
@@ -21,7 +21,7 @@ import {
 
 export { hasChatTurns, hasNumberedChatTurns, revealChatTranscriptStart } from './chat-transcript.js';
 
-const NOISE_SELECTOR = getNoiseSelector({ surface: 'article' });
+const NOISE_SELECTORS = getNoiseSelectors({ surface: 'article' });
 const TEXT_BLOCK_SELECTOR = 'h1, h2, h3, h4, h5, h6, p, blockquote, pre, code, li, figcaption, td, th, label, button, a, div, section, article, main';
 
 export function chooseArticleExtraction(document, { articleFallback, readSelection = false, startMode = 'viewport' } = {}) {
@@ -662,7 +662,7 @@ function shouldRejectTextNode(node) {
   const text = node.nodeValue?.trim() || '';
   if (text && !isSpeakableSourceText(text) && !/^[.,!?;:'"…\p{Ps}\p{Pe}\p{Pi}\p{Pf}\p{Pd}]+$/u.test(text)) return true;
   const parent = node.parentElement;
-  if (!parent || parent.closest(NOISE_SELECTOR)) return true;
+  if (!parent || NOISE_SELECTORS.some(selector => parent.closest(selector))) return true;
   return hasIgnoredTextAncestor(parent);
 }
 

@@ -2,6 +2,10 @@
 
 The [protocol](protocol.md) defines workloads, samples, and scoring. Current numbers are development-host diagnostics. Representative physical-tier performance remains unverified.
 
+The local v1.0.3 toolchain uses Node 26.12.1, npm 12.2.1, Zig 0.17.0, TypeScript 7.0.2 and jsdom 30.1.3. Lifecycle objects, timers and promises have explicit types under the existing strict checks. Noise-filter queries use bounded groups with the same exclusions, preserving jsdom 30's 2,048-character limit. ESLint uses Microsoft's [TypeScript 6 API compatibility package](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0); both `typecheck` scripts execute the native TypeScript 7 compiler. No acceptance threshold is changed.
+
+Use separate Python environments. `scripts/benchmarks/requirements-quality-tools.txt` pins the Python 3.14 audio/PDF/speech analysis tools; on NVIDIA, install its matching PyTorch 2.15.0 CUDA 13.2 wheel from the official PyTorch index. Python 3.15.2 is installed locally, but ONNX Runtime 1.31.1 has no compatible wheel; the complete analysis environment therefore remains on Python 3.14.10. PyAV is 19.0.2, with Faster Whisper pinned to the reviewed [upstream compatibility fix](https://github.com/SYSTRAN/faster-whisper/commit/2ce7f9d7a9fbe315a5804a33bf7224d42e101174) and its archive SHA-256. `requirements-multilingual-asr.txt` pins the Linux/WSL Python 3.11 environment: Omnilingual ASR requires fairseq2 0.6, matching PyTorch/Torchaudio 2.8, NumPy 1.26.4 and PyArrow 25.0.1. Newer PyArrow requires NumPy 2, which that fairseq2 stack cannot use. Local environments live in ignored `.cache/quality-tools-v1.0.3-py314/` and `.cache/asr-tools-v1.0.3/`; pass their interpreter explicitly to analysis commands. Frozen historical reference files and model pins stay unchanged.
+
 ## Commands and attribution
 
 `npm run test:benchmarks` checks the harness and website layout, not inference or audible latency. Automated audio stays muted. Use saved PCM or AudioWorklet captures for silent continuity checks; see [environment and analysis](protocol.md#environment-record).
@@ -11,6 +15,7 @@ OS/device loopback needs a separate explicit request. `scripts/benchmarks/captur
 Download pinned voice fixtures with `npm run test:models`; data stay in ignored `.cache/kokoro/`. `node scripts/benchmarks/kokoro.mjs --help` measures the original app registry/module worker:
 
 - Choose `--backend wasm|webgpu`, `--mode stream|batch`, `--repeats 1..5`, `--cache <verified-model-directory>` and `--output <new-report.json>`.
+- Set `PN_BENCHMARK_CHROMIUM` to an explicit Chromium executable for comparisons that keep the browser version fixed across Playwright upgrades. Reports record the selected executable and browser version.
 - Use `--case heart-connected` or `--case emma-connected` for one frozen accepted text; omission runs both.
 - GPU runs require an actual current DXGI `high,low` LUID in `PN_GPU_ADAPTER_LUID` and matching `PN_GPU_VENDOR=intel|nvidia`. The producer verifies the selected adapter.
 
@@ -39,11 +44,15 @@ The bounded-Tanh NVIDIA repeat completes warm synthesis in 0.354–0.384 s with 
 
 ## Quality reproduction
 
+Vitest 5 adds `vitest doctor` for measured configuration advice. A representative local probe is `node node_modules/vitest/vitest.mjs doctor tests/speech/page-highlighter.test.js tests/reader-engine/reader-engine-read-loop.test.js tests/pdf/pdf-page-model.test.js tests/tts/omnivoice-runtime.test.js --run`. It tries alternatives without editing configuration. The 1.0.3 probe recommended retaining isolated forks: no alternative improved its minimum-of-three timing by more than 10%. Its stable filesystem module cache is already enabled by default. See the [upstream release details](https://vitest.dev/blog/vitest-5). These are test-runner measurements, not speech-throughput qualification.
+
 `node scripts/probe-kokoro-quality.mjs --help` compares full text-to-PCM pipelines. Create a new immutable manifest using `--freeze <new-manifest.json> --cache <verified-model-directory>` before inference; it pins corpus, assessment alternatives, source, models, ten styles and the independently installed oracle.
 
 Run `--manifest <manifest.json> --cache <directory> --output <directory> --partition validation --backend wasm --voices af_heart`. Optional `--cases validation-numbers,validation-abbreviations` and `--asr-model <offline-model-directory>` bound a group. Use `--backend webgpu` with the adapter variables above for GPU; `--voices all` or comma-separated voices/cases cover the matrix. Hashes guard resumable raw/WAV clips, and changed pins or corrupt bytes stop reuse. Unknown network requests are blocked.
 
 The legacy comparator uses unmodified public Kokoro-js streaming and Node CPU ONNX Runtime with matching q8/fp32 models and exact style bytes. Its loader exposes no thread option; thread defaults remain unchanged. This is not a cross-backend speed or PCM-parity experiment. ASR completeness, pronunciation/listening, source association and installed article/PDF handoff are separate checks. The final partition is consumed and cannot support held-out claims for subsequent fixes.
+
+The local 1.0.3 validation run records `clock-orthography-v2`: dotted/colon clocks are equivalent only in the corpus's time contexts. Wrong times, wrong prices, missing words and added repetitions still fail. Expected spoken alternatives and audio/model pins are unchanged; historical assessments retain their original grades. The fresh two-case Heart/CPU regression passes the candidate number and abbreviation transcripts; the paired legacy comparator fails. This focused diagnostic supplies no human listening score.
 
 ## Preserved failures and current evidence
 

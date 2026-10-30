@@ -39,6 +39,7 @@ async function cleanup(directory) {
   await rm(target, { recursive: true, force: true });
 }
 
+// Copies and hashes hundreds of files; this checks integrity, not disk speed.
 it('copies neutral blind audio and rejects modified packets, clips, source freezes and original receipts', async () => {
   const f = await fixture();
   try {
@@ -68,7 +69,7 @@ it('copies neutral blind audio and rejects modified packets, clips, source freez
     await writeFile(responsePath, '{}'); await expect(evaluateVoiceReceipt(f.directory, receiptPath)).rejects.toThrow('Original voice response changed');
     await writeFile(f.freezePath, '{}'); await expect(readVoiceReviewPacket(f.directory, f.packet)).rejects.toThrow('freeze or protocol');
   } finally { await cleanup(f.directory); }
-});
+}, 30_000);
 
 it.each(['reference', 'silent', 'wav'])('rejects false %s evidence before preparing a review', async kind => {
   const f = await fixture();

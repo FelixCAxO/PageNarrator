@@ -1,4 +1,40 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
+export function halfRmsNormShader(width) {
+  return `enable f16;
+@group(0) @binding(0) var<storage, read> src: array<f16>;
+@group(0) @binding(1) var<storage, read> weight: array<f16>;
+@group(0) @binding(2) var<storage, read_write> dst: array<f16>;
+@group(0) @binding(3) var<storage, read> cfg: array<u32>;
+var<workgroup> squares: array<f32, ${width}>;
+var<workgroup> sums: array<f32, 64>;
+var<workgroup> root: f32;
+@compute @workgroup_size(64)
+fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_index) lane: u32) {
+  let row = group.x + group.y * cfg[1u];
+  if (row >= cfg[0u]) { return; }
+  for (var col = lane; col < ${width}u; col += 64u) {
+    let x = f32(src[row * ${width}u + col]);
+    squares[col] = x * x;
+  }
+  workgroupBarrier();
+  var sum = 0.0;
+  for (var col = lane; col < ${width}u; col += 64u) { sum += squares[col]; }
+  sums[lane] = sum;
+  workgroupBarrier();
+  for (var step = 32u; step > 0u; step /= 2u) {
+    if (lane < step) { sums[lane] += sums[lane + step]; }
+    workgroupBarrier();
+  }
+  if (lane == 0u) { root = sqrt(sums[0u] / ${width}.0 + 0.000001); }
+  workgroupBarrier();
+  let inverse = 1.0 / root;
+  for (var col = lane; col < ${width}u; col += 64u) {
+    let normalized = f16(f32(src[row * ${width}u + col]) * inverse);
+    dst[row * ${width}u + col] = f16(f32(normalized) * f32(weight[col]));
+  }
+}`;
+}
+
 // A 32 x 32 output tile gives each lane a 4 x 4 register block. Audio has no
 // height coordinate, so its inner gather avoids the general image divisions.
 export const CONV_1D_SHADER = `

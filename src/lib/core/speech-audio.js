@@ -37,6 +37,7 @@ export async function synthesizeSpeechChunk(tts, text, {
   signal = null,
   testSilentTts = false,
   useStream = true,
+  onSynthesisProgress = null,
 } = {}) {
   throwIfAborted(signal);
   if (testSilentTts) return synthesizeSilentTestSpeech(text);
@@ -51,7 +52,7 @@ export async function synthesizeSpeechChunk(tts, text, {
     if (streamed) return streamed;
   }
 
-  return synthesizeSpeechChunkFromGenerate(tts, text, { voice, languageCode, generatedSpeechTimeoutMs, signal });
+  return synthesizeSpeechChunkFromGenerate(tts, text, { voice, languageCode, generatedSpeechTimeoutMs, signal, onSynthesisProgress });
 }
 
 /**
@@ -303,6 +304,7 @@ function withTimeout(promise, timeoutMs, {
   const safeTimeout = Number.isFinite(timeoutMs) && timeoutMs > 0 ? timeoutMs : DEFAULT_STREAM_TIMEOUT_MS;
   const source = Promise.resolve(promise);
   source.catch(suppressSpeechAudioError);
+  /** @type {ReturnType<typeof setTimeout>|null} */
   let timeoutId = null;
   const timeout = new Promise((_, reject) => {
     timeoutId = setTimeout(() => {
@@ -333,11 +335,13 @@ function cancelIterator(iterator) {
  * @param {string} text
  * @param {Record<string, any>} options
  */
-async function synthesizeSpeechChunkFromGenerate(tts, text, { voice, languageCode, generatedSpeechTimeoutMs = null, signal = null } = {}) {
+async function synthesizeSpeechChunkFromGenerate(tts, text, { voice, languageCode, generatedSpeechTimeoutMs = null, signal = null, onSynthesisProgress = null } = {}) {
   throwIfAborted(signal);
-  let audio = null;
+  /** @type {Awaited<ReturnType<typeof generateSpeechAudio>>} */
+  let audio;
   try {
-    audio = await generateSpeechAudio(tts, text, createGenerateOptions(voice, signal), { signal, timeoutMs: generatedSpeechTimeoutMs });
+    audio = await generateSpeechAudio(tts, text, { ...createGenerateOptions(voice, signal),
+      ...(onSynthesisProgress ? { onSynthesisProgress } : {}) }, { signal, timeoutMs: generatedSpeechTimeoutMs });
   } catch (error) {
     if (signal?.aborted) throw createAbortError();
     if (isAbortError(error) || isGeneratedSpeechTimeoutError(error)
@@ -455,6 +459,7 @@ async function generateSpeechAudio(tts, text, options, { signal = null, timeoutM
   void initializeNativeKernels();
   const source = Promise.resolve(tts.generate(text, options));
   source.catch(suppressSpeechAudioError);
+  /** @type {ReturnType<typeof setTimeout>|null} */
   let timeoutId = null;
   const deadline = new Promise((_, reject) => {
     timeoutId = setTimeout(() => {

@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Jälgi esiletõsteid, kasuta transkriptsiooni, jätka salvestatud järjekohast ja määra kiirus 0,5× kuni 3×. Ettelugemine jätkub hüpikakna sulgemisel.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Seadistusabi</a> · <a href='/privacy'>Privaatsus</a>",
   "Build from source": "Koosta lähtekoodist",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Koosta laiendus kohalikult. Paigalda Node.js 22.13+ (22.x) või 24+ ning seejärel:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Koosta laiendus kohalikult. Paigalda Node.js 22.23.4+ (22.x) või 24.22.1+ ning seejärel:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Klooni <a href='https://github.com/FelixCAxO/PageNarrator'>hoidla</a> ja ava terminal kaustas <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Käivita <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Käivita <code>npm run build</code>.",

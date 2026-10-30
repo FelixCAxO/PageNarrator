@@ -10,7 +10,9 @@ self.onmessage = async ({ data }) => {
       engine = await loadBundledRuntime({ runtime: { getURL: (/** @type {string} */ path) => new URL(path, data.runtimeRoot).href },
         onProgress: (/** @type {any} */ progress) => self.postMessage({ progress }) });
       await engine.init(data.baseUrl);
-    } else if (data.method === 'synthesize') result = await engine.synthesize(data.request);
+    } else if (data.method === 'synthesize') result = await engine.synthesize(data.request, {
+      onProgress: progress => self.postMessage({ id: data.id, synthesisProgress: progress }),
+    });
     else if (data.method === 'diagnostics') result = engine.getDiagnostics();
     else if (data.method === 'dispose') await engine?.dispose();
     else throw new Error('Unknown OmniVoice worker method.');

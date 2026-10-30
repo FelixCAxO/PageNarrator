@@ -1,5 +1,5 @@
 import { MESSAGE_TYPES, READER_ACTION_TYPES } from '../message-types.js';
-import { PDF_VIEWER_MESSAGE_TIMEOUT_MS } from '../timing-config.js';
+import { PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS, PDF_VIEWER_MESSAGE_TIMEOUT_MS } from '../timing-config.js';
 import {
   createRuntimeMessageHandler,
   fireAndForget,
@@ -7,6 +7,18 @@ import {
 
 const PDF_VIEWER_READY_RETRY_OPTIONS = Object.freeze({ attempts: 30, delayMs: 100 });
 const PDF_VIEWER_CHUNK_RETRY_OPTIONS = Object.freeze({ attempts: 3, delayMs: 80 });
+const PAGE_HIGHLIGHT_MESSAGE_TYPES = new Set([
+  MESSAGE_TYPES.SET_HIGHLIGHT_SETTINGS,
+  MESSAGE_TYPES.HIGHLIGHT_CHUNK,
+  MESSAGE_TYPES.HIGHLIGHT_QUEUED,
+  MESSAGE_TYPES.HIGHLIGHT_WORD,
+  MESSAGE_TYPES.HIGHLIGHT_WORD_PLAN,
+  MESSAGE_TYPES.HIGHLIGHT_PLAN_RESYNC,
+  MESSAGE_TYPES.HIGHLIGHT_SYNTHETIC_SPEECH,
+  MESSAGE_TYPES.FLASH_RESUME_SECTION,
+  MESSAGE_TYPES.SET_HIGHLIGHT_PAUSED,
+  MESSAGE_TYPES.CLEAR_HIGHLIGHT,
+]);
 
 /**
  * @param {{
@@ -28,8 +40,12 @@ export function createReaderEngineMessageRouter({
     },
   });
 
-  async function sendPageMessage(tabId, message, { attempts = 3, delayMs = 80, timeoutMs = 0 } = {}) {
+  async function sendPageMessage(tabId, message, options = {}) {
     if (!tabId) return null;
+    // A hidden tab's rendering must never hold up the next spoken section.
+    const highlight = PAGE_HIGHLIGHT_MESSAGE_TYPES.has(message?.type);
+    const { attempts = highlight ? 1 : 3, delayMs = 80,
+      timeoutMs = highlight ? PAGE_HIGHLIGHT_MESSAGE_TIMEOUT_MS : 0 } = options;
     for (let attempt = 0; attempt < attempts; attempt += 1) {
       try {
         return await withMessageTimeout(tabs.sendMessage(tabId, message), timeoutMs, message?.type);

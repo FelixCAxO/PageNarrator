@@ -77,7 +77,8 @@ fn erf_value(x: f32) -> f32 {
 fn main(@builtin(global_invocation_id) position: vec3<u32>) {
   let index = position.x + position.y * cfg[7u] * 64u;
   if (index >= cfg[0u]) { return; }
-  var ai = index; var bi = index;
+  var ai = select(index, 0u, (cfg[6u] & 1u) != 0u);
+  var bi = select(index, 0u, (cfg[6u] & 2u) != 0u);
   if (cfg[2u] == 0u) {
     ai = 0u; bi = 0u; var remaining = index;
     for (var axis = i32(cfg[1u]) - 1; axis >= 0; axis -= 1) {

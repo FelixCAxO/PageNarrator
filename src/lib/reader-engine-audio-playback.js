@@ -46,6 +46,7 @@ export function createAudioPlaybackManager({
   cancelFrame = globalThis.cancelAnimationFrame?.bind(globalThis),
 } = {}) {
   let currentAudio = null;
+  /** @type {ReturnType<typeof createAudioStallWatchdog>|null} */
   let currentAudioWatchdog = null;
   let clearCurrentAudioEventListeners = () => {};
   let rescheduleCurrentSectionTiming = () => {};
@@ -105,6 +106,7 @@ export function createAudioPlaybackManager({
     onAudioStart = null,
     onBeforeNormalEnd = null,
     preparedAudio = null,
+    highlightReady = null,
   } = {}) {
     if (isStopped({ signal, runId })) return Promise.resolve();
 
@@ -121,12 +123,18 @@ export function createAudioPlaybackManager({
       }
       if (!audio.src && typeof managedUrl.url === 'string') audio.src = managedUrl.url;
       let settled = false;
+      /** @type {ReturnType<typeof setTimeout>|null} */
       let earlyAdvanceTimer = null;
+      /** @type {ReturnType<typeof setTimeout>|null} */
       let preEndHandoffTimer = null;
+      /** @type {Promise<any>|null} */
       let preEndHandoffPromise = null;
+      /** @type {ReturnType<typeof setTimeout>|null} */
       let stalledEndFenceTimer = null;
+      /** @type {ReturnType<typeof setTimeout>|null} */
       let playStartFenceTimer = null;
       let playGateOpen = false;
+      let chunkHighlightReady = highlightReady === null;
       let startWordHighlighting = () => {};
       let highlightPlanSuspended = false;
       let recordedAudioStart = false;
@@ -349,13 +357,13 @@ export function createAudioPlaybackManager({
           playbackRate: audio.playbackRate,
         });
         if (delayMs === 0 || canAdvanceEarly) {
-          startPreEndHandoff();
+          void startPreEndHandoff();
           return;
         }
         preEndHandoffTimer = setTimeout(() => {
           preEndHandoffTimer = null;
           if (settled || audio.paused || isStopped({ signal, runId })) return;
-          startPreEndHandoff();
+          void startPreEndHandoff();
         }, delayMs);
       };
 
@@ -379,7 +387,7 @@ export function createAudioPlaybackManager({
 
       /** @param {any} [options] */
       const sendHighlightPlanResync = ({ paused = audio.paused, force = false } = {}) => {
-        if (settled || !syncWordHighlights || !wordTimings?.length) return;
+        if (settled || !chunkHighlightReady || !syncWordHighlights || !wordTimings?.length) return;
         const state = {
           currentTime: audio.currentTime,
           playbackRate: audio.playbackRate,
@@ -405,6 +413,7 @@ export function createAudioPlaybackManager({
 
       if (syncWordHighlights && wordTimings?.length) {
         startWordHighlighting = () => {
+          if (settled || !chunkHighlightReady) return;
           const planLeadSeconds = getOutputLatencyAdjustedLeadSeconds({
             playbackRate: audio.playbackRate,
             outputLatencySeconds: audioOutputLatencySeconds,
@@ -434,6 +443,15 @@ export function createAudioPlaybackManager({
             fadeMs: 180,
           }).catch(suppressError);
         };
+      }
+
+      // Visual replies can be throttled in background tabs; audio keeps its own clock.
+      if (highlightReady) {
+        void Promise.resolve(highlightReady).then(result => {
+          if (settled || isStopped({ signal, runId })) return;
+          chunkHighlightReady = result?.ok === true;
+          if (playGateOpen && chunkHighlightReady) startWordHighlighting();
+        }).catch(suppressError);
       }
 
       audio.onended = () => {
@@ -573,6 +591,7 @@ export function createAudioPlaybackManager({
 }
 
 export function createAudioOutputLatencyReader({ globalRef = globalThis } = {}) {
+  /** @type {number|null} */
   let cachedAudioOutputLatencySeconds = null;
   return function readAudioOutputLatencySeconds() {
     if (cachedAudioOutputLatencySeconds !== null) return cachedAudioOutputLatencySeconds;

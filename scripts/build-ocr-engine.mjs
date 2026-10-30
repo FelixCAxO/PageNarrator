@@ -19,18 +19,18 @@ const flags = ['c++', '-target', 'wasm32-freestanding', '-std=c++20', '-O3', '-m
 if (process.argv.includes('--check')) {
   const recorded = JSON.parse(readFileSync(metadata, 'utf8'));
   if (recorded.sourceSha256 !== hash(source) || recorded.sharedSourceSha256 !== hash(shared) || recorded.wasmSha256 !== hash(output)
-    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('OCR engine source/binary mismatch. Rebuild with Zig 0.15.2.');
+    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('OCR engine source/binary mismatch. Rebuild with Zig 0.17.0.');
   if (WebAssembly.Module.imports(await WebAssembly.compile(readFileSync(output))).length) throw new Error('OCR engine must not import executable code.');
   console.log('First-party OCR source and binary hashes match.');
 } else {
   const compiler = process.env.PN_ZIG || 'zig';
   const version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to the Zig 0.15.2 executable.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to the Zig 0.17.0 executable.');
   mkdirSync(new URL('../public/native/', import.meta.url), { recursive: true });
   const built = spawnSync(compiler, [...flags, fileURLToPath(source), '-o', fileURLToPath(output)], { cwd: root, stdio: 'inherit' });
   if (built.status !== 0) throw new Error(`OCR engine compilation failed (${built.status}).`);
   if (WebAssembly.Module.imports(await WebAssembly.compile(readFileSync(output))).length) throw new Error('OCR engine unexpectedly imports a runtime.');
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.15.2 (Clang C++)', flags,
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.17.0 (Clang C++)', flags,
     sourceSha256: hash(source), sharedSourceSha256: hash(shared), wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
   console.log(`Built first-party OCR C++/WASM: ${readFileSync(output).byteLength} bytes, no imports.`);
 }

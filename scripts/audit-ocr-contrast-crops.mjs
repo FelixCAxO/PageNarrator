@@ -1,7 +1,8 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import {readFile,writeFile,mkdir} from 'node:fs/promises';
 import sharp from 'sharp';
-import {refinePdfOcrWordBounds as refine} from '../.cache/ocr-contrast-baseline/word-anchor-prototype.js';
+// This historical oracle is a separately retained local input.
+const {refinePdfOcrWordBounds:refine}=await import(new URL('../.cache/ocr-contrast-baseline/word-anchor-prototype.js',import.meta.url).href);
 
 const input=JSON.parse(await readFile('artifacts/engines/ocr-contrast-crops.json','utf8'));
 const directory='artifacts/engines/ocr-contrast-crop-audit';await mkdir(directory,{recursive:true});

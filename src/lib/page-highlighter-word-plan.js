@@ -46,12 +46,12 @@ export function findMergedPdfFragmentMatch(domEntries, startIndex, target, norma
         range.setEnd(range.endContainer, range.endOffset + 1);
         ranges[ranges.length - 1] = range;
       } else if (domEntries[startIndex + offset + 1]) {
-        // A decimal point can have its own span and therefore no spoken token.
+        // Dots and empty calls have no spoken token, but belong to the source word.
         const next = domEntries[startIndex + offset + 1].range;
         const separator = entry.range.cloneRange();
         separator.setStart(entry.range.endContainer, entry.range.endOffset);
         separator.setEnd(next.startContainer, next.startOffset);
-        if (/^\s*\.\s*$/u.test(separator.toString())) {
+        if (/^\s*(?:\(\s*\)\s*)?\.\s*$/u.test(separator.toString())) {
           candidate += '.';
           ranges.push(separator);
         }

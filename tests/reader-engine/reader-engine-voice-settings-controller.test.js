@@ -7,6 +7,20 @@ import { getReaderEngineSettingsElements } from '../../src/ui/reader-engine/elem
 describe('reader engine voice settings', () => {
   afterEach(() => vi.unstubAllGlobals());
 
+  it('keeps four OmniVoice chunks ahead without changing voice quality settings', () => {
+    const dom = new JSDOM(readFileSync(new URL('../../src/reader-engine.html', import.meta.url), 'utf8'));
+    vi.stubGlobal('document', dom.window.document);
+    const els = getReaderEngineSettingsElements(dom.window.document);
+    const controller = createReaderEngineVoiceSettingsController({ els, state: {
+      ttsPerformanceGovernor: { currentConfig: () => ({ preloadAhead: 2, progressiveSegments: true }), requestedProfile: () => 'auto' },
+    } });
+    els.ttsEngine.value = 'omnivoice';
+    expect(controller.getActiveTtsProfileConfig()).toMatchObject({ preloadAhead: 4, progressiveSegments: false, maxChunkLength: 240 });
+    els.ttsEngine.value = 'kokoro';
+    expect(controller.getActiveTtsProfileConfig()).toMatchObject({ preloadAhead: 2, progressiveSegments: true });
+    dom.window.close();
+  });
+
   it.each(['yue','th'])('warns about %s word loss while preserving selectable whisper and the fixed voice', async language=>{
     const dom=new JSDOM(readFileSync(new URL('../../src/reader-engine.html',import.meta.url),'utf8'));
     vi.stubGlobal('document',dom.window.document);

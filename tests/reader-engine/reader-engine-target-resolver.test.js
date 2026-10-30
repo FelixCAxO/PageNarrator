@@ -44,12 +44,15 @@ describe('toolbar player target resolver', () => {
     resolver.sendPageMessage(4, message);
     expect(messageRouter.sendPageMessage).toHaveBeenLastCalledWith(4, {
       ...message, contentDiagnostics: { recordFlow: true },
-    }, { attempts: 3, delayMs: 80 });
+    }, {});
     recordFlow = false;
     resolver.sendPageMessage(4, { type: MESSAGE_TYPES.CLEAR_HIGHLIGHT });
     expect(messageRouter.sendPageMessage).toHaveBeenLastCalledWith(4, {
       type: MESSAGE_TYPES.CLEAR_HIGHLIGHT, contentDiagnostics: { recordFlow: false },
-    }, { attempts: 3, delayMs: 80 });
+    }, {});
+
+    resolver.sendPageMessage(4, message, { attempts: 1, timeoutMs: 25 });
+    expect(messageRouter.sendPageMessage).toHaveBeenLastCalledWith(4, expect.any(Object), { attempts: 1, timeoutMs: 25 });
     expect(message.contentDiagnostics).toEqual({ recordFlow: false });
   });
 

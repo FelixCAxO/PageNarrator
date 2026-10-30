@@ -17,12 +17,12 @@ if (process.argv.includes('--check')) {
 } else {
   const compiler = process.env.PN_ZIG || 'zig';
   const version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to Zig 0.15.2.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to Zig 0.17.0.');
   mkdirSync(new URL('../public/assets/phonemizer/', import.meta.url), { recursive: true });
   const built = spawnSync(compiler, [...flags, fileURLToPath(source), '-o', fileURLToPath(output)], { stdio: 'inherit' });
   if (built.status !== 0) throw new Error('First-party phonemizer compilation failed.');
   const module = await WebAssembly.compile(readFileSync(output));
   if (WebAssembly.Module.imports(module).length) throw new Error('Phonemizer unexpectedly imports an executable runtime.');
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.15.2 (Clang C++)', flags, sourceSha256: hash(source), wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.17.0 (Clang C++)', flags, sourceSha256: hash(source), wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
   console.log(`Built independent English phonemizer: ${readFileSync(output).length} bytes.`);
 }

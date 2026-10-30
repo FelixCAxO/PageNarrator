@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Следите за подсветкой, используйте текст чтения, возвращайтесь к сохранённым позициям и задавайте скорость от 0,5× до 3×. Чтение продолжается после закрытия всплывающего окна.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Помощь с настройкой</a> · <a href='/privacy'>Конфиденциальность</a>",
   "Build from source": "Собрать из исходного кода",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Соберите расширение локально. Установите Node.js 22.13+ (22.x) или 24+, затем:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Соберите расширение локально. Установите Node.js 22.23.4+ (22.x) или 24.22.1+, затем:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Клонируйте <a href='https://github.com/FelixCAxO/PageNarrator'>репозиторий</a> и откройте терминал в <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Выполните <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Выполните <code>npm run build</code>.",

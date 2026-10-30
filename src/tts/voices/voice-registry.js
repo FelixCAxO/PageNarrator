@@ -30,7 +30,9 @@ const KOKORO_ONNX_MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
 const KOKORO_ONNX_URL = 'https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX';
 export const KOKORO_MODEL_REVISION = '1939ad2a8e416c0acfeecc08a694d14ef25f2231';
 export const VOICE_MODEL_IDLE_RELEASE_DELAY_MS = 60_000;
+/** @type {Promise<ReturnType<typeof import('../../lib/voice-model.js').createVoiceModelLoader>>|null} */
 let defaultVoiceModelLoaderPromise = null;
+/** @type {Promise<typeof import('../kokoro/worker-client.js')>|null} */
 let runtimeConfigurationPromise = null;
 
 export const KOKORO_NON_CC_VOICE_IDS = Object.freeze([
@@ -338,6 +340,7 @@ export function createVoiceModelIdleReleaseController({
   setTimeoutFn = globalThis.setTimeout?.bind(globalThis),
   clearTimeoutFn = globalThis.clearTimeout?.bind(globalThis),
 } = {}) {
+  /** @type {ReturnType<typeof setTimeout>|null} */
   let releaseTimer = null;
 
   function cancel() {
@@ -351,7 +354,8 @@ export function createVoiceModelIdleReleaseController({
     if (!idleReleaseEnabled()) return;
     if (typeof setTimeoutFn !== 'function' || typeof releaseVoiceModel !== 'function') return;
 
-    let timer = null;
+    /** @type {ReturnType<typeof setTimeout>|undefined} */
+    let timer;
     timer = setTimeoutFn(async () => {
       if (releaseTimer !== timer) return;
       releaseTimer = null;

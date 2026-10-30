@@ -1,0 +1,18 @@
+# Python 3.14; independent analysis and reference tools, never shipped in the extension.
+-r requirements-audio-analysis.txt
+torch==2.15.0
+transformers==5.21.0
+# Upstream's PyAV 19 fix, pinned to reviewed source until the next stable release.
+faster-whisper @ https://github.com/SYSTRAN/faster-whisper/archive/2ce7f9d7a9fbe315a5804a33bf7224d42e101174.tar.gz#sha256=281e65ba4df9bd2825804a3dcee0dfb8a1bd90f2ebae659c2c80fc220c676b6e
+av==19.0.2
+onnxruntime==1.31.1
+PyMuPDF==2.0
+Pillow==13.0.0
+pypdf==6.21.3
+pdfplumber==0.11.10
+pdfminer.six==20260107
+psutil==7.2.2
+soundfile==0.14.0
+praat-parselmouth==0.4.7
+PyAudioWPatch==0.2.12.9; sys_platform == 'win32'
+ToJyutping==3.2.0

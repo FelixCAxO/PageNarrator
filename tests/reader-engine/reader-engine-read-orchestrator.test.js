@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import {
   createReadOrchestrator,
@@ -45,6 +45,64 @@ function createBatchedAsyncIterator(values) {
 }
 
 describe('readerEngine read orchestrator', () => {
+  it('serializes overlapping lookahead pulls while allowing already loaded chunks through', async () => {
+    let releaseBatch;
+    const batch = new Promise(resolve => { releaseBatch = resolve; });
+    const iterator = { next: vi.fn(() => batch) };
+    const state = { iterator, chunks: [{ speech: 'ready' }], wordCounts: [1] };
+    const orchestrator = createReadOrchestrator({ state });
+    const first = orchestrator.fillChunkBuffer(1);
+    const second = orchestrator.fillChunkBuffer(1);
+    try {
+      await vi.waitFor(() => expect(iterator.next).toHaveBeenCalledOnce());
+      await expect(orchestrator.fillChunkBuffer(0)).resolves.toBe(true);
+    } finally {
+      releaseBatch({ value: { speech: 'later' }, done: false });
+      await Promise.all([first, second]);
+    }
+    expect(iterator.next).toHaveBeenCalledOnce();
+    expect(state.chunks.map(chunk => chunk.speech)).toEqual(['ready', 'later']);
+  });
+
+  it('loads a new read without waiting for a cancelled read and ignores its late text', async () => {
+    let releaseBatch;
+    const batch = new Promise(resolve => { releaseBatch = resolve; });
+    const state = { iterator: { next: () => batch }, chunks: [], wordCounts: [] };
+    const orchestrator = createReadOrchestrator({ state });
+    const oldRead = orchestrator.fillChunkBuffer(0);
+    await Promise.resolve();
+    await Promise.resolve();
+    state.iterator = createAsyncIterator([{ speech: 'fresh' }]);
+    try {
+      await expect(orchestrator.fillChunkBuffer(0)).resolves.toBe(true);
+    } finally {
+      releaseBatch({ value: { speech: 'stale' }, done: false });
+      await oldRead;
+    }
+    expect(state.chunks.map(chunk => chunk.speech)).toEqual(['fresh']);
+  });
+
+  it('releases the required section as soon as it arrives during a longer lookahead fill', async () => {
+    let releasePage;
+    const page = new Promise(resolve => { releasePage = resolve; });
+    const state = { chunks: [{ speech: 'first' }], wordCounts: [1], iterator: (async function* () {
+      yield { speech: 'second' };
+      await page;
+      yield { speech: 'third' };
+    })() };
+    const orchestrator = createReadOrchestrator({ state });
+    const ahead = orchestrator.fillChunkBuffer(2);
+    let currentReady = false;
+    const current = orchestrator.fillChunkBuffer(1).then(() => { currentReady = true; });
+    try {
+      await vi.waitFor(() => expect(currentReady).toBe(true));
+      expect(state.chunks.map(chunk => chunk.speech)).toEqual(['first', 'second']);
+    } finally {
+      releasePage();
+      await Promise.all([ahead, current]);
+    }
+  });
+
   it('fills a streaming chunk buffer through the requested target index', async () => {
     const chunks = [];
     const wordCounts = [];

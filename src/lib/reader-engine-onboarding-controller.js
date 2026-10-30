@@ -16,6 +16,7 @@ export function createReaderEngineOnboardingController({
   onError = () => {},
 } = {}) {
   let state = createDefaultState();
+  /** @type {Promise<void>|null} */
   let initPromise = null;
   let listenersBound = false;
   let hydrated = false;

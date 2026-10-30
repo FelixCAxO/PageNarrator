@@ -6,6 +6,9 @@ import { createReaderEngineController } from '../../src/ui/reader-engine/reader-
 test.use({ launchOptions: { args: [] } });
 
 test.beforeEach(async ({ page }) => {
+  // Chromium can discard its initial about:blank without a normal pagehide lifecycle.
+  await page.route('http://127.0.0.1/trusted-ui/**', route => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Trusted UI fixture</title>' }));
+  await page.goto('http://127.0.0.1/trusted-ui/start');
   await page.setContent(`
     <button id="read" type="button">Read</button>
     <input id="jump" aria-label="Section">
@@ -94,17 +97,14 @@ test('does not retain submission permission after invalid or canceled user click
 });
 
 test('rejects scripted lifecycle events and preserves native page teardown', async ({ page }) => {
-  const teardownEvents = [];
-  page.on('console', (message) => {
-    if (message.text() === 'native-page-teardown') teardownEvents.push(message.text());
-  });
   await page.evaluate(() => {
-    window.addEventListener('pagehide', () => console.log('native-page-teardown'));
+    // Console events can be lost when DevTools destroys the old document's context.
+    window.addEventListener('pagehide', () => sessionStorage.setItem('native-page-teardown', 'observed'));
     document.dispatchEvent(new Event('visibilitychange'));
     window.dispatchEvent(new PageTransitionEvent('pagehide'));
   });
   expect(await page.evaluate(() => window.effects)).toEqual([]);
-  expect(teardownEvents).toEqual([]);
-  await page.goto('data:text/html,Next document');
-  expect(teardownEvents).toEqual(['native-page-teardown']);
+  expect(await page.evaluate(() => sessionStorage.getItem('native-page-teardown'))).toBeNull();
+  await page.goto('http://127.0.0.1/trusted-ui/next');
+  expect(await page.evaluate(() => sessionStorage.getItem('native-page-teardown'))).toBe('observed');
 });

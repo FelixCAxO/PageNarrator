@@ -80,7 +80,7 @@ try {
   const report = { status: 'pass', browser: browser.version(), modelId: manifest.modelId, revision: manifest.revision,
     tokenizerSha256: manifest.files.find(file => file.path === 'tokenizer.json').sha256,
     tokenizerConfigSha256: manifest.files.find(file => file.path === 'tokenizer_config.json').sha256,
-    reference: 'Node Transformers 3.8.1 Qwen2Tokenizer (isolated development oracle)', ...result };
+    reference: 'Node Transformers 4.3.2 Qwen2Tokenizer (isolated development oracle)', ...result };
   await mkdir(dirname(output), { recursive: true }); await writeFile(output, `${JSON.stringify(report, null, 2)}\n`);
   console.log(JSON.stringify(report, null, 2));
 } finally { await browser?.close(); await new Promise(done => server.close(done)); }

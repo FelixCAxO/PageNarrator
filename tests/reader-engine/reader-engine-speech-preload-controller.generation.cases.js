@@ -19,7 +19,32 @@ describe('readerEngine speech preload controller', () => {
     expect(entry.engine).toBe('omnivoice');
     expect(entry.voiceId).toBe(voice.id);
     expect(entry.result.result.blob).toBeInstanceOf(Blob);
-    expect(generate).toHaveBeenCalledExactlyOnceWith('Hej världen.', { voice, signal: expect.any(AbortSignal) });
+    expect(generate).toHaveBeenCalledExactlyOnceWith('Hej världen.', { voice, signal: expect.any(AbortSignal), onSynthesisProgress: expect.any(Function) });
+  });
+
+  it('releases the opening playback lead from actual progress before PCM completes', async () => {
+    let complete;
+    let reportProgress;
+    const voice = { engine: 'omnivoice', id: 'omnivoice:sv', detectCode: 'sv' };
+    const generate = vi.fn((_text, options) => {
+      reportProgress = options.onSynthesisProgress;
+      return new Promise(resolve => { complete = resolve; });
+    });
+    const controller = createController({ state: { tts: { generate } }, resolveSelectedVoice: () => voice });
+    const preload = controller.createSpeechPreloadForVoice(voice, { speech: 'Hej världen.' });
+    let released = false;
+    const lead = preload.waitForPlaybackLead(3).then(() => { released = true; });
+    await vi.waitFor(() => expect(reportProgress).toBeTypeOf('function'));
+    for (const remainingMs of [NaN, -1, Infinity, 2500]) {
+      reportProgress({ remainingMs });
+      await Promise.resolve();
+      expect(released).toBe(false);
+    }
+    reportProgress({ remainingMs: 2300 });
+    await lead;
+    expect(released).toBe(true);
+    complete({ audio: new Float32Array(2400).fill(0.1), sampling_rate: 24000 });
+    expect((await preload).error).toBeUndefined();
   });
 
   it('keeps warmup reuse out of fresh hardware throughput calibration', async () => {

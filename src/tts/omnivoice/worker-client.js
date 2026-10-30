@@ -27,6 +27,7 @@ export async function createOmniVoiceWorker({ onProgress = () => {}, runtime = g
     }
     const request = pending.get(data.id);
     if (!request) return;
+    if (data.synthesisProgress) { request.onProgress?.(data.synthesisProgress); return; }
     pending.delete(data.id);
     clearTimeout(request.timer); clearTimeout(request.abortTimer);
     if (data.error) request.reject(Object.assign(new Error(data.error.message), { name: data.error.name }));
@@ -35,20 +36,20 @@ export async function createOmniVoiceWorker({ onProgress = () => {}, runtime = g
   const failure = (/** @type {string} */ message) => Object.assign(new Error(message), { name: 'OmniVoiceWorkerError' });
   worker.onerror = (/** @type {ErrorEvent} */ event) => { event?.preventDefault?.(); close(failure(event?.message || 'OmniVoice worker crashed.')); };
   worker.onmessageerror = () => close(failure('OmniVoice worker returned an unreadable response.'));
-  /** @param {string} method @param {Record<string, any>} [payload] */
-  function call(method, payload = {}) {
+  /** @param {string} method @param {Record<string, any>} [payload] @param {any} [onProgress] */
+  function call(method, payload = {}, onProgress = null) {
     if (closed) return Promise.reject(failure('OmniVoice worker is closed.'));
     return new Promise((resolve, reject) => {
       const id = ++nextId;
       const timer = setTimeout(() => close(failure(`OmniVoice ${method} timed out.`)), method === 'dispose' ? 5_000 : 180_000);
-      pending.set(id, { resolve, reject, timer, method, abortTimer: null });
+      pending.set(id, { resolve, reject, timer, method, abortTimer: null, onProgress });
       try { worker.postMessage({ id, method, ...payload }); }
       catch { close(failure('Could not send a request to the OmniVoice worker.')); }
     });
   }
   return {
     init: (/** @type {string} */ baseUrl) => call('init', { baseUrl, runtimeRoot: runtime.getURL('') }),
-    synthesize: (/** @type {any} */ request) => call('synthesize', { request }),
+    synthesize: (/** @type {any} */ request, /** @type {any} */ options = {}) => call('synthesize', { request }, options.onProgress),
     abortGeneration() {
       if (closed) return;
       try { worker.postMessage({ method: 'abort' }); }

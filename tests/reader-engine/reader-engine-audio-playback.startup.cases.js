@@ -8,6 +8,34 @@ describe('readerEngine audio playback manager', () => {
     vi.useRealTimers();
   });
 
+  it.each(['ready', 'failed', 'ended'])('does not stall audio for a delayed highlight and handles a %s reply', async reply => {
+    const audio = createFakeAudio();
+    const sendPageMessage = vi.fn(async () => {});
+    let releaseHighlight;
+    const highlightReady = new Promise(resolve => { releaseHighlight = resolve; });
+    const manager = createAudioPlaybackManager({
+      audioPool: { acquire: () => audio },
+      getActiveReadTabId: () => 2,
+      sendPageMessage,
+      urlApi: { createObjectURL: () => 'blob:delayed-highlight', revokeObjectURL() {} },
+    });
+    const playback = manager.playAudio(new Blob(['audio']), [{ text: 'hello', start: 0, end: 1 }],
+      { speech: 'hello' }, { highlightReady });
+    await Promise.resolve();
+    expect(audio.play).toHaveBeenCalledOnce();
+    expect(sendPageMessage).not.toHaveBeenCalled();
+    audio.currentTime = 0.4;
+    if (reply === 'ended') { audio.onended(); await playback; }
+    releaseHighlight({ ok: reply !== 'failed' });
+    await Promise.resolve();
+    if (reply === 'ready') {
+      expect(sendPageMessage).toHaveBeenCalledWith(2, expect.objectContaining({
+        type: MESSAGE_TYPES.HIGHLIGHT_WORD_PLAN, currentTime: 0.4,
+      }));
+    } else expect(sendPageMessage).not.toHaveBeenCalled();
+    if (reply !== 'ended') { audio.onended(); await playback; }
+  });
+
   it('revokes the playback URL when acquiring the audio element fails', async () => {
     const revokeObjectURL = vi.fn();
     const manager = createAudioPlaybackManager({

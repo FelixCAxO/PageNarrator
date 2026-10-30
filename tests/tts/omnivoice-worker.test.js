@@ -12,6 +12,20 @@ async function setup() {
 
 afterEach(() => vi.useRealTimers());
 
+it('routes synthesis progress to its request without settling the PCM promise', async () => {
+  const { engine, worker, reply } = await setup();
+  const onProgress = vi.fn();
+  const pending = engine.synthesize({}, { onProgress });
+  worker.onmessage({ data: { id: 999, synthesisProgress: { remainingMs: 100 } } });
+  expect(onProgress).not.toHaveBeenCalled();
+  worker.onmessage({ data: { id: 1, synthesisProgress: { remainingMs: 2300 } } });
+  expect(onProgress).toHaveBeenCalledExactlyOnceWith({ remainingMs: 2300 });
+  const result = { pcm: Float32Array.of(0.1), sampleRate: 24000 };
+  reply(1, result);
+  expect(await pending).toBe(result);
+  engine.terminate();
+});
+
 it('routes progress, initialization and transferred PCM results by request ID', async () => {
   const { engine, worker, onProgress, reply } = await setup();
   const ready = engine.init('model');

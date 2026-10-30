@@ -50,6 +50,18 @@ function fixture() {
 }
 
 describe('PageNarrator OmniVoice inference bridge', () => {
+  it('reports remaining work without changing decoder tokens or PCM', async () => {
+    const f = fixture();
+    await f.runtime.init('https://model.test');
+    const onProgress = vi.fn();
+    const measured = await f.runtime.synthesize(request, { onProgress });
+    const plain = await f.runtime.synthesize(request);
+    expect(measured.pcm).toEqual(plain.pcm);
+    expect(onProgress).toHaveBeenCalledTimes(request.numStep);
+    expect(onProgress.mock.calls.every(([progress]) => Number.isFinite(progress.remainingMs) && progress.remainingMs >= 0)).toBe(true);
+    expect(onProgress).toHaveBeenLastCalledWith({ remainingMs: 0 });
+    await f.runtime.dispose();
+  });
   it('rejects an unrecognized graph before creating either inference session', async () => {
     const f = fixture();
     applyOmniVoiceRmsNormCorrection.mockRejectedValueOnce(new Error('Exact pinned graph required'));

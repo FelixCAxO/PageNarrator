@@ -27,4 +27,4 @@ Kokoro runs synthesis in a worker. Eligible isolated hosts with shared memory an
 
 Stop terminates CPU workers. GPU work already submitted can finish before disposal. A GPU call that never settles can block orderly recovery.
 
-Development and packaging require Node.js 22.13+ (22.x) or 24+. Native rebuilds use Zig 0.15.2; ordinary builds use the checked-in binaries.
+Development and packaging require Node.js 22.23.4+ (22.x) or 24.22.1+. Native rebuilds use Zig 0.17.0; ordinary builds use the checked-in binaries.

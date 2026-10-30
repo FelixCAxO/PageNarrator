@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Følg fremhævningerne, brug oplæsningsteksten, genoptag gemte positioner, og indstil hastigheden fra 0,5× til 3×. Oplæsningen fortsætter, når popupvinduet lukkes.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Hjælp til opsætning</a> · <a href='/privacy'>Privatliv</a>",
   "Build from source": "Byg fra kildekoden",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Byg udvidelsen lokalt. Installer Node.js 22.13+ (22.x) eller 24+, og gør derefter følgende:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Byg udvidelsen lokalt. Installer Node.js 22.23.4+ (22.x) eller 24.22.1+, og gør derefter følgende:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Klon <a href='https://github.com/FelixCAxO/PageNarrator'>kodelageret</a>, og åbn en terminal i <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Kør <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Kør <code>npm run build</code>.",

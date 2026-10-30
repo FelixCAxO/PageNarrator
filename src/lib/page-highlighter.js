@@ -1,6 +1,6 @@
 // @ts-check
 import { findBestMatch, normalizeForSearch } from './highlight-search.js';
-import { getNoiseSelector } from './dom-selectors.js';
+import { getNoiseSelectors } from './dom-selectors.js';
 import { normalizeHighlightSettings } from './playback-settings.js';
 import { hexToRgbString, isDarkColor, parseCssColor } from './color-utils.js';
 import { tokenizeSpokenWords } from './speech-tokenization.js';
@@ -48,7 +48,7 @@ export function createPageHighlighter(documentRef = document, options = {}) {
   };
   const wordPlanClock = options.mediaClock || createWordPlanClock(win);
   const flowRecorder = options.flowRecorder || null;
-  const noiseSelector = getNoiseSelector({ surface: highlighterOptions.pdfMode ? 'pdf' : 'highlighter' });
+  const noiseSelectors = getNoiseSelectors({ surface: highlighterOptions.pdfMode ? 'pdf' : 'highlighter' });
   let wordRanges = [];
   let lastWordIndex = -1;
   let recentWordRanges = [];
@@ -662,7 +662,7 @@ export function createPageHighlighter(documentRef = document, options = {}) {
   function hasExcludedAncestor(element) {
     for (let node = element; node && node !== documentRef.body; node = node.parentElement) {
       if (/^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|INPUT|SELECT|OPTION)$/.test(node.tagName || '')) return true;
-      if (node.matches?.(noiseSelector)) return true;
+      if (noiseSelectors.some(selector => node.matches?.(selector))) return true;
       if (isReferenceTextElement(node)) return true;
       if (Number.parseFloat(node.style?.opacity || '') === 0) return true;
     }

@@ -155,9 +155,9 @@ describe('repository guardrails', () => {
     const playwright = readRepoFile('playwright.config.js');
     expect(playwright).toContain("PN_E2E_EXTENSION_DIR || 'dist'");
     expect(`${JSON.stringify(gates)}\n${playwright}`).not.toMatch(/dist\/(standard|pro)|extension-(standard|pro)/i);
-    expect(packageJson.engines.node).toBe('^22.13.0 || >=24.0.0');
+    expect(packageJson.engines.node).toBe('^22.23.4 || ^24.22.1 || >=26.12.1');
     expect(readJson('package-lock.json').packages[''].engines.node).toBe(packageJson.engines.node);
-    expect(readRepoFile('.nvmrc').trim()).toBe('22');
+    expect(readRepoFile('.nvmrc').trim()).toBe('26.12.1');
     expect(existsSync(join(ROOT_DIR, 'tsconfig.json'))).toBe(true);
     expect(existsSync(join(ROOT_DIR, 'tsconfig.base.json'))).toBe(true);
   });

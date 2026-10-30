@@ -28,7 +28,8 @@ globalThis.fetch = async (input, init) => {
 let tts;
 try {
   const { KokoroTTS, TextSplitterStream } = await import('kokoro-js');
-  const { env } = await import('@huggingface/transformers');
+  // Kokoro's compatible Transformers 3 reference has its own module environment.
+  const { env } = await import(new URL('../../node_modules/kokoro-js/node_modules/@huggingface/transformers/dist/transformers.node.mjs', import.meta.url));
   env.allowRemoteModels = false; env.allowLocalModels = true; env.useBrowserCache = false; env.useFSCache = false;
   tts = await KokoroTTS.from_pretrained(request.cacheDirectory.replaceAll('\\', '/'), { dtype, device: 'cpu' });
   for (const entry of request.entries) {

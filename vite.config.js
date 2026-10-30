@@ -69,10 +69,10 @@ export default defineConfig({
   },
   build: {
     outDir,
-    target: 'esnext',
+    target: 'chrome120',
     sourcemap: false,
     chunkSizeWarningLimit: 2500,
-    rollupOptions: {
+    rolldownOptions: {
       input: {
         content: 'src/content.js',
         readerEngine: 'src/reader-engine.html',

@@ -241,19 +241,34 @@ const ARTICLE_EXTRA_NOISE_SELECTORS = Object.freeze([
   '[hidden]',
 ]);
 
-export const PDF_NOISE_SELECTOR = COMMON_NOISE_SELECTORS.join(',');
-export const WEB_NOISE_SELECTOR = [
+// Bound each native query without dropping exclusions or changing selector semantics.
+function groupSelectors(selectors) {
+  const groups = [];
+  let group = '';
+  for (const selector of selectors) {
+    if (group && group.length + selector.length + 1 > 1800) {
+      groups.push(group);
+      group = '';
+    }
+    group += `${group ? ',' : ''}${selector}`;
+  }
+  if (group) groups.push(group);
+  return Object.freeze(groups);
+}
+
+export const PDF_NOISE_SELECTORS = groupSelectors(COMMON_NOISE_SELECTORS);
+export const WEB_NOISE_SELECTORS = groupSelectors([
   ...COMMON_NOISE_SELECTORS,
   ...WEB_ARTICLE_NOISE_SELECTORS,
-].join(',');
-export const ARTICLE_NOISE_SELECTOR = [
+]);
+export const ARTICLE_NOISE_SELECTORS = groupSelectors([
   ...COMMON_NOISE_SELECTORS,
   ...WEB_ARTICLE_NOISE_SELECTORS,
   ...ARTICLE_EXTRA_NOISE_SELECTORS,
-].join(',');
+]);
 
-export function getNoiseSelector({ surface = 'article' } = {}) {
-  if (surface === 'pdf' || surface === 'highlighter') return PDF_NOISE_SELECTOR;
-  if (surface === 'web') return WEB_NOISE_SELECTOR;
-  return ARTICLE_NOISE_SELECTOR;
+export function getNoiseSelectors({ surface = 'article' } = {}) {
+  if (surface === 'pdf' || surface === 'highlighter') return PDF_NOISE_SELECTORS;
+  if (surface === 'web') return WEB_NOISE_SELECTORS;
+  return ARTICLE_NOISE_SELECTORS;
 }

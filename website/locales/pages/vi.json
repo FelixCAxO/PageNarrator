@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Theo dõi phần tô sáng, dùng bản chép lời, tiếp tục từ vị trí đã lưu và chỉnh tốc độ từ 0,5× đến 3×. Việc đọc vẫn tiếp tục khi bạn đóng cửa sổ bật lên.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Trợ giúp thiết lập</a> · <a href='/privacy'>Quyền riêng tư</a>",
   "Build from source": "Biên dịch từ mã nguồn",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Biên dịch tiện ích trên máy của bạn. Cài Node.js 22.13+ (22.x) hoặc 24+, sau đó:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Biên dịch tiện ích trên máy của bạn. Cài Node.js 22.23.4+ (22.x) hoặc 24.22.1+, sau đó:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Sao chép <a href='https://github.com/FelixCAxO/PageNarrator'>kho mã</a> bằng lệnh clone và mở cửa sổ dòng lệnh trong <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Chạy <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Chạy <code>npm run build</code>.",

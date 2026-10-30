@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "Urmărește evidențierea, folosește transcrierea, reia pozițiile salvate și setează viteza de la 0,5× la 3×. Citirea continuă când închizi fereastra extensiei.",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>Ajutor pentru configurare</a> · <a href='/privacy'>Confidențialitate</a>",
   "Build from source": "Compilează din codul-sursă",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "Compilează extensia local. Instalează Node.js 22.13+ (22.x) sau 24+, apoi:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "Compilează extensia local. Instalează Node.js 22.23.4+ (22.x) sau 24.22.1+, apoi:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "Clonează <a href='https://github.com/FelixCAxO/PageNarrator'>depozitul</a> și deschide un terminal în <code>PageNarrator</code>.",
   "Run <code>npm ci</code>.": "Execută <code>npm ci</code>.",
   "Run <code>npm run build</code>.": "Execută <code>npm run build</code>.",

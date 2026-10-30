@@ -101,7 +101,10 @@ try {
     if (!hostSample) hostSample = sampleHost('during').finally(() => { hostSample = null; });
   }, 5000);
   profile = await mkdtemp(join(tmpdir(), 'pn-kokoro-registry-'));
-  context = await chromium.launchPersistentContext(profile, { channel: 'chromium', headless: true, args: adapterConfiguration.args });
+  context = await chromium.launchPersistentContext(profile, { channel: 'chromium', headless: true, args: adapterConfiguration.args,
+    executablePath: process.env.PN_BENCHMARK_CHROMIUM || undefined });
+  report.browserVersion = context.browser().version();
+  report.browserExecutable = process.env.PN_BENCHMARK_CHROMIUM || chromium.executablePath();
   const origin = `http://127.0.0.1:${server.address().port}`;
   const modelBase = `https://huggingface.co/${KOKORO_DATA.modelId}/resolve/${KOKORO_DATA.revision}/`;
   await context.route('**/*', async route => {

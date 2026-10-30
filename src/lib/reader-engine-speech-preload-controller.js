@@ -44,6 +44,15 @@ export function createReaderEngineSpeechPreloadController({
     const text = getChunkSpeechText(chunk);
     const startedAtMs = getNowMs();
     const voice = selectedVoice || resolveSelectedVoice();
+    let playbackLeadMs = 0;
+    let remainingMs = Infinity;
+    /** @type {() => void} */
+    let releasePlaybackLead = () => {};
+    const playbackLeadReady = new Promise(resolve => { releasePlaybackLead = () => resolve(undefined); });
+    const checkPlaybackLead = () => {
+      // Leave room for inference variation, decoding and the next audio handoff.
+      if (Number.isFinite(remainingMs) && remainingMs >= 0 && remainingMs * 1.2 + 200 <= playbackLeadMs) releasePlaybackLead();
+    };
     recordPipeline({ kind: 'synthesis_requested', chunkIndex: sectionIndex, engine: voice?.engine });
     if (state.testForceKokoroFailureEnabled) {
       return Promise.resolve({ error: new Error('Forced Kokoro failure for low-spec fallback probe.') });
@@ -66,6 +75,10 @@ export function createReaderEngineSpeechPreloadController({
       signal: preloadController.signal,
       testSilentTts: state.testSilentTtsEnabled,
       useStream: false,
+      ...(voice?.engine === 'omnivoice' ? { onSynthesisProgress(progress) {
+        remainingMs = progress?.remainingMs;
+        checkPlaybackLead();
+      } } : {}),
     };
     const synthesis = profile.progressiveSegments && !forceComplete
       ? Promise.resolve(createProgressiveSpeechPreload({
@@ -113,6 +126,12 @@ export function createReaderEngineSpeechPreloadController({
     preloadPromise.voiceId = voiceId;
     preloadPromise.engine = engine;
     preloadPromise.cancel = cancelPreload;
+    preloadPromise.waitForPlaybackLead = (durationSeconds) => {
+      playbackLeadMs = durationSeconds * 1000;
+      checkPlaybackLead();
+      return playbackLeadReady;
+    };
+    void preloadPromise.then(releasePlaybackLead);
     return preloadPromise;
   }
 
@@ -277,7 +296,8 @@ export function createReaderEngineSpeechPreloadController({
 
     const managedPreloadState = preloadState && typeof preloadState === 'object' ? preloadState : {};
     const profile = getActiveTtsProfileConfig();
-    const maxInFlight = getSpeechPreloadMaxInFlight({
+    // OmniVoice is serial; start its timeout when work can run, not behind several queued chunks.
+    const maxInFlight = selectedVoice.engine === 'omnivoice' ? 1 : getSpeechPreloadMaxInFlight({
       preloadAhead: profile.preloadAhead,
       minimumAhead,
       progressiveSegments: profile.progressiveSegments,
@@ -412,6 +432,7 @@ function waitForPreloadResult(preload, {
   if (signal?.aborted) return Promise.reject(createAbortError());
 
   const timeout = Math.max(0, Math.trunc(Number(timeoutMs) || 0));
+  /** @type {ReturnType<typeof setTimeout>|null} */
   let timeoutHandle = null;
   let settled = false;
 

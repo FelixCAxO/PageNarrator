@@ -1,5 +1,5 @@
 // @ts-check
-import { getNoiseSelector } from '../dom-selectors.js';
+import { getNoiseSelectors } from '../dom-selectors.js';
 import { normalizeCodeText } from '../text-normalization.js';
 import { tokenizeSpokenWords } from '../speech-tokenization.js';
 import { isNumericMatrix, numericMatrixLabel } from '../numeric-matrix.js';
@@ -63,7 +63,7 @@ const READABLE_SELECTOR = [
   'a[href]',
 ].join(',');
 
-const NOISE_SELECTOR = getNoiseSelector({ surface: 'web' });
+const NOISE_SELECTORS = getNoiseSelectors({ surface: 'web' });
 
 const HIDDEN_TEXT_SELECTOR = [
   'script',
@@ -375,7 +375,7 @@ function isVisibleTitleCandidate(element) {
 function scoreContainer(element) {
   const blocks = element.querySelectorAll('h1, h2, h3, p, li, blockquote, table, figure').length;
   const textLength = normalizeText(element.textContent).length;
-  const noisy = element.querySelectorAll(NOISE_SELECTOR).length;
+  const noisy = new Set(NOISE_SELECTORS.flatMap(selector => [...element.querySelectorAll(selector)])).size;
   const boilerplate = (normalizeText(element.textContent).match(/\b(login|subscribe|share|cookie|advertisement|comments?|related|promo)\b/gi) || []).length;
   const semanticBoost = element.matches('article, .kg-card-markdown, .post-full-content, .mw-parser-output, [itemprop~="articleBody"]') ? 900 : 0;
   const nestedFocusedPenalty = !element.matches('.kg-card-markdown, .mw-parser-output, [itemprop~="articleBody"]')
@@ -624,7 +624,7 @@ function getFieldLabel(field) {
 
 function shouldConsiderElement(element) {
   if (!element || element.nodeType !== 1) return false;
-  if (element.closest(NOISE_SELECTOR)) return false;
+  if (NOISE_SELECTORS.some(selector => element.closest(selector))) return false;
   if (isNavigationHeadingElement(element)) return false;
   if (isReferenceTextElement(element)) return false;
   if (hasHiddenTextAncestor(element, element.ownerDocument.documentElement)) return false;

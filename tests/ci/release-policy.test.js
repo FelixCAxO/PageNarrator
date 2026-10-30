@@ -108,3 +108,17 @@ it('extends only the explicitly authorized exceptions to the v1.0.1 maintenance 
   expect(releaseAcceptedLimitation('kokoro-duration-pcm-reference-parity', '1.0.1')).toMatchObject({ version: '1.0.1', verification: 'failed-unqualified' });
   for (const id of ['software-functional', 'pdf-quality', 'operator-bounds']) expect(releaseGateWaiver(id, '1.0.1')).toBeNull();
 });
+
+it('records the local 1.0.3 preparation without granting public release waivers or passing failed evidence', () => {
+  const preparation = RELEASE_POLICY.localPreparations.find(entry => entry.version === '1.0.3');
+  expect(preparation).toMatchObject({ authorizedBy: 'user', authorizedOn: '2026-10-30' });
+  expect(preparation.scope).toContain('Local commit and matching extension/source ZIPs only');
+  expect(preparation.disclosedLimitations.map(entry => entry.status)).toEqual([
+    'pending-unqualified', 'failed-unqualified', 'failed-unqualified', 'limited-unqualified',
+  ]);
+  for (const version of ['1.0.3', '1.0.4']) {
+    expect(releaseGateWaiver('human-listening-reviews', version)).toBeNull();
+    expect(releaseGateWaiver('physical-hardware', version)).toBeNull();
+    expect(releaseAcceptedLimitation('kokoro-duration-pcm-reference-parity', version)).toBeNull();
+  }
+});

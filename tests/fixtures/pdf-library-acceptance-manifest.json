@@ -2,12 +2,12 @@
   "schemaVersion": 2,
   "benchmarkId": "private-library-v1-20261024",
   "gold": {
-    "bytes": 270942,
-    "sha256": "c528b5f58f5704acbf82fc562c95eaa6714965923f094a03da73295973c37251"
+    "bytes": 272736,
+    "sha256": "707b7609dc222e7761503fbb48a2603cc5ffd6225c6320bb3ef9d7d5df8b6efa"
   },
   "privateManifest": {
     "bytes": 32230,
-    "sha256": "6bb4f033b8bc2139cd716a0cb3e25348a010f0f3e0ea04bbf8a23aca76e3983d"
+    "sha256": "abccd299ffc7770449ced56ec81a20e6574a9e03d93e36b9dcbd619beca68b99"
   },
   "records": [
     {

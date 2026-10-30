@@ -1,6 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import oracle from './fixtures/saslprep-python.json' with { type: 'json' };
+import { readFileSync } from 'node:fs';
 import { normalizePdfUnicode32, preparePdfPassword } from '../../src/pdf/saslprep.js';
+
+// Preserve prohibited lone-surrogate inputs that the bundler's JSON parser rejects.
+const oracle = JSON.parse(readFileSync(new URL('./fixtures/saslprep-python.json', import.meta.url), 'utf8'));
 
 describe('original bounded Unicode3.2 PDF password preparation', () => {
   it('implements the RFC4013 mapping, case preservation, prohibited output and bidi examples', () => {

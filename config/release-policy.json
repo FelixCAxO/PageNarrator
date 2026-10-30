@@ -20,6 +20,21 @@
       "scope": "Recorded duration and PCM reference-parity failures remain failed/unqualified, never passed or not performed. Preserve the failed diagnostics and numerical thresholds. Source/model integrity, finite/signal checks, operator numerical bounds, software functional checks and OCR/PDF checks remain required. This acceptance does not extend to future versions or authorize production arithmetic changes."
     }
   ],
+  "localPreparations": [
+    {
+      "version": "1.0.3",
+      "authorizedBy": "user",
+      "authorizedOn": "2026-10-30",
+      "scope": "Local commit and matching extension/source ZIPs only. No push, publication, deployment or Store submission. This record grants no release-gate waiver and changes no acceptance threshold.",
+      "reason": "The maintainer requested local preparation with the same disclosed limitations as 1.0.2.",
+      "disclosedLimitations": [
+        { "id": "human-listening-reviews", "status": "pending-unqualified", "scope": "Independent voice reviews are pending; PDF naturalness has zero of 50 qualified passages." },
+        { "id": "physical-hardware", "status": "failed-unqualified", "scope": "No physically verified minimum or recommended tier for this candidate." },
+        { "id": "kokoro-duration-pcm-reference-parity", "status": "failed-unqualified", "scope": "Historical waveform mismatches remain failed diagnostics under unchanged bounds; no new full-matrix pass is claimed." },
+        { "id": "omnivoice-performance-coverage", "status": "limited-unqualified", "scope": "Passing local continuity checks do not qualify all devices, languages or hour-long reads. The finite audio reserve can drain, and warmed RAM showed modest upward drift." }
+      ]
+    }
+  ],
   "additionalReleases": [
     {
       "version": "1.0.1",

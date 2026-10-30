@@ -63,7 +63,7 @@ export async function packageRelease(packageDir, options = {}) {
 
 const SOURCE_PATHS = ['src', 'build', 'scripts', 'native', 'vendor', 'public', 'config', 'icons', '_locales', 'tests', 'docs', 'website',
   'package.json', 'package-lock.json', 'manifest.json', 'vite.config.js', 'tsconfig.base.json', 'tsconfig.strict.json',
-  'tsconfig.boundaries.json', 'tsconfig.eslint.json', '.eslintrc.json', 'LICENSE', 'README.md', 'CHANGELOG.md',
+  'tsconfig.boundaries.json', 'tsconfig.eslint.json', 'eslint.config.js', 'LICENSE', 'README.md', 'CHANGELOG.md',
   'CONTRIBUTING.md', 'SECURITY.md', '.gitignore', '.gitattributes', '.nvmrc', 'playwright.config.js',
   'vitest.profiles.config.js', 'vitest.live.config.js', 'tsconfig.json', 'preview.sh', 'preview-website.bat'];
 
@@ -107,7 +107,7 @@ export function createSourceArchive(sourceRoot, binary, candidateId = process.en
       sha256: createHash('sha256').update(readFileSync(join(root, path))).digest('hex') })) };
     return createZip(root, files, {
       'SOURCE-MANIFEST.json': Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`),
-      'SOURCE-README.txt': Buffer.from('Matching PageNarrator source for the accompanying extension ZIP.\nDistribute both ZIPs together.\nPageNarrator own code is GPL-3.0-or-later. Retained UK pronunciation data is GPL-3.0-only; the combined distribution is conveyed under GPL version 3. Other data retain their individual notices.\nWith Node 22.13+ (22.x) or 24+ installed: npm ci; npm run build. See docs/browser-engine.md for pinned native rebuilds.\nSet PN_CANDIDATE_ID to SOURCE-MANIFEST.json candidateId to reproduce the diagnostic identifier.\nKokoro and OmniVoice model data are downloaded on demand and are not included.\nUpstream runtime packages in devDependencies are development comparison oracles, never browser executable dependencies.\n'),
+      'SOURCE-README.txt': Buffer.from('Matching PageNarrator source for the accompanying extension ZIP.\nDistribute both ZIPs together.\nPageNarrator own code is GPL-3.0-or-later. Retained UK pronunciation data is GPL-3.0-only; the combined distribution is conveyed under GPL version 3. Other data retain their individual notices.\nWith Node 22.23.4+ (22.x) or 24.22.1+ installed: npm ci; npm run build. See docs/browser-engine.md for pinned native rebuilds.\nSet PN_CANDIDATE_ID to SOURCE-MANIFEST.json candidateId to reproduce the diagnostic identifier.\nKokoro and OmniVoice model data are downloaded on demand and are not included.\nUpstream runtime packages in devDependencies are development comparison oracles, never browser executable dependencies.\n'),
     });
   } finally {
     rmSync(staging, { recursive: true, force: true });

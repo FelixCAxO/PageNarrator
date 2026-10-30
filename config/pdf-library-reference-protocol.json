@@ -1,6 +1,8 @@
 {
   "schemaVersion": 1,
-  "referenceProtocolRevision": 5,
+  "referenceProtocolRevision": 6,
+  "mainFlowCheckpoints": true,
+  "mainFlowPolicy": "Order checkpoints sample the main text flow. Exclude link/contact lines and independently located outer-column annotation text smaller than 85% of the page median word height, in the outer 30% of the page width. Small annotations have no uniquely established linear position relative to the body from layout/raw order alone. For citation-like year parentheses or bracketed numeric markers, select the longest remaining verbatim span, never joined or inferred narration. This eligibility rule changes no narration, negative furniture assertion, page roster, checkpoint count or score threshold. Preserve revision-5 gold and all intermediate scores; revision 6 is a reference-contract regression correction, not a fresh holdout.",
   "benchmarkId": "private-library-v1-20261024",
   "seed": "PageNarrator private library reference 2026-10-24 v1",
   "documents": 30,

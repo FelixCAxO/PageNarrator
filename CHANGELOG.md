@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.0.3 (2026-10-30, local release)
+
+- Keep narration advancing when a background tab or minimized window delays page highlighting.
+- Update the Node/npm, build, test, lint, browser and comparison-library toolchains to current compatible releases.
+- Rebuild the native speech, OCR, PDF and phonemizer engines with Zig 0.17.0.
+- Adopt TypeScript 7.0.2 with explicit lifecycle/timer/promise types and jsdom 30.1.3 with bounded noise-selector groups that preserve every exclusion.
+- Read clock meridiems such as “2 p.m.” without treating their internal period as a sentence break.
+- Update the analysis tools to PyTorch 2.15.0 and PyAV 19.0.2, using the pinned upstream Whisper compatibility fix.
+- Target the advertised Chrome 120 browser floor explicitly when compiling JavaScript and CSS.
+- Use OmniVoice refinement progress to start playback with enough audio lead, reducing the full-chunk startup wait while preserving generated audio and voice settings.
+- Preload up to four OmniVoice sections ahead using one serial worker; slow starts reserve up to three future sections to reduce handoff pauses.
+- Reuse validated GPU inference plans and fuse corrected half-precision normalization without changing the model, refinement steps or sampled audio output.
+- Highlight PDF member access such as `super().deposit` when speech omits the empty parentheses.
+- Correct clock transcription assessment and independent PDF checkpoint eligibility, preserving the original frozen references and failed reports.
+
+Prepared locally at the maintainer's instruction with the same disclosed limitations as 1.0.2. Independent voice/PDF reviews remain pending, physical hardware tiers are unqualified, and historical waveform mismatches remain failed diagnostics. The local 180-section OmniVoice read had a maximum 3.5 ms playback handoff and 3.8% warmed resident-memory growth before cleanup; this is one-host evidence, not broad performance qualification. A finite reserve can still drain if synthesis stays slower than playback. See [verification status](docs/release-readiness.md). This local preparation authorizes no publication or deployment and changes no acceptance threshold or failed result.
+
 ## 1.0.2 (2026-10-27)
 
 - Give each of the 32 OmniVoice languages ten fixed female and ten fixed male references, stable across documents, reading positions and retries; add normal/whisper screening and exact restart checks.

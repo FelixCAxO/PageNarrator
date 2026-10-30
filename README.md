@@ -35,7 +35,9 @@ Missing voice files download from Hugging Face; hosts receive your IP address an
 
 ## Build and test
 
-Use Node.js **22.13+ (22.x) or 24+**:
+Use Node.js **26.12.1** with **npm 12.2.1**. `.nvmrc` selects the tested Current release; update npm with `npm install --global npm@12.2.1`.
+
+The supported ranges are 22.23.4–22.x, 24.22.1–24.x and 26.12.1 or newer, matching the dependency engine requirements. Build locally:
 
 ```sh
 npm ci

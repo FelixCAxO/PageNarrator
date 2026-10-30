@@ -1,6 +1,6 @@
 # Voices
 
-PageNarrator 1.0.2 uses Kokoro by default. Choose the engine at the top of the toolbar popup, then open **Voice settings**.
+PageNarrator 1.0.3 uses Kokoro by default. Choose the engine at the top of the toolbar popup, then open **Voice settings**.
 
 | Engine | Voices | Processing and downloads |
 | --- | --- | --- |
@@ -15,6 +15,8 @@ Narrated text stays local. Cached files work offline for the same voice and mode
 - Choose female/male voice type, one of ten voice variations, and optional whisper. Variations are alternatives, not pitch levels.
 - Use Playback speed to set the pace. Changes apply at the next section and survive restart. Switching back to Kokoro restores its saved voice.
 - Pitch and age controls were removed because their effects were unreliable. Old pace/pitch/age settings are ignored. Reference-audio import is unavailable.
+
+If generation cannot keep up with the selected playback speed, PageNarrator buffers before starting. During OmniVoice synthesis, completed refinement steps estimate the remaining work; playback can begin when the opening audio covers that estimate with a 20% allowance and 200 ms for decoding and handoff. Missing progress retains the full-chunk fallback, and stopping interrupts either wait. This reduces unnecessary startup waiting without changing the voice, steps, seed or generated audio. Long reads can still pause when sustained generation is slower than playback or device load changes.
 
 ### Runtime
 

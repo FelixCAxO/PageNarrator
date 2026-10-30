@@ -7,9 +7,11 @@ import json
 import os
 from pathlib import Path
 import sys
+import av
 
 os.environ["HF_HUB_OFFLINE"] = "1"
 from faster_whisper import WhisperModel
+import faster_whisper
 
 parser = argparse.ArgumentParser()
 parser.add_argument("--manifest", required=True)
@@ -23,10 +25,16 @@ if model_sha != "d01c3014881c9c6f3133c182f3d2887eb6ca1c789a7538c5c007196857a0a6a
 manifest = json.loads(Path(args.manifest).read_text(encoding="utf-8-sig"))
 records = manifest["cases"]
 model = WhisperModel(str(model_directory), device="cpu", compute_type="int8", cpu_threads=2, local_files_only=True)
+whisper_distribution = importlib.metadata.distribution("faster-whisper")
+whisper_directory = Path(faster_whisper.__file__).parent
 report = {"scope": "Offline ASR diagnostic; does not establish human listening or pronunciation quality", "model": {
     "repository": "Systran/faster-whisper-base", "revision": "ebe41f70d5b6dfa9166e2c581c45c9c0cfc57b66",
     "sha256": model_sha, "python": sys.version, "faster_whisper": importlib.metadata.version("faster-whisper"),
     "ctranslate2": importlib.metadata.version("ctranslate2"), "device": "cpu", "compute_type": "int8", "threads": 2,
+    "faster_whisper_source": json.loads(whisper_distribution.read_text("direct_url.json") or "null"),
+    "faster_whisper_code_sha256": {name: hashlib.sha256((whisper_directory / name).read_bytes()).hexdigest()
+                                  for name in ["audio.py", "transcribe.py", "utils.py", "vad.py"]},
+    "pyav": av.__version__, "ffmpeg_libraries": av.library_versions,
     "local_files_only": True, "beam_size": 5, "vad_filter": False, "initial_prompt": None}, "cases": []}
 for record in records:
     output = {"id": record["id"], "expectedText": record["expectedText"], "language": record.get("language", "en")}

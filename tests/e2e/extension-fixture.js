@@ -1,4 +1,5 @@
 import { chromium, expect } from '@playwright/test';
+import { spawn } from 'node:child_process';
 import { existsSync } from 'node:fs';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
@@ -30,7 +31,7 @@ export function resolveExtensionDir({ extensionDir = null, testInfo = null, env 
   return path.resolve(selected);
 }
 
-export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null } = {}) {
+export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null, backgroundThrottling = false } = {}) {
   if (locale && !/^[a-z]{2}(?:_[A-Z]{2})?$/u.test(locale)) throw new Error('Expected a Chrome locale code.');
   const selectedExtensionDir = resolveExtensionDir({ extensionDir, testInfo });
   const preparedExtension = hostPermissions.length
@@ -39,7 +40,7 @@ export async function launchExtensionContext({ extensionDir = null, hostPermissi
   expect(existsSync(path.join(preparedExtension.extensionDir, 'manifest.json'))).toBe(true);
   const userDataDir = await mkdtemp(path.join(tmpdir(), 'pagenarrator-e2e-'));
   const e2eHeaded = /^(1|true|yes)$/i.test(process.env.PN_E2E_HEADED || '');
-  const context = await chromium.launchPersistentContext(userDataDir, {
+  const launchOptions = {
     channel: 'chromium',
     headless: !e2eHeaded,
     ...(locale ? { locale: locale.replace('_', '-') } : {}),
@@ -52,15 +53,53 @@ export async function launchExtensionContext({ extensionDir = null, hostPermissi
       '--autoplay-policy=no-user-gesture-required',
       ...browserAdapterConfiguration().args,
     ],
-  });
+  };
+  const nativeBrowser = backgroundThrottling
+    ? await launchWithNativeBackgrounding(userDataDir, launchOptions)
+    : null;
+  const context = nativeBrowser?.context || await chromium.launchPersistentContext(userDataDir, launchOptions);
 
   const cleanup = async () => {
-    await context.close();
+    if (nativeBrowser) await nativeBrowser.close();
+    else await context.close();
     await rm(userDataDir, { recursive: true, force: true });
     await preparedExtension.cleanup();
   };
 
   return { context, cleanup, userDataDir, extensionDir: preparedExtension.extensionDir };
+}
+
+async function launchWithNativeBackgrounding(userDataDir, { args, headless }) {
+  // A CDP connection without defaults avoids Playwright's always-visible focus emulation.
+  const child = spawn(chromium.executablePath(), [
+    `--user-data-dir=${userDataDir}`, '--remote-debugging-port=0', '--no-first-run', '--no-default-browser-check',
+    '--disable-component-extensions-with-background-pages',
+    ...(headless ? ['--headless=new'] : []), ...args, 'about:blank',
+  ], { stdio: 'ignore', windowsHide: true });
+  try {
+    let endpoint;
+    await expect.poll(async () => {
+      const activePort = await readFile(path.join(userDataDir, 'DevToolsActivePort'), 'utf8').catch(() => '');
+      const [port, browserPath] = activePort.trim().split(/\r?\n/);
+      if (port && browserPath) endpoint = `ws://127.0.0.1:${port}${browserPath}`;
+      return Boolean(endpoint);
+    }, { timeout: 15_000 }).toBe(true);
+    const browser = await chromium.connectOverCDP(endpoint, { noDefaults: true });
+    return {
+      context: browser.contexts()[0],
+      async close() {
+        if (child.exitCode === null && child.signalCode === null) {
+          const exited = new Promise(resolve => child.once('exit', resolve));
+          child.kill();
+          await exited;
+        }
+        await browser.close();
+      },
+    };
+  } catch (error) {
+    child.kill();
+    throw error;
+  }
 }
 
 async function createExtensionCopyWithHostPermissions(extensionDir, hostPermissions) {

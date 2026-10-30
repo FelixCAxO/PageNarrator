@@ -51,7 +51,7 @@
   "Follow highlights, use the transcript, resume saved positions, and set speed from 0.5× to 3×. Speech keeps running when you close the popup.": "ติดตามไฮไลต์ ใช้ข้อความถอดเสียง อ่านต่อจากตำแหน่งที่บันทึกไว้ และปรับความเร็วตั้งแต่ 0.5× ถึง 3× การอ่านจะดำเนินต่อเมื่อคุณปิดป๊อปอัป",
   "<a href=\"/support\">Setup help</a> · <a href=\"/privacy\">Privacy</a>": "<a href='/support'>ความช่วยเหลือในการตั้งค่า</a> · <a href='/privacy'>ความเป็นส่วนตัว</a>",
   "Build from source": "บิลด์จากซอร์สโค้ด",
-  "Build the extension locally. Install Node.js 22.13+ (22.x) or 24+, then:": "บิลด์ส่วนขยายในเครื่อง ติดตั้ง Node.js 22.13+ (22.x) หรือ 24+ แล้วทำตามขั้นตอนต่อไปนี้:",
+  "Build the extension locally. Install Node.js 22.23.4+ (22.x) or 24.22.1+, then:": "บิลด์ส่วนขยายในเครื่อง ติดตั้ง Node.js 22.23.4+ (22.x) หรือ 24.22.1+ แล้วทำตามขั้นตอนต่อไปนี้:",
   "Clone <a href=\"https://github.com/FelixCAxO/PageNarrator\">the repository</a> and open a terminal in <code>PageNarrator</code>.": "โคลน<a href='https://github.com/FelixCAxO/PageNarrator'>ที่เก็บโค้ด</a> แล้วเปิดเทอร์มินัลใน <code>PageNarrator</code>",
   "Run <code>npm ci</code>.": "เรียกใช้ <code>npm ci</code>",
   "Run <code>npm run build</code>.": "เรียกใช้ <code>npm run build</code>",

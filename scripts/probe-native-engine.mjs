@@ -128,6 +128,41 @@ try {
         });
         compare('fp16 Softmax', await readHalf(probabilities), expectedSoftmax, { absolute: .0005, relative: .001 });
         await engine.releaseMany([a, b, scalar, condition, ...batch.outputs], [...batch.scratchBuffers(), ...batch.parameters]);
+        for (const type of ['float32', 'float16']) {
+          const values = Float32Array.of(-4, -.5, .25, 2, 8), scale = Float32Array.of(2);
+          const encode = data => type === 'float16' ? Uint16Array.from(data, floatToHalf) : data;
+          const input = engine.upload(encode(values), [1, 5, 1], type), scalar = engine.upload(encode(scale), [], type);
+          const scalarBatch = engine.batch(), left = scalarBatch.binary('Div', scalar, input), right = scalarBatch.binary('Mul', input, scalar);
+          scalarBatch.submit({ retainParameters: true });
+          const read = tensor => type === 'float16' ? readHalf(tensor) : engine.read(tensor);
+          compare(`${type} scalar-left broadcast`, await read(left), Float32Array.from(values, value => 2 / value), { absolute: 0, relative: 0 });
+          compare(`${type} scalar-right broadcast`, await read(right), Float32Array.from(values, value => value * 2), { absolute: 0, relative: 0 });
+          await engine.releaseMany([input, scalar, ...scalarBatch.outputs], [...scalarBatch.scratchBuffers(), ...scalarBatch.parameters]);
+        }
+        for (const width of [128, 1024]) {
+          const rows = 16, magnitudes = [0, 2 ** -24, 65504, 300, .001, .3, 1, 20];
+          const values = Float32Array.from({ length: rows * width }, (_, index) =>
+            halfToFloat(floatToHalf(Math.sin(index * .71 + .1) * magnitudes[Math.floor(index / width) % magnitudes.length])));
+          const weights = Float32Array.from({ length: width }, (_, index) => halfToFloat(floatToHalf(Math.cos(index * .31) * 2)));
+          const expected = new Float32Array(values.length);
+          for (let row = 0; row < rows; row++) {
+            const squares = Float32Array.from(values.subarray(row * width, (row + 1) * width), value => value * value);
+            const sums = new Float32Array(64);
+            for (let lane = 0; lane < 64; lane++) for (let col = lane; col < width; col += 64) sums[lane] += squares[col];
+            for (let step = 32; step > 0; step >>= 1) for (let lane = 0; lane < step; lane++) sums[lane] += sums[lane + step];
+            const root = Math.fround(Math.sqrt(Math.fround(Math.fround(sums[0] / width) + Math.fround(1e-6))));
+            const inverse = Math.fround(1 / root);
+            for (let col = 0; col < width; col++) {
+              const normalized = halfToFloat(floatToHalf(Math.fround(values[row * width + col] * inverse)));
+              expected[row * width + col] = halfToFloat(floatToHalf(Math.fround(normalized * weights[col])));
+            }
+          }
+          const input = engine.upload(Uint16Array.from(values, floatToHalf), [rows, width], 'float16');
+          const weight = engine.upload(Uint16Array.from(weights, floatToHalf), [width], 'float16');
+          const output = engine.rmsNorm(input, weight);
+          compare(`fused fp32 RMSNorm and half weight boundary width ${width}`, await readHalf(output), expected, { absolute: 0, relative: 0 });
+          await engine.releaseMany([input, weight, ...output.batch.outputs], [...output.batch.scratchBuffers(), ...output.batch.parameters]);
+        }
         const generated = engine.batch(), filled = generated.fill([1027], -.375, 'float16'),
           integers = generated.range(7, -2, -2, 'int32'), fractional = generated.range(-.5, 1, .25, 'float32'),
           empty = generated.range(0, 1, -1, 'int32'), bits = generated.fill([2, 3], 1, 'bool'),

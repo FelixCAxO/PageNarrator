@@ -28,18 +28,18 @@ const flags = ['c++', '-target', 'wasm32-freestanding', '-std=c++20', '-O3', '-f
 if (process.argv.includes('--check')) {
   const recorded = JSON.parse(readFileSync(metadata, 'utf8'));
   if (Object.entries(sourceHashes()).some(([key, value]) => recorded[key] !== value) || recorded.wasmSha256 !== hash(output)
-    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('Original PDF source/binary mismatch. Rebuild using Zig 0.15.2.');
+    || JSON.stringify(recorded.flags) !== JSON.stringify(flags)) throw new Error('Original PDF source/binary mismatch. Rebuild using Zig 0.17.0.');
   console.log('Original PDF source and binary hashes match.');
 } else {
   const compiler = process.env.PN_ZIG || 'zig';
   const version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to Zig 0.15.2.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to Zig 0.17.0.');
   const inputs = sourceHashes(), result = spawnSync(compiler, [...flags, fileURLToPath(source), fileURLToPath(fontSource), fileURLToPath(codecSource), fileURLToPath(jpegSource), fileURLToPath(faxSource), fileURLToPath(jbigSource), fileURLToPath(cryptoSource), fileURLToPath(jpxSource), fileURLToPath(inlineSource), fileURLToPath(cffPathSource), fileURLToPath(ttfPathSource), '-o', fileURLToPath(output)], { stdio: 'inherit' });
   if (result.status !== 0) throw new Error('Original PDF compilation failed.');
   if (JSON.stringify(inputs) !== JSON.stringify(sourceHashes())) throw new Error('PDF sources changed during compilation. Rebuild before recording a source/binary match.');
   const module = await WebAssembly.compile(readFileSync(output));
   if (WebAssembly.Module.imports(module).length) throw new Error('PDF parser unexpectedly imports a runtime.');
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.15.2 (Clang C++)', flags,
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig 0.17.0 (Clang C++)', flags,
     ...inputs, wasmSha256: hash(output), imports: [] }, null, 2)}\n`);
   console.log(`Built original PDF parser: ${readFileSync(output).length} bytes, no imports.`);
 }

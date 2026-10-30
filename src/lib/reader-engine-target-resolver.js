@@ -231,8 +231,8 @@ export function createReaderEngineTargetResolver({
     await ensureContentScript(activeTab);
   }
 
-  function sendPageMessage(tabId, message, { attempts = 3, delayMs = 80 } = {}) {
-    return messageRouter.sendPageMessage(tabId, withContentDiagnostics(message), { attempts, delayMs });
+  function sendPageMessage(tabId, message, options = {}) {
+    return messageRouter.sendPageMessage(tabId, withContentDiagnostics(message), options);
   }
 
   async function sendActivePageMessage(message) {

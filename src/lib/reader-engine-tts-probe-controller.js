@@ -18,6 +18,7 @@ export function createReaderEngineTtsProbeController({
   renderGovernorDecision = () => {},
 } = {}) {
   const summaryCache = createTtsHardwareProbeSummaryCache({ storage: summaryStorage, now });
+  /** @type {ReturnType<typeof createTtsHardwareProbeRecorder>|null} */
   let recorder = null;
 
   async function init() {

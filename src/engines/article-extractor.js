@@ -1,10 +1,10 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-import { getNoiseSelector } from '../lib/dom-selectors.js';
+import { getNoiseSelectors } from '../lib/dom-selectors.js';
 
 const BLOCKS = 'p,blockquote,pre,li,dt,dd,figcaption,caption,td,th,h1,h2,h3,h4,h5,h6,div,section,article,main,body';
 const LANDMARKS = 'article,main,[role="main"]';
-const NOISE = `${getNoiseSelector()},[hidden],[inert],button,input,select,textarea`;
-const NON_HEADER_NOISE = NOISE.split(',').filter(selector => selector !== 'header').join(',');
+const NON_HEADER_NOISE = [...getNoiseSelectors().map(group => group.split(',').filter(selector => selector !== 'header').join(',')),
+  '[hidden],[inert],button,input,select,textarea'];
 
 export function isArticleDocument(document) { return Boolean(document?.body?.childNodes.length); }
 
@@ -37,7 +37,7 @@ export function parseArticleDocument(document, { root = null } = {}) {
     return hidden;
   }
   const visible = element => !layoutHidden(element) && !['hidden', 'collapse'].includes(style(element)?.visibility);
-  const noisy = element => element.closest(NON_HEADER_NOISE)
+  const noisy = element => NON_HEADER_NOISE.some(selector => element.closest(selector))
     || (element.closest('header') && !element.closest('header').closest(LANDMARKS));
   const records = [];
   let current = null, pieces = [], links = 0, visited = 0, total = 0;

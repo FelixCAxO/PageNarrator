@@ -18,10 +18,10 @@ if (process.argv.includes('--check')) {
 } else {
   const compiler = process.env.PN_ZIG || 'zig';
   const version = spawnSync(compiler, ['version'], { encoding: 'utf8' });
-  if (version.status !== 0 || version.stdout.trim() !== '0.15.2') throw new Error('Set PN_ZIG to Zig0.15.2.');
+  if (version.status !== 0 || version.stdout.trim() !== '0.17.0') throw new Error('Set PN_ZIG to Zig0.17.0.');
   const built = spawnSync(compiler, [...flags, fileURLToPath(new URL('../native/ocr-lstm-engine.cpp', import.meta.url)), '-o', fileURLToPath(wasm)], { cwd: root, stdio: 'inherit' });
   if (built.status !== 0) throw new Error('Original OCR LSTM compilation failed.');
-  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig0.15.2 (Clang C++)', flags, sources: sourceHashes,
+  writeFileSync(metadata, `${JSON.stringify({ abi: 1, compiler: 'Zig0.17.0 (Clang C++)', flags, sources: sourceHashes,
     wasmSha256: hash('../public/native/ocr-lstm-engine.wasm'), imports: [] }, null, 2)}\n`);
 }
 if (WebAssembly.Module.imports(await WebAssembly.compile(readFileSync(wasm))).length) throw new Error('Original OCR LSTM must not import executable code.');

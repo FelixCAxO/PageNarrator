@@ -279,8 +279,8 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     }
   }
 
-  /** @param {any} request */
-  async function generate(request) {
+  /** @param {any} request @param {((progress: {remainingMs: number}) => void)|null} onProgress */
+  async function generate(request, onProgress) {
     const { text, lang, instruct, speed, seed, numStep } = request;
     if (typeof text !== 'string' || !text.trim() || typeof lang !== 'string' || getOmniVoiceLanguage(lang)?.code !== lang || typeof instruct !== 'string'
       || !Number.isFinite(speed) || speed < 0.5 || speed > 1.5 || !Number.isInteger(seed)
@@ -305,6 +305,7 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     const conditional = createFeeds(prefix, codes, frames, reference);
     const unconditional = createFeeds([], codes, frames);
     const random = randomSource(seed);
+    let completedSteps = 0;
     try {
       for (const count of omniVoiceUnmaskSchedule(codes.length, numStep)) {
         checkAbort(current);
@@ -320,6 +321,8 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
           conditional.input_ids.data.set(codes.subarray(book * frames, (book + 1) * frames), offset);
         }
         unconditional.input_ids.data.set(codes);
+        completedSteps += 1;
+        onProgress?.({ remainingMs: (timings.inferenceMs + timings.unmaskMs) / completedSteps * (numStep - completedSteps) });
       }
       checkAbort(current);
       const input = new decoderRuntime.Tensor('int64', codes, [1, CODEBOOKS, frames]);
@@ -365,11 +368,11 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
   return {
     init,
     getDiagnostics: () => ({ main: main?.getDiagnostics?.(), decoder: decoder?.getDiagnostics?.(), mainGraphCorrection }),
-    /** @param {any} request */
-    synthesize(request) {
+    /** @param {any} request @param {{onProgress?: ((progress: {remainingMs: number}) => void)|null}} [options] */
+    synthesize(request, { onProgress = null } = {}) {
       if (retired) return Promise.reject(new Error('OmniVoice runtime has been disposed.'));
       if (active) return Promise.reject(new Error('OmniVoice generation is already running.'));
-      active = generate(request).finally(() => { active = null; });
+      active = generate(request, onProgress).finally(() => { active = null; });
       return active;
     },
     abortGeneration() { generation += 1; },

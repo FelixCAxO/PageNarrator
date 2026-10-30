@@ -15,6 +15,7 @@ import {
   createSectionReadyTransitionTracker,
   getEmptyStreamMessage,
   waitForSpeechPreloadReady,
+  waitForBoundedPromise,
 } from './reader-engine-read-lifecycle.js';
 import { classifyArticleExtractionError } from './article-extraction-errors.js';
 import { createLogger } from './logger.js';
@@ -43,6 +44,7 @@ export function createReadLoopOrchestrator({
   renderCodeSuggestion = () => {},
   getSelectedSkipCodeSnippets = () => false,
   getActiveTtsProfileConfig = () => ({ maxChunkLength: 320, targetMinLength: 180, preloadAhead: 1 }),
+  getPlaybackSpeed = () => 1,
   clearPageHighlight = async () => {},
   shouldSyncPageHighlights = () => false,
   flashResumeSection = async () => {},
@@ -227,6 +229,7 @@ export function createReadLoopOrchestrator({
     let runIterator = null;
     let runTabId = null;
     let stoppedRun = false;
+    /** @type {ReturnType<typeof createSpeechEngineHandoff>|null} */
     let engineHandoff = null;
     let unsubscribeVoiceSelection = () => {};
     const requestedSource = readSelection ? 'selection' : '';
@@ -411,6 +414,20 @@ export function createReadLoopOrchestrator({
       const speechPreloads = new Map();
       const speechPreloadState = {};
       const queuedHighlightIndices = new Set();
+      let chunkPrefetchError = null;
+      async function fillPlaybackChunkBuffer(currentIndex, targetIndex) {
+        // Only missing current text can hold playback; later pages load alongside speech.
+        if (currentIndex >= state.activeChunks.length) {
+          if (chunkPrefetchError) throw chunkPrefetchError;
+          await readOrchestrator.fillChunkBuffer(currentIndex, { runId: readRunId, signal: runSignal });
+        }
+        if (stopIfRequested()) return;
+        void readOrchestrator.fillChunkBuffer(targetIndex, { runId: readRunId, signal: runSignal })
+          .then(() => {
+            if (!isReadRunStopped(readRunId, runSignal)) speechPreloadState.refillSpeechPreloadWindow?.();
+          })
+          .catch(error => { chunkPrefetchError = error; });
+      }
       state.ttsSectionReadyTransitionTracker = createSectionReadyTransitionTracker({
         onTransition: recordTtsProbeSectionTransition,
       });
@@ -485,10 +502,7 @@ export function createReadLoopOrchestrator({
         if (stopIfRequested()) break;
         const profileBeforeCurrentSpeech = getActiveTtsProfileConfig();
         const initialMinimumAhead = getProfileMinimumAhead(profileBeforeCurrentSpeech);
-        await readOrchestrator.fillChunkBuffer(index + Math.max(initialMinimumAhead, profileBeforeCurrentSpeech.preloadAhead), {
-          runId: readRunId,
-          signal: runSignal,
-        });
+        await fillPlaybackChunkBuffer(index, index + Math.max(initialMinimumAhead, profileBeforeCurrentSpeech.preloadAhead));
         if (stopIfRequested()) break;
         if (index >= state.activeChunks.length) break;
 
@@ -498,7 +512,8 @@ export function createReadLoopOrchestrator({
         await syncActiveVoice();
         if (stopIfRequested()) break;
 
-        let speech = null;
+        /** @type {Awaited<ReturnType<typeof readPreloadedSpeech>>} */
+        let speech;
         if (['kokoro', 'omnivoice'].includes(selectedVoice.engine)) {
           const currentPreload = ensureSpeechPreloadWindow({
             speechPreloads,
@@ -534,10 +549,7 @@ export function createReadLoopOrchestrator({
 
         const profileBeforePlayback = getActiveTtsProfileConfig();
         const playbackMinimumAhead = getProfileMinimumAhead(profileBeforePlayback);
-        await readOrchestrator.fillChunkBuffer(index + Math.max(playbackMinimumAhead, profileBeforePlayback.preloadAhead), {
-          runId: readRunId,
-          signal: runSignal,
-        });
+        await fillPlaybackChunkBuffer(index, index + Math.max(playbackMinimumAhead, profileBeforePlayback.preloadAhead));
         if (stopIfRequested()) break;
         ensureSpeechPreloadWindow({
           speechPreloads,
@@ -573,29 +585,12 @@ export function createReadLoopOrchestrator({
           });
           if (!isStreaming) return;
           const audioStartAhead = Math.max(audioStartMinimumAhead, profileAtAudioStart.preloadAhead) + 1;
-          void readOrchestrator.fillChunkBuffer(index + audioStartAhead, {
-            runId: readRunId,
-            signal: runSignal,
-          }).then((loaded) => {
-            if (!loaded || isReadRunStopped(readRunId, runSignal)) return;
-            ensureSpeechPreloadWindow({
-              speechPreloads,
-              queuedHighlightIndices,
-              currentIndex: index,
-              selectedVoice: engineHandoff ? selectedVoice : resolveSelectedVoice() || activeVoice,
-              syncPageHighlights,
-              tabId: article.tabId,
-              minimumAhead: audioStartAhead,
-              preloadState: speechPreloadState,
-              signal: runSignal,
-              runId: readRunId,
-            });
-          }).catch(suppressError);
+          void fillPlaybackChunkBuffer(index, index + audioStartAhead).catch(suppressError);
         };
-        const waitForNextSpeechPreload = async () => {
+        const waitForNextSpeechPreload = async ({ ahead = 1 } = {}) => {
           const activeVoice = engineHandoff ? selectedVoice : resolveSelectedVoice() || selectedVoice;
           if (!['kokoro', 'omnivoice'].includes(activeVoice?.engine)) return { ok: true };
-          if (index + 1 >= state.activeChunks.length) return { ok: true };
+          if (index + ahead >= state.activeChunks.length) return { ok: true };
           if (['kokoro', 'omnivoice'].includes(activeVoice.engine) && !state.testSilentTtsEnabled && activeVoice.id !== currentVoiceId) {
             await ensureModel({ signal: runSignal, warmupVoice: activeVoice.id || getSelectedVoiceId(), backendPlan: ttsBackendPlan }).catch(suppressError);
           }
@@ -614,7 +609,7 @@ export function createReadLoopOrchestrator({
           });
           const result = await waitForSpeechPreloadReady({
             speechPreloads,
-            index: index + 1,
+            index: index + ahead,
             signal: runSignal,
             firstSegmentReadyTimeoutMs: getSpeechPreloadTimeoutMs(profileAtHandoff) ?? undefined,
           });
@@ -624,16 +619,42 @@ export function createReadLoopOrchestrator({
           return result;
         };
 
-        // A short opening heading cannot cover cold synthesis of the first paragraph.
-        if (index === startChunk && ['page-title', 'heading'].includes(state.activeChunks[index]?.type)
-          && getChunkSpeechText(state.activeChunks[index]).length < profileBeforePlayback.targetMinLength
-          && speechPreloads.has(index + 1)) {
-          await waitForNextSpeechPreload();
+        const openingSpeech = speech?.kind === 'chunk' ? speech.result : speech;
+        const openingRealTimeFactor = openingSpeech?.synthesisMetrics?.realTimeFactor;
+        const playbackSpeed = getPlaybackSpeed();
+        const slowOmniStart = selectedVoice.engine === 'omnivoice'
+          && Number.isFinite(openingRealTimeFactor) && openingRealTimeFactor * playbackSpeed >= 1;
+        const shortHeading = ['page-title', 'heading'].includes(state.activeChunks[index]?.type)
+          && getChunkSpeechText(state.activeChunks[index]).length < profileBeforePlayback.targetMinLength;
+        // Build a reserve when synthesis cannot keep pace; a wider queue alone creates no head start.
+        if (index === startChunk && speechPreloads.has(index + 1) && (shortHeading || slowOmniStart)) {
+          if (slowOmniStart) flowRecorder.record({ kind: 'startup_audio_buffer_wait', chunkIndex: index,
+            engine: selectedVoice.engine, realTimeFactor: openingRealTimeFactor, playbackSpeed });
+          const nextPreload = speechPreloads.get(index + 1);
+          const openingDuration = openingSpeech?.durationSeconds / playbackSpeed;
+          if (slowOmniStart) {
+            const reserveAhead = Math.min(3, Math.max(1, profileBeforePlayback.preloadAhead), state.activeChunks.length - index - 1);
+            for (let ahead = 1; ahead <= reserveAhead; ahead += 1) {
+              const ready = await waitForNextSpeechPreload({ ahead });
+              if (!ready.ok || stopIfRequested()) break;
+            }
+          }
+          else if (selectedVoice.engine === 'omnivoice' && Number.isFinite(openingDuration) && openingDuration > 0
+            && typeof nextPreload?.waitForPlaybackLead === 'function') {
+            await waitForBoundedPromise(nextPreload.waitForPlaybackLead(openingDuration), {
+              signal: runSignal, timeoutMs: profileBeforePlayback.speechPreloadTimeoutMs,
+            });
+          } else await waitForNextSpeechPreload();
           if (stopIfRequested()) break;
         }
 
         setCurrentSectionText(getChunkSpeechText(state.activeChunks[index]));
-        const highlightOk = syncPageHighlights ? (await highlightChunk(article.tabId, state.activeChunks[index]))?.ok : false;
+        const highlightReady = syncPageHighlights
+          ? Promise.resolve(highlightChunk(article.tabId, state.activeChunks[index])).catch(error => {
+            suppressError(error);
+            return { ok: false };
+          })
+          : null;
         if (stopIfRequested()) break;
         await waitForReadPause({ signal: runSignal });
         if (stopIfRequested()) break;
@@ -641,7 +662,8 @@ export function createReadLoopOrchestrator({
           try {
             await playKokoroSpeech(speech, state.activeChunks[index], {
               canAdvanceEarly: index + 1 < state.activeChunks.length,
-              syncWordHighlights: highlightOk,
+              syncWordHighlights: syncPageHighlights,
+              highlightReady,
               signal: runSignal,
               runId: readRunId,
               sectionIndex: index,
@@ -656,7 +678,8 @@ export function createReadLoopOrchestrator({
             releasePlaybackAudioPool();
             await playKokoroSpeech(speech, state.activeChunks[index], {
               canAdvanceEarly: index + 1 < state.activeChunks.length,
-              syncWordHighlights: highlightOk,
+              syncWordHighlights: syncPageHighlights,
+              highlightReady,
               signal: runSignal,
               runId: readRunId,
               sectionIndex: index,
@@ -673,10 +696,7 @@ export function createReadLoopOrchestrator({
         await syncActiveVoice();
         const profileAfterPlayback = getActiveTtsProfileConfig();
         const nextMinimumAhead = getProfileMinimumAhead(profileAfterPlayback);
-        await readOrchestrator.fillChunkBuffer(nextIndex + Math.max(nextMinimumAhead, profileAfterPlayback.preloadAhead), {
-          runId: readRunId,
-          signal: runSignal,
-        });
+        await fillPlaybackChunkBuffer(nextIndex, nextIndex + Math.max(nextMinimumAhead, profileAfterPlayback.preloadAhead));
         if (stopIfRequested()) break;
         ensureSpeechPreloadWindow({
           speechPreloads,

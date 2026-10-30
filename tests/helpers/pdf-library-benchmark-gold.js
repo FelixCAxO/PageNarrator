@@ -7,7 +7,7 @@ import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js
 
 const ROOT = fileURLToPath(new URL('../../', import.meta.url));
 const MANIFEST = new URL('../fixtures/pdf-library-acceptance-manifest.json', import.meta.url);
-const DEFAULT_GOLD = path.join(ROOT, '.cache/pdf-library-v1-20261024-reference-05/gold.json');
+const DEFAULT_GOLD = path.join(ROOT, '.cache/pdf-library-v1-20261028-reference-06-verified/gold.json');
 const HASH = /^[a-f0-9]{64}$/u;
 const ID = 'private-library-v1-20261024';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');

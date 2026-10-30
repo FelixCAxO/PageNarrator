@@ -75,6 +75,9 @@ export function normalizeEnglishText(input, dialect = 'en-us') {
     const cents = minor ? Number(minor.padEnd(2, '0')) : 0;
     return ` ${negative ? 'minus ' : ''}${main}${cents ? ` and ${englishInteger(cents, dialect)} ${currency === '£' ? cents === 1 ? 'penny' : 'pence' : cents === 1 ? 'cent' : 'cents'}` : ''} `;
   });
+  // The dot inside a clock meridiem is not a sentence boundary.
+  text = text.replace(/\b(\d{1,2}(?::\d{2})?)\s*([ap])\.?m\b/gi,
+    (_, clock, period) => `${clock} ${spellEnglishLetters(`${period.toLowerCase()}m`, dialect)}`);
   text = text.replace(/\b(\d{1,2}):(\d{2})\b/g, (_, hour, minute) => {
     if (Number(hour) > 23 || Number(minute) > 59) throw new Error('Invalid clock time.');
     return `${englishInteger(hour, dialect)} ${minute === '00' ? "o'clock" : `${Number(minute) < 10 ? 'oh ' : ''}${englishInteger(minute, dialect)}`}`;

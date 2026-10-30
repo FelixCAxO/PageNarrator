@@ -16,10 +16,12 @@ describe('toolbar player view model', () => {
     expect(pageHighlightController).toContain('function shouldSyncPageHighlights(article)');
     expect(pageHighlightController).toContain('return Boolean(article);');
     expect(readLoop).toContain('const syncPageHighlights = shouldSyncPageHighlights(article);');
-    expect(readLoop).toContain('const highlightOk = syncPageHighlights ? (await highlightChunk(article.tabId, state.activeChunks[index]))?.ok : false;');
+    expect(readLoop).toContain('const highlightReady = syncPageHighlights');
     expect(readLoop).toContain('await playKokoroSpeech(speech, state.activeChunks[index], {');
     expect(audio).toContain('type: MESSAGE_TYPES.HIGHLIGHT_WORD_PLAN');
-    expect(readLoop).toContain('syncWordHighlights: highlightOk');
+    expect(readLoop).toContain('syncWordHighlights: syncPageHighlights');
+    expect(readLoop).toContain('highlightReady,');
+    expect(audio).toContain('chunkHighlightReady = result?.ok === true');
     expect(audio).toContain('if (syncWordHighlights && wordTimings?.length)');
     expect(audio).toContain('createWordHighlightPlan(wordTimings');
     expect(audio).toContain('type: MESSAGE_TYPES.HIGHLIGHT_PLAN_RESYNC');
@@ -30,7 +32,7 @@ describe('toolbar player view model', () => {
     expect(audio).toContain('getAudioEndedGapDelayMs');
     expect(readerEngine).toContain('openPdfViewerForSourceTab({');
     expect(readerEngine).toContain('waitForReaderTabReady,');
-    expect(readerEngine).toContain('function sendPageMessage(tabId, message, { attempts = 3');
+    expect(readerEngine).toContain('function sendPageMessage(tabId, message, options = {})');
   });
 
   it('keeps bounded generated audio startup without a system speech fallback', () => {

@@ -1,6 +1,6 @@
 {
   "abi": 1,
-  "compiler": "Zig 0.15.2 (Clang C++)",
+  "compiler": "Zig 0.17.0 (Clang C++)",
   "flags": [
     "c++",
     "-target",
@@ -14,6 +14,6 @@
     "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_initialize,--export=pn_lookup,--export=pn_g2p,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=33554432,--strip-all"
   ],
   "sourceSha256": "ef4345434f1075cf523d8256689ddcd911554612d3d35fd905d51d39c42f0288",
-  "wasmSha256": "480ac523ef81b10867df57113884b47f14256f84eaea4060dcf2340cee0d93dc",
+  "wasmSha256": "e19a99295525990e8510016a17959f9a742aef8e9e87f4a3c7fd8d31e6e3d341",
   "imports": []
 }
