@@ -77,6 +77,8 @@ export class WebGpuOnnxSession {
       session = new WebGpuOnnxSession(model, engine, ownsEngine, maxPlanBytes, maxCachedPlans);
       if (session.nodes.some(node => KOKORO_OPERATORS.has(node.opType)
         || node.domain === 'com.microsoft')) session.kokoro = engine.createKokoroKernels ? await engine.createKokoroKernels() : await createKokoroKernels(engine);
+      // Keep the waveform oracle's arithmetic out of unrelated OCR and transformer graphs.
+      if (['LSTM', 'STFT'].every(op => session.nodes.some(node => node.opType === op))) session.numericPipelines = session.kokoro?.arithmetic;
       if (releaseHostWeights) session.releaseHostWeights();
       return session;
     } catch (error) {
@@ -97,6 +99,7 @@ export class WebGpuOnnxSession {
     this.maxCachedPlans = maxCachedPlans;
     this.cachedPlans = new Map();
     this.cachedPlan = null;
+    this.numericPipelines = null;
     this.lastInputKey = null;
     this.booleanFeeds = new Map();
     this.workspacePlans = new Map();
@@ -481,7 +484,7 @@ export class WebGpuOnnxSession {
     const borrowedBuffers = shareWorkspace ? [...new Set([...this.cachedPlans.values()].flatMap(plan => [...(plan.workspaceBuffers ?? [])]))] : [];
     const placeWorkspace = this.maxCachedPlans === 1 && this.engine instanceof WebGpuCompute;
     const workspacePlan = placeWorkspace ? this.workspacePlans.get(key) : null;
-    let batch = this.engine.batch({ capture: true, borrowedBuffers, workspacePlan, recordWorkspace: placeWorkspace });
+    let batch = this.engine.batch({ capture: true, allowSpill: true, numericPipelines: this.numericPipelines, borrowedBuffers, workspacePlan, recordWorkspace: placeWorkspace });
     const batches = [batch];
     let metadataReadbacks = 0;
     const consumers = new Map(plan.consumers);
@@ -561,7 +564,7 @@ export class WebGpuOnnxSession {
         for (const tensor of retired) tensor.batch.outputs.delete(tensor);
         const scratch = batches.flatMap(item => item.retireScratch());
         await this.engine.releaseMany([...retired], scratch); retired.clear();
-        batch = this.engine.batch({ capture: true }); batches.push(batch);
+          batch = this.engine.batch({ capture: true, allowSpill: true, numericPipelines: this.numericPipelines }); batches.push(batch);
       };
       for (const node of plan.nodes) {
         try {
@@ -618,7 +621,7 @@ export class WebGpuOnnxSession {
       // Duration-dependent shapes must be recomputed when values change, even for identical feed shapes.
       // Alternating plans that cannot coexist must not evict each other on every pass.
       const previousPlan = this.cachedPlans.get(previousKey);
-      if (!metadataReadbacks && planBytes <= this.maxPlanBytes
+      if (!metadataReadbacks && batches.every(item => item.capture !== false) && planBytes <= this.maxPlanBytes
         && (!previousPlan || planStorageBytes([previousPlan, { buffers, stats: this.lastRun }]) <= this.maxPlanBytes)) {
         if (workspaceBuffers) for (const buffer of workspaceBuffers) holds.push(this.engine.tensor([buffer.size / 4], null, buffer));
         while (this.cachedPlans.size && planStorageBytes([...this.cachedPlans.values(), { buffers, stats: this.lastRun }]) > this.maxPlanBytes) await this.releasePlan(this.cachedPlans.keys().next().value);

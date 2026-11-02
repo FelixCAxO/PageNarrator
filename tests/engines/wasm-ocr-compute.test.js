@@ -13,6 +13,61 @@ const near = (actual, expected, tolerance = 2e-5) => {
   for (let i = 0; i < actual.length; i++) expect(Math.abs(actual[i] - expected[i]), `element ${i}: ${actual[i]} vs ${expected[i]}`).toBeLessThanOrEqual(tolerance);
 };
 
+it('compacts fragmented storage without invalidating views or captured command handles', async () => {
+  await engine.dispose();
+  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  const hole = upload(new Float32Array(8192), [8192]);
+  const middle = upload(new Float32Array(8192), [8192]);
+  const input = upload(new Float32Array(8192).fill(-3), [8192]);
+  await engine.release(hole);
+  const batch = engine.batch({ capture: true }), view = batch.view(input, input.shape), output = batch.unary('Neg', view);
+  await engine.release(middle);
+  const previousOffset = input.buffer.offset, extra = engine.tensor([24576]);
+  expect(input.buffer.offset).toBeLessThan(previousOffset);
+  expect(view.buffer.offset).toBe(input.buffer.offset);
+  expect(Object.isFrozen(input.buffer)).toBe(true);
+  batch.submit();
+  expect((await engine.read(output)).every(value => value === 3)).toBe(true);
+  engine.write(input, new Float32Array(8192).fill(-7)); batch.replay();
+  expect((await engine.read(output)).every(value => value === 7)).toBe(true);
+  expect(engine.memory.buffer.byteLength).toBeLessThanOrEqual(262144);
+  await engine.releaseMany([...engine.tensors], batch.scratchBuffers());
+  expect(engine.buffers.size).toBe(0); expect(engine.cursor).toBe(engine.base);
+  expect(extra.length).toBe(24576);
+});
+
+it.each(['upload', 'uploadInt32', 'uploadBytes'])('copies arena-backed %s input before allocation can relocate it', async method => {
+  await engine.dispose();
+  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  const type = method === 'uploadInt32' ? Int32Array : Float32Array;
+  const first = engine.tensor([8192]), source = engine.upload(type.from({ length: 16384 }, (_, i) => i - 1024), [16384], type === Int32Array ? 'int32' : 'float32');
+  const second = engine.tensor([8192]), tail = engine.tensor([4096]);
+  await engine.releaseMany([first, second]);
+  const expected = await engine.read(source), offset = source.buffer.offset;
+  const data = method === 'uploadBytes' ? new Uint8Array(engine.memory.buffer, offset, source.length * 4) : new type(engine.memory.buffer, offset, source.length);
+  const copy = engine[method](data, source.shape);
+  expect(source.buffer.offset).toBeLessThan(offset);
+  expect(await engine.read(source)).toEqual(expected);
+  expect(await engine.read(copy)).toEqual(expected);
+  expect(engine.memory.buffer.byteLength).toBeLessThanOrEqual(262144);
+  await engine.releaseMany([source, copy, tail]); expect(engine.buffers.size).toBe(0);
+});
+
+it('flushes recycled scratch under pressure while preserving the arena ceiling and disabling replay', async () => {
+  await engine.dispose();
+  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  const input = upload(new Float32Array(8192).fill(-2), [8192]);
+  const batch = engine.batch({ capture: true, allowSpill: true });
+  const temporary = batch.unary('Relu', input); batch.recycle(temporary);
+  const output = batch.concat([input, input, input, input], 0);
+  expect(batch.capture).toBe(false);
+  batch.submit();
+  expect((await engine.read(output)).every(value => value === -2)).toBe(true);
+  expect(() => batch.replay()).toThrow('captured');
+  expect(engine.memory.buffer.byteLength).toBeLessThanOrEqual(262144);
+  await engine.releaseMany([...engine.tensors], batch.scratchBuffers()); expect(engine.buffers.size).toBe(0);
+});
+
 it('broadcasts, replays changed feeds and keeps intermediates inside a reused arena', async () => {
   const input = upload([1, 2, 3, 4, 5, 6], [2, 3]), row = upload([2, 3, 4], [3]);
   const batch = engine.batch({ capture: true });

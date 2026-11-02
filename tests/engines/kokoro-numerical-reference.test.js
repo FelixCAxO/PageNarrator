@@ -10,6 +10,25 @@ const input = (name, data, shape) => ({ name, data, shape, type: 1 });
 const output = shape => ({ name: 'y', shape, type: 1 });
 const values = (length, scale = 1) => Float32Array.from({ length }, (_, i) => scale * (Math.sin(i * .713) + .1 * Math.cos(i * .219)));
 
+it.each([127, 257, 768])('matches the independent packed projection across K panels and SIMD tails at K=%i', async k => {
+  const a = values(3 * k), b = values(k * 17, .2);
+  const expected = await cpuOperator('MatMul', [input('x', a, [3, k]), { ...input('w', b, [k, 17]), initializer: true }], output([3, 17]));
+  const batch = engine.batch(), result = batch.matmul(engine.upload(a, [3, k]), engine.upload(b, [k, 17])); batch.submit();
+  expect(await engine.read(result)).toEqual(expected);
+});
+
+it.each([
+  { shape: [1, 47, 9], weights: [5, 47, 3], options: { pads: [1, 1] }, outputShape: [1, 5, 9] },
+  { shape: [2, 15, 7], weights: [1, 15, 1], options: {}, outputShape: [2, 1, 7] },
+  { shape: [1, 17, 9], weights: [17, 5, 6], options: { strides: [2], pads: [2, 2], transpose: true }, outputShape: [1, 5, 18] },
+])('matches independent convolution projection, overlap and bias order: $shape / $weights', async ({ shape, weights, options, outputShape }) => {
+  const x = values(shape.reduce((a, b) => a * b)), w = values(weights.reduce((a, b) => a * b), .2), bias = values(outputShape[1], .3);
+  const { transpose, ...attributes } = options;
+  const expected = await cpuOperator(transpose ? 'ConvTranspose' : 'Conv', [input('x', x, shape), { ...input('w', w, weights), initializer: true }, { ...input('b', bias, [bias.length]), initializer: true }], output(outputShape), attributes);
+  const batch = engine.batch(), result = batch.convolution(engine.upload(x, shape), engine.upload(w, weights), engine.upload(bias, [bias.length]), options); batch.submit();
+  expect(await engine.read(result)).toEqual(expected);
+});
+
 it.each([3, 9, 32, 104, 768])('matches the independent softmax exactly at width %i', async width => {
   const data = values(8 * width, 20), shape = [8, width];
   const expected = await cpuOperator('Softmax', [input('x', data, shape)], output(shape), { axis: -1 });
@@ -79,4 +98,7 @@ it('rounds fused matrix products once, including ties, cancellation, overflow an
   const a = Float32Array.from(triples.flatMap(([x, , z]) => [z, x])), b = Float32Array.from(triples.flatMap(([, y]) => [1, y]));
   const batch = engine.batch(), result = batch.matmul(engine.upload(a, [triples.length, 1, 2]), engine.upload(b, [triples.length, 2, 1])); batch.submit();
   expect(await engine.read(result)).toEqual(Float32Array.from(triples, ([x, y, z]) => exactFma(x, y, z)));
+  const vectorWeights = Float32Array.from(triples.flatMap(([, y]) => [...Array(5).fill(1), ...Array(5).fill(y)]));
+  const vectorBatch = engine.batch(), vectorResult = vectorBatch.matmul(engine.upload(a, [triples.length, 1, 2]), engine.upload(vectorWeights, [triples.length, 2, 5])); vectorBatch.submit();
+  expect(await engine.read(vectorResult)).toEqual(Float32Array.from(triples.flatMap(([x, y, z]) => Array(5).fill(exactFma(x, y, z)))));
 });

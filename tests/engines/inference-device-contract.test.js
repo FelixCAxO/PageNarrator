@@ -52,3 +52,12 @@ it('rejects an incapable caller-owned GPU device before preparing or disposing i
   expect(compute.dispose).not.toHaveBeenCalled();
   expect(WebGpuCompute.create).not.toHaveBeenCalled();
 });
+
+it.each([['Gemm'], ['LayerNormalization'], ['LSTM'], ['STFT'], ['LSTM', 'STFT']])('scopes the waveform arithmetic to recurrent spectral graphs: %j', async (...operations) => {
+  const arithmetic = { matmul: 'fused projection' };
+  compute.createKokoroKernels = vi.fn(async () => ({ arithmetic }));
+  graph.nodes = operations.map((opType, i) => ({ opType, domain: '', inputs: [i ? `v${i - 1}` : 'x'], outputs: [i === operations.length - 1 ? 'y' : `v${i}`], attributes: new Map() }));
+  const session = await WebGpuOnnxSession.create(new Uint8Array(), { engine: compute });
+  expect(session.numericPipelines).toBe(operations.length === 2 ? arithmetic : null);
+  await session.dispose();
+});

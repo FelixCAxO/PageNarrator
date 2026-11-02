@@ -10,13 +10,48 @@ static constexpr bool speech_numerics=true;
 static constexpr bool speech_numerics=false;
 #endif
 
+#if defined(__wasm_relaxed_simd__)
+// Relaxed SIMD permits an unfused projection; enable it only after testing fused rounding on this host.
+static u32 hardware_fma_mode=0;
+static __attribute__((noinline)) bool hardware_fma_available(){
+  if(!hardware_fma_mode){
+    volatile float inputs[]={0x1.000002p0f,0x1.fffffcp-1f,-1.0f,0x1.fffffep127f,2.0f,-0x1.fffffep127f,0x1p-126f,0x1p-23f,0x1p-149f,0x1.001p0f,0x1.001p0f,0x1p-80f};
+    const f32x4 a={inputs[0],inputs[3],inputs[6],inputs[9]},b={inputs[1],inputs[4],inputs[7],inputs[10]},c={inputs[2],inputs[5],inputs[8],inputs[11]};
+    const f32x4 actual=__builtin_wasm_relaxed_madd_f32x4(a,b,c),expected={-0x1p-46f,0x1.fffffep127f,0x1p-148f,1.0f+0x1p-11f+0x1p-23f};
+    hardware_fma_mode=2;for(u32 i=0;i<4;++i)if(actual[i]!=expected[i])hardware_fma_mode=1;
+  }
+  return hardware_fma_mode==2;
+}
+#endif
 // Round the exact binary32 product-plus-add once, including double-rounding ties.
-static float fused(float a,float b,float c) {
+static __attribute__((always_inline)) inline float fused(float a,float b,float c) {
+#if defined(__wasm_relaxed_simd__)
+  if(hardware_fma_mode==2||(!hardware_fma_mode&&hardware_fma_available()))return __builtin_wasm_relaxed_madd_f32x4(f32x4{a,a,a,a},f32x4{b,b,b,b},f32x4{c,c,c,c})[0];
+#endif
   const double product=static_cast<double>(a)*b, addend=c, sum=product+addend;
+  union { double value; unsigned long long bits; } check={sum};
+  if(__builtin_fabs(sum)>=0x1p-126&&((check.bits&0x1fffffffULL)!=0x10000000ULL))return static_cast<float>(sum);
   const double error=__builtin_fabs(product)>=__builtin_fabs(addend)?(product-sum)+addend:(addend-sum)+product;
   union { double value; unsigned long long bits; } rounded={sum};
   if(error!=0.0&&__builtin_isfinite(sum)&&!(rounded.bits&1))rounded.bits+=__builtin_signbit(sum)==__builtin_signbit(error)?1:-1;
   return static_cast<float>(rounded.value);
+}
+using f32x2=float __attribute__((vector_size(8)));
+using f64x2=double __attribute__((vector_size(16)));
+using u64x2=unsigned long long __attribute__((vector_size(16)));
+static __attribute__((always_inline)) inline f32x4 fused4(f32x4 a,f32x4 b,f32x4 c){
+#if defined(__wasm_relaxed_simd__)
+  if(hardware_fma_mode==2||(!hardware_fma_mode&&hardware_fma_available()))return __builtin_wasm_relaxed_madd_f32x4(a,b,c);
+#endif
+  const f64x2 low=__builtin_convertvector(__builtin_shufflevector(a,a,0,1),f64x2)*__builtin_convertvector(__builtin_shufflevector(b,b,0,1),f64x2)+__builtin_convertvector(__builtin_shufflevector(c,c,0,1),f64x2);
+  const f64x2 high=__builtin_convertvector(__builtin_shufflevector(a,a,2,3),f64x2)*__builtin_convertvector(__builtin_shufflevector(b,b,2,3),f64x2)+__builtin_convertvector(__builtin_shufflevector(c,c,2,3),f64x2);
+  f32x4 result=__builtin_shufflevector(__builtin_convertvector(low,f32x2),__builtin_convertvector(high,f32x2),0,1,2,3);
+  u64x2 lo,hi;__builtin_memcpy(&lo,&low,16);__builtin_memcpy(&hi,&high,16);
+  const u64x2 magnitude={0x7fffffffffffffffULL,0x7fffffffffffffffULL},tail={0x1fffffffULL,0x1fffffffULL},half={0x10000000ULL,0x10000000ULL},normal={0x3810000000000000ULL,0x3810000000000000ULL},zero={0,0};
+  const auto lm=((lo&tail)==half)|(((lo&magnitude)<normal)&((lo&magnitude)!=zero));
+  const auto hm=((hi&tail)==half)|(((hi&magnitude)<normal)&((hi&magnitude)!=zero));
+  if(__builtin_reduce_or(lm|hm)){for(unsigned i=0;i<4;++i){const unsigned long long bits=i<2?lo[i]:hi[i-2],absolute=bits&0x7fffffffffffffffULL;if((bits&0x1fffffffULL)==0x10000000ULL||(absolute&&absolute<0x3810000000000000ULL))result[i]=fused(a[i],b[i],c[i]);}}
+  return result;
 }
 template<unsigned N> static float polynomial(float z,const float (&p)[N]) { float y=p[0];for(unsigned i=1;i<N;i++)y=fused(y,z,p[i]);return y; }
 static float sigmoid(float x) {
@@ -126,13 +161,28 @@ static void ocr_matmul_blocked(const float* lhs,const float* rhs,float* dst,u32 
   if(row<m)pn_matmul(lhs+row*k,rhs,dst+row*n,m-row,n,k);
 }
 
+static void speech_matmul_blocked(const float* a,const float* b,float* out,u32 m,u32 n,u32 k,u32 block=256,u32 ldc=0) {
+  if(!ldc)ldc=n;
+  for(u32 row=0;row<m;row+=4){const u32 rows=m-row<4?m-row:4;u32 col=0;
+    for(;col+4<=n;col+=4){f32x4 sum[4]={};
+      for(u32 begin=0;begin<k;begin+=block){f32x4 part[4]={};const u32 end=begin+block<k?begin+block:k;
+        for(u32 j=begin;j<end;++j){f32x4 values;__builtin_memcpy(&values,b+j*n+col,16);for(u32 r=0;r<rows;++r){const float x=a[(row+r)*k+j];part[r]=fused4(f32x4{x,x,x,x},values,part[r]);}}
+        for(u32 r=0;r<rows;++r)sum[r]=begin?sum[r]+part[r]:part[r];
+      }
+      for(u32 r=0;r<rows;++r)__builtin_memcpy(out+(row+r)*ldc+col,&sum[r],16);
+    }
+    for(;col<n;++col)for(u32 r=0;r<rows;++r){float sum=0;for(u32 begin=0;begin<k;begin+=block){float part=0;const u32 end=begin+block<k?begin+block:k;for(u32 j=begin;j<end;++j)part=fused(a[(row+r)*k+j],b[j*n+col],part);sum=begin?sum+part:part;}out[(row+r)*ldc+col]=sum;}
+  }
+}
+
+static u32 speech_projection_block(u32 n,u32 k){u32 block=128,panel=128;if(n>=k){while(block/2>=k)block/=2;}else{while(panel>16&&panel/2>=n){block*=2;panel/=2;}}return block;}
 extern "C" void pn_ocr_matmul(const float* a, const float* b, float* out, const u32* p) {
   const u32 m = p[0], n = p[1], k = p[2], rank = p[3], batches = p[4];
   for (u32 batch = 0; batch < batches; ++batch) {
     const u32 ai = mapped(batch, rank, p + 8, reinterpret_cast<const int*>(p + 16)) * m * k;
     const u32 bi = mapped(batch, rank, p + 8, reinterpret_cast<const int*>(p + 24)) * k * n;
     const float* lhs=a+ai;const float* rhs=b+bi;float* dst=out+batch*m*n;
-    if(speech_numerics&&k<=128){for(u32 row=0;row<m;++row)for(u32 col=0;col<n;++col){float sum=0;for(u32 j=0;j<k;++j)sum=fused(lhs[row*k+j],rhs[j*n+col],sum);dst[row*n+col]=sum;}}
+    if(speech_numerics)speech_matmul_blocked(lhs,rhs,dst,m,n,k);
     else ocr_matmul_blocked(lhs,rhs,dst,m,n,k);
   }
 }
@@ -143,8 +193,10 @@ extern "C" void pn_ocr_conv(const float* input, const float* weights, const floa
   const bool has_bias=p[17],relu=p[18],transpose=p[19];
   if(!transpose&&kh==1&&kw==1&&sh==1&&sw==1&&!pt&&!pl&&oh==ih&&ow==iw){
     const u32 plane=ih*iw;
+    if(speech_numerics&&ocg==1){for(u32 n=0;n<batches;++n)for(u32 g=0;g<ic/icg;++g)for(u32 x=0;x<plane;++x){float sum=0;for(u32 begin=0;begin<icg;){const u32 chunk=icg-begin>=4?4:icg-begin>=2?2:1;float part=weights[g*icg+begin]*input[((n*ic+g*icg+begin)*plane)+x];for(u32 j=1;j<chunk;++j)part+=weights[g*icg+begin+j]*input[((n*ic+g*icg+begin+j)*plane)+x];sum=part+sum;begin+=chunk;}if(has_bias)sum+=bias[g];out[(n*oc+g)*plane+x]=relu&&sum<0?0:sum;}return;}
     for(u32 n=0;n<batches;++n)for(u32 g=0;g<ic/icg;++g)
-      ocr_matmul_blocked(weights+g*ocg*icg,input+(n*ic+g*icg)*plane,out+(n*oc+g*ocg)*plane,ocg,plane,icg);
+      if(speech_numerics)speech_matmul_blocked(weights+g*ocg*icg,input+(n*ic+g*icg)*plane,out+(n*oc+g*ocg)*plane,ocg,plane,icg,speech_projection_block(plane,icg));
+      else ocr_matmul_blocked(weights+g*ocg*icg,input+(n*ic+g*icg)*plane,out+(n*oc+g*ocg)*plane,ocg,plane,icg);
     if(has_bias||relu)for(u32 i=0;i<batches*oc*plane;++i){const float v=out[i]+(has_bias?bias[(i/plane)%oc]:0.0f);out[i]=relu&&v<0.0f?0.0f:v;}
     return;
   }
@@ -160,7 +212,10 @@ extern "C" void pn_ocr_conv(const float* input, const float* weights, const floa
           scratch[row*columns+j]=sy>=0&&sx>=0&&sy<static_cast<int>(ih)&&sx<static_cast<int>(iw)?input[((n*ic+g*icg+ci)*ih+sy)*iw+sx]:0.0f;
         }
       }
-      for(u32 c=0;c<ocg;++c){
+      if(speech_numerics){
+      speech_matmul_blocked(weights+g*ocg*kernel,scratch,out+(n*oc+g*ocg)*spatial+start,ocg,columns,kernel,speech_projection_block(spatial,kernel),spatial);
+      if(has_bias||relu)for(u32 c=0;c<ocg;++c)for(u32 j=0;j<columns;++j){float& value=out[(n*oc+g*ocg+c)*spatial+start+j];if(has_bias)value+=bias[g*ocg+c];if(relu&&value<0)value=0;}
+      }else for(u32 c=0;c<ocg;++c){
         const float* filter=weights+(g*ocg+c)*kernel;float* destination=out+((n*oc+g*ocg+c)*spatial)+start;u32 j=0;
         for(;j+4<=columns;j+=4){f32x4 sum={0,0,0,0};for(u32 k=0;k<kernel;++k){f32x4 v;__builtin_memcpy(&v,scratch+k*columns+j,16);const float w=filter[k];sum+=v*f32x4{w,w,w,w};}
           if(has_bias){const float b=bias[g*ocg+c];sum+=f32x4{b,b,b,b};}if(relu)for(u32 lane=0;lane<4;++lane)if(sum[lane]<0.0f)sum[lane]=0.0f;__builtin_memcpy(destination+j,&sum,16);}

@@ -7,6 +7,8 @@ const PAGE_BYTES = 65536;
 const MAX_BYTES = 512 * 1024 * 1024;
 const PARAMETER_BYTES = 8192;
 const ARRAYS = Object.freeze({ float32: Float32Array, int32: Int32Array, int8: Int8Array, uint8: Uint8Array, bool: Uint8Array });
+// Older SharedArrayBuffer views can still alias the arena after memory.grow replaces its buffer object.
+const mayAliasArena = (data, memory) => data.buffer === memory.buffer || (typeof SharedArrayBuffer !== 'undefined' && data.buffer instanceof SharedArrayBuffer);
 
 /** The two OCR graphs share this native arena; only feeds and final results cross JS. */
 export class WasmOcrCompute {
@@ -29,6 +31,7 @@ export class WasmOcrCompute {
     this.base = this.parameterOffset + PARAMETER_BYTES;
     this.cursor = this.base;
     this.free = [];
+    this.locations = new WeakMap();
     this.buffers = new Set();
     this.tensors = new Set();
     this.owners = new Map();
@@ -59,13 +62,29 @@ export class WasmOcrCompute {
       if (item.size === size) this.free.splice(index, 1);
       else { item.offset += size; item.size -= size; }
     } else {
+      if (this.cursor + size > this.maxBytes && this.free.length) this.compact();
       offset = this.cursor;
       this.ensure(offset + size);
       this.cursor += size;
     }
-    const buffer = Object.freeze({ offset, size });
+    const location = { offset };
+    const buffer = Object.freeze({ get offset() { return location.offset; }, size });
+    this.locations.set(buffer, location);
     this.buffers.add(buffer);
     return buffer;
+  }
+
+  compact() {
+    // Commands resolve handles at execution; persistent weights can move between native calls.
+    const bytes = new Uint8Array(this.memory.buffer);
+    let at = this.base;
+    for (const buffer of [...this.buffers].sort((a, b) => a.offset - b.offset)) {
+      if (buffer.offset !== at) bytes.copyWithin(at, buffer.offset, buffer.offset + buffer.size);
+      this.locations.get(buffer).offset = at;
+      at += buffer.size;
+    }
+    this.free.length = 0;
+    this.cursor = at;
   }
 
   freeBuffer(buffer) {
@@ -111,12 +130,14 @@ export class WasmOcrCompute {
     const width = this.storageWidth(dataType);
     if (!(data instanceof ARRAYS[dataType]) || data.length !== tensorSize(shape) || data.byteLength !== tensorSize(shape) * width
       || (dataType === 'bool' && data.some(value => value !== 0 && value !== 1))) throw new RangeError('OCR input does not match its tensor type and shape.');
+    if (mayAliasArena(data, this.memory)) data = ARRAYS[dataType].from(data);
     const tensor = this.tensor(shape, null, null, dataType); this.write(tensor, data); return tensor;
   }
 
   uploadBytes(data, shape, dataType = 'float32') {
     if (!(data instanceof Uint8Array) || data.byteLength !== tensorSize(shape) * this.storageWidth(dataType)
       || (dataType === 'bool' && data.some(value => value !== 0 && value !== 1))) throw new RangeError('OCR weight bytes do not match their type and shape.');
+    if (mayAliasArena(data, this.memory)) data = Uint8Array.from(data);
     const tensor = this.tensor(shape, null, null, dataType);
     new Uint8Array(this.memory.buffer, tensor.buffer.offset, data.length).set(data);
     return tensor;
@@ -124,6 +145,7 @@ export class WasmOcrCompute {
 
   uploadInt32(data, shape) {
     if (!(data instanceof Int32Array) || data.length !== tensorSize(shape)) throw new RangeError('OCR integer data does not match its shape.');
+    if (mayAliasArena(data, this.memory)) data = Int32Array.from(data);
     const tensor = this.tensor(shape, null, null, 'int32', integerRange(data)); this.write(tensor, data); return tensor;
   }
 

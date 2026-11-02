@@ -24,6 +24,10 @@ function valueInfo({ name, type, shape }) {
 export function kokoroOperatorFixture(opType, inputs, outputs, attrs = {}, domain = '') {
   const node = join([...inputs.map(input => text(1, input?.name ?? '')), ...outputs.map(output => text(2, output.name)), text(4, opType),
     ...(domain ? [text(7, domain)] : []), ...Object.entries(attrs).map(([name, value]) => message(5, attribute(name, value)))]);
-  const graph = join([message(1, node), ...inputs.filter(Boolean).map(info => message(11, valueInfo(info))), ...outputs.map(info => message(12, valueInfo(info)))]);
+  const constants = inputs.filter(input => input?.initializer).map(input => message(5, join([
+    ...input.shape.map(dim => integer(1, dim)), integer(2, input.type), text(8, input.name),
+    message(9, new Uint8Array(input.data.buffer, input.data.byteOffset, input.data.byteLength)),
+  ])));
+  const graph = join([message(1, node), ...constants, ...inputs.filter(input => input && !input.initializer).map(info => message(11, valueInfo(info))), ...outputs.map(info => message(12, valueInfo(info)))]);
   return join([integer(1, 8), message(7, graph), message(8, integer(2, 17)), ...(domain ? [message(8, join([text(1, domain), integer(2, 1)]))] : [])]);
 }

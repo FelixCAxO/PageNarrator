@@ -31,7 +31,8 @@ Source: https://github.com/eigen-mirror/eigen/tree/1d8b82b0740839c0de7f1242a3585
 License: Mozilla Public License 2.0 (see Eigen-MPL-2.0.txt).
 References: packet reduction order, trigonometric range reduction and rational
 arctangent approximation. Corresponding modified source is supplied in
-native/kokoro-engine.cpp and native/ocr-engine.cpp in the source archive.
+native/kokoro-engine.cpp, native/ocr-engine.cpp and the src/engines/kokoro-*
+JavaScript/WGSL modules in the source archive.
 
 PageNarrator OmniVoice browser bridge (new implementation)
 Copyright 2026 Felix Olsson.

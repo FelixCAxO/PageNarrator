@@ -40,12 +40,24 @@ try {
   report.comparedModelSha256 = createHash('sha256').update(probeModel).digest('hex');
   const tokenizer = createKokoroTokenizer(JSON.parse(await verified('tokenizer.json')), JSON.parse(await verified('tokenizer_config.json')));
   phonemizer = await createEnglishPhonemizer({ wasmBinary: await readFile(resolve(root, 'public/assets/phonemizer/english.wasm')), pronunciationData: await readFile(resolve(root, 'public/assets/phonemizer/pronunciations.bin')) });
-  const text = 'Hello.', voice = 'af_heart', speed = 1, phones = await phonemizer.phonemizeText(text, 'en-us'), ids = tokenizer.encode(phones, { strict: true });
-  const styleBytes = await verified(`voices/${voice}.bin`), row = ids.length - 2;
-  const style = new Float32Array(styleBytes.buffer.slice(styleBytes.byteOffset + row * 1024, styleBytes.byteOffset + (row + 1) * 1024));
   baseline = await oracle.InferenceSession.create(probeModel, { executionProviders: ['cpu'], intraOpNumThreads: 1, interOpNumThreads: 1, graphOptimizationLevel: 'disabled' });
-  const startReference = performance.now(), expected = (await baseline.run({ input_ids: new oracle.Tensor('int64', ids, [1, ids.length]), style: new oracle.Tensor('float32', style, [1, 256]), speed: new oracle.Tensor('float32', Float32Array.of(speed), [1]) })).waveform;
-  const referenceMs = performance.now() - startReference;
+  const corpus = [['Hello.', 'af_heart', 1], ['The browser reads this page.', 'am_michael', 1.25], ['Dr. Smith paid £12.50 on 2026-10-16.', 'bf_emma', .85]];
+  const controls = [], feeds = [];
+  for (const [text, voice, speed] of corpus) {
+    const dialect = voice[0] === 'b' ? 'en-gb' : 'en-us', phones = await phonemizer.phonemizeText(text, dialect), ids = tokenizer.encode(phones, { strict: true });
+    const styleBytes = await verified(`voices/${voice}.bin`), row = Math.min(509, ids.length - 2);
+    const style = new Float32Array(styleBytes.buffer.slice(styleBytes.byteOffset + row * 1024, styleBytes.byteOffset + (row + 1) * 1024));
+    const referenceFeeds = { input_ids: new oracle.Tensor('int64', ids, [1, ids.length]), style: new oracle.Tensor('float32', style, [1, 256]), speed: new oracle.Tensor('float32', Float32Array.of(speed), [1]) };
+    const startReference = performance.now();
+    let expected;
+    try { expected = (await baseline.run(referenceFeeds)).waveform; }
+    finally { for (const tensor of Object.values(referenceFeeds)) tensor.dispose(); }
+    const referenceMs = performance.now() - startReference;
+    controls.push({ text, voice, speed, dialect, phones, tokens: [...ids].map(Number), expected: { dims: [...expected.dims], data: expected.data.slice() }, referenceMs });
+    expected.dispose();
+    feeds.push({ ids: [...ids].map(Number), style: [...style], speed });
+  }
+  await baseline.release(); baseline = null;
   server = createServer(async (request, response) => {
     try {
       const pathname = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
@@ -62,35 +74,44 @@ try {
   const page = await browser.newPage(), consoleErrors = [];
   page.on('pageerror', error => consoleErrors.push(error.message)); page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
-  const actual = await page.evaluate(async ({ ids, style, speed }) => {
+  const actual = await page.evaluate(async feeds => {
     const moduleRoot = new URL('/src/engines/', location.href).href;
     const { WebGpuCompute } = await import(`${moduleRoot}webgpu-compute.js`);
     const { WebGpuOnnxSession } = await import(`${moduleRoot}webgpu-onnx-session.js`);
     const adapter = await navigator.gpu?.requestAdapter(); if (!adapter) throw new Error('WebGPU adapter unavailable.');
     const device = await adapter.requestDevice(), engine = await WebGpuCompute.create({ device });
     const validationErrors = []; device.addEventListener('uncapturederror', event => validationErrors.push(event.error.message));
-    let session, failure = null, result;
+    let session, failure = null;
+    const results = [];
     try {
       session = await WebGpuOnnxSession.create(new Uint8Array(await (await fetch('/model.onnx')).arrayBuffer()), { engine });
-      const start = performance.now(), waveform = (await session.run({ input_ids: { shape: [1, ids.length], data: BigInt64Array.from(ids, BigInt) }, style: { shape: [1, 256], data: Float32Array.from(style) }, speed: { shape: [1], data: Float32Array.of(speed) } }, ['waveform'])).waveform;
-      result = { elapsedMs: performance.now() - start, shape: waveform.shape, pcm: Array.from(waveform.data), stats: session.lastRun };
+      for (const [caseIndex, { ids, style, speed }] of feeds.entries()) for (let repeat = 0; repeat < 2; repeat++) {
+        const start = performance.now(), waveform = (await session.run({ input_ids: { shape: [1, ids.length], data: BigInt64Array.from(ids, BigInt) }, style: { shape: [1, 256], data: Float32Array.from(style) }, speed: { shape: [1], data: Float32Array.of(speed) } }, ['waveform'])).waveform;
+        results.push({ caseIndex, repeat, elapsedMs: performance.now() - start, shape: waveform.shape, pcm: Array.from(waveform.data), stats: session.lastRun });
+      }
     } catch (error) { failure = error.message; }
     finally { await session?.dispose(); await engine.dispose(); device.destroy(); }
-    return { ...result, failure, validationErrors, resourceCleanup: !engine.buffers.size && !engine.tensors.size, adapter: { vendor: adapter.info.vendor, architecture: adapter.info.architecture, description: adapter.info.description } };
-  }, { ids: [...ids].map(Number), style: [...style], speed });
-  const { pcm, ...details } = actual; Object.assign(report, details, { consoleErrors });
+    return { results, failure, validationErrors, resourceCleanup: !engine.buffers.size && !engine.tensors.size, adapter: { vendor: adapter.info.vendor, architecture: adapter.info.architecture, description: adapter.info.description } };
+  }, feeds);
+  const { results, ...details } = actual; Object.assign(report, details, { consoleErrors });
   verifyBrowserAdapter(actual.adapter, adapterConfiguration);
   if (actual.failure) throw new Error(actual.failure);
-  let maximumAbsolute = 0, squareError = 0, squareReference = 0, mismatches = 0, finite = true;
-  if (pcm.length !== expected.data.length) throw new Error(`PCM output length differs: ${pcm.length}/${expected.data.length}.`);
-  for (let i = 0; i < pcm.length; i++) {
-    const error = Math.abs(pcm[i] - expected.data[i]); finite &&= Number.isFinite(error);
-    maximumAbsolute = Math.max(maximumAbsolute, error); squareError += error ** 2; squareReference += expected.data[i] ** 2;
-    if (error > .0003 + .003 * Math.abs(expected.data[i])) mismatches++;
-  }
   const audioDirectory = `${output.replace(/\.json$/u, '')}-audio`; await mkdir(audioDirectory, { recursive: true });
-  for (const [variant, values] of [['candidate', pcm], ['reference', expected.data]]) await writeFile(resolve(audioDirectory, `0-af_heart-${variant}.wav`), wave(values), { flag: 'wx' });
-  report.cases.push({ text, voice, speed, phones, tokens: [...ids].map(Number), samples: pcm.length, referenceMs, candidateMs: actual.elapsedMs, finite, maximumAbsolute, relativeRmse: Math.sqrt(squareError / Math.max(1e-30, squareReference)), mismatches, audioDirectory, listening: 'pending' });
+  let finite = true, mismatches = 0;
+  for (const { caseIndex, repeat, pcm, shape, elapsedMs, stats } of results) {
+    const { expected, ...control } = controls[caseIndex];
+    if (shape.join(',') !== expected.dims.join(',') || pcm.length !== expected.data.length) throw new Error(`PCM output shape differs: ${shape}/${expected.dims}.`);
+    let maximumAbsolute = 0, squareError = 0, squareReference = 0, caseMismatches = 0, caseFinite = true;
+    for (let i = 0; i < pcm.length; i++) {
+      const error = Math.abs(pcm[i] - expected.data[i]); caseFinite &&= Number.isFinite(error);
+      maximumAbsolute = Math.max(maximumAbsolute, error); squareError += error ** 2; squareReference += expected.data[i] ** 2;
+      if (error > .0003 + .003 * Math.abs(expected.data[i])) caseMismatches++;
+    }
+    finite &&= caseFinite; mismatches += caseMismatches;
+    if (!repeat) for (const [variant, values] of [['candidate', pcm], ['reference', expected.data]]) await writeFile(resolve(audioDirectory, `${caseIndex}-${control.voice}-${variant}.wav`), wave(values), { flag: 'wx' });
+    report.cases.push({ ...control, repeat, samples: pcm.length, shape, candidateMs: elapsedMs, stats, finite: caseFinite, maximumAbsolute, relativeRmse: Math.sqrt(squareError / Math.max(1e-30, squareReference)), mismatches: caseMismatches, audioDirectory, listening: 'pending' });
+  }
+  if (results.length !== corpus.length * 2) throw new Error('GPU comparison did not complete every corpus repeat.');
   report.status = finite && !mismatches && actual.resourceCleanup && !actual.validationErrors.length && !consoleErrors.length ? 'pass' : 'fail';
   if (report.status === 'fail') report.failureKind = finite && mismatches && actual.resourceCleanup && !actual.validationErrors.length && !consoleErrors.length ? 'pcm-mismatch' : 'execution';
   console.log(JSON.stringify(report));

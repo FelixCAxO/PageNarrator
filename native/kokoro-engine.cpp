@@ -106,9 +106,9 @@ extern "C" void pn_kokoro_lstm(const float* input,const float* w,const float* r,
     for(u32 step=0;step<steps;++step){const u32 t=d==1||p[5]?steps-step-1:step;
       for(u32 unit=0;unit<hidden;++unit){float gates[4];
         for(u32 gate=0;gate<4;++gate){const u32 row=(d*4+gate)*hidden+unit;
-          float sum=bias[d*8*hidden+gate*hidden+unit]+bias[d*8*hidden+(gate+4)*hidden+unit];
-          for(u32 i=0;i<features;++i)sum+=input[(t*batch+b)*features+i]*w[row*features+i];
-          for(u32 i=0;i<hidden;++i)sum+=out_h[state+i]*r[row*hidden+i];gates[gate]=sum;
+          float wx=0;for(u32 begin=0;begin<features;begin+=256){float part=0;const u32 end=begin+256<features?begin+256:features;for(u32 i=begin;i<end;++i)part=fused(input[(t*batch+b)*features+i],w[row*features+i],part);wx=begin?wx+part:part;}
+          float rh=0;for(u32 i=0;i<hidden;++i)rh=fused(out_h[state+i],r[row*hidden+i],rh);
+          const float sum=(wx+rh)+(bias[d*8*hidden+gate*hidden+unit]+bias[d*8*hidden+(gate+4)*hidden+unit]);gates[gate]=sum;
         }
         next_c[unit]=logistic(gates[2])*out_c[state+unit]+logistic(gates[0])*hyperbolic(gates[3]);
         next_h[unit]=logistic(gates[1])*hyperbolic(next_c[unit]);
@@ -185,7 +185,7 @@ extern "C" void pn_kokoro_conv_transpose(const float* input,const float* weight,
           for(;x+4<=columns;x+=4){f32x4 sums[4]={};
             for(u32 begin=0;begin<icg;begin+=block){f32x4 part[4]={};const u32 end=begin+block<icg?begin+block:icg;
               for(u32 ci=begin;ci<end;++ci){f32x4 values;__builtin_memcpy(&values,input+((n*channels+g*icg+ci)*length)+start+x,16);
-                for(u32 row=0;row<rows;++row){const float w=weight[((g*icg+ci)*ocg+c+row)*kernel+k];for(u32 lane=0;lane<4;++lane)part[row][lane]=fused(values[lane],w,part[row][lane]);}
+                for(u32 row=0;row<rows;++row){const float w=weight[((g*icg+ci)*ocg+c+row)*kernel+k];part[row]=fused4(values,f32x4{w,w,w,w},part[row]);}
               }
               for(u32 row=0;row<rows;++row)sums[row]=begin?sums[row]+part[row]:part[row];
             }

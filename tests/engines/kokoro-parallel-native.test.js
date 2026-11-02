@@ -22,6 +22,21 @@ beforeEach(async () => {
 });
 afterEach(async () => { await engine?.dispose(); });
 
+it('copies old shared-memory views before allocation compacts their live source', async () => {
+  engine.maxBytes = 262144;
+  const first = engine.tensor([8192]);
+  const values = Int32Array.from({ length: 16384 }, (_, i) => i - 1024), source = engine.uploadInt32(values, [16384]);
+  const data = new Int32Array(engine.memory.buffer, source.buffer.offset, source.length);
+  const second = engine.tensor([8192]), tail = engine.tensor([4096]);
+  expect(data.buffer).not.toBe(engine.memory.buffer);
+  await engine.releaseMany([first, second]);
+  const offset = source.buffer.offset, copy = engine.uploadInt32(data, source.shape);
+  expect(source.buffer.offset).toBeLessThan(offset);
+  expect(await engine.read(source)).toEqual(values); expect(await engine.read(copy)).toEqual(values);
+  expect(engine.memory.buffer.byteLength).toBeLessThanOrEqual(262144);
+  await engine.releaseMany([source, copy, tail]); expect(engine.buffers.size).toBe(0);
+});
+
 function fixture(xSigned, wSigned, zeroMode, maxProducts = false) {
   const X = xSigned ? Int8Array : Uint8Array, W = wSigned ? Int8Array : Uint8Array;
   const channels = maxProducts ? 1090 : 3, length = maxProducts ? 5 : 37, outputs = 9, kernel = 3, width = maxProducts ? 5 : 38, dilation = maxProducts ? 1 : 2, left = maxProducts ? 1 : 2;

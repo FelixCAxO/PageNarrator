@@ -1,3 +1,6 @@
+import{KOKORO_TRIG_SHADER}from'./kokoro-trigonometry-shader.js';
+import{kokoroFloatShader}from'./kokoro-float-shaders.js';
+import{KOKORO_SERIAL_SCAN_SHADER}from'./kokoro-reduction-shaders.js';
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { axisIndex, contiguousStrides } from './index-shape.js';
 import { tensorSize } from './tensor-shape.js';
@@ -38,7 +41,7 @@ export function referenceCumulativeSum(input, shape, axis, options = {}) {
     let sum = 0;
     for (let position = 0; position < plan.length; position++) {
       const index = (outer * plan.length + position) * plan.inner + inner;
-      sum += input[index]; output[index] = sum;
+      sum = output instanceof Int32Array ? sum + input[index] : Math.fround(sum + input[index]); output[index] = sum;
     }
   }
   return output;
@@ -122,7 +125,7 @@ fn main(@builtin(global_invocation_id) position: vec3<u32>) {
 }
 `;
 
-export const KOKORO_UNARY_SHADER = `
+export const KOKORO_UNARY_SHADER = `${kokoroFloatShader(6)}${KOKORO_TRIG_SHADER}
 @group(0) @binding(0) var<storage, read> src: array<f32>;
 @group(0) @binding(1) var<storage, read_write> dst: array<u32>;
 @group(0) @binding(2) var<storage, read> cfg: array<u32>;
@@ -140,7 +143,7 @@ fn main(@builtin(global_invocation_id) position: vec3<u32>) {
       }
     }
     case 1u: { result = floor(value); }
-    case 2u: { result = atan(value); }
+    case 2u: { result=pn_atan(value); }
     case 3u: { result = select(value, value * bitcast<f32>(cfg[2u]), value < 0.0); }
     case 4u: { result = clamp(value, bitcast<f32>(cfg[3u]), bitcast<f32>(cfg[4u])); }
     default: {}
@@ -154,10 +157,9 @@ fn main(@builtin(global_invocation_id) position: vec3<u32>) {
 
 const floatBits = value => new Uint32Array(Float32Array.of(value).buffer)[0];
 export async function createKokoroDurationKernels(engine) {
-  const [scanFloat, scanInteger, offsetFloat, offsetInteger, scatter, unary] = await Promise.all([
-    engine.pipeline(cumulativeSumShader(), 'PageNarrator Kokoro float scan'),
+  const [scanFloat, scanInteger, offsetInteger, scatter, unary] = await Promise.all([
+    engine.pipeline(KOKORO_SERIAL_SCAN_SHADER, 'PageNarrator Kokoro float scan'),
     engine.pipeline(cumulativeSumShader(true), 'PageNarrator Kokoro integer scan'),
-    engine.pipeline(cumulativeOffsetsShader(), 'PageNarrator Kokoro float scan offsets'),
     engine.pipeline(cumulativeOffsetsShader(true), 'PageNarrator Kokoro integer scan offsets'),
     engine.pipeline(KOKORO_SCATTER_SHADER, 'PageNarrator Kokoro bounded scatter'),
     engine.pipeline(KOKORO_UNARY_SHADER, 'PageNarrator Kokoro unary'),
@@ -176,15 +178,16 @@ export async function createKokoroDurationKernels(engine) {
       };
       const output = batch.output(plan.shape, input.dataType, range(plan.length));
       if (!plan.length || !plan.lanes) return output;
+      if(!integer){const[x,y]=batch.grid(Math.ceil(plan.lanes/64));batch.dispatchTensors(scanFloat,[input,output],Uint32Array.of(plan.length,plan.inner,plan.outer,plan.lanes,x,0),x,y);return output;}
       const sums = batch.output([plan.lanes, plan.blocks], input.dataType, range(Math.min(256, plan.length)));
       const limit = engine.device.limits.maxComputeWorkgroupsPerDimension;
       const y = Math.min(plan.lanes, limit), z = Math.ceil(plan.lanes / y);
-      batch.dispatchTensors(integer ? scanInteger : scanFloat, [input, output, sums],
+      batch.dispatchTensors(scanInteger, [input, output, sums],
         Uint32Array.of(plan.length, plan.inner, plan.outer, plan.blocks, plan.lanes, y), plan.blocks, y, z);
       if (plan.blocks > 1) {
         const offsets = kernels.cumsum(batch, sums, 1);
         const [x, groupsY] = batch.grid(Math.ceil(output.length / 64));
-        batch.dispatchTensors(integer ? offsetInteger : offsetFloat, [output, offsets],
+        batch.dispatchTensors(offsetInteger, [output, offsets],
           Uint32Array.of(output.length, plan.length, plan.inner, plan.blocks, x), x, groupsY);
         batch.recycle(offsets);
       }
@@ -204,7 +207,7 @@ export async function createKokoroDurationKernels(engine) {
       batch.check(input);
       if (!Object.hasOwn(KOKORO_UNARY_OPERATIONS, operation) || !Number.isFinite(alpha) || Number.isNaN(min) || Number.isNaN(max) || min > max) throw new Error('Invalid Kokoro unary operation.');
       const output = batch.output(input.shape), [x, y] = batch.grid(Math.ceil(output.length / 64));
-      batch.dispatchTensors(unary, [input, output], Uint32Array.of(output.length, KOKORO_UNARY_OPERATIONS[operation], floatBits(alpha), floatBits(min), floatBits(max), x), x, y);
+      batch.dispatchTensors(unary, [input, output], Uint32Array.of(output.length, KOKORO_UNARY_OPERATIONS[operation], floatBits(alpha), floatBits(min), floatBits(max), x,0), x, y);
       return output;
     },
   };

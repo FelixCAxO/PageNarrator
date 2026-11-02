@@ -31,7 +31,7 @@ Run `npm run probe:pdf-document -- "path/to/book.pdf"` before relying on a new d
 
 ## Verification status
 
-The current source retains the v1.0.0 limitations. Physical hardware tiers and broad listening quality remain unverified. The dated waivers and accepted Kokoro duration/PCM limitation are recorded in [verification status](release-readiness.md). Kokoro reference comparisons remain failed/unqualified; individual operator passes do not qualify full-model parity.
+The current CPU q8/fp32 and GPU fp32 Kokoro reference comparisons pass the existing corpus on both graph versions. GPU checks cover the NVIDIA and Intel adapters on the measured host. Physical hardware tiers and broad listening quality remain unverified. Fresh evidence and the dated historical limitations are recorded in [verification status](release-readiness.md).
 
 Historical diagnostics are retained locally; the [benchmark record](benchmarks/README.md) describes the retained methodology. Their scope does not expand with a later wording or implementation change.
 
@@ -39,7 +39,7 @@ Historical diagnostics are retained locally; the [benchmark record](benchmarks/R
 
 Only verified immutable model bytes enter persistent cache. Pinned runtime corrections create separate derived graphs and record both hashes. Kokoro's `kokoro-exact-zero-phase-v2` handles its bounded spectral-origin case; it is not full IEEE/Torch signed-zero parity. OmniVoice's guarded RMSNorm correction restores the reference float32 chains without changing learned weights or public inputs/outputs.
 
-On 2026-10-26 the maintainer selected **correct math and verified speech quality** as the qualification target. Independent operator checks are mandatory. The six production/unmodified CPU/GPU waveform comparisons remain diagnostics with their original thresholds and failed/unqualified results; unexpected execution failures still block verification. This changes the target, without declaring the old comparisons passed or granting a human-review waiver. The decision and listening rules are pinned in [the voice-quality protocol](../config/voice-quality-protocol.json).
+On 2026-10-26 the maintainer selected **correct math and verified speech quality** as the qualification target. Independent operator checks are mandatory. The production/unmodified CPU/GPU waveform comparisons retain their original thresholds; the current kernel repair passes the tested corpus on both GPU adapters. Historical failures remain failed records, and unexpected execution failures still block verification. These numerical results grant no human-review waiver. The decision and listening rules are pinned in [the voice-quality protocol](../config/voice-quality-protocol.json).
 
 The reference-only sensitivity experiment found that changing STFT arithmetic by less than 0.000001 produced about 19% relative waveform RMSE, even with all other operations on the same independent runtime. The corrected native STFT agreed with independent Torch double-precision FFT on the same float32-windowed signal within 0.000000001. These are bounded diagnostics, not a listening score or proof about every input. Full speech qualification separately requires the complete, source-bound [blind listening study](voice-listening-qa.md); missing human evidence remains unqualified. See the [historical release policy](../config/release-policy.json), [recorded results](release-readiness.md), and [retained-model provenance](third-party-voice-licenses.md).
 

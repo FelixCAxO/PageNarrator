@@ -5,10 +5,48 @@ import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 import { browserAdapterConfiguration, verifyBrowserAdapter } from './lib/browser-adapter.mjs';
+import { cpuOperator, cpuStft } from './lib/cpu-operator-oracle.mjs';
+import { requireNewKokoroProbeReport } from './lib/kokoro-probe-model.mjs';
 
 const root = resolve(fileURLToPath(new URL('../', import.meta.url)));
 const adapterConfiguration = browserAdapterConfiguration(), outputIndex = process.argv.indexOf('--output');
 const output = resolve(root, outputIndex < 0 ? `artifacts/engines/kokoro-kernels-parity${adapterConfiguration.suffix}.json` : process.argv[outputIndex + 1]);
+await requireNewKokoroProbeReport(output);
+const fftControls = [];
+const cancellation = [...await cpuStft(Float32Array.of(1 + 2 ** -23, -1), [1, 2], Float32Array.of(1 - 2 ** -24, 1), 2, 1)];
+for (const length of [1, 2, 3, 7, 16, 20, 31, 64]) {
+  const shape = [2, length + 5], data = Float32Array.from({ length: shape[0] * shape[1] }, (_, i) => Math.sin(i * .713) + .1 * Math.cos(i * .219));
+  const window = Float32Array.from({ length }, (_, i) => .5 * (Math.sin(i * .713) + .1 * Math.cos(i * .219)));
+  fftControls.push({ length, shape, data: [...data], window: [...window], expected: [...await cpuStft(data, shape, window, length, 2)] });
+}
+const operatorControls = [];
+async function control(operation, values, shape, outShape = shape, attributes = {}, options = {}) {
+  const expected = await cpuOperator(operation, [{ name: 'x', type: 1, shape, data: values }], { name: 'y', type: 1, shape: outShape }, attributes);
+  operatorControls.push({ operation, values: [...values], shape, expected: [...expected], options });
+}
+for (const operation of ['Sin', 'Cos', 'Atan', 'Tanh', 'Sigmoid']) {
+  const values = Float32Array.from({ length: 4099 }, (_, i) => Math.sin(i * .713) * (operation === 'Tanh' || operation === 'Sigmoid' ? 20 : 10 ** ((i % 72 - 36) / 4)));
+  await control(operation, values, [values.length]);
+}
+for (const width of [65, 128, 768]) {
+  const values = Float32Array.from({ length: 3 * width }, (_, i) => 3 * (Math.sin(i * .713) + .1 * Math.cos(i * .219)));
+  const extraInputs = [2, .2].map(scale => Float32Array.from({ length: width }, (_, i) => scale * (Math.sin(i * .713) + .1 * Math.cos(i * .219))));
+  const expected = await cpuOperator('LayerNormalization', [{ name: 'x', type: 1, shape: [3, width], data: values },
+    ...extraInputs.map((data, i) => ({ name: i ? 'bias' : 'scale', type: 1, shape: [width], data }))], { name: 'y', type: 1, shape: [3, width] }, { epsilon: 1e-5, axis: -1 });
+  operatorControls.push({ operation: 'LayerNormalization', values: [...values], shape: [3, width], extraInputs: extraInputs.map(data => [...data]), expected: [...expected], options: { epsilon: 1e-5 } });
+}
+{
+  const values = Float32Array.of(2 ** 24, 1, -(2 ** 24));
+  const expected = await cpuOperator('CumSum', [{ name: 'x', type: 1, shape: [3], data: values }, { name: 'axis', type: 7, shape: [], data: BigInt64Array.of(0n) }], { name: 'y', type: 1, shape: [3] });
+  operatorControls.push({ operation: 'CumSum', values: [...values], shape: [3], expected: [...expected] });
+}
+for (const mode of ['nearest', 'linear']) {
+  const shape = [1, 9, 12], values = Float32Array.from({ length: 108 }, (_, i) => Math.sin(i + .17) * 35000);
+  const options = { mode, coordinateMode: mode === 'nearest' ? 'asymmetric' : 'half_pixel', nearestMode: 'floor', scales: [1, 1, 300] };
+  const expected = await cpuOperator('Resize', [{ name: 'x', type: 1, shape, data: values }, null, { name: 'scales', type: 1, shape: [3], data: Float32Array.from(options.scales) }],
+    { name: 'y', type: 1, shape: [1, 9, 3600] }, { mode, coordinate_transformation_mode: options.coordinateMode, nearest_mode: 'floor' });
+  operatorControls.push({ operation: 'Resize', values: [...values], shape, expected: [...expected], options });
+}
 const server = createServer(async (request, response) => {
   try {
     const pathname = decodeURIComponent(new URL(request.url, 'http://127.0.0.1').pathname);
@@ -28,11 +66,11 @@ try {
   page.on('pageerror', error => consoleErrors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') consoleErrors.push(message.text()); });
   await page.goto(`http://127.0.0.1:${server.address().port}/`);
-  const result = await page.evaluate(async () => {
+  const result = await page.evaluate(async ({ fftControls, cancellation, operatorControls }) => {
     const moduleRoot = new URL('/src/engines/', location.href).href;
     const { WebGpuCompute } = await import(`${moduleRoot}webgpu-compute.js`);
     const { createKokoroKernels } = await import(`${moduleRoot}kokoro-kernels.js`);
-    const { referenceLstm, referenceLayerNormalization, referenceStft } = await import(`${moduleRoot}kokoro-kernels-shape.js`);
+    const { referenceLstm, referenceLayerNormalization } = await import(`${moduleRoot}kokoro-kernels-shape.js`);
     const { referenceCumulativeSum, referenceScatterNd, referenceKokoroUnary } = await import(`${moduleRoot}kokoro-kernels-duration.js`);
     const adapter = await navigator.gpu?.requestAdapter();
     if (!adapter) throw new Error('WebGPU adapter unavailable.');
@@ -55,6 +93,21 @@ try {
     try {
       await engine.prepareCnn();
       const kernels = await createKokoroKernels(engine);
+      for (const { operation, values, shape, expected, options, extraInputs = [] } of operatorControls) {
+        const input = upload(Float32Array.from(values), shape), batch = engine.batch({ numericPipelines: kernels.arithmetic });
+        const extras = extraInputs.map(data => upload(Float32Array.from(data), [data.length]));
+        const out = operation === 'Atan' ? kernels.unary(batch, input, operation) : operation === 'CumSum' ? kernels.cumsum(batch, input, 0)
+          : operation === 'Resize' ? batch.resize(input, options) : operation === 'LayerNormalization' ? kernels.layerNormalization(batch, input, ...extras, options) : batch.unary(operation, input);
+        batch.submit();
+        const exact = ['CumSum', 'Resize', 'LayerNormalization'].includes(operation);
+        const actual = await engine.read(out);
+        compare(`Independent ${operation}${options?.mode ? ` ${options.mode} x300` : ''} ${shape}`, actual, expected, exact ? 0 : 1e-5, exact ? 0 : 2e-5);
+        if (['Sin', 'Cos', 'Atan'].includes(operation)) {
+          const end = Math.floor(values.length / 4) * 4;
+          compare(`Independent ${operation} packet rounding`, actual.slice(0, end), expected.slice(0, end), 0, 0);
+        }
+        await release(batch, [input, ...extras]);
+      }
       {
         const values = Float32Array.from([-0, 0, -1e-9, 1e-9, -1e-7, 1e-7,
           ...Array.from({ length: 257 }, (_, i) => (i - 128) / 1024)]);
@@ -67,7 +120,7 @@ try {
       {
         const inputs = [upload(Float32Array.of(1 + 2 ** -23, -1), [1, 2]), upload(Float32Array.of(1 - 2 ** -24, 1), [2])];
         const batch = engine.batch(), out = kernels.stft(batch, ...inputs, { frameLength: 2, frameStep: 1 });
-        batch.submit(); compare('Float32 STFT window cancellation', await engine.read(out), [0, 0, 2, 0], 0, 0);
+        batch.submit(); compare('Float32 STFT window cancellation', await engine.read(out), cancellation, 0, 0);
         await release(batch, inputs);
       }
       {
@@ -114,14 +167,11 @@ try {
         compare('LSTM finite extreme candidate and cell tanh: cell', await engine.read(out[2]), Float32Array.of(38.375, -38.375), 0, 0);
         await release(batch, inputs);
       }
-      {
-        const shape = [2, 35], values = Float32Array.from({ length: 70 }, (_, i) => Math.sin(i * .13));
-        const window = Float32Array.from({ length: 20 }, (_, i) => .5 - .5 * Math.cos(2 * Math.PI * i / 20));
-        const inputs = [upload(values, shape), upload(window, [20])];
-        const batch = engine.batch(), options = { frameLength: 20, frameStep: 5 }, out = kernels.stft(batch, ...inputs, options); batch.submit();
-        const spectrum = await engine.read(out);
-        compare('STFT real Hann20 hop5 batch2', spectrum, referenceStft(values, shape, window, options), 1e-4);
-        for (let frame = 0; frame < 8; frame++) for (const bin of [0, 10]) if (spectrum[(frame * 11 + bin) * 2 + 1] !== 0) throw new Error('Real STFT DC/Nyquist imaginary residue changes atan2 quadrant.');
+      for (const { length, shape, data, window, expected } of fftControls) {
+        const inputs = [upload(Float32Array.from(data), shape), upload(Float32Array.from(window), [length])];
+        const batch = engine.batch(), out = kernels.stft(batch, ...inputs, { frameLength: length, frameStep: 2 }); batch.submit();
+        // The CPU FFT retains tiny DC/Nyquist residues; replacing them with zero changes phase.
+        compare(`Independent float32 FFT length${length}`, await engine.read(out), expected, 0, 0);
         await release(batch, inputs);
       }
       for (const [shape, axis, integer] of [[[1025], 0, true], [[2, 1025, 3], 1, false], [[3, 2], 0, false], [[1, 0, 9], 1, false]]) {
@@ -151,9 +201,9 @@ try {
     finally { await engine.dispose(); device.destroy(); }
     return { status, error, adapter: { vendor: adapter.info.vendor, architecture: adapter.info.architecture, description: adapter.info.description },
       cases, validationErrors, resourceCleanup: engine.buffers.size === 0 && engine.tensors.size === 0, timingAcceptance: 'not measured; kernel numerical and lifecycle checks only' };
-  });
+  }, { fftControls, cancellation, operatorControls });
   result.consoleErrors = consoleErrors;
-  await mkdir(dirname(output), { recursive: true }); await writeFile(output, `${JSON.stringify(result, null, 2)}\n`);
+  await mkdir(dirname(output), { recursive: true }); await writeFile(output, `${JSON.stringify(result, null, 2)}\n`, { flag: 'wx' });
   verifyBrowserAdapter(result.adapter, adapterConfiguration);
   if (result.status !== 'pass' || consoleErrors.length || !result.resourceCleanup) throw new Error(result.error || consoleErrors.join('\n') || 'Resource cleanup failed.');
   console.log(`Verified ${result.cases.length} own Kokoro WebGPU numerical cases; resources released. ${JSON.stringify(result.adapter)}`);

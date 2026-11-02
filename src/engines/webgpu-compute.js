@@ -301,9 +301,10 @@ export class WebGpuCompute {
 }
 
 class ComputeBatch {
-  /** @param {any} engine @param {{capture?:boolean, borrowedBuffers?:any[], workspacePlan?:any, recordWorkspace?:boolean}} [options] */
-  constructor(engine, { capture = false, borrowedBuffers = [], workspacePlan = null, recordWorkspace = false } = {}) {
+  /** @param {any} engine @param {{capture?:boolean, borrowedBuffers?:any[], workspacePlan?:any, recordWorkspace?:boolean, numericPipelines?:any}} [options] */
+  constructor(engine, { capture = false, borrowedBuffers = [], workspacePlan = null, recordWorkspace = false, numericPipelines = null } = {}) {
     this.engine = engine;
+    this.numericPipelines = numericPipelines;
     this.encoder = engine.device.createCommandEncoder({ label: 'PageNarrator inference batch' });
     this.commandBuffers = [];
     this.commandCount = 0;
@@ -488,19 +489,19 @@ class ComputeBatch {
     if (zeroTail) plan.shape[3] += 1;
     if (bias && (bias.shape.length !== 1 || bias.length !== plan.shape[1])) throw new RangeError('Convolution bias must match output channels.');
     const output = this.output(lifted.squeeze ? [plan.shape[0], plan.shape[1], plan.shape[3]] : plan.shape);
-    const parameters = new Uint32Array(24);
+    const parameters = new Uint32Array(this.numericPipelines?25:24);
     const [x, y] = this.grid(Math.ceil(output.length / 64));
     parameters.set([...lifted.input, ...plan.shape.slice(1), plan.inputChannelsPerGroup, plan.outputChannelsPerGroup,
       ...plan.kernel, ...plan.strides, ...plan.dilations, ...plan.pads.slice(0, 2), Number(Boolean(bias)), Number(Boolean(options.relu)), Number(plan.transpose), plan.group, x]);
     parameters[22] = input.shape.at(-1); parameters[23] = insertion;
-    if (plan.transpose && lifted.squeeze && plan.dilations[1] === 1) {
-      this.dispatchTensors(this.engine.cnn?.convTranspose1d, [input, weights, bias ?? weights, output], parameters,
+    if (plan.transpose && lifted.squeeze && plan.dilations[1] === 1 && !(this.numericPipelines&&plan.inputChannelsPerGroup===1)) {
+      this.dispatchTensors(this.numericPipelines?.convTranspose1d??this.engine.cnn?.convTranspose1d, [input, weights, bias ?? weights, output], parameters,
         Math.ceil(Math.ceil(plan.shape[3] / plan.strides[1]) / 16), Math.ceil(plan.outputChannelsPerGroup / 16), plan.shape[0] * plan.group * plan.strides[1]);
     } else if (lifted.squeeze && !plan.transpose && plan.inputChannelsPerGroup > 1) {
-      this.dispatchTensors(this.engine.cnn?.[zeroTail ? 'convZeroTail1d' : insertion > 1 ? 'convZeroInsert1d' : 'conv1d'], [input, weights, bias ?? weights, output], parameters,
+      this.dispatchTensors((this.numericPipelines??this.engine.cnn)?.[zeroTail ? 'convZeroTail1d' : insertion > 1 ? 'convZeroInsert1d' : 'conv1d'], [input, weights, bias ?? weights, output], parameters,
         Math.ceil(plan.shape[3] / 32), Math.ceil(plan.outputChannelsPerGroup / 32), plan.shape[0] * plan.group);
     } else if (plan.transpose || plan.inputChannelsPerGroup === 1) {
-      this.dispatchTensors(this.engine.cnn?.convDirect, [input, weights, bias ?? weights, output], parameters, x, y);
+      this.dispatchTensors(this.numericPipelines?.convDirect??this.engine.cnn?.convDirect, [input, weights, bias ?? weights, output], parameters, x, y);
     } else {
       this.dispatchTensors(this.engine.cnn?.convTiled, [input, weights, bias ?? weights, output], parameters,
         Math.ceil(plan.shape[2] * plan.shape[3] / 16), Math.ceil(plan.outputChannelsPerGroup / 16), plan.shape[0] * plan.group);
@@ -517,8 +518,8 @@ class ComputeBatch {
     const [x, y] = this.grid(output.length);
     const parameters = new Uint32Array(16);
     parameters.set([output.length, plan.reductionSize, input.shape.length, plan.mask, x, ['mean', 'max', 'sum'].indexOf(mode)]);
-    parameters.set(input.shape, 8);
-    this.dispatchTensors(input.dataType === 'float16' ? this.engine.half?.reduceMean : this.engine.cnn?.reduceMean, [input, output], parameters, x, y);
+    parameters.set(input.shape, 8);const first=input.shape.findIndex((_,axis)=>plan.mask&(1<<axis));parameters[6]=Number(plan.mask===((1<<input.shape.length)-1)-((1<<first)-1));
+    this.dispatchTensors(input.dataType === 'float16' ? this.engine.half?.reduceMean : this.numericPipelines?.reduceMean??this.engine.cnn?.reduceMean, [input, output], parameters, x, y);
     return output;
   }
 
@@ -535,6 +536,12 @@ class ComputeBatch {
 
   resize(input, options) {
     this.check(input);
+    if(input.shape.length===3&&this.numericPipelines?.resize1d){
+      if((options.scales?.length&&options.scales.length!==3)||(options.sizes?.length&&options.sizes.length!==3))throw new RangeError('One-dimensional Resize parameters must match their rank.');
+      const lifted={...options,scales:options.scales?[options.scales[0],options.scales[1],1,options.scales[2]]:null,sizes:options.sizes?[options.sizes[0],options.sizes[1],1,options.sizes[2]]:null};
+      const plan=resizePlan([input.shape[0],input.shape[1],1,input.shape[2]],lifted),output=this.output([plan.shape[0],plan.shape[1],plan.shape[3]]),[x,y]=this.grid(Math.ceil(output.length/64));
+      this.dispatchTensors(this.numericPipelines.resize1d,[input,output],Uint32Array.of(...input.shape,plan.shape[3],floatBits(plan.scales[1]),plan.coordinateMode,plan.nearestMode,plan.mode,x,0),x,y);return output;
+    }
     if (input.shape.length === 3) {
       if ((options.scales && options.scales.length !== 3) || (options.sizes && options.sizes.length !== 3)) throw new RangeError('One-dimensional Resize parameters must match their rank.');
       const lifted = this.view(input, [...input.shape.slice(0, 2), 1, input.shape[2]]);
@@ -680,7 +687,7 @@ class ComputeBatch {
     if (axis !== input.shape.length - 1 || !input.shape[axis]) throw new RangeError('Softmax currently requires a nonempty final axis.');
     const output = this.output(input.shape, input.dataType);
     const [x, y] = this.grid(input.length / input.shape[axis]);
-    this.dispatchTensors(input.dataType === 'float16' ? this.engine.half?.softmax : this.engine.cnn?.softmax, [input, output], Uint32Array.of(input.length / input.shape[axis], input.shape[axis], x), x, y);
+    this.dispatchTensors(input.dataType === 'float16' ? this.engine.half?.softmax : this.numericPipelines?.softmax??this.engine.cnn?.softmax, [input, output], Uint32Array.of(input.length / input.shape[axis], input.shape[axis], x,0), x, y);
     return output;
   }
 
@@ -737,7 +744,7 @@ class ComputeBatch {
     parameters.set([a.shape.at(-2), b.shape.at(-1), a.shape.at(-1), plan.batch.length]);
     parameters.set(plan.batch, 8); parameters.set(plan.aStrides, 16); parameters.set(plan.bStrides, 24);
     const halfPipeline = a.shape.at(-1) % 2 === 0 && b.shape.at(-1) % 2 === 0 ? this.engine.half?.packedMatmul : this.engine.half?.matmul;
-    this.dispatchTensors(a.dataType === 'float16' ? halfPipeline : this.engine.matmulPipeline, [a, b, output], parameters,
+    this.dispatchTensors(a.dataType === 'float16' ? halfPipeline : this.numericPipelines?.matmul??this.engine.matmulPipeline, [a, b, output], parameters,
       Math.ceil(b.shape.at(-1) / 16), Math.ceil(a.shape.at(-2) / 16), tensorSize(plan.batch));
     return output;
   }
@@ -786,7 +793,7 @@ class ComputeBatch {
 
   elementwise(a, b, shape, opcode, alpha = 0, beta = 0, bounds = null) {
     const output = this.output(shape, bounds ? 'int32' : a.dataType, bounds);
-    const parameters = new Uint32Array(32);
+    const parameters = new Uint32Array(this.numericPipelines?.elementwise?33:32);
     const groups = Math.ceil(output.length / 64);
     const x = Math.min(groups, this.engine.device.limits.maxComputeWorkgroupsPerDimension);
     parameters.set([output.length, shape.length,
@@ -795,7 +802,7 @@ class ComputeBatch {
     parameters.set(shape, 8);
     parameters.set(broadcastStrides(a.shape, shape), 16);
     parameters.set(broadcastStrides(b.shape, shape), 24);
-    this.dispatch(bounds ? this.engine.cnn?.integerAdd : a.dataType === 'float16' ? this.engine.half?.elementwise : this.engine.elementwisePipeline, a, b, output, parameters, x, x ? Math.ceil(groups / x) : 0);
+    this.dispatch(bounds ? this.engine.cnn?.integerAdd : a.dataType === 'float16' ? this.engine.half?.elementwise : this.numericPipelines?.elementwise??this.engine.elementwisePipeline, a, b, output, parameters, x, x ? Math.ceil(groups / x) : 0);
     return output;
   }
 
@@ -814,7 +821,7 @@ class ComputeBatch {
     parameters.set([output.length, shape.length, x]); parameters.set(shape, 8);
     parameters.set(broadcastStrides(alpha.shape, shape), 16); parameters.set(broadcastStrides(scale.shape, shape), 24);
     parameters.set(broadcastStrides(input.shape, shape), 32);
-    this.dispatchTensors(this.engine.cnn?.snake, [input, alpha, scale, output], parameters, x, y);
+    this.dispatchTensors(this.numericPipelines?.snake??this.engine.cnn?.snake, [input, alpha, scale, output], parameters, x, y);
     return output;
   }
 

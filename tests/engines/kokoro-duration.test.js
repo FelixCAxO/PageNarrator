@@ -14,6 +14,7 @@ describe('Kokoro duration and reconstruction helpers', () => {
     expect(referenceCumulativeSum(Float32Array.of(1, 10, 2, 20, 3, 30), [1, 3, 2], 1)).toEqual(Float32Array.of(1, 10, 3, 30, 6, 60));
     expect(referenceCumulativeSum(Float32Array.of(1, 2, 3, 4), [2, 2], 0)).toEqual(Float32Array.of(1, 2, 4, 6));
     expect(() => referenceCumulativeSum(Float32Array.of(1), [2], 0)).toThrow();
+    expect(referenceCumulativeSum(Float32Array.of(2 ** 24, 1, -(2 ** 24)), [3], 0)).toEqual(Float32Array.of(2 ** 24, 2 ** 24, 0));
   });
   it('normalizes negative scatter indices and keeps untouched signal samples', () => {
     const input = Float32Array.of(0, 1, 2, 3, 4, 5);
@@ -44,10 +45,15 @@ it('encodes hierarchical cross-block carries and refuses unproven integer overfl
   const tensor = (shape, dataType = 'float32', bounds = null) => ({ shape, dataType, bounds, length: shape.reduce((a, b) => a * b, 1) });
   const batch = { output: tensor, checkOwnership: () => {}, dispatchTensors: (...args) => calls.push(args),
     grid: groups => [Math.min(groups, 65535), Math.ceil(groups / 65535)], recycle: value => recycled.push(value) };
-  const result = kernels.cumsum(batch, tensor([1025]), 0);
+  const result = kernels.cumsum(batch, tensor([1025], 'int32', { min: 0, max: 6 }), 0);
   expect(result.shape).toEqual([1025]); expect(calls).toHaveLength(3);
   expect(calls[0][2][3]).toBe(5); expect(calls[1][2][0]).toBe(5); expect(calls[2][0]).toContain('offsets');
   expect(recycled).toHaveLength(3); expect(recycled).not.toContain(result);
+  calls.length = 0; recycled.length = 0;
+  const floating = kernels.cumsum(batch, tensor([2, 1025, 3]), 1);
+  expect(floating.shape).toEqual([2, 1025, 3]); expect(calls).toHaveLength(1);
+  expect(calls[0][0]).toContain('float scan'); expect(calls[0][2][3]).toBe(6);
+  expect(recycled).toHaveLength(0);
   expect(() => kernels.cumsum(batch, tensor([3], 'int32'), 0)).toThrow('proven');
   expect(() => kernels.cumsum(batch, tensor([3], 'int32', { min: 0, max: 2147483647 }), 0)).toThrow('overflow');
   const integer = kernels.cumsum(batch, tensor([3], 'int32', { min: 1, max: 100 }), 0);

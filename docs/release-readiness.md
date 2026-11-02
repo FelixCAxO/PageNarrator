@@ -2,7 +2,28 @@
 
 The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
-## Waveform arithmetic repair, 2026-11-02
+## Complete waveform kernel repair, 2026-11-02
+
+The CPU q8, CPU fp32 and GPU fp32 waveform comparisons now pass on both the production phase-v2 graph and the original retained graph. GPU checks pass on the NVIDIA Blackwell and Intel Xe-LPG adapters. These eight lanes cover the same three text/voice/speed cases twice: 48 waveforms, exact shapes and zero samples outside the original `3e-4 + 3e-3 * abs(reference)` limits. The largest absolute sample error is 0.0000026263296604156494. Model pins, weights, reference runtime settings, inputs and phase-correction policy remain unchanged. The original GPU first-case check is retained and expanded to the CPU corpus and repeated runs.
+
+| Backend | Production graph | Original graph |
+| --- | --- | --- |
+| CPU q8 | Pass: six comparisons | Pass: six comparisons |
+| CPU fp32 | Pass: six comparisons | Pass: six comparisons |
+| NVIDIA GPU fp32 | Pass: six comparisons | Pass: six comparisons |
+| Intel GPU fp32 | Pass: six comparisons | Pass: six comparisons |
+
+The fixes reproduce packed matrix projection panels, adaptive convolution reductions, single-row product grouping and recurrent projection/bias order. CPU fused products use SIMD with an exact software fallback; a host self-test permits hardware multiply-add only when it rounds as a fused operation. Independent tests cover cancellation, overflow, subnormals, double-rounding ties and vector/scalar tails. A separate build with hardware relaxed SIMD disabled passes all 93 speech arithmetic regressions. The existing Chrome 120 floor supports the required instruction set; OCR keeps its established arithmetic and both OCR binaries remain byte-identical.
+
+GPU kernels now preserve float32 evaluation stages, compensated normalization means, activation and softmax polynomials, ordered phase accumulation and the independent float32 FFT's small residues. Corrected division prevents nearest-neighbor pitch upsampling from choosing the previous sample at exact boundaries. Range reduction handles large oscillator angles, including scalar tails. Keeping fused normalization separate from its unfused tail and preserving the product residual prevents driver optimizations from silently changing these calculations. Both adapters pass 57 operator controls, including exact normalization, resize, packet trigonometry and eight FFT lengths against the independent CPU implementation. The former GPU assertion that forced DC/Nyquist imaginary values to zero was incorrect for this reference; it is replaced with exact independent FFT outputs, without increasing a tolerance.
+
+The CPU arena compacts fragmented live buffers through stable handles and finishes pending commands before retiring recycled scratch under pressure. A partially flushed plan cannot replay. Tests cover views, captured commands, shared-memory aliases and memory-backed uploads across relocation. The original 512 MiB ceiling remains enforced; the largest observed CPU arena is 534,708,224 bytes, with no retained tensors or buffers after session disposal.
+
+The six-lane run is retained in `artifacts/verification/kokoro-numerics-1.0.3-16a30e5e-6d2f-4755-a6da-a1bbb07557f4/`; final cross-adapter GPU controls, software-fallback checks and preserved failures are in `artifacts/waveform-kernel-20261102/`. Full unit verification passes 45,237 tests with four optional skips. Lint, both type checks, source/binary checks, the local build and package assertions pass. Earlier failures and interrupted experiments below remain historical evidence.
+
+These results qualify the tested numerical cases on this host. Listening quality, physical minimum/recommended device tiers and broader OmniVoice coverage remain unqualified. The obsolete private PDF fixture is not requested; its frozen benchmark remains not performed. No publication or deployment is authorized.
+
+## Earlier q8 waveform arithmetic repair, 2026-11-02
 
 The q8 CPU waveform comparisons now pass for both the production phase-v2 graph and the original retained graph. Each lane checks the existing three text/voice/speed cases twice, with identical output shapes and zero samples outside `3e-4 + 3e-3 * abs(reference)`. Across the twelve waveforms, the largest absolute error is 0.000012040138244628906. Model bytes, weights, test inputs, reference runtime settings, comparison limits and phase-correction policy are unchanged.
 

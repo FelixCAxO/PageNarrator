@@ -8,8 +8,8 @@ const bits = value => new Uint32Array(Float32Array.of(value).buffer)[0];
 
 /** Captured native commands replay over arena offsets, without copying intermediate tensors. */
 export class WasmOcrBatch {
-  constructor(engine, { capture = false } = {}) {
-    this.engine = engine; this.capture = capture;
+  constructor(engine, { capture = false, allowSpill = false } = {}) {
+    this.engine = engine; this.capture = capture; this.allowSpill = allowSpill;
     this.outputs = new Set(); this.bufferPool = new Map(); this.parameters = [];
     this.commands = []; this.submitted = false;
     this.allocationCount = this.allocatedBytes = this.reuseCount = 0;
@@ -33,9 +33,21 @@ export class WasmOcrBatch {
     let selected = Infinity;
     for (const [size, buffers] of this.bufferPool) if (buffers.length && size >= bytes && size <= bytes * 2 && size < selected) selected = size;
     const buffer = this.bufferPool.get(selected)?.pop();
+    let tensor;
+    try { tensor = this.engine.tensor(shape, this, buffer, dataType, bounds); }
+    catch (error) {
+      if (!this.allowSpill || !(error instanceof RangeError) || error.message !== 'OCR CPU arena exceeds its memory limit.' || !this.scratchBuffers().length) throw error;
+      // Finish pending reads before releasing recycled buffers; a flushed batch cannot replay.
+      this.capture = false;
+      for (const execute of this.commands) execute();
+      this.commands.length = 0;
+      for (const scratch of this.scratchBuffers()) this.engine.freeBuffer(scratch);
+      this.bufferPool.clear();
+      tensor = this.engine.tensor(shape, this, null, dataType, bounds);
+    }
     if (buffer) this.reuseCount++;
     else { this.allocationCount++; this.allocatedBytes += bytes; }
-    const tensor = this.engine.tensor(shape, this, buffer, dataType, bounds); this.outputs.add(tensor); return tensor;
+    this.outputs.add(tensor); return tensor;
   }
 
   recycle(tensor) {
