@@ -4,6 +4,7 @@ import { phaseCorrectionFixture, debugKokoroPhaseCorrection, matmulFixture } fro
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
+import { cpuStft } from '../helpers/cpu-operator-oracle.js';
 
 const exportedPhase = (real, imag) => Math.fround(real < 0 ? Math.atan(imag / real) + (imag > 0 ? Math.PI : -Math.PI) : Math.atan(imag / real));
 const canonicalPhase = (real, imag) => real === 0 && imag === 0 ? 0 : Math.fround(imag === 0 && real < 0 ? Math.PI : Math.atan2(imag, real));
@@ -41,18 +42,20 @@ it('runs exact-zero phase correction in the real C++ session without epsilon or 
   } finally { await session.dispose(); expect(engine.tensors.size).toBe(0); expect(engine.buffers.size).toBe(0); await engine.dispose(); }
 });
 
-it('uses canonical positive-zero DC from a real negative signal, with independent analytic STFT phase', async () => {
+it('retains the independent FFT DC residue from a real negative signal', async () => {
   const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
   try {
     const batch = engine.batch(), input = engine.upload(new Float32Array(40).fill(-1), [1, 40]);
     const window = engine.upload(Float32Array.from({ length: 20 }, (_, i) => .5 - .5 * Math.cos(2 * Math.PI * i / 20)), [20]);
     const output = engine.kokoro.stft(batch, input, window, { frameLength: 20, frameStep: 5 }); batch.submit();
     const data = await engine.read(output);
+    const expected = await cpuStft(new Float32Array(40).fill(-1), [1, 40],
+      Float32Array.from({ length: 20 }, (_, i) => .5 - .5 * Math.cos(2 * Math.PI * i / 20)), 20, 5);
+    expect(data).toEqual(expected);
     for (let frame = 0; frame < 5; frame++) {
       const real = data[frame * 22], imaginary = data[frame * 22 + 1];
-      expect(real).toBeCloseTo(-10, 6); expect(Object.is(imaginary, 0)).toBe(true);
-      expect(exportedPhase(real, imaginary)).toBe(Math.fround(-Math.PI));
-      expect(canonicalPhase(real, imaginary)).toBe(Math.fround(Math.PI));
+      expect(real).toBe(expected[frame * 22]); expect(imaginary).not.toBe(0);
+      expect(exportedPhase(real, imaginary)).toBe(exportedPhase(expected[frame * 22], expected[frame * 22 + 1]));
     }
     await engine.releaseMany([...engine.tensors], batch.scratchBuffers()); expect(engine.buffers.size).toBe(0);
   } finally { await engine.dispose(); }

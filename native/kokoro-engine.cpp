@@ -1,5 +1,7 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 // The speech kernels reuse PageNarrator's allocator-free SIMD OCR/math kernels.
+// Numerical schedules and constants: MLAS (MIT) and Eigen (MPL-2.0); see public/legal/THIRD_PARTY_NOTICES.txt.
+#define PN_KOKORO_NUMERICS
 #include "ocr-engine.cpp"
 
 using i32 = int;
@@ -15,26 +17,23 @@ static float round_even(float x) {
   // WebAssembly nearest has the required ties-to-even and signed-zero contract.
   return x != x ? x : __builtin_elementwise_roundeven(x);
 }
-static float hyperbolic(float x) {
-  // Avoid subtracting nearly equal exponentials, preserving tiny recurrent states and -0.
-  if (__builtin_fabsf(x) <= .125f) {
-    const double v=x,z=v*v;
-    return static_cast<float>(v*(1.0+z*(-1.0/3.0+z*(2.0/15.0+z*(-17.0/315.0+z*(62.0/2835.0+z*(-1382.0/155925.0+z*(21844.0/6081075.0))))))));
-  }
-  const float e = exponential(-2.0f * __builtin_fabsf(x)), y = (1.0f-e)/(1.0f+e);
-  return x < 0.0f ? -y : y;
+static float hyperbolic(float x){
+  // Preserve subnormal recurrent states and signed zero below the rational polynomial's range.
+  if(__builtin_fabsf(x)<1e-6f)return x;
+  if(x!=x)return x; x=x< -9.0f?-9.0f:x>9.0f?9.0f:x;
+  const float a[]={-2.76076847742355e-16f,2.00018790482477e-13f,-8.60467152213735e-11f,5.12229709037114e-08f,1.48572235717979e-05f,6.37261928875436e-04f,4.89352455891786e-03f};
+  const float b[]={1.19825839466702e-06f,1.18534705686654e-04f,2.26843463243900e-03f,4.89352518554385e-03f};
+  return (x*polynomial(x*x,a))/polynomial(x*x,b);
 }
-static float logistic(float x) {
-  const float e = exponential(x < 0.0f ? x : -x);
-  return x < 0.0f ? e/(1.0f+e) : 1.0f/(1.0f+e);
-}
+static float logistic(float x){return sigmoid(x);}
+
 static double sine(double x) {
   if (!__builtin_isfinite(x)) return static_cast<double>(from_bits(0x7fc00000u));
   constexpr double pi = 3.14159265358979323846, two_pi = 2.0*pi;
   x -= __builtin_floor((x+pi)/two_pi)*two_pi;
   if (x > pi/2.0) x = pi-x; else if (x < -pi/2.0) x = -pi-x;
   const double z=x*x;
-  return x*(1.0+z*(-1.0/6.0+z*(1.0/120.0+z*(-1.0/5040.0+z*(1.0/362880.0+z*(-1.0/39916800.0+z*(1.0/6227020800.0+z*(-1.0/1307674368000.0))))))));
+  double sum=x,term=x;for(u32 n=1;n<=14;++n){term*=-z/static_cast<double>((2*n)*(2*n+1));sum+=term;}return sum;
 }
 static float arctangent(float value) {
   constexpr double pi=3.14159265358979323846;
@@ -48,16 +47,38 @@ static float arctangent(float value) {
   return static_cast<float>(__builtin_signbit(value)?-sum:sum);
 }
 
+static float packet_atan(float value) {
+  const float absolute=__builtin_fabsf(value),x=absolute>1.0f?1.0f/absolute:absolute,z=x*x;
+  const float p=(.112026982009410858f*z+.7296695709228515625f)*z+.8109951019287109375f;
+  const float q=((.0100917108356952667f*z+.283185601234436035f)*z+1.0f)*z+.8109951019287109375f;
+  const float r=x*(p/q),y=absolute>1.0f?1.57079632679489661923f-r:r;
+  return __builtin_signbit(value)?-y:y;
+}
+static float packet_trig(float value,bool cosine=false) {
+  const float absolute=__builtin_fabsf(value);if(!__builtin_isfinite(value))return from_bits(0x7fc00000u);
+  float quadrant=(absolute*.636619746685028076171875f+12582912.0f)-12582912.0f;
+  float x=absolute;const float split[]={-1.5703125f,-.000483989715576171875f,1.62865035235881805419921875e-7f,5.5644315544167710641e-11f};for(float c:split)x=quadrant*c+x;
+  u32 q=0;
+  if(absolute>=(cosine?18838.0f:25966.0f)){
+    const u32 table[]={0x00000028,0x000028be,0x0028be60,0x28be60db,0xbe60db93,0x60db9391,0xdb939105,0x9391054a,0x91054a7f,0x054a7f09,0x4a7f09d5,0x7f09d5f4,0x09d5f47d,0xd5f47d4d,0xf47d4d37,0x7d4d3770,0x4d377036,0x377036d8,0x7036d8a5,0x36d8a566,0xd8a5664f,0xa5664f10,0x664f10e4,0x4f10e410,0x10e41000,0xe4100000};
+    union{float f;u32 bits;}v={absolute};const u32 e=(v.bits>>23)-118,i=e>>3,xi=((v.bits&0x7fffff)|0x800000)<<(e&7);
+    unsigned long long p=static_cast<unsigned long long>(xi)*table[i+7];p=static_cast<unsigned long long>(xi)*table[i+3]+(p>>32);p=(static_cast<unsigned long long>(xi*table[i-1])<<32)+p;
+    q=static_cast<u32>((p+(1ull<<61))>>62);p-=static_cast<unsigned long long>(q)<<62;x=static_cast<float>(static_cast<double>(static_cast<long long>(p))*3.4061215800865545e-19);
+  }else q=static_cast<u32>(quadrant);
+  const float z=x*x,c=(((2.4372266125283204e-5f*z-.001388652017340064f)*z+.04166661947965622f)*z-.5f)*z+1.0f;
+  const float s=(((-.0001959234114083703f*z+.008332687365561685f)*z-.16666662039822983f)*z)*x+x;
+  const float y=q&1?(cosine?s:c):(cosine?c:s);const bool negative=cosine?((q+1)&2):(__builtin_signbit(value)!=bool(q&2));return negative?-y:y;
+}
 extern "C" int pn_kokoro_unary(const float* input,float* out,const u32* p) {
   for(u32 i=0;i<p[0];++i){const float x=input[i];float y=x;
     switch(p[1]){
-      case 0:y=round_even(x);break;case 1:y=__builtin_floorf(x);break;case 2:y=arctangent(x);break;
+      case 0:y=round_even(x);break;case 1:y=__builtin_floorf(x);break;case 2:y=i<p[0]/4*4?packet_atan(x):arctangent(x);break;
       case 3:y=x<0.0f?x*float_bits(p[2]):x;break;
       case 4:y=x<float_bits(p[3])?float_bits(p[3]):x>float_bits(p[4])?float_bits(p[4]):x;break;
       case 5:case 6:
         // Speech phases are bounded; reject magnitudes beyond accurate double range reduction.
         if(__builtin_fabsf(x)>1000000000.0f)return 1;
-        y=static_cast<float>(sine(static_cast<double>(x)+(p[1]==6?1.57079632679489661923:0.0)));break;
+        y=i<p[0]/4*4?packet_trig(x,p[1]==6):static_cast<float>(sine(static_cast<double>(x)+(p[1]==6?1.57079632679489661923:0.0)));break;
       case 7:y=.5f*x*(1.0f+hyperbolic(.7978845608028654f*(x+.044715f*x*x*x)));break;
       case 8:y=hyperbolic(x);break;
     }out[i]=y;
@@ -65,11 +86,15 @@ extern "C" int pn_kokoro_unary(const float* input,float* out,const u32* p) {
 }
 
 extern "C" void pn_kokoro_layer_norm(const float* input,const float* scale,const float* bias,float* out,const u32* p) {
-  for(u32 row=0;row<p[0];++row){const u32 offset=row*p[1];float mean=0.0f,variance=0.0f;
-    for(u32 j=0;j<p[1];++j)mean+=input[offset+j];mean/=p[1];
-    for(u32 j=0;j<p[1];++j){const float d=input[offset+j]-mean;variance+=d*d;}
-    const float inverse=1.0f/__builtin_sqrtf(variance/p[1]+float_bits(p[2]));
-    for(u32 j=0;j<p[1];++j)out[offset+j]=(input[offset+j]-mean)*inverse*scale[j]+(p[3]?bias[j]:0.0f);
+  for(u32 row=0;row<p[0];++row){const u32 at=row*p[1],width=p[1];float mean=0,variance=0;
+    // Fused skip normalization uses Welford; ordinary normalization has a centered packet reduction.
+    if(p[4]){for(u32 j=0;j<width;++j){const float delta=input[at+j]-mean;mean+=delta/static_cast<float>(j+1);variance+=delta*(input[at+j]-mean);}
+      const float deviation=__builtin_sqrtf(variance/width+float_bits(p[2]));for(u32 j=0;j<width;++j)out[at+j]=(input[at+j]-mean)/deviation*scale[j]+(p[3]?bias[j]:0);continue;
+    }
+    double sums[4]={};u32 j=0;for(;j+4<=width;j+=4)for(u32 lane=0;lane<4;++lane)sums[lane]+=input[at+j+lane];double total=(sums[0]+sums[2])+(sums[1]+sums[3]);for(;j<width;++j)total+=input[at+j];mean=static_cast<float>(total/width);
+    float squares[8]={};j=0;for(;j+8<=width;j+=8)for(u32 lane=0;lane<8;++lane){const float d=input[at+j+lane]-mean;squares[lane]=fused(d,d,squares[lane]);}
+    variance=((squares[0]+squares[4])+(squares[2]+squares[6]))+((squares[1]+squares[5])+(squares[3]+squares[7]));for(;j<width;++j){const float d=input[at+j]-mean;variance+=d*d;}
+    const float inverse=1.0f/__builtin_sqrtf(variance/width+float_bits(p[2]));for(j=0;j<width;++j){const float y=(input[at+j]-mean)*inverse;out[at+j]=p[3]?(j<width/8*8?fused(y,scale[j],bias[j]):y*scale[j]+bias[j]):y*scale[j];}
   }
 }
 
@@ -114,16 +139,26 @@ extern "C" void pn_kokoro_resize_linear(const float* input,float* out,const u32*
   }
 }
 
+struct Complex {float real,imaginary;};
+static Complex multiply(Complex a,Complex b){return {a.real*b.real-a.imaginary*b.imaginary,a.real*b.imaginary+a.imaginary*b.real};}
+static u32 reverse_bits(u32 n,u32 bits){u32 r=0;for(u32 i=0;i<bits;++i){r=r*2+(n&1);n>>=1;}return r;}
+static void fft(Complex* values,const Complex* twiddle,u32 size,u32 bits){
+  Complex reordered[128];for(u32 i=0;i<size;++i)reordered[i]=multiply({1,0},values[reverse_bits(i,bits)]);__builtin_memcpy(values,reordered,size*sizeof(Complex));
+  for(u32 width=2,stage=1;width<=size;width*=2,++stage){const u32 half=width/2;
+    // Round both butterfly roots independently; negating the first changes the downstream phase residue.
+    for(u32 i=0;i<half;++i)for(u32 block=0;block<size;block+=width){const Complex low=values[block+i],high=values[block+i+half],a=multiply(twiddle[reverse_bits(i,stage)],high),b=multiply(twiddle[reverse_bits(i+half,stage)],high);values[block+i]={low.real+a.real,low.imaginary+a.imaginary};values[block+i+half]={low.real+b.real,low.imaginary+b.imaginary};}
+  }
+}
 extern "C" void pn_kokoro_stft(const float* input,const float* window,float* out,const u32* p) {
-  constexpr double pi=3.14159265358979323846;
-  for(u32 b=0;b<p[0];++b)for(u32 frame=0;frame<p[4];++frame)for(u32 bin=0;bin<p[5];++bin){double real=0.0,imaginary=0.0;
-    const bool real_bin=bin==0||(p[2]%2==0&&bin==p[2]/2);
-    for(u32 j=0;j<p[2];++j){const float windowed=input[b*p[1]+frame*p[3]+j]*window[j];
-      const double value=windowed,angle=-2.0*pi*bin*j/p[2];
-      if(real_bin)real+=value*(bin==0||j%2==0?1.0:-1.0);
-      else {real+=value*sine(angle+pi/2.0);imaginary+=value*sine(angle);}
-    }
-    const u32 i=((b*p[4]+frame)*p[5]+bin)*2;out[i]=static_cast<float>(real);out[i+1]=static_cast<float>(imaginary);
+  if(p[2]==1){for(u32 b=0;b<p[0];++b)for(u32 frame=0;frame<p[4];++frame){const float x=input[b*p[1]+frame*p[3]],at=window[0];const u32 to=(b*p[4]+frame)*2;out[to]=x*at;out[to+1]=(0.0f*x)*at;}return;}
+  const u32 length=p[2];const bool chirped=(length&(length-1))!=0;u32 size=1,bits=0;while(size<(chirped?2*length-1:length)){size*=2;++bits;}
+  Complex twiddle[128],chirp[64],kernel[128]={};constexpr double half_pi=1.57079632679489661923;const float pi=3.14159265358979323846f,angular=(-2.0f*pi)/size;
+  for(u32 i=0;i<size;++i){const float angle=i*angular;twiddle[reverse_bits(i,bits)]={static_cast<float>(sine(static_cast<double>(angle)+half_pi)),static_cast<float>(sine(angle))};}
+  if(chirped){for(u32 i=0;i<length;++i){const float angle=((-pi*i)*i)/length;chirp[i]={static_cast<float>(sine(static_cast<double>(angle)+half_pi)),static_cast<float>(sine(angle))};kernel[i]={chirp[i].real,-chirp[i].imaginary};}for(u32 i=size-length+1;i<size;++i)kernel[i]=kernel[size-i];fft(kernel,twiddle,size,bits);}
+  for(u32 b=0;b<p[0];++b)for(u32 frame=0;frame<p[4];++frame){Complex values[128]={};
+    for(u32 i=0;i<length;++i){const float x=input[b*p[1]+frame*p[3]+i]*window[i];values[i]=chirped?multiply({x,0},chirp[i]):Complex{x,0};}
+    fft(values,twiddle,size,bits);if(chirped){for(u32 i=0;i<size;++i)values[i]=multiply(values[i],kernel[i]);fft(values,twiddle,size,bits);}
+    for(u32 i=0;i<p[5];++i){const Complex scaled=values[chirped&&i?size-i:i],result=chirped?multiply({scaled.real/size,scaled.imaginary/size},chirp[i]):scaled;const u32 at=((b*p[4]+frame)*p[5]+i)*2;out[at]=result.real;out[at+1]=result.imaginary;}
   }
 }
 
@@ -133,7 +168,7 @@ extern "C" void pn_kokoro_snake(const float* input,const float* alpha,const floa
     const u32 x=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+16)),a=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+24)),s=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+32));
     for(u32 i=0;i<width;++i){
       // Preserve every float32 stage; only repeated outer-axis indexing is removed.
-      const float value=input[x+i*xstep],product=value*alpha[a+i*astep],wave=static_cast<float>(sine(static_cast<double>(product)));
+      const float value=input[x+i*xstep],product=value*alpha[a+i*astep],wave=start+i<p[0]/4*4?packet_trig(product):static_cast<float>(sine(static_cast<double>(product)));
       const float square=wave*wave,scaled=square*scale[s+i*sstep];out[start+i]=value+scaled;
     }
   }
@@ -141,23 +176,28 @@ extern "C" void pn_kokoro_snake(const float* input,const float* alpha,const floa
 
 extern "C" void pn_kokoro_conv_transpose(const float* input,const float* weight,const float* bias,float* out,float* scratch,const u32* p) {
   const u32 batches=p[0],channels=p[1],length=p[2],oc=p[3],width=p[4],icg=p[5],ocg=p[6],kernel=p[7],stride=p[8],dilation=p[9],left=p[10],tile=p[13];
+  u32 block=128,panel=128;if(length>=icg){while(block/2>=icg)block/=2;}else{while(panel>16&&panel/2>=length){block*=2;panel/=2;}}
   for(u32 n=0;n<batches;++n)for(u32 g=0;g<channels/icg;++g){
-    for(u32 c=0;c<ocg;++c)for(u32 x=0;x<width;++x)out[(n*oc+g*ocg+c)*width+x]=p[11]?bias[g*ocg+c]:0.0f;
+    for(u32 c=0;c<ocg;++c)for(u32 x=0;x<width;++x)out[(n*oc+g*ocg+c)*width+x]=0.0f;
     for(u32 start=0;start<length;start+=tile){const u32 columns=length-start<tile?length-start:tile;
       for(u32 c=0;c<ocg;c+=4){const u32 rows=ocg-c<4?ocg-c:4;
         for(u32 k=0;k<kernel;++k){u32 x=0;
           for(;x+4<=columns;x+=4){f32x4 sums[4]={};
-            for(u32 ci=0;ci<icg;++ci){f32x4 values;__builtin_memcpy(&values,input+((n*channels+g*icg+ci)*length)+start+x,16);
-              for(u32 row=0;row<rows;++row){const float w=weight[((g*icg+ci)*ocg+c+row)*kernel+k];sums[row]+=values*f32x4{w,w,w,w};}
+            for(u32 begin=0;begin<icg;begin+=block){f32x4 part[4]={};const u32 end=begin+block<icg?begin+block:icg;
+              for(u32 ci=begin;ci<end;++ci){f32x4 values;__builtin_memcpy(&values,input+((n*channels+g*icg+ci)*length)+start+x,16);
+                for(u32 row=0;row<rows;++row){const float w=weight[((g*icg+ci)*ocg+c+row)*kernel+k];for(u32 lane=0;lane<4;++lane)part[row][lane]=fused(values[lane],w,part[row][lane]);}
+              }
+              for(u32 row=0;row<rows;++row)sums[row]=begin?sums[row]+part[row]:part[row];
             }
             for(u32 row=0;row<rows;++row)__builtin_memcpy(scratch+((c+row)*kernel+k)*columns+x,&sums[row],16);
           }
-          for(;x<columns;++x)for(u32 row=0;row<rows;++row){float sum=0.0f;for(u32 ci=0;ci<icg;++ci)sum+=input[(n*channels+g*icg+ci)*length+start+x]*weight[((g*icg+ci)*ocg+c+row)*kernel+k];scratch[((c+row)*kernel+k)*columns+x]=sum;}
+          for(;x<columns;++x)for(u32 row=0;row<rows;++row){float sum=0.0f;for(u32 begin=0;begin<icg;begin+=block){float part=0;const u32 end=begin+block<icg?begin+block:icg;for(u32 ci=begin;ci<end;++ci)part=fused(input[(n*channels+g*icg+ci)*length+start+x],weight[((g*icg+ci)*ocg+c+row)*kernel+k],part);sum=begin?sum+part:part;}scratch[((c+row)*kernel+k)*columns+x]=sum;}
         }
       }
       // Projection separates dense channel mixing from the sparse overlap-add geometry.
       for(u32 c=0;c<ocg;++c)for(u32 k=0;k<kernel;++k)for(u32 x=0;x<columns;++x){const int to=static_cast<int>((start+x)*stride+k*dilation)-static_cast<int>(left);if(to>=0&&to<static_cast<int>(width))out[(n*oc+g*ocg+c)*width+to]+=scratch[(c*kernel+k)*columns+x];}
     }
+    if(p[11])for(u32 c=0;c<ocg;++c)for(u32 x=0;x<width;++x)out[(n*oc+g*ocg+c)*width+x]+=bias[g*ocg+c];
     if(p[12])for(u32 c=0;c<ocg;++c)for(u32 x=0;x<width;++x){float& value=out[(n*oc+g*ocg+c)*width+x];if(value<0.0f)value=0.0f;}
   }
 }
@@ -360,7 +400,7 @@ extern "C" int pn_kokoro_dynamic_lstm(const float* input,const unsigned char* w,
             for(u32 i=0;i<features;++i){const int q=static_cast<int>(qx[(t*batch+b)*features+i])-xz;wx+=i32x4{q,q,q,q}*(quantized_four(w,(d*features+i)*gates+col,p[6])-zw);}
             for(u32 i=0;i<hidden;++i){const int q=static_cast<int>(qh[i])-hz;rh+=i32x4{q,q,q,q}*(quantized_four(r,(d*hidden+i)*gates+col,p[7])-zr);}
             f32x4 wb,rb;__builtin_memcpy(&wb,bias+d*8*hidden+col,16);__builtin_memcpy(&rb,bias+d*8*hidden+gates+col,16);
-            gate_values[gate]=__builtin_convertvector(wx,f32x4)*f32x4{xs,xs,xs,xs}*sw+__builtin_convertvector(rh,f32x4)*f32x4{hs,hs,hs,hs}*sr+wb+rb;
+            gate_values[gate]=(__builtin_convertvector(wx,f32x4)*(f32x4{xs,xs,xs,xs}*sw)+__builtin_convertvector(rh,f32x4)*(f32x4{hs,hs,hs,hs}*sr))+(wb+rb);
           }
           for(u32 lane=0;lane<4;++lane){const u32 at=unit+lane;next_c[at]=logistic(gate_values[2][lane])*out_c[state+at]+logistic(gate_values[0][lane])*hyperbolic(gate_values[3][lane]);next_h[at]=logistic(gate_values[1][lane])*hyperbolic(next_c[at]);out[((t*directions+d)*batch+b)*hidden+at]=next_h[at];}
         }
@@ -370,7 +410,7 @@ extern "C" int pn_kokoro_dynamic_lstm(const float* input,const unsigned char* w,
             const int zw=quantized(wz,wi,p[6]),zr=quantized(rz,ri,p[7]);int wx=0,rh=0;
             for(u32 i=0;i<features;++i)wx+=(static_cast<int>(qx[(t*batch+b)*features+i])-xz)*(quantized(w,(d*features+i)*gates+col,p[6])-zw);
             for(u32 i=0;i<hidden;++i)rh+=(static_cast<int>(qh[i])-hz)*(quantized(r,(d*hidden+i)*gates+col,p[7])-zr);
-            gate_values[gate]=static_cast<float>(wx)*xs*ws[wi]+static_cast<float>(rh)*hs*rs[ri]+bias[d*8*hidden+col]+bias[d*8*hidden+gates+col];
+            gate_values[gate]=(static_cast<float>(wx)*(xs*ws[wi])+static_cast<float>(rh)*(hs*rs[ri]))+(bias[d*8*hidden+col]+bias[d*8*hidden+gates+col]);
           }
           next_c[unit]=logistic(gate_values[2])*out_c[state+unit]+logistic(gate_values[0])*hyperbolic(gate_values[3]);next_h[unit]=logistic(gate_values[1])*hyperbolic(next_c[unit]);out[((t*directions+d)*batch+b)*hidden+unit]=next_h[unit];
         }

@@ -2,8 +2,9 @@ import { beforeEach, afterEach, expect, it } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
-import { referenceLayerNormalization, referenceLstm, referenceStft } from '../../src/engines/kokoro-kernels-shape.js';
+import { referenceLayerNormalization, referenceLstm } from '../../src/engines/kokoro-kernels-shape.js';
 import { referenceCumulativeSum, referenceKokoroUnary, referenceScatterNd } from '../../src/engines/kokoro-kernels-duration.js';
+import { cpuOperator, cpuStft } from '../helpers/cpu-operator-oracle.js';
 
 let engine;
 const engineBinary = () => readFileSync(process.env.PN_KOKORO_TEST_WASM || 'public/native/kokoro-engine.wasm');
@@ -69,10 +70,10 @@ it('matches Hann-window STFT and all original CPU transcendental activations', a
   const x = Float32Array.of(-10000, -Math.PI, -2.5, -1.5, -.5, -0, 0, .5, 1.5, 2.5, Math.PI, 10000);
   const source = upload(x, [x.length]), outputs = new Map();
   for (const op of ['Sin', 'Cos', 'Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip']) outputs.set(op, batch.unary(op, source, { min: -.75, max: 1.75 }));
-  batch.submit(); near(await engine.read(stft), referenceStft(input, [2, 39], window, { frameLength: 20, frameStep: 5 }), 3e-6);
+  batch.submit(); near(await engine.read(stft), await cpuStft(input, [2, 39], window, 20, 5), 3e-6);
   const spectrum = await engine.read(stft);
-  // These bins are mathematically real; rounding residue changes downstream atan2 quadrants.
-  for (let frame = 0; frame < 8; frame++) for (const bin of [0, 10]) expect(spectrum[(frame * 11 + bin) * 2 + 1]).toBe(0);
+  // Retain the independent float32 FFT residue: phase uses it before quantization.
+  expect(spectrum).toEqual(await cpuStft(input, [2, 39], window, 20, 5));
   for (const [op, output] of outputs) {
     const expected = op === 'Sin' ? Float32Array.from(x, Math.sin) : op === 'Cos' ? Float32Array.from(x, Math.cos) : referenceKokoroUnary(x, op, { min: -.75, max: 1.75 });
     near(await engine.read(output), expected, 2e-6);
@@ -92,7 +93,9 @@ it('preserves small tanh activations and signed zero without exponential cancell
     ...Array.from({ length: 257 }, (_, i) => (i - 128) / 1024)]);
   const batch = engine.batch(), output = batch.unary('Tanh', upload(values, [values.length]));
   batch.submit();
-  const actual = await engine.read(output), expected = Float32Array.from(values, Math.tanh);
+  const actual = await engine.read(output), expected = await cpuOperator('Tanh',
+    [{ name: 'x', type: 1, shape: [values.length], data: values }], { name: 'y', type: 1, shape: [values.length] });
+  for (let i = 0; i < values.length; i++) if (Math.abs(values[i]) < 1e-6) expected[i] = Math.tanh(values[i]);
   expect(new Uint32Array(actual.buffer)).toEqual(new Uint32Array(expected.buffer));
 });
 

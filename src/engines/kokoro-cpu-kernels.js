@@ -19,6 +19,13 @@ function scratchTranspose(batch, tensor, temporary) {
   [axes[rank - 2], axes[rank - 1]] = [axes[rank - 1], axes[rank - 2]];
   const result = batch.index(tensor, transposePlan(tensor.shape, axes)); temporary.push(result); return result;
 }
+function normalize(batch, input, scale, bias, options, skip = false) {
+  batch.check(input, scale, ...(bias ? [bias] : []));
+  const plan = layerNormalizationPlan(input.shape, scale.shape, bias?.shape, options), output = batch.output(plan.shape);
+  batch.command('pn_kokoro_layer_norm', [input, scale, bias ?? scale, output],
+    Uint32Array.of(plan.rows, plan.width, bits(plan.epsilon), Number(Boolean(bias)), Number(skip)));
+  return output;
+}
 
 /** The same speech delegate API as WebGPU, executed in the shared persistent WASM arena. */
 export function createKokoroCpuKernels(engine) {
@@ -35,10 +42,7 @@ export function createKokoroCpuKernels(engine) {
       return output;
     },
     layerNormalization(batch, input, scale, bias = null, options = {}) {
-      batch.check(input, scale, ...(bias ? [bias] : []));
-      const plan = layerNormalizationPlan(input.shape, scale.shape, bias?.shape, options), output = batch.output(plan.shape);
-      batch.command('pn_kokoro_layer_norm', [input, scale, bias ?? scale, output], Uint32Array.of(plan.rows, plan.width, bits(plan.epsilon), Number(Boolean(bias))));
-      return output;
+      return normalize(batch, input, scale, bias, options);
     },
     lstm(batch, input, weight, recurrent, bias, initialH, initialC, options) {
       batch.check(input, weight, recurrent, bias, initialH, initialC);
@@ -155,7 +159,7 @@ export function createKokoroCpuKernels(engine) {
       batch.check(input, skip, gamma, ...[beta, bias].filter(Boolean));
       if (input.shape.join(',') !== skip.shape.join(',')) throw new RangeError('SkipLayerNormalization input shapes differ.');
       const sum = batch.binary('Add', input, skip), combined = bias ? batch.binary('Add', sum, bias) : sum;
-      const output = kernels.layerNormalization(batch, combined, gamma, beta, options);
+      const output = normalize(batch, combined, gamma, beta, options, true);
       batch.recycle(sum); if (bias) batch.recycle(combined); return output;
     },
     fusedMatmul(batch, a, b, { alpha = 1, transA = 0, transB = 0, transBatchA = 0, transBatchB = 0 } = {}) {

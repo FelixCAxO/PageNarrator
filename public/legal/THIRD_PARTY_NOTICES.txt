@@ -11,6 +11,28 @@ copyright and license notices below.
 
 Original browser implementation and retained third-party material
 
+Speech/OCR numerical schedules and polynomial constants
+PageNarrator's freestanding kernels contain adaptations of numerical algorithms
+and constants from the following references. No external inference runtime is
+packaged or loaded by these kernels.
+
+ONNX Runtime MLAS, v1.31.1
+Copyright (c) Microsoft Corporation. All rights reserved.
+Source: https://github.com/microsoft/onnxruntime/tree/v1.31.1/onnxruntime/core/mlas/lib
+License: MIT (see ONNX-Runtime-MIT.txt).
+References: layer normalization, activation polynomials, softmax accumulation,
+matrix projection blocking and quantized recurrent scale/bias evaluation.
+
+Eigen, revision 1d8b82b0740839c0de7f1242a3585e3390ff5f33
+Copyright (C) 2007 Julien Pommier
+Copyright (C) 2014 Pedro Gonnet
+Copyright (C) 2009-2019 Gael Guennebaud
+Source: https://github.com/eigen-mirror/eigen/tree/1d8b82b0740839c0de7f1242a3585e3390ff5f33
+License: Mozilla Public License 2.0 (see Eigen-MPL-2.0.txt).
+References: packet reduction order, trigonometric range reduction and rational
+arctangent approximation. Corresponding modified source is supplied in
+native/kokoro-engine.cpp and native/ocr-engine.cpp in the source archive.
+
 PageNarrator OmniVoice browser bridge (new implementation)
 Copyright 2026 Felix Olsson.
 Algorithm reference: k2-fsa/OmniVoice, Copyright 2026 Xiaomi Corp. (Han Zhu).

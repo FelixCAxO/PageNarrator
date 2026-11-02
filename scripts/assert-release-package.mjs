@@ -13,6 +13,8 @@ export const REQUIRED_RELEASE_FILES = [
   'legal/Apache-2.0.txt',
   'legal/GPL-3.0.txt',
   'legal/THIRD_PARTY_NOTICES.txt',
+  'legal/ONNX-Runtime-MIT.txt',
+  'legal/Eigen-MPL-2.0.txt',
   'legal/CC-BY-4.0.txt',
   'legal/LibriTTS-R-NOTICE.txt',
   'legal/FLEURS-NOTICE.txt',

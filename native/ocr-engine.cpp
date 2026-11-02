@@ -1,7 +1,30 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 // Reuse PageNarrator's freestanding math; no external library or allocator.
+// MLAS/Eigen numerical schedules and constants retain the notices in public/legal/THIRD_PARTY_NOTICES.txt.
 #include "engine.cpp"
 
+// Speech follows its retained CPU oracle; OCR keeps its established vector kernels.
+#ifdef PN_KOKORO_NUMERICS
+static constexpr bool speech_numerics=true;
+#else
+static constexpr bool speech_numerics=false;
+#endif
+
+// Round the exact binary32 product-plus-add once, including double-rounding ties.
+static float fused(float a,float b,float c) {
+  const double product=static_cast<double>(a)*b, addend=c, sum=product+addend;
+  const double error=__builtin_fabs(product)>=__builtin_fabs(addend)?(product-sum)+addend:(addend-sum)+product;
+  union { double value; unsigned long long bits; } rounded={sum};
+  if(error!=0.0&&__builtin_isfinite(sum)&&!(rounded.bits&1))rounded.bits+=__builtin_signbit(sum)==__builtin_signbit(error)?1:-1;
+  return static_cast<float>(rounded.value);
+}
+template<unsigned N> static float polynomial(float z,const float (&p)[N]) { float y=p[0];for(unsigned i=1;i<N;i++)y=fused(y,z,p[i]);return y; }
+static float sigmoid(float x) {
+  if(x!=x)return x;x=x< -18.0f?-18.0f:x>18.0f?18.0f:x;
+  const float a[]={4.37031012579801e-11f,1.15627324459942e-07f,6.08574864600143e-05f,8.51377133304701e-03f,2.48287947061529e-01f};
+  const float b[]={6.10247389755681e-13f,5.76102136993427e-09f,6.29106785017040e-06f,1.70198817374094e-03f,1.16817656904453e-01f,9.93151921023180e-01f};
+  const float y=x*polynomial(x*x,a)/polynomial(x*x,b)+.5f;return y<0?0:y;
+}
 static float float_bits(u32 bits) { return from_bits(bits); }
 using i32x4 = int __attribute__((vector_size(16)));
 using u32x4 = unsigned int __attribute__((vector_size(16)));
@@ -14,6 +37,7 @@ static f32x4 exponential4(f32x4 x) {
   const u32x4 bits=__builtin_convertvector(exponent+127,u32x4)<<23;f32x4 scale;__builtin_memcpy(&scale,&bits,16);return p*scale;
 }
 extern "C" void pn_ocr_unary(const float* input,float* out,u32 count,u32 op,float alpha,float beta){
+  if(speech_numerics&&op==2){for(u32 i=0;i<count;++i)out[i]=sigmoid(input[i]);return;}
   u32 i=0;const f32x4 zero={0,0,0,0};
   for(;i+4<=count;i+=4){f32x4 x,value;__builtin_memcpy(&x,input+i,16);const f32x4 a=(x<zero)?-x:x;
     switch(op){
@@ -108,7 +132,8 @@ extern "C" void pn_ocr_matmul(const float* a, const float* b, float* out, const 
     const u32 ai = mapped(batch, rank, p + 8, reinterpret_cast<const int*>(p + 16)) * m * k;
     const u32 bi = mapped(batch, rank, p + 8, reinterpret_cast<const int*>(p + 24)) * k * n;
     const float* lhs=a+ai;const float* rhs=b+bi;float* dst=out+batch*m*n;
-    ocr_matmul_blocked(lhs,rhs,dst,m,n,k);
+    if(speech_numerics&&k<=128){for(u32 row=0;row<m;++row)for(u32 col=0;col<n;++col){float sum=0;for(u32 j=0;j<k;++j)sum=fused(lhs[row*k+j],rhs[j*n+col],sum);dst[row*n+col]=sum;}}
+    else ocr_matmul_blocked(lhs,rhs,dst,m,n,k);
   }
 }
 
@@ -149,7 +174,7 @@ extern "C" void pn_ocr_conv(const float* input, const float* weights, const floa
     u32 x=0;
     // Four adjacent output positions share the same weight and remain in SIMD registers.
     for (;x+4<=ow;x+=4) {
-      const float initial=has_bias?bias[c]:0.0f;
+      const float initial=!speech_numerics&&has_bias?bias[c]:0.0f;
       f32x4 sum={initial,initial,initial,initial};
       for(u32 ci=0;ci<icg;++ci) for(u32 ky=0;ky<kh;++ky) {
         int sy=static_cast<int>(y*sh+ky*dh)-static_cast<int>(pt);
@@ -165,11 +190,12 @@ extern "C" void pn_ocr_conv(const float* input, const float* weights, const floa
           sum+=v*f32x4{w,w,w,w};
         }
       }
+      if(speech_numerics&&has_bias){const float b=bias[c];sum+=f32x4{b,b,b,b};}
       if(relu)for(u32 lane=0;lane<4;++lane)if(sum[lane]<0.0f)sum[lane]=0.0f;
       __builtin_memcpy(out+((n*oc+c)*oh+y)*ow+x,&sum,16);
     }
     for(;x<ow;++x){
-      float sum=has_bias?bias[c]:0.0f;
+      float sum=!speech_numerics&&has_bias?bias[c]:0.0f;
       for(u32 ci=0;ci<icg;++ci)for(u32 ky=0;ky<kh;++ky)for(u32 kx=0;kx<kw;++kx){
         int sy=static_cast<int>(y*sh+ky*dh)-static_cast<int>(pt),sx=static_cast<int>(x*sw+kx*dw)-static_cast<int>(pl);
         if(transpose){sy=static_cast<int>(y+pt)-static_cast<int>(ky*dh);sx=static_cast<int>(x+pl)-static_cast<int>(kx*dw);if(sy<0||sx<0||sy%sh||sx%sw)continue;sy/=sh;sx/=sw;}
@@ -177,16 +203,29 @@ extern "C" void pn_ocr_conv(const float* input, const float* weights, const floa
         const u32 wi=transpose?(((group*icg+ci)*ocg+c%ocg)*kh+ky)*kw+kx:((c*icg+ci)*kh+ky)*kw+kx;
         sum+=input[((n*ic+group*icg+ci)*ih+sy)*iw+sx]*weights[wi];
       }
+      if(speech_numerics&&has_bias)sum+=bias[c];
       out[((n*oc+c)*oh+y)*ow+x]=relu&&sum<0.0f?0.0f:sum;
     }
   }
 }
 
+static float packet_sum(const float* input,u32 count) {
+  const u32 alignment=(4-(reinterpret_cast<__UINTPTR_TYPE__>(input)/4)%4)%4,first=alignment<count?alignment:count;
+  const u32 packed=(count-first)/4*4,end=first+packed;
+  if(!packed){float sum=input[0];for(u32 i=1;i<count;++i)sum+=input[i];return sum;}
+  f32x4 a;__builtin_memcpy(&a,input+first,16);
+  if(packed>4){f32x4 b;__builtin_memcpy(&b,input+first+4,16);const u32 paired=first+(count-first)/8*8;
+    for(u32 i=first+8;i<paired;i+=8){f32x4 x,y;__builtin_memcpy(&x,input+i,16);__builtin_memcpy(&y,input+i+4,16);a+=x;b+=y;}
+    a+=b;if(end>paired){f32x4 tail;__builtin_memcpy(&tail,input+paired,16);a+=tail;}
+  }
+  float sum=(a[0]+a[2])+(a[1]+a[3]);for(u32 i=0;i<first;++i)sum+=input[i];for(u32 i=end;i<count;++i)sum+=input[i];return sum;
+}
 extern "C" void pn_ocr_reduce(const float* input,float* out,const u32* p){
   const u32 count=p[0],reduction=p[1],rank=p[2],mask=p[3],mode=p[4];
   u32 shape[8],strides[8];u32 stride=1;
   for(int i=static_cast<int>(rank)-1;i>=0;--i){shape[i]=p[8+i];strides[i]=stride;stride*=shape[i];}
   for(u32 i=0;i<count;++i){
+    if(speech_numerics&&p[5]&&mode!=1&&reduction>=4){const float sum=packet_sum(input+i*reduction,reduction);out[i]=mode==0?sum/reduction:sum;continue;}
     if(p[5]){float sum=mode==1?-from_bits(0x7f800000u):0.0f;for(u32 r=0;r<reduction;++r){const float v=input[i*reduction+r];sum=mode==1?(v>sum?v:sum):sum+v;}out[i]=mode==0?sum/reduction:sum;continue;}
     u32 at=i,base=0;
     for(int axis=static_cast<int>(rank)-1;axis>=0;--axis)if(!(mask&(1u<<axis))){base+=(at%shape[axis])*strides[axis];at/=shape[axis];}
@@ -236,6 +275,23 @@ extern "C" void pn_ocr_index(const unsigned char* input,unsigned char* out,const
 extern "C" void pn_ocr_concat(const unsigned char* input,unsigned char* out,const u32* p){const u32 block=p[1]*p[2];for(u32 i=0;i<p[0];++i){const u32 to=(i/block*p[3]+p[4])*p[2]+i%block;for(u32 b=0;b<p[5];++b)out[to*p[5]+b]=input[i*p[5]+b];}}
 extern "C" void pn_ocr_gather(const unsigned char* input,unsigned char* out,const u32* p){for(u32 i=0;i<p[0];++i){const u32 from=((i/(p[1]*p[2]))*p[3]+p[8+(i/p[1])%p[2]])*p[1]+i%p[1];for(u32 b=0;b<p[4];++b)out[i*p[4]+b]=input[from*p[4]+b];}}
 extern "C" void pn_ocr_norm(const float* input,const float* scale,const float* bias,const float* mean,const float* variance,float* out,const u32* p){for(u32 i=0;i<p[0];++i){const u32 c=(i/p[2])%p[1];out[i]=(input[i]-mean[c])*scale[c]/__builtin_sqrtf(variance[c]+float_bits(p[3]))+bias[c];}}
-extern "C" void pn_ocr_softmax(const float* input,float* out,const u32* p){for(u32 row=0;row<p[0];++row){const u32 offset=row*p[1];float maximum=-from_bits(0x7f800000u);for(u32 j=0;j<p[1];++j)if(input[offset+j]>maximum)maximum=input[offset+j];float sum=0;for(u32 j=0;j<p[1];++j){const float e=exponential(input[offset+j]-maximum);out[offset+j]=e;sum+=e;}for(u32 j=0;j<p[1];++j)out[offset+j]/=sum;}}
+static float softmax_exp(float x) {
+  if(x!=x)return x;
+  if(x< -88.3762626647949f)x=-88.3762626647949f;
+  const float m=fused(x,1.44269504088896341f,12582912.0f)-12582912.0f;
+  x=fused(m,-.693145752f,x);x=fused(m,-.00000142860677f,x);
+  const float coefficients[]={0x1.694000p-10f,0x1.125edcp-7f,0x1.555b5ap-5f,0x1.555450p-3f,0x1.fffff6p-2f,1,1};
+  return polynomial(x,coefficients)*from_bits(static_cast<u32>(static_cast<int>(m)+127)<<23);
+}
+extern "C" void pn_ocr_softmax(const float* input,float* out,const u32* p) {
+  if(!speech_numerics){for(u32 row=0;row<p[0];++row){const u32 offset=row*p[1];float maximum=-from_bits(0x7f800000u);for(u32 j=0;j<p[1];++j)if(input[offset+j]>maximum)maximum=input[offset+j];float sum=0;for(u32 j=0;j<p[1];++j){const float e=exponential(input[offset+j]-maximum);out[offset+j]=e;sum+=e;}for(u32 j=0;j<p[1];++j)out[offset+j]/=sum;}return;}
+  for(u32 row=0;row<p[0];++row){const u32 base=row*p[1];float maximum=-from_bits(0x7f800000u),sums[8]={};
+    for(u32 j=0;j<p[1];++j)if(input[base+j]>maximum)maximum=input[base+j];
+    for(u32 j=0;j<p[1];++j){const float e=softmax_exp(input[base+j]-maximum);out[base+j]=e;sums[j%8]+=e;}
+    const float sum=((sums[0]+sums[1])+(sums[2]+sums[3]))+((sums[4]+sums[5])+(sums[6]+sums[7])),inverse=1.0f/sum;
+    for(u32 j=0;j<p[1];++j)out[base+j]*=inverse;
+  }
+}
+
 extern "C" void pn_ocr_argmax(const float* input,int* out,const u32* p){for(u32 i=0;i<p[0];++i){const u32 base=(i/p[2])*p[1]*p[2]+i%p[2];u32 best=0;float maximum=input[base];for(u32 j=1;j<p[1];++j){const float v=input[base+j*p[2]];if(v>maximum||(p[3]&&v==maximum)){maximum=v;best=j;}}out[i]=static_cast<int>(best);}}
 extern "C" void pn_ocr_copy(const unsigned char* input,unsigned char* out,u32 count){for(u32 i=0;i<count;++i)out[i]=input[i];}

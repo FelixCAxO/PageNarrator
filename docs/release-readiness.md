@@ -2,7 +2,26 @@
 
 The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
-## Dependency and waveform follow-up, 2026-11-02
+## Waveform arithmetic repair, 2026-11-02
+
+The q8 CPU waveform comparisons now pass for both the production phase-v2 graph and the original retained graph. Each lane checks the existing three text/voice/speed cases twice, with identical output shapes and zero samples outside `3e-4 + 3e-3 * abs(reference)`. Across the twelve waveforms, the largest absolute error is 0.000012040138244628906. Model bytes, weights, test inputs, reference runtime settings, comparison limits and phase-correction policy are unchanged.
+
+The native speech implementation now preserves the reference's centered layer-normalization reduction and distinct Welford skip-normalization path, activation/softmax evaluation, aligned reduction order, trigonometric range reduction, float32 radix-two/Bluestein FFT residue, quantized recurrent scale/bias grouping and transposed-convolution projection/bias order. Fused products round once, including double-rounding ties. Operator regressions compare independently computed float32 FFT and activation outputs exactly; signed-zero phase correction and tiny recurrent-state checks remain in force. The source retains the MLAS and Eigen attribution and licenses. The two OCR binaries remain byte-identical to the previous candidate; the speech-specific arithmetic is selected at compilation.
+
+| Fresh comparison lane | Result |
+| --- | --- |
+| Production CPU q8 | Pass: all three cases, both repeats |
+| Original graph CPU q8 | Pass: all three cases, both repeats |
+| Production/original CPU fp32 | Failed/unqualified: first case passes both repeats, second case fails PCM |
+| Production/original GPU fp32 | Failed/unqualified: the existing first-case PCM comparison fails |
+
+The full six-lane run is retained in `artifacts/verification/kokoro-numerics-1.0.3-edcaff81-bafb-4a3b-89ec-4b17363acd3b/`. Independent CPU operator checks and 36 GPU operator cases pass; diagnostic collection passes while the combined reference-PCM status remains failed/unqualified. The corrected speech binary is byte-identical before and after isolating the arithmetic from OCR. Full lint, both type checks, 45,220 tests with four optional skips, the local build and package assertions pass. The initial shared-kernel experiment caused an OCR screenshot-test timeout; its failure is retained. Scoping the arithmetic to speech restored both original OCR binaries, and the unchanged OCR test passes again without a timeout increase.
+
+Additional isolated fp32 work matched the second case's transformer, convolution-normalization, pitch-predictor and phase-accumulator checkpoints exactly by reproducing packed projection and single-row reduction schedules. Its scalar fused-product implementation made full inference excessively slow; both full-waveform experiments were stopped before a comparison result and were not adopted. This is checkpoint evidence, not an fp32 waveform pass. Experimental sources, failures and controls remain in ignored `artifacts/waveform-parity-20261102/` and `.cache/waveform-parity-20261102/`.
+
+This repair does not qualify listening quality, physical hardware tiers, the remaining precision/backend lanes or the full release. The missing private PDF fixture remains obsolete at the maintainer's instruction; restoring it is not requested and its frozen benchmark remains not performed.
+
+## Earlier dependency and waveform follow-up, 2026-11-02
 
 The full dependency audit now reports zero vulnerabilities. minimatch is overridden to 11.0.4, which replaces the vulnerable preprocessing path. ESLint loads the exported `no-unresolved` rule directly instead of importing unused rules that require minimatch's removed `makeRe` export. Every configured lint rule stays enabled. A regression checks both a valid import and rejection of a missing import; full lint, both type checks and 45,195 unit tests pass with four optional skips.
 
