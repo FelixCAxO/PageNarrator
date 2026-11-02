@@ -5,7 +5,7 @@
 import { getOmniVoiceLanguage } from './languages.js';
 import * as browserInference from '../../engines/browser-inference.js';
 import { assertOmniVoiceAudio } from './audio-quality.js';
-import { applyOmniVoiceRmsNormCorrection } from './rmsnorm-correction.js';
+import { prepareOmniVoiceGraph } from './rmsnorm-correction.js';
 import { getOmniVoiceSpeakerReference } from './speakers.js';
 import { renderOmniVoiceWhisper } from './whisper.js';
 
@@ -70,20 +70,25 @@ function characterWeight(char) {
   return SCRIPT_WEIGHTS.find(([end]) => code <= end)?.[1] ?? (code > 0x20000 ? 3 : 1);
 }
 
-/** @param {string} text @param {string} [lang] */
-function normalizeSpokenText(text, lang) {
+/** @param {string} text @param {string} [lang] @param {string|null} [pronunciationVariant] */
+function normalizeSpokenText(text, lang, pronunciationVariant = null) {
   // Mathematical letter styling is visual; retain other compatibility characters such as superscripts.
   const normalized = text.replace(/[\u{1D400}-\u{1D7FF}]/gu, char => char.normalize('NFKC')).normalize('NFC');
+  // These written forms share the Cantonese reading nei5.
+  if (lang === 'yue' && pronunciationVariant === 'yue-nei5') return normalized.replaceAll('您', '你');
   // The space-prefixed title-case BPE token mispronounces this Turkish word during cloning.
   return lang === 'tr' ? normalized.replace(/(?<!\p{L})Bugün/gu, 'bugün') : normalized;
 }
 
-/** @param {string} text @param {number} speed */
-export function estimateOmniVoiceFrames(text, speed) {
+/** @param {string} text @param {number} speed
+ * @param {{durationSource?:string,text:string,frames:number}|null} [reference] */
+export function estimateOmniVoiceFrames(text, speed, reference = null) {
   // The decoder emits 960 samples per code frame (25 Hz); bundle metadata incorrectly says 75 Hz.
   const weight = [...normalizeSpokenText(text)].reduce((total, char) => total + characterWeight(char), 0);
-  // Generated references use this same rule; calibrating from their rounded frames loses target frames.
-  const estimate = weight * 25 / 14.1;
+  // Recorded speech supplies its own pace; generated references retain the single-rounding rule.
+  const referenceWeight = reference && ['recording', 'recording-derived'].includes(reference.durationSource ?? '')
+    ? [...normalizeSpokenText(reference.text)].reduce((total, char) => total + characterWeight(char), 0) : 0;
+  const estimate = reference && referenceWeight > 0 ? weight / referenceWeight * reference.frames : weight * 25 / 14.1;
   return Math.max(1, Math.floor((estimate < 50 ? 50 * (estimate / 50) ** (1 / 3) : estimate) / speed));
 }
 
@@ -114,10 +119,8 @@ async function readLogits(tensor) {
   if (tensor.type === 'float16' && ArrayBuffer.isView(data) && data.byteLength === tensor.size * 2) {
     // Current Chromium returns native Float16Array; older ORT uses raw Uint16Array bits.
     const bits = new Uint16Array(data.buffer, data.byteOffset, data.byteLength / 2);
-    // TypedArray.from boxes each element through its iterator; indexed lookup preserves every fp16 value.
-    const values = new Float32Array(bits.length);
-    for (let index = 0; index < bits.length; index++) values[index] = HALF[bits[index]];
-    return values;
+    // Sampling ignores prefix/decided rows; decode only the half values it uses.
+    return bits;
   }
   if (tensor.type === 'float32' && data instanceof Float32Array) return data;
   throw new Error('Unexpected OmniVoice logits format.');
@@ -128,15 +131,22 @@ function disposeTensors(tensors) {
   for (const tensor of new Set(Object.values(tensors))) tensor.dispose();
 }
 
-/** @param {Float32Array} conditional @param {Float32Array} unconditional
+/** @param {Float32Array|Uint16Array} conditional @param {Float32Array|Uint16Array} unconditional
  * @param {BigInt64Array} codes @param {number} frames @param {number} prefix
- * @param {number} count @param {() => number} random */
-export function unmaskOmniVoiceTokens(conditional, unconditional, codes, frames, prefix, count, random) {
+ * @param {number} count @param {() => number} random @param {number} [guidanceScale] */
+export function unmaskOmniVoiceTokens(conditional, unconditional, codes, frames, prefix, count, random, guidanceScale = 2) {
+  if (!Number.isFinite(guidanceScale) || guidanceScale < 0 || guidanceScale > 4) throw new Error('Invalid OmniVoice guidance scale.');
+  const cHalf = conditional instanceof Uint16Array, uHalf = unconditional instanceof Uint16Array;
   const scores = new Float64Array(codes.length);
   const predictions = new Int32Array(codes.length);
   const candidates = [];
   const guided = new Float64Array(VOCAB);
+  let cutoff = Infinity;
   for (let index = 0; index < codes.length; index += 1) {
+    if (index > 0 && index % 32 === 0 && count > 0 && Number.isInteger(count) && candidates.length >= count) {
+      candidates.sort((a, b) => scores[b] - scores[a] || a - b);
+      cutoff = scores[candidates[count - 1]];
+    }
     if (codes[index] !== BigInt(MASK)) continue;
     const book = Math.floor(index / frames);
     const frame = index % frames;
@@ -147,15 +157,20 @@ export function unmaskOmniVoiceTokens(conditional, unconditional, codes, frames,
     let token = 0;
     for (let v = 0; v < VOCAB; v += 1) {
       // Log-softmax constants cancel when the guided logits are normalized again.
-      const value = 3 * conditional[cOffset + v] - 2 * unconditional[uOffset + v];
+      const c = conditional[cOffset + v], u = unconditional[uOffset + v];
+      const value = (1 + guidanceScale) * (cHalf ? HALF[c] : c) - guidanceScale * (uHalf ? HALF[u] : u);
       if (!Number.isFinite(value)) throw Object.assign(new Error('OmniVoice produced non-finite logits.'), { name: 'OmniVoiceAudioQualityError' });
       guided[v] = value;
       maximum = Math.max(maximum, value);
       if (v !== MASK && value > best) { best = value; token = v; }
     }
+    const noise = Math.log(-Math.log(random()));
+    // A zero log-normalizer bounds the score; enough completed rows establish a safe cutoff.
+    if (count > 0 && candidates.length >= count && (best - maximum - 0 - book * 5) / 5 - noise < cutoff) continue;
     let sum = 0;
-    for (const value of guided) sum += Math.exp(value - maximum);
-    scores[index] = (best - maximum - Math.log(sum) - book * 5) / 5 - Math.log(-Math.log(random()));
+    for (let v = 0; v < VOCAB; v += 1) sum += Math.exp(guided[v] - maximum);
+    scores[index] = (best - maximum - Math.log(sum) - book * 5) / 5 - noise;
+    if (candidates.length < count) cutoff = Math.min(cutoff, scores[index]);
     predictions[index] = token;
     candidates.push(index);
   }
@@ -170,7 +185,7 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
   let main = null;
   /** @type {any} */
   let decoder = null;
-  /** @type {{ version: string, norms: number, originalSha256: string, modifiedSha256: string }|null} */
+  /** @type {{ version: string, norms: number, originalSha256: string, modifiedSha256: string, normalizationSha256: string }|null} */
   let mainGraphCorrection = null;
   /** @type {Promise<void>|null} */
   let loading = null;
@@ -209,10 +224,10 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
       /** @type {(Uint8Array<ArrayBuffer>|null)[]} */
       let [graph, weights, decoderGraph] = await Promise.all([bytes(MAIN), bytes(manifest[0]), bytes(DECODER)]);
       try {
-        const correction = await applyOmniVoiceRmsNormCorrection(graph);
+        const correction = await prepareOmniVoiceGraph(graph);
         graph = correction.bytes;
         mainGraphCorrection = { version: correction.version, norms: correction.norms,
-          originalSha256: correction.originalSha256, modifiedSha256: correction.modifiedSha256 };
+          originalSha256: correction.originalSha256, normalizationSha256: correction.normalizationSha256, modifiedSha256: correction.modifiedSha256 };
         main = await ort.InferenceSession.create(graph, { executionProviders: ['webgpu'],
           externalData: [{ path: manifest[0], data: weights }], maxCachedPlans: 2,
           preferredOutputLocation: 'cpu', logSeverityLevel: 3, releaseHostWeights: true });
@@ -251,10 +266,12 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     const feeds = {
       input_ids: new ort.Tensor('int64', ids, [1, CODEBOOKS, length]),
       audio_mask: new ort.Tensor('bool', audioMask, [1, length]),
-      attention_mask: new ort.Tensor('bool', new Uint8Array(length * length).fill(1), [1, 1, length, length]),
+      // Full attention uses the same value at every position; broadcast its original one.
+      attention_mask: new ort.Tensor('bool', Uint8Array.of(1), [1, 1, 1, 1]),
       position_ids: new ort.Tensor('int64', positions, [1, length]),
       // This export also uses target_positions inside attention; retain the complete sequence.
       target_positions: new ort.Tensor('int64', positions, [1, length]),
+      pn_audio_start: new ort.Tensor('int64', BigInt64Array.of(BigInt(length - frames)), [1]),
     };
     // Recompute the full bidirectional sequence; all KV slots are replaced by this pass.
     const emptyCache = new ort.Tensor('float16', new Uint16Array(8 * length * 128), [1, 8, length, 128]);
@@ -270,7 +287,8 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     try {
       checkAbort(current);
       const logits = result.audio_logits;
-      if (logits.dims.join(',') !== `1,${CODEBOOKS},${feeds.input_ids.dims[2]},${VOCAB}`) throw new Error('Unexpected OmniVoice logits shape.');
+      const frames = feeds.input_ids.dims[2] - Number(feeds.pn_audio_start.data[0]);
+      if (logits.dims.join(',') !== `1,${CODEBOOKS},${frames},${VOCAB}`) throw new Error('Unexpected OmniVoice logits shape.');
       const data = await readLogits(logits);
       checkAbort(current);
       return data;
@@ -281,26 +299,31 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
 
   /** @param {any} request @param {((progress: {remainingMs: number}) => void)|null} onProgress */
   async function generate(request, onProgress) {
-    const { text, lang, instruct, speed, seed, numStep } = request;
+    const { text, lang, instruct, speed, seed, numStep, guidanceScale = 2, pronunciationVariant = null } = request;
     if (typeof text !== 'string' || !text.trim() || typeof lang !== 'string' || getOmniVoiceLanguage(lang)?.code !== lang || typeof instruct !== 'string'
       || !Number.isFinite(speed) || speed < 0.5 || speed > 1.5 || !Number.isInteger(seed)
       || (request.whisper !== undefined && typeof request.whisper !== 'boolean')
+      || !Number.isFinite(guidanceScale) || guidanceScale < 0 || guidanceScale > 4
+      || (pronunciationVariant !== null && (lang !== 'yue' || pronunciationVariant !== 'yue-nei5'))
       || !Number.isInteger(numStep) || numStep < 1 || numStep > 64) throw new Error('Invalid OmniVoice request.');
     if (!loading) throw new Error('OmniVoice runtime is not initialized.');
     const current = generation;
     await loading;
     checkAbort(current);
     const timings = { inferenceMs: 0, unmaskMs: 0, decoderMs: 0, whisperMs: 0 };
-    const spokenText = normalizeSpokenText(text, lang);
+    const spokenText = normalizeSpokenText(text, lang, pronunciationVariant);
     const reference = getSpeaker(request);
-    const frames = estimateOmniVoiceFrames(spokenText, speed);
+    const frames = estimateOmniVoiceFrames(spokenText, speed, reference);
     /** @param {string} value @returns {number[]} */
     const encode = (value) => Array.from(tokenizer.encode(value, { add_special_tokens: false }));
     const prefix = [...encode(`${reference ? '<|denoise|>' : ''}<|lang_start|>${lang}<|lang_end|><|instruct_start|>${instruct || 'None'}<|instruct_end|>`),
       ...encode(`<|text_start|>${reference ? `${reference.text} ` : ''}${spokenText.trim()}<|text_end|>`)];
     const audioOffset = prefix.length + (reference?.frames || 0);
-    // shortcut: the reader chunks text; reject oversized sections until long-section GPU tiling is needed.
-    if (audioOffset + frames > 2048) throw new Error('OmniVoice section is too long. Split the text into shorter sections.');
+    if (audioOffset + frames > 2048) {
+      const error = new Error('OmniVoice section is too long. Split the text into shorter sections.');
+      error.name = 'OmniVoiceSectionLengthError';
+      throw error;
+    }
     const codes = new BigInt64Array(CODEBOOKS * frames).fill(BigInt(MASK));
     const conditional = createFeeds(prefix, codes, frames, reference);
     const unconditional = createFeeds([], codes, frames);
@@ -314,7 +337,7 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
         const u = await infer(unconditional, current);
         timings.inferenceMs += performance.now() - inferenceStart;
         const unmaskStart = performance.now();
-        unmaskOmniVoiceTokens(c, u, codes, frames, audioOffset, count, random);
+        unmaskOmniVoiceTokens(c, u, codes, frames, 0, count, random, guidanceScale);
         timings.unmaskMs += performance.now() - unmaskStart;
         for (let book = 0; book < CODEBOOKS; book += 1) {
           const offset = book * conditional.input_ids.dims[2] + audioOffset;
@@ -329,7 +352,12 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
       let result;
       try {
         const decoderStart = performance.now();
-        result = await decoder.run({ audio_codes: input }, ['audio_values']);
+        try {
+          result = await decoder.run({ audio_codes: input }, ['audio_values']);
+        } catch (error) {
+          if (!(error instanceof Error) || !error.message.endsWith('Tensor exceeds the WebGPU device buffer limit.')) throw error;
+          throw Object.assign(new Error('OmniVoice section exceeds the decoder buffer limit.', { cause: error }), { name: 'OmniVoiceSectionLengthError' });
+        }
         checkAbort(current);
         const output = result.audio_values;
         if (output.type !== 'float32' || output.dims[0] !== 1 || output.dims[1] !== 1 || output.dims.length !== 3) throw new Error('Unexpected OmniVoice audio shape.');
@@ -351,9 +379,10 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
         checkAbort(current);
         return { pcm, sampleRate: 24000, timings, backingPcmSha256, speaker: {
           id: reference?.id || null,
-          referenceId: reference?.referenceId || null, referenceLanguage: reference?.lang || null,
+          referenceId: reference?.referenceId || null, referenceLanguage: reference?.referenceLanguage || reference?.lang || null,
           referenceHash: reference?.hash || null, referenceFrames: reference?.frames || 0,
           anchorHash,
+          guidanceScale, speed, pronunciationVariant,
         } };
       } finally {
         input.dispose();

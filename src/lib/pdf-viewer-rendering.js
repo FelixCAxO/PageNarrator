@@ -4,6 +4,7 @@ import {
   normalizePositiveInteger,
 } from './number-validation.js';
 import { PDF_RENDER_UNLOAD_DELAY_MS } from './timing-config.js';
+import { t } from './i18n.js';
 
 export const MAX_RENDERED_PAGES = 7;
 export const MAX_OUTPUT_SCALE = 1;
@@ -58,6 +59,14 @@ export function applyPageViewportStyles(pageEl, viewport = {}) {
   pageEl.style.width = `${Math.floor(viewport.width)}px`;
   pageEl.style.height = `${Math.floor(viewport.height)}px`;
   return pageEl;
+}
+
+function showArtworkWarning(pageEl, textContent) {
+  if (!textContent.artworkWarnings?.length) return;
+  const notice = pageEl.ownerDocument.createElement('p');
+  notice.className = 'pdf-page-warning'; notice.setAttribute('role', 'status');
+  notice.textContent = t('Some artwork could not be shown. Text reading is still available.');
+  pageEl.append(notice);
 }
 
 export function createVirtualPdfPageRenderer({
@@ -147,6 +156,7 @@ export function createVirtualPdfPageRenderer({
       await textLayer.render();
       checkCurrent();
       annotateTextLayer?.(textLayerEl, textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 });
+      showArtworkWarning(pageEl, textContent);
       return;
     }
 
@@ -178,7 +188,7 @@ export function createVirtualPdfPageRenderer({
       checkCurrent();
     } catch (renderError) {
       if (renderError?.name === 'RenderingCancelledException') throw renderError;
-      if (retryCount < 2) {
+      if (retryCount < 2 && !['pdf_corrupt', 'pdf_unsupported', 'pdf_limit'].includes(renderError?.code)) {
         releaseRenderCanvas(canvas);
         record.canvas = null;
         return renderPageInto(page, pageEl, record, retryCount + 1);
@@ -198,6 +208,7 @@ export function createVirtualPdfPageRenderer({
     await textLayer.render();
     checkCurrent();
     annotateTextLayer?.(textLayerEl, textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 });
+    showArtworkWarning(pageEl, textContent);
     renderOcrTextLayer?.(pageEl, page, viewport);
   }
 

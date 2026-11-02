@@ -14,6 +14,26 @@ function omitTable(bytes, name) {
   view.setUint16(4, records.length); records.forEach((record, i) => out.set(record, 12 + i * 16)); return out;
 }
 
+it('repairs an all-empty glyph subset for browser loading without inventing visible outlines or changing advances', async () => {
+  const source = (await loadAsset('standard_fonts/LiberationSans-Regular.ttf')).slice(), view = new DataView(source.buffer);
+  const before = tables(source), metrics = readTrueTypeMetrics(source);
+  before.get('loca').fill(0);
+  for (let i = 0; i < view.getUint16(4); i++) {
+    const row = 12 + i * 16; if (String.fromCharCode(...source.subarray(row, row + 4)) === 'glyf') view.setUint32(row + 12, 0);
+  }
+  const original = source.slice(), converted = remapTrueTypeCmap(source, metrics.glyphCount), after = tables(converted);
+  expect(source).toEqual(original); expect(after.get('glyf')).toEqual(new Uint8Array(12));
+  const head = before.get('head'), stride = new DataView(head.buffer, head.byteOffset, head.length).getInt16(50) ? 4 : 2;
+  const loca = after.get('loca'), offsets = new DataView(loca.buffer, loca.byteOffset, loca.length);
+  const offset = gid => stride === 2 ? offsets.getUint16(gid * stride) * 2 : offsets.getUint32(gid * stride);
+  expect(offset(0)).toBe(0); expect(offset(1)).toBe(12); expect(offset(metrics.glyphCount)).toBe(12);
+  expect(after.get('hmtx')).toEqual(before.get('hmtx'));
+  expect(readTrueTypeMetrics(converted).widthByGlyph(1)).toBe(metrics.widthByGlyph(1));
+  // Nonzero locations in a table with no glyph data are corruption, not an empty subset.
+  before.get('loca')[1] = 1;
+  expect(() => remapTrueTypeCmap(source, metrics.glyphCount)).toThrow(/Invalid empty TrueType/);
+});
+
 it('completes required browser metrics for a PDF TrueType subset while preserving outlines, hints and naming records', async () => {
   const source = omitTable(await loadAsset('standard_fonts/LiberationSans-Regular.ttf'), 'OS/2'), original = source.slice(), metrics = readTrueTypeMetrics(source);
   const gid = metrics.glyphId(65), converted = remapTrueTypeCmap(source, metrics.glyphCount, new Map([[65, gid]])), before = tables(source), after = tables(converted);

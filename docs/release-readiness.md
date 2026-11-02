@@ -2,6 +2,20 @@
 
 The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
+## Local v1.0.3 candidate refresh, 2026-11-02
+
+The maintainer requested a fresh local build and verification before preparing 1.0.3. The existing version-specific authorization still covers a local commit and matching extension/source ZIPs. It grants no release waiver, push, publication, website deployment or Store submission.
+
+This refresh includes the recorded OmniVoice catalog and attribution, deterministic preset settings, bounded GPU submissions and shared workspace, verified weight chunks, and PDF font/artwork/rendering repairs. The catalog retains 640 presets across 32 languages; automatic replay and identity checks do not establish broad listening quality. Current native product screenshots were recaptured from the tested packaged extension in isolated Linux/Xvfb, visually checked, and propagated to localized website assets.
+
+The fresh unit run passes 45,192 tests with four optional skips. Lint, both type checks, 56 profile tests, 41 benchmark-harness tests, host-layout safety, runtime dependency audit, model fixture hashes, package assertions, media checks and reader composition checks pass. The original PDF corpus passes 124 tests with one optional skip: all 1,106 document calls close, with no retained documents or backend errors. The initial stale test mock and screenshot/localization failures are retained beside their passing reruns.
+
+The frozen 100-page PDF acceptance run cannot start: one private source PDF is unavailable, affecting three benchmark pages. No byte-identical copy was found in the local corpus caches. The reference paths, hashes, pages and thresholds remain unchanged; the earlier revision-06 score is historical evidence, not a fresh pass. Independent voice reviews and all 50 PDF naturalness passages remain pending, and physical minimum/recommended hardware tiers remain unqualified. Historical PCM mismatches remain failed/unqualified diagnostics. These limitations prevent a full release qualification.
+
+The full development dependency audit now reports ten moderate findings propagated from minimatch 10.2.6 ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)); the runtime audit passes. A trial override to minimatch 11.0.1 cleared that advisory but broke eslint-plugin-import-x's required named export. The override was rejected and the compatible lockfile restored. Follow the lint toolchain's compatible fix before claiming a clean full audit; no advisory is waived or reported as resolved.
+
+Fresh raw evidence stays in ignored `artifacts/release-readiness-1.0.3-20261102/`. The sanitized report beside the paired local ZIPs records the final commit, archive hashes, browser/model results, skipped opt-in lanes and remaining qualification work. The previous preparation below is retained as dated history and does not qualify subsequent changes.
+
 ## Local v1.0.3 release preparation, 2026-10-30
 
 On 2026-10-30 the maintainer instructed: "Prepare 1.0.3 for release with the same disclosed limitations as 1.0.2. Commit the changes and build the matching extension and source ZIPs. (local release atm)." This authorizes a local commit and paired archives. Public release, pushing, deployment and Store submission are outside this preparation. The version-scoped record is in `config/release-policy.json`; it changes no gate waiver, diagnostic result or threshold.

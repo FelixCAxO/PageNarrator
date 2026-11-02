@@ -1,0 +1,28 @@
+JVNV v1 recorded voice references
+
+Attribution: Detai Xin, Junfeng Jiang, Shinnosuke Takamichi, Yuki Saito,
+Akiko Aizawa and Hiroshi Saruwatari, JVNV v1 (2023).
+
+Source: https://sites.google.com/site/shinnosuketakamichi/research-topics/jvnv_corpus
+Publisher archive: https://ss-takashi.sakura.ne.jp/corpus/jvnv/jvnv_ver1.zip
+Paper: https://arxiv.org/abs/2310.06072
+License: Creative Commons Attribution-ShareAlike 4.0 International
+https://creativecommons.org/licenses/by-sa/4.0/
+
+PageNarrator retains complete publisher utterances and their published
+transcripts. The recordings are resampled from mono 48 kHz to mono 24 kHz,
+padded with zeros where needed for codec boundaries, and encoded as voice
+references. The adapted reference data retain CC BY-SA 4.0. These changes
+do not imply endorsement by the original contributors.
+
+Per-reference metadata retain the published reader and archive member IDs,
+member CRC, input audio hash, archive index hash, transcript file and hash,
+publisher page hash, encoder hash and preprocessing description. The index
+hash identifies the archived directory evidence; it is not a claim that the
+whole publisher ZIP was downloaded or hashed. If a generated recording is
+used as a derived reference, its parent reference and generation parameters
+must also be retained.
+
+The reference-data license is separate from the model and application-code
+licenses. A release containing these references must include this notice
+and the full CC BY-SA 4.0 license text.

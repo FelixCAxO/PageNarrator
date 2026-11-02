@@ -1,15 +1,20 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import { applyOmniVoiceRmsNormCorrection } from '../../src/tts/omnivoice/rmsnorm-correction.js';
+import { applyOmniVoiceRmsNormCorrection, prepareOmniVoiceGraph } from '../../src/tts/omnivoice/rmsnorm-correction.js';
 import { rmsNormFixture, rmsNormHalfBoundaryFixture, matmulFixture, float32MatmulReference } from '../../scripts/lib/onnx-debug-outputs.mjs';
 import { binary64ToHalf } from '../../scripts/lib/binary16-oracle.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
 import { floatToHalf, halfToFloat } from '../../src/engines/tensor-format.js';
+import { metadataInputNames } from '../../src/engines/onnx-metadata-inputs.js';
+import { constantNumbers } from '../../src/engines/onnx-tensor.js';
+
+const model = '.cache/engine-models/MarkShark2/omnivoice-onnx-kv-b1-fp16/omnivoice-main-kv-fp16-b1.onnx';
 
 it('rejects unpinned graph bytes and preserves half rounding before learned-weight multiplication', async () => {
   await expect(applyOmniVoiceRmsNormCorrection(rmsNormFixture(1))).rejects.toThrow('exact pinned');
+  await expect(prepareOmniVoiceGraph(rmsNormFixture(1))).rejects.toThrow('exact pinned');
   const mutated = rmsNormFixture(1); mutated[mutated.length - 1] ^= 1;
   await expect(applyOmniVoiceRmsNormCorrection(mutated)).rejects.toThrow('exact pinned');
   expect(() => rmsNormFixture(0)).toThrow();
@@ -21,6 +26,54 @@ it('rejects unpinned graph bytes and preserves half rounding before learned-weig
   expect(multiply.inputs).toEqual(['half', 'weight']);
   expect(graph.outputs.find(value => value.name === 'normalized').dataType).toBe(1);
   expect(graph.outputs.find(value => value.name === 'y').dataType).toBe(10);
+});
+
+it.skipIf(!existsSync(model))('selects generated head rows and broadcasts grouped attention while preserving learned tensors and other calculations', async () => {
+  const original = new Uint8Array(readFileSync(model));
+  const normalized = await applyOmniVoiceRmsNormCorrection(original), selected = await prepareOmniVoiceGraph(original);
+  expect(selected.modifiedSha256).toBe('8deaf4fa4d77c8147711fda95f763b76b9d6259b93be127df95c99af896b8afb');
+  const before = decodeOnnxModel(normalized.bytes), after = decodeOnnxModel(selected.bytes);
+  expect(after.graph.initializers).toEqual(before.graph.initializers);
+  expect(after.graph.inputs.slice(0, -1)).toEqual(before.graph.inputs);
+  expect(after.graph.inputs.at(-1)).toEqual({ name: 'pn_audio_start', dataType: 7, dims: [1] });
+  expect(metadataInputNames(after.graph.nodes, after.graph.inputs.map(input => input.name)).has('pn_audio_start')).toBe(true);
+  expect(after.graph.outputs.slice(1)).toEqual(before.graph.outputs.slice(1));
+  expect(after.graph.outputs[0]).toEqual({ name: 'audio_logits', dataType: 10, dims: ['batch', 8, 'generated_frames', 1025] });
+  expect(after.opsets).toEqual(before.opsets);
+  const changed = new Set(['/Shape', '/Shape_1', '/audio_heads/MatMul']);
+  const replacements = new Map(), removedValues = new Set(), named = new Map(after.graph.nodes.map(node => [node.name, node]));
+  const producers = new Map(before.graph.nodes.flatMap(node => node.outputs.map(output => [output, node])));
+  for (let layer = 0; layer < 28; layer++) {
+    const prefix = `/llm/layers.${layer}/self_attn/`, stem = `pn_gqa_${layer}_`;
+    for (const suffix of ['Expand', 'Expand_1', 'Reshape_4', 'Reshape_6']) {
+      const node = before.graph.nodes.find(node => node.name === prefix + suffix);
+      replacements.set(node.name, { ...node, opType: 'Identity', inputs: [node.inputs[0]], attributes: new Map() }); removedValues.add(node.outputs[0]);
+    }
+    const transpose = before.graph.nodes.find(node => node.name === prefix + 'Transpose_3');
+    replacements.set(transpose.name, { ...transpose, attributes: new Map([['perm', { ...transpose.attributes.get('perm'), value: [0, 1, 2, 4, 3] }]]) });
+    removedValues.add(transpose.outputs[0]);
+    for (const [suffix, operation] of [['MatMul', 'qk'], ['MatMul_1', 'pv']]) {
+      const node = before.graph.nodes.find(node => node.name === prefix + suffix);
+      replacements.set(node.name, { ...node, inputs: [stem + operation + '_input', node.inputs[1]], outputs: [stem + operation + '_output'] });
+      expect(named.get(stem + operation + '_restore')).toMatchObject({ opType: 'Reshape', outputs: node.outputs });
+      expect(named.get(stem + operation + '_input')).toMatchObject({ opType: 'Reshape', inputs: [node.inputs[0], operation === 'qk' ? 'pn_gqa_query_shape' : stem + 'grouped'] });
+      if (operation === 'qk') removedValues.add(producers.get(node.inputs[1]).outputs[0]);
+    }
+    expect(named.get(stem + 'length')).toMatchObject({ opType: 'Gather', inputs: [stem + 'shape', 'pn_gqa_sequence_axis'] });
+    expect(named.get(stem + 'flat')).toMatchObject({ opType: 'Concat', inputs: ['pn_gqa_flat_prefix', stem + 'length'] });
+    expect(named.get(stem + 'grouped')).toMatchObject({ opType: 'Concat', inputs: ['pn_gqa_group_prefix', stem + 'length'] });
+  }
+  const nodes = after.graph.nodes.filter(node => !node.name.startsWith('pn_'));
+  expect(nodes).toEqual(before.graph.nodes.map(node => replacements.get(node.name) ?? (changed.has(node.name) ? { ...node, inputs: ['pn_audio_hidden', ...node.inputs.slice(1)] } : node)));
+  expect(after.graph.values).toEqual(before.graph.values.filter(info => !removedValues.has(info.name)));
+  for (const [name, values] of [['sequence_axis', [3]], ['query_shape', [1, 8, 2, -1, 128]], ['output_shape', [1, 16, -1, 128]], ['flat_prefix', [1, 16, -1]], ['group_prefix', [1, 8, 2, -1]]]) {
+    expect(constantNumbers(named.get('pn_gqa_' + name).attributes.get('value').value)).toEqual(values);
+  }
+  expect(after.graph.nodes.find(node => node.name === 'pn_audio_hidden')).toMatchObject({ opType: 'Slice',
+    inputs: ['/llm/norm/Mul_1_output_0', 'pn_audio_start', 'pn_audio_end', 'pn_audio_axis'] });
+  expect(selected.normalizationSha256).toBe(normalized.modifiedSha256);
+  await expect(prepareOmniVoiceGraph(normalized.bytes)).rejects.toThrow('exact pinned');
+  await expect(prepareOmniVoiceGraph(selected.bytes)).rejects.toThrow('exact pinned');
 });
 
 it('retains finite float32 RMS normalization for actual overflow-sized controls in the original C++ engine', async () => {
@@ -53,7 +106,6 @@ it('retains finite float32 RMS normalization for actual overflow-sized controls 
   } finally { await session.dispose(); await engine.dispose(); }
 });
 
-const model = '.cache/engine-models/MarkShark2/omnivoice-onnx-kv-b1-fp16/omnivoice-main-kv-fp16-b1.onnx';
 it('keeps the independent MatMul precision control separate and rounds its result to the original half interface', () => {
   const original = matmulFixture(10, [2, 2], [2, 2]), reference = float32MatmulReference(original);
   const before = decodeOnnxModel(original).graph, after = decodeOnnxModel(reference.bytes).graph;

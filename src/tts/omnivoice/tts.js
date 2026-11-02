@@ -9,6 +9,20 @@ export { OMNIVOICE_MODEL_REVISION, OMNIVOICE_MODEL_BASE_URL } from './loader.js'
 
 const logger = createLogger('omnivoice');
 const suppressError = createSuppressedErrorHandler(logger, 'OmniVoice cleanup failed.');
+/** @param {string} text @param {string} language */
+function splitSectionText(text, language) {
+  const middle = text.length / 2;
+  for (const granularity of /** @type {const} */ (['sentence', 'word', 'grapheme'])) {
+    const boundaries = Array.from(new Intl.Segmenter(language, { granularity }).segment(text), part => part.index)
+      .filter(index => index >= middle / 2 && index <= middle * 1.5)
+      .sort((a, b) => Math.abs(a - middle) - Math.abs(b - middle));
+    for (const index of boundaries) {
+      const parts = [text.slice(0, index).trim(), text.slice(index).trim()];
+      if (parts.every(part => part && part.length < text.length)) return parts;
+    }
+  }
+  return null;
+}
 /** @param {any} [deps] */
 export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProgress = () => {} } = {}) {
   /** @type {Awaited<ReturnType<typeof createOmniVoiceWorker>>|null} */
@@ -56,6 +70,31 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
         if (signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
         const abort = () => engine?.abortGeneration();
         signal?.addEventListener('abort', abort, { once: true });
+        /** @param {Awaited<ReturnType<typeof createOmniVoiceWorker>>} runtime @param {any} request
+         * @param {any} progress @returns {Promise<{pcm:Float32Array,sampleRate:number}>} */
+        async function synthesizeSection(runtime, request, progress) {
+          if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
+          try {
+            const result = await runtime.synthesize(request, ...(progress ? [{ onProgress: progress }] : []));
+            if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
+            return { pcm: result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm), sampleRate: result.sampleRate };
+          } catch (error) {
+            if (!(error instanceof Error) || error.name !== 'OmniVoiceSectionLengthError') throw error;
+            const parts = splitSectionText(request.text, request.lang);
+            if (!parts) throw error;
+            const results = [];
+            for (let index = 0; index < parts.length; index += 1) {
+              const result = await synthesizeSection(runtime, { ...request, text: parts[index] }, index === parts.length - 1 ? progress : null);
+              assertOmniVoiceAudio(result.pcm, result.sampleRate);
+              results.push(result);
+            }
+            if (results.some(result => result.sampleRate !== results[0].sampleRate)) throw new Error('OmniVoice section sample rates differ.');
+            const pcm = new Float32Array(results.reduce((length, result) => length + result.pcm.length, 0));
+            let offset = 0;
+            for (const result of results) { pcm.set(result.pcm, offset); offset += result.pcm.length; }
+            return { pcm, sampleRate: results[0].sampleRate };
+          }
+        }
         try {
           let seed = params.seed;
           for (let attempt = 0; attempt < 2; attempt += 1) {
@@ -64,7 +103,7 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
               const runtime = engine;
               if (!runtime) throw new Error('OmniVoice runtime was not initialized.');
-              const result = await runtime.synthesize({ ...params, seed }, ...(onSynthesisProgress ? [{ onProgress: onSynthesisProgress }] : []));
+              const result = await synthesizeSection(runtime, { ...params, seed }, onSynthesisProgress);
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
               const audio = result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm);
               assertOmniVoiceAudio(audio, result.sampleRate);

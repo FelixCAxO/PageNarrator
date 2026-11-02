@@ -1,5 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { OMNIVOICE_DATA } from './model-data.js';
+import { OMNIVOICE_WEIGHT_CHUNKS } from './weight-chunks.js';
 import { loadVerifiedFile } from '../verified-download.js';
 
 /** Verified model data response without a second Response body copy of the large weights.
@@ -18,6 +19,7 @@ export function createOmniVoiceDataFetch({ manifest = OMNIVOICE_DATA, fetcher = 
       onProgress({ message: `Preparing OmniVoice ${file.path}…` });
       const cache = await cacheStorage?.open('pagenarrator-omnivoice-v1').catch(reportCache);
       const data = (await loadVerifiedFile(url, file, { label: 'OmniVoice', cache, fetcher, onCacheError: reportCache,
+        verificationChunks: file.path === OMNIVOICE_WEIGHT_CHUNKS.path ? OMNIVOICE_WEIGHT_CHUNKS : null,
         onDownload: () => onProgress({ status: 'download', file: file.path, loaded: 0, total: file.bytes }),
         onProgress: (loaded, total) => onProgress({ status: 'progress', file: file.path, loaded, total }),
         onCacheInvalid: error => onProgress({ message: `Replacing corrupt OmniVoice data: ${file.path}.`, error: String(error) }) })).buffer;

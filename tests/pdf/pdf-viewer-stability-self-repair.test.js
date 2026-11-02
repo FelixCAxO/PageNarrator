@@ -87,6 +87,30 @@ describe('PDF viewer stability & self-repairing resilience', () => {
   });
 
   describe('Canvas context-loss self-healing', () => {
+    it('shows a recovered-artwork notice outside the selectable text layer', async () => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage;
+      pdf.getPage = async number => {
+        const page = await originalGetPage(number);
+        page.getTextContent = async () => ({ items: [{ str: 'Readable text' }], artworkWarnings: [{ kind: 'shading' }] });
+        return page;
+      };
+      const annotate = vi.fn(), renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,
+        pdfjs: { TextLayer: class { async render() {} } }, getPageScale: () => 1, annotateTextLayer: annotate });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-page-warning').textContent).toContain('Text reading is still available');
+      expect(pageEl.querySelector('.textLayer .pdf-page-warning')).toBeNull(); expect(annotate).toHaveBeenCalledOnce();
+      renderer.destroy(); dom.window.close();
+    });
+    it.each(['pdf_unsupported', 'pdf_corrupt', 'pdf_limit'])('does not repeatedly retry a permanent page failure: %s', async code => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage, error = Object.assign(new Error('Permanent failure'), { code });
+      pdf.getPage = async number => { const page = await originalGetPage(number); page.render = vi.fn(() => ({ promise: Promise.reject(error) })); return page; };
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,
+        pdfjs: { TextLayer: class { async render() {} } }, getPageScale: () => 1 });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await expect(renderer.ensurePageRendered(pdf, pageEl, 1)).rejects.toBe(error);
+      expect(pdf.pages.get(1).render).toHaveBeenCalledOnce(); renderer.destroy(); dom.window.close();
+    });
     it('discards canvases with lost 2D context and recovers with fresh canvas allocation', async () => {
       const dom = createDom();
       const document = dom.window.document;

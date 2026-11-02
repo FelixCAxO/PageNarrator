@@ -1,6 +1,84 @@
 # Benchmark tooling
 
+The [shape-view cast reuse A/B](view-casts-20261101.md) extends the existing helper to avoid repeated widening/narrowing around shape views. The current catalog cohort records four fewer commands per main pass, 1.58 MiB less retained GPU workspace, 3.4% lower pooled repeat CPU and lower commitment peaks in all four pairs. Latency is effectively unchanged; startup CPU is higher. Exact speech, 1,696 tests and five-minute muted playback pass under the unchanged 5 GiB browser cap.
+
+The [fixed-input calculation trace](fixed-inputs-20261101.md) confirms 18 repeated GPU commands per main pass and records input stability and buffer overwrites. It led to the shape-view reuse above; retaining all fixed-input outputs would require further lifetime controls.
+
+The [eager weight-upload batching experiment](upload-backpressure-20261101.md) lowers the median browser commitment peak by 137.91 MiB but increases time to first speech by 2.47% and establishes no CPU saving, so it stays unaccepted. A follow-up inventory identifies fixed-input position calculations for actual GPU replay/lifetime tracing.
+
+The [captured replay-input experiment](replay-inputs-20261101.md) skips 53.23 MiB of unused uploads per long paragraph while preserving tensor geometry and exact speech. Repeated pooled browser CPU falls 5.3%, but latency stays effectively unchanged and every paired commitment peak is higher. The prototype is rejected for now; the memory difference already exists before inference and its cause is unresolved.
+
+The [broadcast attention-mask A/B](broadcast-mask-20261101.md) replaces a dense constant mask with one broadcast value. Four paired workloads record 8.5% lower pooled browser CPU and 2.78 MiB less retained main GPU workspace, with modest latency gains and mixed peak commitment. Exact output and five-minute muted playback pass under the existing 5 GiB browser cap; physical 8 GiB hardware remains unqualified.
+
+The [empty KV-input experiment](empty-kv-20261101.md) finds unused cache uploads and saves 3.70 MiB in the prototype. An isolated repeat shows slower warm generation in every pair and mixed CPU results, so the change is rejected. Exact outputs, both cost cohorts and failed metadata-checker attempts are preserved; the accepted application stays unchanged.
+
+The [confidence-maximum experiment](confidence-maximum-20261101.md) rejects four sampler designs. Its two packaged finalists increase browser CPU despite fewer maximum calls; their exact-output checks and failed timing controls are preserved.
+
+The [uniform-parameter recovery A/B](uniform-parameters-recovery-20261101.md) accepts packed-only uniform parameter buffers after fresh 5.1% first-request and 6.9% warm latency gains. Exact native speech and five-minute playback pass under a 5 GiB browser commitment cap. CPU/RAM savings remain unproved, and the earlier transient stalls are not explained.
+
+The earlier [uniform-parameter A/B](uniform-parameters-20261101.md) recorded 6.0% and 6.4% paired median long-request latency gains with exact output, but deferred the prototype after failed continuity qualification. A short baseline control also failed. That iteration restored the prior application/build, rejected subgroup variants and retained safer benchmark calibration; the recovery above later qualified a narrower candidate.
+
+The [matrix-vector and tile-order A/B](vector-matmul-20261101.md) preserves exact bits in 400 native controls. The guarded complete-request prototype is rejected after a 5.7% paired median CPU increase and 1.5% slower first requests. Its eight paired long outputs remain exact; retained GPU allocation is unchanged. The accepted application and build stay in place.
+
+The [head-layout normalization A/B](norm-transpose-20261101.md) writes normalization output directly into the required transpose layout. It removes 56 copy dispatches per main pass and 2.78 MiB of retained main workspace, with roughly half the isolated stage time. Full-request CPU and latency remain mixed. Exact speech, native controls and five-minute muted continuity pass.
+
+The [RMSNorm register-sum A/B](rms-register-sum-20261101.md) removes redundant shared scratch and one synchronization while preserving checked output. Native GPU stages improve, with about 1.8% paired median long-request latency reductions across eight pairs. CPU remains mixed and retained GPU allocation stays unchanged. Precision, exact speech and five-minute muted continuity pass.
+
+The [guarded rotary-fusion A/B](rotary-fusion-20261101.md) combines eight-dispatch rotation chains into one while preserving half rounding and fallback semantics. It removes 392 dispatches per main pass and 2.84 MiB of retained main allocation. Every first long-request pair is faster; exact speech and five-minute muted continuity pass. Physical hardware qualification remains open.
+
+The [single-nonempty Concat A/B](concat-views-20261101.md) replaces redundant copies with validated tensor views. It removes 112 dispatches per main pass and 1.39 MiB of retained main GPU allocation, preserves exact speech, and passes five-minute muted continuity. Long-request latency medians improve modestly; CPU and short-request results remain mixed, and physical hardware qualification stays open.
+
+The [pipeline-binding experiment](pipeline-binding-20261101.md) removes 26% of replay pipeline-binding calls, but direct encoding and full-request measurements do not establish a useful compute saving. The prototype is rejected; exact output, native precision and recovery controls pass, and the accepted application stays unchanged.
+
+The [final feed-forward row experiment](final-layer-rows-20261101.md) preserves exact output and reduces isolated GPU-stage time, but is rejected after higher paired CPU cost in both full-request comparisons. Its matrix-work calculation shows why that local saving is only 0.36% of long-request main matrix work; the accepted application remains unchanged.
+
+The [lookup-range cache A/B](index-range-20261031.md) avoids repeated captures as token IDs decrease, with a 12.2% paired median browser-CPU reduction and unchanged exact output. GPU allocation stays unchanged; latency and whole-job commitment remain mixed. Native controls, packaged speech and five-minute muted continuity pass.
+
+The [decoder-window experiment](decoder-window-20261031.md) preserves exact output while reducing transient allocation, but is rejected after higher paired CPU cost, overlapping convolution work and increased idle retention. It also traces four range-triggered main-model cache rebuilds; the accepted application and bundle remain unchanged.
+
+The [half-cast alias A/B](cast-alias-20261031.md) removes attention widening/narrowing hidden behind no-op casts. It records a 33% first-pass workspace reduction, lower paired CPU/commitment medians, exact speech controls and five-minute continuity; request-latency gains remain small and mixed.
+
+The [attention-fusion A/B](attention-fusion-20261031.md) removes scaling/masking storage passes while preserving softmax rounding. It records lower GPU-stage time and modest request-latency gains, mixed CPU/commitment costs, rejected wider fusions and a strict post-startup playback accounting window.
+
+The [bounded-submission A/B](bounded-submissions-20261031.md) implements the long-request queue candidate, measures submission/capture costs, and preserves strict process accounting when parent PIDs are reused.
+
+The [cold-capacity and long-request investigation](cold-workspace-20261031.md) rejects generic allocation rounding after cache-boundary and retained-memory regressions, then isolates Intel device loss with bounded queue-submission prototypes.
+
+The [decoder workspace-placement A/B](workspace-placement-20261031.md) packs repeat-request intermediates into four buffers, reducing measured allocated capacity by 56.5%. It reports cold versus repeated behavior separately, with mixed whole-browser CPU and commitment observations.
+
 The [protocol](protocol.md) defines workloads, samples, and scoring. Current numbers are development-host diagnostics. Representative physical-tier performance remains unverified.
+
+The [2026-10-31 compute-cost A/B experiment](compute-cost-20261031.md) records retained-model and CPU-arena memory savings, an isolated GPU-path CPU comparison, exact speech controls, and the inconclusive GPU timing result.
+
+The [inference algorithm A/B](algorithm-compute-20261031.md) follows with packed FP16 matrix loads, fused gates and redundant-transform removal, paired full-speech speedups, a muted continuity capture and sampled browser/GPU memory. Physical 8 GiB and weaker dedicated-GPU qualification remains open.
+
+The [bounded model loading A/B](ram-verification-20261031.md) reduces hash/cache staging, records cached loading CPU savings, and fixes an opening-paragraph buffer underrun. A five-minute muted read passes under an enforced 6 GiB browser commitment ceiling; physical target-machine qualification remains open.
+
+The [direct FP16 sampling A/B](logit-sampling-20261031.md) removes full-logit float32 expansion, with CPU-stage measurements and 32 exact packaged speech samples. The extended playback workload varies paragraph lengths under the same browser memory ceiling.
+
+The [identity-indexing A/B](index-views-20261031.md) removes full-tensor identity copies and fixes alternating-plan cache eviction within the existing memory budget. It records the intermediate long-passage regression as well as the final candidate controls.
+
+The [generated-row projection A/B](output-projection-20261031.md) skips unused prefix rows at the final audio head, reducing logit calculation and readback while preserving full attention. It compares every generated-row logit on NVIDIA and Intel and records the mixed packaged timing results.
+
+The [transformer and validated-readback A/B](transformer-compute-20261031.md) rejects four slower matrix variants and overlaps existing validation/output transfers without weakening their error handling. It records native invalid-index recovery and modest speech-latency gains, with no established CPU/RAM saving.
+
+The [confidence-pruning A/B](confidence-pruning-20261031.md) uses a proven score bound to skip softmax sums that cannot affect token selection. It records fewer exponential calculations, exact per-step/model and packaged speech controls, and a measured whole-browser CPU reduction; commitment peaks remain mixed.
+
+The [confidence-cutoff refinement A/B](confidence-refinement-20261031.md) tightens that bound using completed scores and compares periodic sorting, partial sums and indexed iteration. It retains the simpler measured combination while preserving all logit checks and token decisions.
+
+The [packed-matrix scheduling experiment](packed-matmul-scheduling-20261031.md) rejects five nonportable shader variants and improves GPU timing controls. `scripts/benchmarks/inference-kernels.mjs --output=<new-report.json>` now records interleaved pairs and original/original controls; correctness status is separate from each row's `timingControlPassed` noise screen.
+
+The [grouped-query broadcasting A/B](grouped-query-broadcast-20261031.md) removes repeated key/value-head copies while preserving attention calculations. It verifies all generated logits on NVIDIA/Intel, fewer dispatches, smaller GPU plans, paired CPU/timing results and five-minute continuity; whole-browser RAM remains mixed.
+
+The [serialized GPU workspace A/B](plan-workspace-20261031.md) lets alternating cached plans share mutable intermediates within the existing 128 MiB budget. It records fewer repeated allocations, 41.6% less paired browser CPU, exact logits/audio and five-minute continuity, alongside the extra private retained storage and slight short-request regression.
+
+The [boolean feed conversion A/B](boolean-feeds-20261031.md) combines validation and widening, then reuses at most 4 MiB per session. It records lower conversion cost and paired browser CPU, exact logits/audio, and the mixed latency and increased browser commitment peaks.
+
+The [compact decoder upsampling A/B](decoder-workspace-20261031.md) gathers inserted zeros inside convolution, preserving its accumulation order. It records lower GPU temporary capacity and paired commitment peaks, exact native/speech controls, and the CPU/latency regressions that remain for the next refinement.
+
+The [direct decoder zero-tail A/B](decoder-zero-tail-20261031.md) absorbs the following positive-zero Pad while protecting its bias and observable-output semantics. It removes another large allocation and records modest, mixed CPU results, nearly flat request timings and lower paired commitment peaks.
+
+The [transposed-convolution tail experiment](transpose-zero-tail-20261031.md) rejects and removes a smaller GPU-stage optimization after whole-browser commitment and CPU regress. It verifies restoration of the prior package and records an offline allocation-placement hypothesis for the larger remaining workspace gap.
 
 The local v1.0.3 toolchain uses Node 26.12.1, npm 12.2.1, Zig 0.17.0, TypeScript 7.0.2 and jsdom 30.1.3. Lifecycle objects, timers and promises have explicit types under the existing strict checks. Noise-filter queries use bounded groups with the same exclusions, preserving jsdom 30's 2,048-character limit. ESLint uses Microsoft's [TypeScript 6 API compatibility package](https://devblogs.microsoft.com/typescript/announcing-typescript-7-0/#running-side-by-side-with-typescript-6.0); both `typecheck` scripts execute the native TypeScript 7 compiler. No acceptance threshold is changed.
 

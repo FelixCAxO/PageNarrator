@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.3 (2026-10-30, local release)
+## 1.0.3 (2026-11-02, local release candidate)
 
 - Keep narration advancing when a background tab or minimized window delays page highlighting.
 - Update the Node/npm, build, test, lint, browser and comparison-library toolchains to current compatible releases.
@@ -14,6 +14,11 @@
 - Reuse validated GPU inference plans and fuse corrected half-precision normalization without changing the model, refinement steps or sampled audio output.
 - Highlight PDF member access such as `super().deposit` when speech omits the empty parentheses.
 - Correct clock transcription assessment and independent PDF checkpoint eligibility, preserving the original frozen references and failed reports.
+- Expand the fixed OmniVoice catalog with licensed recorded references, stable preset seeds and complete source attribution; retain 640 presets across 32 languages.
+- Bound GPU submissions, share inference workspace and reuse validated tensor views, attention plans and weight chunks to reduce redundant allocation and transfer.
+- Verify downloaded model bytes before caching, including bounded streaming downloads and chunk integrity checks.
+- Improve PDF font recovery, tiled artwork, rendering cleanup and dark viewer controls; retain unknown text instead of silently dropping it.
+- Refresh native product screenshots and their localized website assets for this candidate.
 
 Prepared locally at the maintainer's instruction with the same disclosed limitations as 1.0.2. Independent voice/PDF reviews remain pending, physical hardware tiers are unqualified, and historical waveform mismatches remain failed diagnostics. The local 180-section OmniVoice read had a maximum 3.5 ms playback handoff and 3.8% warmed resident-memory growth before cleanup; this is one-host evidence, not broad performance qualification. A finite reserve can still drain if synthesis stays slower than playback. See [verification status](docs/release-readiness.md). This local preparation authorizes no publication or deployment and changes no acceptance threshold or failed result.
 

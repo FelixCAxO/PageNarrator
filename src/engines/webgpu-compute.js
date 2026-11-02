@@ -2,8 +2,8 @@
 import { BINARY_OPERATIONS, UNARY_OPERATIONS } from './native-compute.js';
 import { broadcastShape, broadcastStrides, tensorSize } from './tensor-shape.js';
 import { axisIndex, batchedMatmulPlan, contiguousStrides } from './index-shape.js';
-import { ELEMENTWISE_SHADER, MATMUL_SHADER } from './webgpu-shaders.js';
-import { halfRmsNormShader } from './webgpu-audio-shaders.js';
+import { ELEMENTWISE_SHADER, MATMUL_SHADER, PACKED_HALF_MATMUL_SHADER } from './webgpu-shaders.js';
+import { HALF_SILU_GATE_SHADER, halfRmsNormShader } from './webgpu-audio-shaders.js';
 import { concatPlan, convolutionPlan, poolingPlan, reductionPlan, resizePlan } from './cnn-shape.js';
 import { CONCAT_SHADER, CONV_DIRECT_SHADER, CONV_TILED_SHADER, POOL_SHADER, REDUCE_MEAN_SHADER, RESIZE_SHADER } from './webgpu-cnn-shaders.js';
 import { ARGMAX_SHADER, BATCH_NORM_SHADER, GATHER_SHADER, INDEX_SHADER, SOFTMAX_SHADER } from './webgpu-index-shaders.js';
@@ -11,14 +11,17 @@ import { GRID_SAMPLE_SHADER, PAD_SHADER } from './webgpu-image-shaders.js';
 import { integerAddRange, integerMultiplyRange, integerRange } from './bounded-integers.js';
 import { CHECKED_GATHER_TENSOR_SHADER, GATHER_TENSOR_SHADER, INTEGER_ADD_SHADER } from './webgpu-integer-shaders.js';
 import { liftConvolution } from './cnn-shape.js';
-import { CONV_1D_SHADER, CONV_TRANSPOSE_1D_SHADER, SNAKE_SHADER } from './webgpu-audio-shaders.js';
+import { CONV_1D_SHADER, ZERO_INSERT_CONV_1D_SHADER, ZERO_TAIL_CONV_1D_SHADER, CONV_TRANSPOSE_1D_SHADER, SNAKE_SHADER } from './webgpu-audio-shaders.js';
 import { storageWidth } from './tensor-format.js';
 import { halfIndexShader, halfStorageShader, castShader, compareShader, whereShader } from './webgpu-precision-shaders.js';
 import { embeddingShardShader } from './webgpu-embedding-shader.js';
 import { generationShader, rangePlan } from './webgpu-generation-shaders.js';
+import { planGpuWorkspace } from './gpu-workspace-plan.js';
+import { HALF_SCALED_MASKED_SOFTMAX_SHADER, HALF_ROTARY_SHADER } from './webgpu-attention-shaders.js';
 
 export const GPU_BINARY_OPERATIONS = Object.freeze({ ...BINARY_OPERATIONS, Pow: 4, PRelu: 5 });
 export const GPU_UNARY_OPERATIONS = Object.freeze({ ...UNARY_OPERATIONS, Sin: 10, Cos: 11 });
+const COMMANDS_PER_SUBMISSION = 256;
 
 function floatBits(value) { return new Uint32Array(Float32Array.of(value).buffer)[0]; }
 
@@ -82,7 +85,7 @@ export class WebGpuCompute {
       reduceMean: REDUCE_MEAN_SHADER, pool: POOL_SHADER, resize: RESIZE_SHADER, concat: CONCAT_SHADER,
       index: INDEX_SHADER, gather: GATHER_SHADER, batchNorm: BATCH_NORM_SHADER, softmax: SOFTMAX_SHADER, argmax: ARGMAX_SHADER,
       pad: PAD_SHADER, gridSample: GRID_SAMPLE_SHADER, integerAdd: INTEGER_ADD_SHADER, gatherTensor: GATHER_TENSOR_SHADER, checkedGatherTensor: CHECKED_GATHER_TENSOR_SHADER,
-      conv1d: CONV_1D_SHADER, convTranspose1d: CONV_TRANSPOSE_1D_SHADER, snake: SNAKE_SHADER,
+      convZeroTail1d: ZERO_TAIL_CONV_1D_SHADER, convZeroInsert1d: ZERO_INSERT_CONV_1D_SHADER, conv1d: CONV_1D_SHADER, convTranspose1d: CONV_TRANSPOSE_1D_SHADER, snake: SNAKE_SHADER,
       gatherBits: GATHER_SHADER.replaceAll('array<f32>', 'array<u32>'), concatBits: CONCAT_SHADER.replaceAll('array<f32>', 'array<u32>') };
     this.cnn = Object.fromEntries(await Promise.all(Object.entries(definitions).map(async ([name, code]) =>
       [name, await this.pipeline(code, `PageNarrator ${name}`)])));
@@ -108,6 +111,11 @@ export class WebGpuCompute {
       this.half = Object.fromEntries(await Promise.all(Object.entries(halfDefinitions).map(async ([name, code]) =>
         [name, await this.pipeline(halfStorageShader(code), `PageNarrator half ${name}`)])));
       for (const width of [128, 1024]) this.half[`rmsNorm${width}`] = await this.pipeline(halfRmsNormShader(width), `PageNarrator half RMSNorm ${width}`);
+      this.half.rmsNormTranspose128 = await this.pipeline(halfRmsNormShader(128, true), 'PageNarrator half RMSNorm head transpose');
+      this.half.siluGate = await this.pipeline(HALF_SILU_GATE_SHADER, 'PageNarrator half SiLU gate');
+      this.half.packedMatmul = await this.pipeline(PACKED_HALF_MATMUL_SHADER, 'PageNarrator packed half MatMul');
+      this.half.scaledMaskedSoftmax = await this.pipeline(HALF_SCALED_MASKED_SOFTMAX_SHADER, 'PageNarrator half scaled masked softmax');
+      this.half.rotary = await this.pipeline(HALF_ROTARY_SHADER, 'PageNarrator half rotary');
       for (const [name, code] of Object.entries({ index: INDEX_SHADER, gather: GATHER_SHADER, gatherTensor: GATHER_TENSOR_SHADER, checkedGatherTensor: CHECKED_GATHER_TENSOR_SHADER })) {
         this.half[name] = await this.pipeline(halfIndexShader(code), `PageNarrator half ${name}`);
       }
@@ -131,13 +139,14 @@ export class WebGpuCompute {
     return buffer;
   }
 
-  tensor(shape, batch = null, reusableBuffer = null, dataType = 'float32', bounds = null) {
+  tensor(shape, batch = null, reusableBuffer = null, dataType = 'float32', bounds = null, capacityBytes = 0) {
     if (['uint8', 'int8'].includes(dataType)) throw new Error('Quantized tensors require the WASM backend.');
     const length = tensorSize(shape);
     const bytes = length * storageWidth(dataType);
     if (dataType === 'float16' && !this.device.features.has('shader-f16')) throw new Error('Half tensors require shader-f16 support.');
     if (reusableBuffer && (!this.buffers.has(reusableBuffer) || reusableBuffer.size < bytes)) throw new RangeError('A tensor view requires sufficient storage from this engine.');
-    const buffer = reusableBuffer ?? this.buffer(bytes, GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST, 'PageNarrator tensor');
+    if (capacityBytes !== 0 && (!Number.isSafeInteger(capacityBytes) || capacityBytes < Math.max(4, Math.ceil(bytes / 4) * 4) || capacityBytes % 4)) throw new RangeError('Invalid tensor storage capacity.');
+    const buffer = reusableBuffer ?? this.buffer(capacityBytes || bytes, GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_SRC | GPUBufferUsage.COPY_DST, 'PageNarrator tensor');
     const tensor = Object.freeze({ shape: Object.freeze([...shape]), length, buffer, batch, dataType, bounds });
     this.tensors.add(tensor);
     const owners = this.owners.get(buffer) ?? new Set();
@@ -222,6 +231,7 @@ export class WebGpuCompute {
 
   matmul(a, b) { const batch = this.batch(); const result = batch.matmul(a, b); batch.submit(); return result; }
   rmsNorm(input, weight) { const batch = this.batch(); const result = batch.rmsNorm(input, weight); batch.submit(); return result; }
+  siluGate(gate, up) { const batch = this.batch(); const result = batch.siluGate(gate, up); batch.submit(); return result; }
   unary(operation, a, options) { const batch = this.batch(); const result = batch.unary(operation, a, options); batch.submit(); return result; }
   binary(operation, a, b) { const batch = this.batch(); const result = batch.binary(operation, a, b); batch.submit(); return result; }
 
@@ -291,12 +301,31 @@ export class WebGpuCompute {
 }
 
 class ComputeBatch {
-  constructor(engine, { capture = false } = {}) {
+  /** @param {any} engine @param {{capture?:boolean, borrowedBuffers?:any[], workspacePlan?:any, recordWorkspace?:boolean}} [options] */
+  constructor(engine, { capture = false, borrowedBuffers = [], workspacePlan = null, recordWorkspace = false } = {}) {
     this.engine = engine;
     this.encoder = engine.device.createCommandEncoder({ label: 'PageNarrator inference batch' });
+    this.commandBuffers = [];
+    this.commandCount = 0;
+    this.pass = null;
     this.parameters = [];
     this.outputs = new Set();
     this.bufferPool = new Map();
+    this.availableBorrowed = new Set(borrowedBuffers);
+    this.borrowedBuffers = new Set();
+    this.workspaceBuffers = new Set();
+    this.workspaceTrace = recordWorkspace && !workspacePlan && !borrowedBuffers.length ? { clock: 0, intervals: [], active: new Map() } : null;
+    for (const buffer of borrowedBuffers) {
+      if (!engine.buffers.has(buffer) || [...(engine.owners.get(buffer) ?? [])].some(tensor => tensor.batch && !tensor.batch.submitted)) throw new Error('Borrowed workspace requires submitted storage from this engine.');
+    }
+    this.placement = null; this.outputIndex = 0; this.placementHits = 0; this.placementFallbacks = 0;
+    if (workspacePlan) {
+      const { capacities, slots } = workspacePlan;
+      if (borrowedBuffers.length || !Array.isArray(capacities) || !Array.isArray(slots) || !capacities.length || capacities.length > 512 || slots.length > 512
+        || capacities.some(bytes => !Number.isSafeInteger(bytes) || bytes < 4 || bytes % 4 || bytes > engine.device.limits.maxBufferSize || bytes > engine.device.limits.maxStorageBufferBindingSize)
+        || slots.some(slot => !Number.isInteger(slot) || slot < 0 || slot >= capacities.length)) throw new RangeError('Invalid workspace placement.');
+      this.placement = { capacities: [...capacities], slots: [...slots], buffers: new Array(capacities.length).fill(null) };
+    }
     this.reuseCount = 0;
     this.allocationCount = 0;
     this.allocatedBytes = 0;
@@ -306,13 +335,41 @@ class ComputeBatch {
 
   output(shape, dataType = 'float32', bounds = null) {
     const bytes = Math.max(4, Math.ceil(tensorSize(shape) * storageWidth(dataType) / 4) * 4);
-    let selected = Infinity;
-    for (const [size, buffers] of this.bufferPool) if (buffers.length && size >= bytes && size < selected) selected = size;
-    const buffer = this.bufferPool.get(selected)?.pop();
+    const slot = this.placement?.slots[this.outputIndex++];
+    let buffer, capacity = 0, placed = false;
+    if (slot !== undefined && this.placement.capacities[slot] >= bytes) {
+      const candidate = this.placement.buffers[slot];
+      if (!candidate) { capacity = this.placement.capacities[slot]; placed = true; }
+      else if (this.engine.buffers.has(candidate) && !this.engine.owners.get(candidate)?.size) {
+        buffer = candidate; placed = true;
+        const pool = this.bufferPool.get(buffer.size), index = pool?.indexOf(buffer) ?? -1;
+        if (index >= 0) pool.splice(index, 1);
+      }
+    }
+    if (!placed) {
+      if (this.placement) this.placementFallbacks += 1;
+      let selected = Infinity;
+      for (const [size, buffers] of this.bufferPool) if (buffers.length && size >= bytes && size < selected) selected = size;
+      let borrowed;
+      for (const candidate of this.availableBorrowed) if (candidate.size >= bytes && candidate.size < selected) { selected = candidate.size; borrowed = candidate; }
+      buffer = borrowed ?? this.bufferPool.get(selected)?.pop();
+      if (borrowed) { this.availableBorrowed.delete(buffer); this.borrowedBuffers.add(buffer); }
+    }
+    const tensor = this.engine.tensor(shape, this, buffer, dataType, bounds, capacity);
+    if (placed) { this.placement.buffers[slot] = tensor.buffer; this.placementHits += 1; }
     if (buffer) this.reuseCount += 1;
-    else { this.allocationCount += 1; this.allocatedBytes += bytes; }
-    const tensor = this.engine.tensor(shape, this, buffer, dataType, bounds);
+    else { this.allocationCount += 1; this.allocatedBytes += tensor.buffer.size; }
+    this.workspaceBuffers.add(tensor.buffer);
     this.outputs.add(tensor);
+    const trace = this.workspaceTrace;
+    if (trace) {
+      // shortcut: trace at most 512 outputs; extend if larger uncached graphs need packing.
+      if (trace.intervals.length === 512) this.workspaceTrace = null;
+      else {
+        const interval = { bytes, start: trace.clock++, end: Infinity };
+        trace.intervals.push(interval); trace.active.set(tensor.buffer, interval);
+      }
+    }
     return tensor;
   }
 
@@ -320,13 +377,23 @@ class ComputeBatch {
     this.checkOwnership(tensor);
     if (tensor.batch !== this) throw new Error('Only this batch can recycle its intermediate tensors.');
     this.outputs.delete(tensor);
-    if (this.engine.forgetTensor(tensor)) return;
+    if (this.engine.forgetTensor(tensor) && (!this.borrowedBuffers.has(tensor.buffer)
+      || [...this.engine.owners.get(tensor.buffer)].some(owner => owner.batch === this))) return;
+    const trace = this.workspaceTrace, interval = trace?.active.get(tensor.buffer);
+    if (interval) { interval.end = trace.clock++; trace.active.delete(tensor.buffer); }
     const buffers = this.bufferPool.get(tensor.buffer.size) ?? [];
     buffers.push(tensor.buffer);
     this.bufferPool.set(tensor.buffer.size, buffers);
   }
 
   scratchBuffers() { return [...this.bufferPool.values()].flat(); }
+
+  planWorkspace() {
+    const trace = this.workspaceTrace;
+    if (!trace?.intervals.length) return null;
+    const plan = planGpuWorkspace(trace.intervals);
+    return plan.capacities.reduce((sum, bytes) => sum + bytes, 0) < this.allocatedBytes ? plan : null;
+  }
 
   retireScratch() {
     if (!this.submitted) throw new Error('Submit a batch before retiring its scratch storage.');
@@ -358,18 +425,48 @@ class ComputeBatch {
     this.dispatchTensors(pipeline, [a, b, out], parameters, x, y);
   }
 
+  nextCommand() {
+    // Separate submissions avoid the observed long-request D3D12 device hang.
+    if (this.commandCount === COMMANDS_PER_SUBMISSION) {
+      this.pass?.end(); this.pass = null;
+      const buffer = this.encoder.finish();
+      if (this.submitted) this.engine.device.queue.submit([buffer]);
+      else this.commandBuffers.push(buffer);
+      this.encoder = this.engine.device.createCommandEncoder({ label: 'PageNarrator inference segment' });
+      this.commandCount = 0;
+    }
+    this.commandCount++;
+  }
+
+  finishCommands() {
+    this.pass?.end(); this.pass = null;
+    this.commandBuffers.push(this.encoder.finish());
+    this.encoder = null;
+    const buffers = this.commandBuffers;
+    this.commandBuffers = []; this.commandCount = 0;
+    for (const buffer of buffers) this.engine.device.queue.submit([buffer]);
+  }
+
+  discardEncoder() {
+    const pass = this.pass;
+    this.pass = null; this.encoder = null; this.commandBuffers.length = 0; this.commandCount = 0;
+    pass?.end();
+  }
+
   dispatchTensors(pipeline, tensors, parameters, x, y = 1, z = 1) {
     if (!x || !y || !z) return;
     const limit = this.engine.device.limits.maxComputeWorkgroupsPerDimension;
     if (!pipeline) throw new Error('Prepare the required GPU pipelines before encoding inference.');
     if ([x, y, z].some(n => !Number.isSafeInteger(n) || n < 0 || n > limit)) throw new RangeError('Compute dispatch exceeds the WebGPU workgroup limit.');
-    const cfg = this.engine.buffer(parameters.byteLength, GPUBufferUsage.STORAGE | GPUBufferUsage.COPY_DST, 'PageNarrator dispatch parameters');
+    const usage = pipeline === this.engine.half?.packedMatmul ? GPUBufferUsage.UNIFORM : GPUBufferUsage.STORAGE;
+    const cfg = this.engine.buffer(parameters.byteLength, usage | GPUBufferUsage.COPY_DST, 'PageNarrator dispatch parameters');
     this.parameters.push(cfg);
     this.engine.device.queue.writeBuffer(cfg, 0, parameters);
     const group = this.engine.device.createBindGroup({ layout: pipeline.getBindGroupLayout(0), entries:
       [...tensors.map(tensor => tensor.buffer), cfg].map((buffer, binding) => ({ binding, resource: { buffer } })) });
-    const pass = this.encoder.beginComputePass();
-    pass.setPipeline(pipeline); pass.setBindGroup(0, group); pass.dispatchWorkgroups(x, y, z); pass.end();
+    this.nextCommand();
+    const pass = this.pass ??= this.encoder.beginComputePass();
+    pass.setPipeline(pipeline); pass.setBindGroup(0, group); pass.dispatchWorkgroups(x, y, z);
     this.commands?.push({ pipeline, group, x, y, z });
   }
 
@@ -380,19 +477,27 @@ class ComputeBatch {
 
   convolution(input, weights, bias = null, options = {}) {
     this.check(input, weights, ...(bias ? [bias] : []));
-    const lifted = liftConvolution(input.shape, weights.shape, options);
+    const insertion = options.zeroInsertStride ?? 1;
+    const zeroTail = options.zeroTail ?? false;
+    if (typeof zeroTail !== 'boolean' || (zeroTail && insertion === 1)) throw new RangeError('Invalid zero-tail convolution.');
+    if (!Number.isSafeInteger(insertion) || insertion < 1 || insertion > 0x7fffffff
+      || (insertion > 1 && (input.shape.length !== 3 || input.shape.some(dim => !dim) || options.transpose || weights.shape.length !== 3 || weights.shape[1] <= 1))) throw new RangeError('Invalid zero-insert convolution.');
+    const logicalShape = insertion === 1 ? input.shape : [input.shape[0], input.shape[1], (input.shape[2] - 1) * insertion + 1];
+    const lifted = liftConvolution(logicalShape, weights.shape, options);
     const plan = convolutionPlan(lifted.input, lifted.weights, lifted.options);
+    if (zeroTail) plan.shape[3] += 1;
     if (bias && (bias.shape.length !== 1 || bias.length !== plan.shape[1])) throw new RangeError('Convolution bias must match output channels.');
     const output = this.output(lifted.squeeze ? [plan.shape[0], plan.shape[1], plan.shape[3]] : plan.shape);
     const parameters = new Uint32Array(24);
     const [x, y] = this.grid(Math.ceil(output.length / 64));
     parameters.set([...lifted.input, ...plan.shape.slice(1), plan.inputChannelsPerGroup, plan.outputChannelsPerGroup,
       ...plan.kernel, ...plan.strides, ...plan.dilations, ...plan.pads.slice(0, 2), Number(Boolean(bias)), Number(Boolean(options.relu)), Number(plan.transpose), plan.group, x]);
+    parameters[22] = input.shape.at(-1); parameters[23] = insertion;
     if (plan.transpose && lifted.squeeze && plan.dilations[1] === 1) {
       this.dispatchTensors(this.engine.cnn?.convTranspose1d, [input, weights, bias ?? weights, output], parameters,
         Math.ceil(Math.ceil(plan.shape[3] / plan.strides[1]) / 16), Math.ceil(plan.outputChannelsPerGroup / 16), plan.shape[0] * plan.group * plan.strides[1]);
     } else if (lifted.squeeze && !plan.transpose && plan.inputChannelsPerGroup > 1) {
-      this.dispatchTensors(this.engine.cnn?.conv1d, [input, weights, bias ?? weights, output], parameters,
+      this.dispatchTensors(this.engine.cnn?.[zeroTail ? 'convZeroTail1d' : insertion > 1 ? 'convZeroInsert1d' : 'conv1d'], [input, weights, bias ?? weights, output], parameters,
         Math.ceil(plan.shape[3] / 32), Math.ceil(plan.outputChannelsPerGroup / 32), plan.shape[0] * plan.group);
     } else if (plan.transpose || plan.inputChannelsPerGroup === 1) {
       this.dispatchTensors(this.engine.cnn?.convDirect, [input, weights, bias ?? weights, output], parameters, x, y);
@@ -471,6 +576,8 @@ class ComputeBatch {
     const output = this.output(shape, input.dataType, input.bounds);
     if (input.length) {
       const bytes = Math.ceil(input.length * storageWidth(input.dataType) / 4) * 4;
+      this.nextCommand();
+      this.pass?.end(); this.pass = null;
       this.encoder.copyBufferToBuffer(input.buffer, 0, output.buffer, 0, bytes);
       this.commands?.push({ copy: true, source: input.buffer, destination: output.buffer, bytes });
     }
@@ -548,6 +655,25 @@ class ComputeBatch {
     return output;
   }
 
+  scaledMaskedSoftmax(input, scale, mask) {
+    this.checkNumeric(input, scale, mask);
+    const shape = input.shape;
+    if (input.dataType !== 'float16' || !this.engine.half?.scaledMaskedSoftmax || scale.shape.length !== 0
+      || shape.length !== 4 || shape[0] !== 1 || mask.shape.length !== 4
+      || mask.shape[0] !== 1 || mask.shape[1] !== 1
+      || !(mask.shape[2] === shape[2] && mask.shape[3] === shape[3] || mask.shape[2] === 1 && mask.shape[3] === 1)) {
+      const scaled = this.binary('Mul', input, scale), masked = this.binary('Add', scaled, mask);
+      this.recycle(scaled);
+      const output = this.softmax(masked);
+      this.recycle(masked);
+      return output;
+    }
+    if (!shape[3]) throw new RangeError('Softmax currently requires a nonempty final axis.');
+    const output = this.output(shape, input.dataType), rows = input.length / shape[3], [x, y] = this.grid(rows);
+    this.dispatchTensors(this.engine.half.scaledMaskedSoftmax, [input, scale, mask, output], Uint32Array.of(rows, shape[3], x, mask.length), x, y);
+    return output;
+  }
+
   softmax(input, axis = -1) {
     this.checkNumeric(input);
     axis = axisIndex(axis, input.shape.length);
@@ -610,10 +736,31 @@ class ComputeBatch {
     const parameters = new Uint32Array(32);
     parameters.set([a.shape.at(-2), b.shape.at(-1), a.shape.at(-1), plan.batch.length]);
     parameters.set(plan.batch, 8); parameters.set(plan.aStrides, 16); parameters.set(plan.bStrides, 24);
-    this.dispatchTensors(a.dataType === 'float16' ? this.engine.half?.matmul : this.engine.matmulPipeline, [a, b, output], parameters,
+    const halfPipeline = a.shape.at(-1) % 2 === 0 && b.shape.at(-1) % 2 === 0 ? this.engine.half?.packedMatmul : this.engine.half?.matmul;
+    this.dispatchTensors(a.dataType === 'float16' ? halfPipeline : this.engine.matmulPipeline, [a, b, output], parameters,
       Math.ceil(b.shape.at(-1) / 16), Math.ceil(a.shape.at(-2) / 16), tensorSize(plan.batch));
     return output;
   }
+
+  rotary(input,cosine,sine,split) {
+  this.checkNumeric(input,cosine,sine);
+  const width=input.shape.at(-1);
+  if(input.dataType!=='float16'||!input.shape.length||!Number.isInteger(split)||split<0||split>width)throw new RangeError('Invalid half rotary partition.');
+  const shape=broadcastShape(broadcastShape(input.shape,cosine.shape),sine.shape),output=this.output(shape,'float16'),[x,y]=this.grid(Math.ceil(output.length/64)),parameters=new Uint32Array(40);
+  parameters.set([output.length,shape.length,x,width,split]);parameters.set(shape,8);
+  parameters.set(broadcastStrides(input.shape,shape),16);parameters.set(broadcastStrides(cosine.shape,shape),24);parameters.set(broadcastStrides(sine.shape,shape),32);
+  this.dispatchTensors(this.engine.half?.rotary,[input,cosine,sine,output],parameters,x,y);return output;
+}
+
+  rmsNormTranspose(input,weight) {
+  this.checkNumeric(input,weight);
+  const shape=input.shape;
+  if(input.dataType!=='float16'||weight.dataType!=='float16'||shape.length!==4||shape[3]!==128||weight.shape.length!==1||weight.length!==128)throw new RangeError('Unsupported half RMSNorm head transpose shape.');
+  const output=this.output([shape[0],shape[2],shape[1],128],'float16'),rows=input.length/128;
+  const x=Math.min(rows,this.engine.device.limits.maxComputeWorkgroupsPerDimension);
+  this.dispatchTensors(this.engine.half?.rmsNormTranspose128,[input,weight,output],Uint32Array.of(rows,x,shape[2],shape[1]),x,x?Math.ceil(rows/x):0);
+  return output;
+}
 
   rmsNorm(input, weight) {
     this.checkNumeric(input, weight);
@@ -623,6 +770,17 @@ class ComputeBatch {
     const output = this.output(input.shape, input.dataType), rows = input.length / width;
     const x = Math.min(rows, this.engine.device.limits.maxComputeWorkgroupsPerDimension);
     this.dispatchTensors(pipeline, [input, weight, output], Uint32Array.of(rows, x), x, x ? Math.ceil(rows / x) : 0);
+    return output;
+  }
+
+  siluGate(gate, up) {
+    this.checkNumeric(gate, up);
+    if (gate.dataType !== 'float16') throw new Error('Fused SiLU gate requires half tensors.');
+    const shape = broadcastShape(gate.shape, up.shape), output = this.output(shape, 'float16');
+    const parameters = new Uint32Array(32), [x, y] = this.grid(Math.ceil(output.length / 64));
+    parameters.set([output.length, shape.length, x, Number(gate.length === output.length && up.length === output.length)]); parameters.set(shape, 8);
+    parameters.set(broadcastStrides(gate.shape, shape), 16); parameters.set(broadcastStrides(up.shape, shape), 24);
+    this.dispatchTensors(this.engine.half?.siluGate, [gate, up, output], parameters, x, y);
     return output;
   }
 
@@ -740,7 +898,9 @@ class ComputeBatch {
 
   validationFlag() {
     if (!this.validationTensor) {
-      this.validationTensor = this.output([1], 'int32');
+      // The host reset must not alias an earlier dispatch or another plan's workspace.
+      this.validationTensor = this.engine.tensor([1], this, null, 'int32');
+      this.outputs.add(this.validationTensor); this.allocationCount++; this.allocatedBytes += 4;
       this.engine.write(this.validationTensor, Int32Array.of(0));
     }
     return this.validationTensor;
@@ -770,15 +930,14 @@ class ComputeBatch {
   cancel({ retainParameters = false } = {}) {
     if (this.submitted) return;
     this.submitted = true;
-    this.encoder = null;
+    this.discardEncoder();
     if (!retainParameters) this.releaseParameters();
   }
 
   submit({ retainParameters = false } = {}) {
     this.check();
-    this.engine.device.queue.submit([this.encoder.finish()]);
+    this.finishCommands();
     this.submitted = true;
-    this.encoder = null;
     if (!retainParameters) this.releaseParameters();
   }
 
@@ -787,19 +946,21 @@ class ComputeBatch {
     if (!this.submitted || !this.commands) throw new Error('Only a submitted, captured batch can be replayed.');
     this.validation = null;
     if (this.validationTensor) this.engine.write(this.validationTensor, Int32Array.of(0));
-    const encoder = this.engine.device.createCommandEncoder({ label: 'PageNarrator cached inference plan' });
-    let pass = null;
-    for (const command of this.commands) {
-      if (command.copy) {
-        pass?.end(); pass = null;
-        encoder.copyBufferToBuffer(command.source, 0, command.destination, 0, command.bytes);
-      } else {
-        // Compute dispatches have separate usage scopes; only copies need a pass boundary.
-        pass ??= encoder.beginComputePass();
-        pass.setPipeline(command.pipeline); pass.setBindGroup(0, command.group); pass.dispatchWorkgroups(command.x, command.y, command.z);
+    this.encoder = this.engine.device.createCommandEncoder({ label: 'PageNarrator cached inference plan' });
+    try {
+      for (const command of this.commands) {
+        this.nextCommand();
+        if (command.copy) {
+          this.pass?.end(); this.pass = null;
+          this.encoder.copyBufferToBuffer(command.source, 0, command.destination, 0, command.bytes);
+        } else {
+          const pass = this.pass ??= this.encoder.beginComputePass();
+          pass.setPipeline(command.pipeline); pass.setBindGroup(0, command.group); pass.dispatchWorkgroups(command.x, command.y, command.z);
+        }
       }
+      this.finishCommands();
+    } finally {
+      this.discardEncoder();
     }
-    pass?.end();
-    this.engine.device.queue.submit([encoder.finish()]);
   }
 }

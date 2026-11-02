@@ -29,6 +29,12 @@ describe('runtime asset build helpers', () => {
       'voice-packs/kokoro/onnx-community/Kokoro-82M-v1.0-ONNX/voices/af_heart.bin',
       'assets/ocr/recognizer.onnx',
       'legal/THIRD_PARTY_NOTICES.txt',
+      'legal/CC-BY-4.0.txt',
+      'legal/LibriTTS-R-NOTICE.txt',
+      'legal/FLEURS-NOTICE.txt',
+      'legal/SpiCE-NOTICE.txt',
+      'legal/JVNV-NOTICE.txt',
+      'legal/CC-BY-SA-4.0.txt',
     ];
     try {
       for (const file of files) {

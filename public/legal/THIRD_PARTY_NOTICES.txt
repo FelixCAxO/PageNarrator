@@ -22,8 +22,15 @@ Algorithm reference and adapted upstream material: Apache License 2.0
 New JavaScript implementation of prompt preparation, multilingual duration estimation,
 guided iterative unmasking and ONNX decoding with cancellation/resource cleanup.
 Language IDs/names and Unicode script weights are adapted from the same licensed reference.
-640 language-specific codec-token speaker references, generated locally with the pinned
-OmniVoice model and authored reference texts, are included as speaker data.
+640 codec-token speaker references are included as speaker data. References are
+generated with the pinned OmniVoice model or encoded from attributed recordings.
+Recorded English references use LibriTTS-R (Google LLC, CC BY 4.0); see
+LibriTTS-R-NOTICE.txt and CC-BY-4.0.txt. Per-reference source and processing
+metadata are retained in src/tts/omnivoice/speaker-data.js.
+Additional recorded-reference source notices are FLEURS-NOTICE.txt and
+SpiCE-NOTICE.txt (CC BY 4.0), and JVNV-NOTICE.txt (CC BY-SA 4.0).
+The full licenses are CC-BY-4.0.txt and CC-BY-SA-4.0.txt; each reference
+retains its source license separately from the model and application code.
 The former vendored OmniVoice bridge is not included.
 See vendor/omnivoice/PROVENANCE.md for references and browser-specific changes.
 

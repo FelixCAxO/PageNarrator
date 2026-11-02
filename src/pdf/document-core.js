@@ -58,7 +58,7 @@ export async function createPdfDocumentCore(bytes, options = {}) {
     }
     async function pagePayload(pageNumber) {
       check(); if (cached.has(pageNumber)) { const hit = cached.get(pageNumber); cached.delete(pageNumber); cached.set(pageNumber, hit); return hit; }
-      const info = pageInfo(pageNumber), promise = buildPdfDisplayList(reader, info.id, info.resources, loadAsset, info.view, options.fontPrefix);
+      const info = pageInfo(pageNumber), promise = buildPdfDisplayList(reader, info.id, info.resources, loadAsset, info.view, options.fontPrefix, { recoverUnsupportedArtwork: options.recoverUnsupportedArtwork === true });
       cached.set(pageNumber, promise); while (cached.size > 5) cached.delete(cached.keys().next().value);
       try { const value = await promise; check(); return value; } catch (error) { if (cached.get(pageNumber) === promise) cached.delete(pageNumber); throw error; }
     }

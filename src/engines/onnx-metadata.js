@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { concatPlan } from './cnn-shape.js';
-import { axisIndex, reshapeShape, slicePlan, squeezeShape, transposePlan, unsqueezeShape } from './index-shape.js';
+import { axisIndex, contiguousStrides, reshapeShape, slicePlan, squeezeShape, transposePlan, unsqueezeShape } from './index-shape.js';
 import { tensorSize } from './tensor-shape.js';
 import { METADATA_LIMIT } from './onnx-metadata-inputs.js';
 
@@ -66,7 +66,14 @@ export function executeIndexNode(node, { value, numbers, descriptor, batch, asGp
     }
     case 'Concat': {
       const inputs = node.inputs.map(value);
-      if (!inputs.some(item => item.cpu)) return batch.concat(inputs, a.axis);
+      if (!inputs.some(item => item.cpu)) {
+        const nonempty = inputs.filter(item => tensorSize(item.shape));
+        if (nonempty.length === 1 && inputs.every(item => item.dataType === input.dataType)) {
+          batch.checkOwnership(...inputs);
+          return batch.view(nonempty[0], concatPlan(inputs.map(item => item.shape), a.axis).shape);
+        }
+        return batch.concat(inputs, a.axis);
+      }
       if (inputs.some(item => !item.cpu)) return batch.concat(inputs.map(asGpu), a.axis);
       if (inputs.some(item => item.dataType !== input.dataType)) throw new Error('Concat metadata types do not match.');
       const combined = concatPlan(inputs.map(item => item.shape), a.axis);
@@ -84,5 +91,10 @@ export function executeIndexNode(node, { value, numbers, descriptor, batch, asGp
     default: throw new Error('Unexpected index operation.');
   }
   if (shape) return input.cpu ? metadataTensor(input.data, shape, input.dataType) : batch.view(input, shape);
+  if (!input.cpu && plan.offset === 0 && tensorSize(plan.shape) === tensorSize(input.shape)) {
+    const contiguous = contiguousStrides(plan.shape);
+    // Pure ONNX indexing may alias storage; low-level batch.index still makes writable copies.
+    if (plan.shape.every((size, axis) => size === 1 || plan.strides[axis] === contiguous[axis])) return batch.view(input, plan.shape);
+  }
   return input.cpu ? cpuIndex(input, plan) : batch.index(input, plan);
 }

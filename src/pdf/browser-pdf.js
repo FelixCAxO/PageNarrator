@@ -5,7 +5,7 @@ import { renderPdfDisplayList } from './canvas-renderer.js';
 import { PdfEngineError } from './native-reader.js';
 import { pdfPayloadByteLength } from './payload-buffers.js';
 
-/** Original browser document facade; unsupported input fails explicitly. */
+/** Original browser facade; recovered artwork is reported in page inspection. */
 export async function openPdfDocument(data, options = {}) {
   const fontPrefix = `pn${crypto.randomUUID().replace(/-/g, '')}`, faces = new Map(), pending = new Map(), pageCache = new Map(), payloadCache = new Map(), renders = new Set();
   const useSystemFonts = typeof options.useSystemFonts === 'boolean' ? options.useSystemFonts : !globalThis.process?.versions?.node;
@@ -79,9 +79,9 @@ export async function openPdfDocument(data, options = {}) {
       };
       const failed = () => { const error = new PdfEngineError('PDF worker was terminated.', 'pdf_worker'); rejectPending(error); destroy(); };
       worker.onerror = failed; worker.onmessageerror = failed;
-      info = await rpc('open', data, { wasm: options.wasm, assetBaseUrl: options.assetBaseUrl, password: options.password, fontPrefix });
+      info = await rpc('open', data, { wasm: options.wasm, assetBaseUrl: options.assetBaseUrl, password: options.password, fontPrefix, recoverUnsupportedArtwork: options.recoverUnsupportedArtwork !== false });
     } else {
-      core = await createPdfDocumentCore(data, { ...options, fontPrefix });
+      core = await createPdfDocumentCore(data, { ...options, fontPrefix, recoverUnsupportedArtwork: options.recoverUnsupportedArtwork !== false });
       if (closed) { core.destroy(); check(); }
       info = { numPages: core.numPages, metadata: await core.getMetadata() };
     }
@@ -93,6 +93,8 @@ export async function openPdfDocument(data, options = {}) {
         const page = { pageNumber, view: geometry.view, rotate: geometry.rotate, userUnit: geometry.userUnit,
           getViewport(settings = {}) { check(); return createPdfViewport(geometry.view, { rotation: geometry.rotate, ...settings, userUnit: geometry.userUnit }); },
           async getTextContent() { const payload = await pagePayload(pageNumber); return { items: payload.items, unknownType3Glyphs: payload.inspection.unknownType3Glyphs || 0,
+            ...(payload.inspection.unmappedGlyphs ? { unmappedGlyphs: payload.inspection.unmappedGlyphs } : {}),
+            ...(payload.inspection.artworkWarnings ? { artworkWarnings: payload.inspection.artworkWarnings } : {}),
             styles: Object.fromEntries(payload.fonts.map(font => [font.family, { fontFamily: font.family, ascent: font.ascent, descent: font.descent, vertical: !!font.vertical }])) }; },
           async inspect() { return (await pagePayload(pageNumber)).inspection; },
           async ensureFonts() { await loadFonts((await pagePayload(pageNumber)).fonts); },

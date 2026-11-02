@@ -1,7 +1,14 @@
 import { pdf, stream } from './fixtures.js';
 
 const ordinary = [8.2, 0, 0, 6.2, 9.125, 5.375];
+export const rotatedHatch = {
+  kind: 'solid', tilingType: 3, bbox: [0, 0, 72, 72], steps: [72, 72],
+  matrix: [.077782, .077782, -.077782, .077782, -6692.1298828, 8398.2402344],
+  cellContent: 'q 0 0 72 72 re W n 3.6 w 4 M 0 j 0 J [] 0 d 0 G ' +
+    [6, 18, 30, 42, 54, 66].map(y => `-.25 ${y} m 72.25 ${y} l S`).join(' ') + ' Q',
+};
 export const tilingControls = [
+  { name: 'rotated-type3-stroked-hatch', ...rotatedHatch },
   { name: 'phase-quadrants', kind: 'quadrants' },
   { name: 'negative-phase', kind: 'quadrants', matrix: [8.2, 0, 0, 6.2, -9.125, -5.375] },
   { name: 'reflection', kind: 'quadrants', matrix: [-8.2, 0, 0, 6.2, 9.125, 5.375] },

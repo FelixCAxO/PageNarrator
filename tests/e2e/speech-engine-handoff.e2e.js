@@ -13,7 +13,7 @@ import { installSilentOutputCapture } from './silent-output-capture.js';
 for (const initial of ['kokoro', 'omnivoice']) test(`real audio stays continuous through ${initial} and both engine switches`, async () => {
   test.skip(process.env.PN_E2E_ENGINE_HANDOFF !== '1', 'Requires native WebGPU models. Playback remains muted.');
   test.setTimeout(5 * 60_000);
-  const root = path.resolve('artifacts/omnivoice-memory/silent-handoff', initial);
+  const root = path.resolve(process.env.PN_HANDOFF_OUTPUT || 'artifacts/omnivoice-memory/silent-handoff', initial);
   await mkdir(root, { recursive: true });
   const lock = await acquireMeasurementLock({ owner: { purpose: 'Muted real speech engine handoff verification' } });
   const paragraphs = Array.from({ length: 22 }, (_, i) => [

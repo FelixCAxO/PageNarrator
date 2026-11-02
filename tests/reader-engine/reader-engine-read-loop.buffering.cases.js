@@ -112,3 +112,32 @@ it.each([[5, false], [5, true], [2, false]])('builds a bounded startup reserve f
   }
   expect(play).toHaveBeenCalledTimes(abort ? 0 : count);
 });
+
+it.each([false, true])('uses the next paragraph estimate when a fast opening clip is shorter than the next synthesis, abort=%s', async abort => {
+  const controller = new AbortController(), chunks = [{ type: 'paragraph', speech: 'A short opening paragraph.' },
+    { type: 'paragraph', speech: 'The next paragraph takes longer to synthesize than the opening takes to play.' }];
+  const speech = { kind: 'chunk', result: { durationSeconds: 4.6, synthesisMetrics: { realTimeFactor: .7 } } };
+  let releaseNext, releaseLead;
+  const next = new Promise(resolve => { releaseNext = () => resolve({ result: speech }); });
+  const lead = new Promise(resolve => { releaseLead = resolve; });
+  next.waitForPlaybackLead = vi.fn(() => lead);
+  const play = vi.fn(async () => {});
+  const orchestrator = createReadLoopOrchestrator({
+    state: {}, readRunTracker: { ...createRunTracker(), getRunSignal: () => controller.signal, isCurrentRun: () => !controller.signal.aborted },
+    extractActiveTab: async () => ({ tabId: 2, source: 'selection', text: chunks.map(chunk => chunk.speech).join(' '), chunks }),
+    resolveSelectedVoice: () => ({ id: 'omnivoice', engine: 'omnivoice', detectCode: 'en' }),
+    getActiveTtsProfileConfig: () => ({ maxChunkLength: 320, targetMinLength: 180, preloadAhead: 1 }),
+    ensureSpeechPreloadWindow({ speechPreloads, currentIndex }) {
+      speechPreloads.set(0, Promise.resolve({ result: speech })); speechPreloads.set(1, next); return speechPreloads.get(currentIndex);
+    },
+    readPreloadedSpeech: async preload => (await preload).result, playKokoroSpeech: play,
+  });
+  const reading = orchestrator.readPage({ readSelection: true });
+  try {
+    await vi.waitFor(() => expect(next.waitForPlaybackLead).toHaveBeenCalledWith(4.6));
+    expect(play).not.toHaveBeenCalled();
+    if (abort) { controller.abort(); await reading; expect(play).not.toHaveBeenCalled(); }
+    else { releaseLead(); await vi.waitFor(() => expect(play).toHaveBeenCalledTimes(1)); }
+  } finally { releaseNext(); releaseLead(); await reading; }
+  expect(play).toHaveBeenCalledTimes(abort ? 0 : 2);
+});

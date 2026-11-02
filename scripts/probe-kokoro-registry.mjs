@@ -101,7 +101,7 @@ try {
     if (!hostSample) hostSample = sampleHost('during').finally(() => { hostSample = null; });
   }, 5000);
   profile = await mkdtemp(join(tmpdir(), 'pn-kokoro-registry-'));
-  context = await chromium.launchPersistentContext(profile, { channel: 'chromium', headless: true, args: adapterConfiguration.args,
+  context = await chromium.launchPersistentContext(profile, { channel: 'chromium', headless: true, args: ['--mute-audio', ...adapterConfiguration.args],
     executablePath: process.env.PN_BENCHMARK_CHROMIUM || undefined });
   report.browserVersion = context.browser().version();
   report.browserExecutable = process.env.PN_BENCHMARK_CHROMIUM || chromium.executablePath();

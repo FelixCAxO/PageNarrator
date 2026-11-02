@@ -2,6 +2,7 @@ import { expect, it, vi } from 'vitest';
 import { createHash } from 'node:crypto';
 import { createOmniVoiceDataFetch } from '../../src/tts/omnivoice/data-loader.js';
 import { OMNIVOICE_DATA } from '../../src/tts/omnivoice/model-data.js';
+import { OMNIVOICE_WEIGHT_CHUNKS } from '../../src/tts/omnivoice/weight-chunks.js';
 import pinned from '../fixtures/browser-speech-models.json';
 
 const data = new TextEncoder().encode('{"ok":1}');
@@ -11,6 +12,18 @@ const url = 'https://huggingface.co/fixture/resolve/pinned/weights.bin';
 it('keeps production model bytes identical to the frozen independent evaluation fixture', () => {
   expect(OMNIVOICE_DATA.files).toEqual(pinned.files);
   expect(OMNIVOICE_DATA.revision).toBe(pinned.revision);
+  const { chunkBytes, hashes, ...file } = OMNIVOICE_WEIGHT_CHUNKS;
+  expect(file).toEqual(pinned.files.find(item => item.path === file.path));
+  expect(chunkBytes).toBe(16 * 1024 * 1024);
+  expect(hashes).toHaveLength(Math.ceil(file.bytes / chunkBytes));
+  expect(hashes.every(hash => /^[a-f0-9]{64}$/.test(hash))).toBe(true);
+});
+
+it('fails closed if the weight pin changes without rebuilding its chunk pins', async () => {
+  const fetcher = vi.fn(), file = { ...OMNIVOICE_DATA.files[0], sha256: '0'.repeat(64) };
+  const load = createOmniVoiceDataFetch({ manifest: { ...OMNIVOICE_DATA, files: [file] }, fetcher, cacheStorage: null });
+  await expect(load(`https://huggingface.co/${OMNIVOICE_DATA.modelId}/resolve/${OMNIVOICE_DATA.revision}/${file.path}`)).rejects.toThrow('verification chunks');
+  expect(fetcher).not.toHaveBeenCalled();
 });
 
 it('rejects executable or unpinned URLs before network and coalesces concurrent data requests', async () => {

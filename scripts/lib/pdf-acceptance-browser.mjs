@@ -35,12 +35,12 @@ async function installBridge() {
     }
     tasks.delete(id); documents.delete(id); return { closed: true };
   };
-  globalThis.__pnPdfAcceptance = async ({ method, id, pageNumber, url, password, useSystemFonts }) => {
+  globalThis.__pnPdfAcceptance = async ({ method, id, pageNumber, url, password, useSystemFonts, recoverUnsupportedArtwork }) => {
     try {
       let value;
       if (method === 'open') {
         const task = engine.getDocument({ url, password, useSystemFonts, useWorker: true, disableWorker: false,
-          wasmUrl: `${location.origin}/native/pdf.wasm`, assetBaseUrl: `${location.origin}/vendor/pdf-data/`, enableScripting: false });
+          wasmUrl: `${location.origin}/native/pdf.wasm`, assetBaseUrl: `${location.origin}/vendor/pdf-data/`, enableScripting: false, recoverUnsupportedArtwork });
         tasks.set(id, task);
         const document = await task.promise; documents.set(id, document); value = { numPages: document.numPages };
       } else if (method === 'destroy') value = await close(id);
@@ -58,6 +58,7 @@ async function installBridge() {
         if (method === 'page') value = { view: page.view, rotate: page.rotate, userUnit: page.userUnit, pageNumber };
         else if (method === 'text') value = await page.getTextContent();
         else if (method === 'inspect') value = await page.inspect();
+        else if (method === 'fonts') { await page.ensureFonts(); value = null; }
         else if (method === 'cleanup') { page.cleanup(); value = null; }
         else throw new Error('Unknown browser PDF acceptance operation.');
       }
@@ -196,13 +197,13 @@ export async function createPdfAcceptanceBrowser({ root = ROOT, readImplementati
         const bytes = Buffer.from(data); record.bytes = bytes.length; record.sha256 = sha(bytes);
         pdfs.set(id, { bytes, record });
         const priorWorkers = evidence.workers.length;
-        const actual = await rpc({ method: 'open', id, url: `${origin}/pdf/${id}`, password: params.password, useSystemFonts: params.useSystemFonts ?? true });
+        const actual = await rpc({ method: 'open', id, url: `${origin}/pdf/${id}`, password: params.password, useSystemFonts: params.useSystemFonts ?? true, recoverUnsupportedArtwork: params.recoverUnsupportedArtwork });
         assert(evidence.workers.slice(priorWorkers).some(worker => worker.url === `${origin}/src/pdf/pdf.worker.js`), 'Production PDF module worker was not observed.');
         record.opened = true; record.numPages = actual.numPages;
         return { numPages: actual.numPages, destroy, async getPage(pageNumber) {
           const geometry = await enqueue(() => rpc({ method: 'page', id, pageNumber }));
           return { ...geometry, getTextContent: () => enqueue(() => rpc({ method: 'text', id, pageNumber })),
-            inspect: () => enqueue(() => rpc({ method: 'inspect', id, pageNumber })), cleanup() {
+            inspect: () => enqueue(() => rpc({ method: 'inspect', id, pageNumber })), ensureFonts: () => enqueue(() => rpc({ method: 'fonts', id, pageNumber })), cleanup() {
               const result = enqueue(() => rpc({ method: 'cleanup', id, pageNumber }));
               void result.catch(error => evidence.cleanupErrors.push(describeError(error))); return result;
             } };

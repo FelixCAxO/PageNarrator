@@ -20,8 +20,11 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
   test.setTimeout(4 * 60 * 60_000);
   const corpus = JSON.parse(await readFile(path.join(root, 'corpus.json'), 'utf8')).languages;
   const reuseBacking = process.env.PN_E2E_LANGUAGE_AUDIT_REUSE_BACKING === '1';
+  const adapterMode = process.env.PN_E2E_LANGUAGE_AUDIT_ADAPTER === '1';
+  expect(adapterMode && reuseBacking).toBe(false);
   const rendererSha256 = hash(await readFile('src/tts/omnivoice/whisper.js'));
   const requestFactorySha256 = hash(await readFile('src/lib/omnivoice-settings.js'));
+  const presetSeedsSha256 = hash(await readFile('src/tts/omnivoice/preset-seeds.js'));
   expect(corpus.length).toBeGreaterThan(0);
   expect(new Set(corpus.map(item => item.id || item.code)).size).toBe(corpus.length);
   const [shardIndex, shardCount] = (process.env.PN_E2E_LANGUAGE_AUDIT_SHARD || '0/1').split('/').map(Number);
@@ -45,6 +48,7 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
     }
     expect(script).toBeTruthy();
     const workerSha256 = hash(await readFile(path.join(extensionDir, 'assets', script)));
+    const bundledAdapterSha256 = adapterMode ? hash(await readFile(path.join(extensionDir, 'assets/tts.js'))) : null;
     await routeOmniVoiceModelFiles(context);
     await seedRealTtsFlowFlags(context);
     const page = await openRoutedReaderEngine(context);
@@ -53,17 +57,60 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
       return { vendor: a.info.vendor, architecture: a.info.architecture, device: a.info.device, description: a.info.description };
     });
     await writeFile(path.join(root, shardCount === 1 ? 'runtime.json' : `runtime-shard-${shardIndex}.json`), JSON.stringify({ workerSha256, script, adapter, requestFactorySha256,
+      presetSeedsSha256, bundledAdapterSha256, capturePath: adapterMode ? 'packaged-adapter' : 'packaged-worker',
       shardIndex, shardCount,
       settings: 'Fixed speaker presets; per-sample settings and sampling retries recorded with each request.',
       builtManifestSha256: hash(await readFile(path.join(extensionDir, 'manifest.json'))),
       startedAt: new Date().toISOString(), modelBaseUrl: OMNIVOICE_MODEL_BASE_URL }, null, 2));
-    await page.evaluate(({ script, baseUrl }) => {
+    await page.evaluate(async ({ script, baseUrl, adapterMode }) => {
+      if (adapterMode) {
+        const NativeWorker = globalThis.Worker;
+        let capture, tts;
+        globalThis.Worker = class extends NativeWorker {
+          constructor(...args) {
+            super(...args);
+            const workerUrl = String(args[0]), requests = new Map();
+            this.auditRequests = requests;
+            this.addEventListener('message', ({ data }) => {
+              if (!capture) return;
+              if (data.error) capture.errors.push(data.error);
+              if (data.result?.pcm) capture.replies.push({ ...data.result, actualRequest: requests.get(data.id), actualWorkerUrl: workerUrl });
+            });
+          }
+          postMessage(message, ...args) {
+            if (message.method === 'synthesize') {
+              this.auditRequests.set(message.id, message.request);
+              capture?.requests.push(message.request);
+            }
+            return super.postMessage(message, ...args);
+          }
+        };
+        const module = await import(chrome.runtime.getURL('assets/tts.js'));
+        globalThis.__languageAuditReset = async () => {
+          capture = null;
+          await tts?.dispose();
+          tts = module.createOmniVoiceTts();
+          await tts.init();
+        };
+        globalThis.__languageAuditCall = async (method, { request }) => {
+          if (method !== 'synthesize') throw new Error('Unexpected adapter audit method.');
+          const [gender, variation] = request.speakerId.split('-');
+          capture = { requests: [], replies: [], errors: [] };
+          const result = await tts.generate(request.text, { voice: { detectCode: request.lang,
+            omniVoice: { gender, variation: Number(variation), whisper: request.whisper === true } } });
+          if (capture.requests.length !== 1 || capture.replies.length !== 1 || capture.errors.length) {
+            throw new Error('The adapter audit requires one successful synthesis at the selected seed.');
+          }
+          return { ...capture.replies[0], pcm: result.audio, sampleRate: result.sampling_rate, voiceRecovery: result.voiceRecovery ?? null };
+        };
+        return;
+      }
       let worker, id = 0;
       globalThis.__languageAuditCall = (method, payload = {}) => new Promise((resolve, reject) => {
         const current = ++id;
         const timer = setTimeout(() => { worker.removeEventListener('message', listener); reject(new Error('OmniVoice audit RPC timed out.')); }, 120_000);
         const listener = ({ data }) => {
-          if (data.id !== current) return;
+          if (data.id !== current || data.synthesisProgress) return;
           clearTimeout(timer); worker.removeEventListener('message', listener);
           if (data.error) reject(Object.assign(new Error(data.error.message), { name: data.error.name }));
           else resolve(data.result);
@@ -76,7 +123,7 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
         worker = new Worker(chrome.runtime.getURL(`assets/${script}`), { type: 'module' });
         await __languageAuditCall('init', { baseUrl, runtimeRoot: chrome.runtime.getURL('') });
       };
-    }, { script, baseUrl: OMNIVOICE_MODEL_BASE_URL });
+    }, { script, baseUrl: OMNIVOICE_MODEL_BASE_URL, adapterMode });
     await page.evaluate(() => __languageAuditReset());
     let processed = 0;
     for (const scheduled of [...cases.filter(item => item.nativeText), ...cases.filter(item => !item.nativeText)]) {
@@ -91,20 +138,28 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
       try {
         const old = JSON.parse(await readFile(recordPath, 'utf8'));
         if (old.workerSha256 === workerSha256 && old.requestSha256 === requestSha256 && old.wavSha256
+          && (!adapterMode || (old.captureOrigin === 'packaged-adapter' && old.bundledAdapterSha256 === bundledAdapterSha256
+            && old.presetSeedsSha256 === presetSeedsSha256))
           && hash(await readFile(path.join(root, old.wav))) === old.wavSha256
           && (!reuseBacking || request.whisper || (old.pcmFile && hash(await readFile(path.join(root,old.pcmFile))) === old.pcmSha256))) { processed += 1; continue; }
       } catch { /* No complete matching checkpoint: generate it. */ }
       if (processed && processed % 32 === 0) await page.evaluate(() => __languageAuditReset());
       const record = { id: sampleId, code: item.code, name: item.name, iso: item.iso, nativeText: item.nativeText,
         text, source: item.source, sourceUrl: item.sourceUrl, workerSha256, requestSha256, request,
+        ...(adapterMode ? { bundledAdapterSha256, presetSeedsSha256 } : {}),
         semanticStatus: item.nativeText ? 'awaiting-independent-analysis' : 'unverified-no-native-reference', attempts: [] };
       if(item.replayOf){
         await page.evaluate(()=>__languageAuditReset());
         const warmup=createOmniVoiceRequest(item.warmupText,{detectCode:item.code,omniVoice:item.omniVoice});
-        record.warmupSpeaker=await page.evaluate(async request=>(await __languageAuditCall('synthesize',{request})).speaker,warmup);
+        const warmupResult = await page.evaluate(async request => {
+          const result = await __languageAuditCall('synthesize', { request });
+          return { speaker: result.speaker, actualRequest: result.actualRequest };
+        }, warmup);
+        record.warmupSpeaker = warmupResult.speaker;
+        if (adapterMode) { expect(warmupResult.actualRequest).toEqual(warmup); record.warmupRequest = warmupResult.actualRequest; }
         expect(record.warmupSpeaker.referenceHash).toBe(getOmniVoiceSpeakerReference(request).hash);
       }
-      for (let attempt = 0; attempt < 2; attempt += 1) {
+      for (let attempt = 0; attempt < (adapterMode ? 1 : 2); attempt += 1) {
         const started = Date.now();
         const attemptRequest = { ...request, seed: request.seed + attempt };
         try {
@@ -128,15 +183,25 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
             result = await page.evaluate(async request => {
             const result = await __languageAuditCall('synthesize', { request });
             return { pcm: Array.from(result.pcm), sampleRate: result.sampleRate, speaker: result.speaker, timings: result.timings,
-              backingPcmSha256: result.backingPcmSha256 };
+              backingPcmSha256: result.backingPcmSha256, actualRequest: result.actualRequest,
+              actualWorkerUrl: result.actualWorkerUrl, voiceRecovery: result.voiceRecovery };
             }, attemptRequest);
-            record.captureOrigin = 'packaged-worker';
+            record.captureOrigin = adapterMode ? 'packaged-adapter' : 'packaged-worker';
+            if (adapterMode) {
+              expect(result.actualRequest).toEqual(attemptRequest);
+              expect(result.actualWorkerUrl.endsWith(`/assets/${script}`)).toBe(true);
+              expect(result.voiceRecovery).toBeNull();
+              record.actualRequest = result.actualRequest;
+              record.actualWorkerUrl = result.actualWorkerUrl;
+              record.voiceRecovery = result.voiceRecovery;
+            }
           }
           expect(result.sampleRate).toBe(24000);
           expect(result.speaker.id).toBe(request.speakerId);
-          expect(result.speaker.referenceHash).toBe(getOmniVoiceSpeakerReference(request).hash);
-          expect(result.speaker.referenceId).toBe(getOmniVoiceSpeakerReference(request).referenceId);
-          expect(result.speaker.referenceLanguage).toBe(getOmniVoiceSpeakerReference(request).lang);
+          const expectedReference = getOmniVoiceSpeakerReference(request);
+          expect(result.speaker.referenceHash).toBe(expectedReference.hash);
+          expect(result.speaker.referenceId).toBe(expectedReference.referenceId);
+          expect(result.speaker.referenceLanguage).toBe(expectedReference.referenceLanguage || expectedReference.lang);
           const pcm = Float32Array.from(result.pcm), wav = waveBytes(pcm);
           record.attempts.push({ seed: attemptRequest.seed, elapsedMs: Date.now() - started, speaker: result.speaker, timings: result.timings });
           record.wav = `wav/${sampleId}.wav`; record.wavSha256 = hash(wav); record.signal = audioMeasures(pcm);
@@ -170,7 +235,7 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
         } catch (error) {
           record.attempts.push({ seed: attemptRequest.seed, elapsedMs: Date.now() - started, error: String(error) });
           record.status = 'synthesis-failed';
-          if (!attempt) await page.evaluate(() => __languageAuditReset());
+          if (!attempt && !adapterMode) await page.evaluate(() => __languageAuditReset());
         }
       }
       await writeFile(recordPath, JSON.stringify(record, null, 2));

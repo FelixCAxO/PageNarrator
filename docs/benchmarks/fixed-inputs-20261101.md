@@ -1,0 +1,13 @@
+# Repeated fixed-input calculations, 2026-11-01
+
+A native trace confirms **18 fixed-input GPU commands in each main pass**, out of 647 conditional / 646 unconditional commands. They include ten casts, one position matrix multiply, one transpose, two copy commands, one cosine, two multiplies and one sine. They occupy roughly **2.8% of captured commands**; this is not a latency or arithmetic-cost percentage.
+
+Across one 24-step paragraph, the complete raw feed hashes remain unchanged within each sequence shape except `input_ids`, which changes. Both shapes have one cold capture and 23 replays. The existing replay lists therefore contain **828 repeated fixed-input commands** after those two captures. All 48 FP16 logit tensors, submission counts and the source WAV match the uninstrumented baseline; cleanup leaves no buffers/tensors or device loss. Observer timings are excluded from performance claims.
+
+The trace also records output-buffer identities and dynamic overwriters. Some fixed results occupy shared workspace that later computations overwrite. Keeping an old tensor reference would not safely cache those values. Empty views are excluded from the final frontier inventory; the earlier unfiltered summary is preserved separately. Frontier capacities describe the current allocator and are not a proposed cache budget.
+
+The first candidate instead extends the existing half-cast helper across a single reshape, squeeze or unsqueeze. It can move a shape-only view onto the original half values and avoid widening/narrowing, while retaining requested float side outputs and validation. This requires no new persistent cache. The artifact-only prototype in `artifacts/view-casts-20261101/` passes 28 unit tests; GPU precision controls and full speech/cost comparisons are pending. No performance gain or production change is claimed yet.
+
+The trace baseline freezes runtime `8b8e710a2791cb553ba52fbd56e889047cd0f5d242411630f76dfb8cf03bcfe1`. A subsequent concurrent metadata-only edit prefers `reference.referenceLanguage` in returned speaker provenance; it remains preserved in the workspace and in both sides of the new candidate comparison. Model calculations and feed construction are unchanged by that edit.
+
+Evidence lives in `artifacts/fixed-inputs-20261101/`: complete input hashes, per-node command ranges, output buffers, source pins, native reports and `trace-summary.json`. This trace covers one NVIDIA paragraph and whole-feed dependencies; it does not identify invariant regions inside changing token arrays, qualify other hardware, or establish a safe caching implementation. Only this PC is available. The broader goal remains active, with shared implementations retained only after measured gains.

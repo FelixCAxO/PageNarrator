@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
+import { getOmniVoicePresetSeed } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const cases = [
   { language: 'en', gender: 'female', paragraphs: [
@@ -127,7 +128,7 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
     for (let index = 1; index < jobs.length; index++) expect(jobs[index].started).toBeGreaterThanOrEqual(jobs[index - 1].ended);
     const expectedSteps = paragraphs.map(() => 24);
     expect(jobs.map(job => job.numStep)).toEqual(recoverStatic ? [24, ...expectedSteps] : expectedSteps);
-    const selectedSeed = 41 + variation;
+    const selectedSeed = getOmniVoicePresetSeed(language, gender, variation);
     expect(jobs.map(job => job.seed)).toEqual(recoverStatic
       ? [selectedSeed, selectedSeed + 1, ...paragraphs.slice(1).map(() => selectedSeed)]
       : paragraphs.map(() => selectedSeed));

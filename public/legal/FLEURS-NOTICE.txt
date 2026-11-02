@@ -1,0 +1,25 @@
+FLEURS recorded references and validation text
+
+Source: https://huggingface.co/datasets/google/fleurs
+Source revision: 70bb2e84b976b7e960aa89f1c648e09c59f894dd
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Full license: CC-BY-4.0.txt
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Alexis Conneau, Min Ma, Simran Khanuja, Yu Zhang, Vera Axelrod,
+Siddharth Dalmia, Jason Riesa, Clara Rivera, and Ankur Bapna (2022).
+FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech.
+https://arxiv.org/abs/2205.12446
+Attribution: Google FLEURS contributors and the authors above.
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Any generated reference derived from a recording retains
+its source and parent reference hash. Source metadata identifies the dataset
+revision, language configuration, split, source filename, audio/metadata/archive
+hashes, encoder hash and preprocessing. Published reference transcripts are also
+used as independent development test text, with source metadata retained.
+
+FLEURS recordings, transcripts and derived reference data retain CC BY 4.0.
+The separately licensed PageNarrator implementation and OmniVoice model are
+not relicensed by this notice.

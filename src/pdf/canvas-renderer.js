@@ -136,7 +136,7 @@ export function renderPdfDisplayList(payload, { canvasContext: ctx, viewport, tr
               await renderPdfDisplayList({ commands, fonts: [] }, { canvasContext, viewport: { transform: cellMatrix }, background: false,
                 outputProfile, profileCache, surfaceBudget, shouldCancel: () => cancelled || shouldCancel?.() }).promise;
             } });
-          if (['f', 'F', 'f*', 'B', 'B*', 'b', 'b*'].includes(c.kind)) {
+          if (!c.skipFill && ['f', 'F', 'f*', 'B', 'B*', 'b', 'b*'].includes(c.kind)) {
             ctx.globalAlpha = c.fillAlpha ?? 1;
             const fill = () => ctx.fill(c.kind.includes('*') ? 'evenodd' : 'nonzero');
             if (nativePainter) {
@@ -144,7 +144,7 @@ export function renderPdfDisplayList(payload, { canvasContext: ctx, viewport, tr
               if (bounds) await nativePainter.paint(fill, c.nativeCmykFill ?? nativePainter.color(true), c.fillAlpha ?? 1, [bounds[0] - 1, bounds[1] - 1, bounds[2] + 1, bounds[3] + 1], deviceClip, cancellation, c.nativeCmykFillBlend);
             } else if (c.fillPattern) await paintPdfShadingPattern(c.fillPattern, ctx, texture => { ctx.fillStyle = texture; fill(); }, patternOptions(false)); else fill();
           }
-          if (['S', 's', 'B', 'B*', 'b', 'b*'].includes(c.kind)) {
+          if (!c.skipStroke && ['S', 's', 'B', 'B*', 'b', 'b*'].includes(c.kind)) {
             ctx.globalAlpha = c.strokeAlpha ?? 1;
             const adjusted = c.lineWidth === 0 || c.strokeAdjustment;
             const stroke = () => { if (adjusted) strokePath.stroke(ctx, { width: c.lineWidth ?? ctx.lineWidth, adjust: c.strokeAdjustment }); else ctx.stroke(); };

@@ -7,10 +7,10 @@ import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-downl
 import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
 import { OMNIVOICE_MODEL_BASE_URL } from '../../src/tts/omnivoice/loader.js';
 import { waveBytes } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
-import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { ensureMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-const root = path.resolve('artifacts/omnivoice-memory/parity');
+const root = path.resolve(process.env.PN_PARITY_OUTPUT || 'artifacts/omnivoice-memory/parity');
 const cases = [
   { lang: 'en', text: 'The morning sun warmed the garden as we stepped outside.' },
   { lang: 'en', text: 'A small bird landed on the fence and sang softly.' },
@@ -22,18 +22,19 @@ const cases = [
   { lang: 'en', text: 'The garden is quiet and the sky is blue.', variation: 7 },
   { lang: 'hi', text: 'नमस्ते! आज हम एक शांत बगीचे के बारे में एक छोटी कहानी पढ़ते हैं।', gender: 'male', whisper: true, variation: 7 },
   { lang: 'sv', text: 'Morgonsolen värmde trädgården när vi öppnade dörren.', freshAfterRecovery: true },
+  { lang: 'en', text: 'After a short rest we packed our bags and started walking again. The path climbed above the fields and the houses became smaller behind us. We could hear a bell from the village as the clouds moved across the sun. At the top of the hill we found a place to sit and shared our bread before continuing toward the forest.' },
 ];
 
 test('preserves exact OmniVoice PCM in paired baseline/candidate performance trials', async () => {
   test.skip(process.env.PN_E2E_MEMORY_PARITY !== '1', 'Explicit real-model memory optimization comparison.');
   test.setTimeout(30 * 60_000);
   await mkdir(root, { recursive: true });
-  const lock = await acquireMeasurementLock({ owner: { purpose: 'OmniVoice exact PCM and paired performance' } });
+  const lock = await ensureMeasurementLock({ owner: { purpose: 'OmniVoice exact PCM and paired performance' } });
   const runs = [];
   const trials = Number(process.env.PN_PARITY_TRIALS || 5);
   try {
     for (let repeat = 0; repeat < trials; repeat++) for (const variant of repeat % 2 ? ['candidate', 'baseline'] : ['baseline', 'candidate']) {
-      const extensionDir = variant === 'baseline' ? path.resolve('artifacts/omnivoice-memory/baseline/extension')
+      const extensionDir = variant === 'baseline' ? path.resolve(process.env.PN_PARITY_BASELINE || 'artifacts/omnivoice-memory/baseline/extension')
         : path.resolve(process.env.PN_PARITY_CANDIDATE || 'dist');
       const { context, cleanup } = await launchExtensionContext({ extensionDir, hostPermissions: ['http://127.0.0.1/*'] });
       const run = { variant, repeat, samples: [] };
@@ -55,7 +56,7 @@ test('preserves exact OmniVoice PCM in paired baseline/candidate performance tri
           globalThis.__parityCall = (method, payload = {}) => new Promise((resolve, reject) => {
             const current = ++id;
             const listener = ({ data }) => {
-              if (data.id !== current) return; worker.removeEventListener('message', listener);
+              if (data.id !== current || data.synthesisProgress) return; worker.removeEventListener('message', listener);
               if (data.error) reject(Object.assign(new Error(data.error.message), { name: data.error.name })); else resolve(data.result);
             };
             worker.addEventListener('message', listener); worker.postMessage({ id: current, method, ...payload });

@@ -24,7 +24,7 @@ it('keeps the original route, requires a silent sink and preserves render-thread
   vi.stubGlobal('location', { pathname: '/src/reader-engine.html' });
   vi.stubGlobal('chrome', { runtime: { getURL: x => x } });
   vi.stubGlobal('AudioContext', Context); vi.stubGlobal('AudioNode', Node); vi.stubGlobal('AudioWorkletNode', Recorder);
-  await installSilentOutputCapture({ addInitScript: fn => fn() }, 'test-copy');
+  await installSilentOutputCapture({ addInitScript: (fn, argument) => fn(argument) }, 'test-copy');
   await globalThis.__silentCaptureReady;
   const context = new globalThis.AudioContext(), source = new Node(context);
   expect(context.sinkId.type).toBe('none');

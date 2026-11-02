@@ -4,8 +4,10 @@ import { createOmniVoiceRequest, normalizeOmniVoiceSettings, hasOmniVoiceWhisper
 import { normalizePlaybackSettings, savePlaybackSettings } from '../../src/lib/playback-settings.js';
 import { OMNIVOICE_LANGUAGES, getOmniVoiceLanguage, getOmniVoiceLanguageOptions } from '../../src/tts/omnivoice/languages.js';
 import { getLanguageOption, normalizeLanguageCode } from '../../src/lib/language-voice-options.js';
+import { getOmniVoicePresetSeed, hasOmniVoicePresetGenderCue } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const voice = { engine: 'omnivoice', detectCode: 'sv', omniVoice: { gender: 'male', variation: 1, whisper: true } };
+const playbackSeed = getOmniVoicePresetSeed('sv', 'male', 1), recoverySeed = (playbackSeed + 1) >>> 0;
 const audio = { pcm: new Float32Array([0.1, -0.1]), sampleRate: 24000 };
 
 describe('OmniVoice integration', () => {
@@ -26,16 +28,16 @@ describe('OmniVoice integration', () => {
     }
     for (let variation = 1; variation <= 10; variation += 1) {
       const selected = { ...voice, omniVoice: { ...voice.omniVoice, variation, tempo: 1.5 } };
-      expect(createOmniVoiceRequest('Hej!', selected)).toMatchObject({ speed: 1, seed: 41 + variation });
+      expect(createOmniVoiceRequest('Hej!', selected)).toMatchObject({ speed: 1, seed: getOmniVoicePresetSeed('sv', 'male', variation) });
     }
   });
   it('keeps Kokoro as the default and repairs invalid voice attributes', () => {
     expect(normalizePlaybackSettings()).toMatchObject({ ttsEngine: 'kokoro', omniVoice: { gender: 'female', variation: 1, whisper: false } });
     expect(normalizeOmniVoiceSettings({ gender: 'other', pitch: NaN, age: 7, variation: Infinity, whisper: 'false' })).toEqual(normalizeOmniVoiceSettings());
-    expect(createOmniVoiceRequest(' Hej! ', voice)).toEqual({ text: 'Hej!', lang: 'sv', instruct: 'male', speed: 1, speakerId:'male-1', seed: 42, numStep: 24, whisper:true });
-    expect(createOmniVoiceRequest('你好！', { ...voice, detectCode: 'zh' }).instruct).toBe('男');
-    expect(createOmniVoiceRequest('今日は晴れです。', { ...voice, detectCode: 'ja' }).instruct).toBe('男');
-    expect(createOmniVoiceRequest('こんにちは。', { ...voice, detectCode: 'ja' }).instruct).toBe('male');
+    expect(createOmniVoiceRequest(' Hej! ', voice)).toEqual({ text: 'Hej!', lang: 'sv', instruct: 'male', speed: 1, speakerId:'male-1', seed: playbackSeed, numStep: 24, whisper:true });
+    expect(createOmniVoiceRequest('你好！', { ...voice, detectCode: 'zh' }).instruct).toBe(hasOmniVoicePresetGenderCue('zh', 'male', 1) ? '男' : '');
+    expect(createOmniVoiceRequest('今日は晴れです。', { ...voice, detectCode: 'ja' }).instruct).toBe(hasOmniVoicePresetGenderCue('ja', 'male', 1) ? '男' : '');
+    expect(createOmniVoiceRequest('こんにちは。', { ...voice, detectCode: 'ja' }).instruct).toBe(hasOmniVoicePresetGenderCue('ja', 'male', 1) ? 'male' : '');
     expect(createOmniVoiceRequest('Bugün kısa bir hikâye okuyoruz.', { ...voice, detectCode: 'tr' }).numStep).toBe(32);
     const legacy = { ...voice, omniVoice: { ...voice.omniVoice, pitch: 0, age: 4 } };
     expect(normalizeOmniVoiceSettings(legacy.omniVoice)).toEqual(voice.omniVoice);
@@ -58,7 +60,7 @@ describe('OmniVoice integration', () => {
   });
 
   it.each(['yue','th'])('retains selectable %s whispering and saved preferences with a word-loss warning', language=>{
-    expect(createOmniVoiceRequest('Test', {...voice,detectCode:language})).toMatchObject({lang:language,whisper:true,speakerId:'male-1',seed:42});
+    expect(createOmniVoiceRequest('Test', {...voice,detectCode:language})).toMatchObject({lang:language,whisper:true,speakerId:'male-1',seed:getOmniVoicePresetSeed(language,'male',1)});
     expect(hasOmniVoiceWhisperWordLossRisk(language)).toBe(true);
     expect(createOmniVoiceRequest('Test',{...voice,detectCode:language,omniVoice:{...voice.omniVoice,whisper:false}}).lang).toBe(language);
     expect(normalizePlaybackSettings({language,omniVoice:voice.omniVoice}).omniVoice.whisper).toBe(true);
@@ -203,17 +205,17 @@ describe('OmniVoice integration', () => {
     const onProgress = vi.fn();
     const tts = createOmniVoiceTts({ loadRuntime, onProgress });
     await expect(tts.generate('Hej!', { voice })).resolves.toMatchObject({ sampling_rate: 24000,
-      voiceRecovery: { selectedSeed: 42, seed: 43 } });
+      voiceRecovery: { selectedSeed: playbackSeed, seed: recoverySeed } });
     expect(broken.dispose).toHaveBeenCalledOnce();
     expect(loadRuntime).toHaveBeenCalledTimes(2);
     expect(onProgress).toHaveBeenCalledWith({ message: 'Audio check failed. Retrying with the same voice…' });
-    expect(broken.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 42, numStep: 24 }));
-    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 43, speed: 1, numStep: 24 }));
+    expect(broken.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: playbackSeed, numStep: 24 }));
+    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: recoverySeed, speed: 1, numStep: 24 }));
     expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ speakerId:'male-1' }));
     await expect(tts.generate('Nästa mening.', { voice })).resolves.not.toHaveProperty('voiceRecovery');
-    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 42, numStep: 24, speakerId:'male-1' }));
+    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: playbackSeed, numStep: 24, speakerId:'male-1' }));
     await tts.generate('En annan röst.', { voice: { ...voice, omniVoice: { ...voice.omniVoice, variation: 10 } } });
-    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: 51, numStep: 24 }));
+    expect(recovered.synthesize).toHaveBeenLastCalledWith(expect.objectContaining({ seed: getOmniVoicePresetSeed('sv', 'male', 10), numStep: 24 }));
     await tts.dispose();
   });
 
@@ -223,7 +225,7 @@ describe('OmniVoice integration', () => {
     const tts = createOmniVoiceTts({ loadRuntime });
     await expect(tts.generate('Hej!', { voice })).rejects.toMatchObject({ name: 'OmniVoiceAudioQualityError' });
     expect(engine.synthesize).toHaveBeenCalledTimes(2);
-    expect(engine.synthesize.mock.calls.map(([request]) => request.seed)).toEqual([42, 43]);
+    expect(engine.synthesize.mock.calls.map(([request]) => request.seed)).toEqual([playbackSeed, recoverySeed]);
     expect(loadRuntime).toHaveBeenCalledTimes(2);
     await tts.dispose();
   });
@@ -233,9 +235,9 @@ describe('OmniVoice integration', () => {
     const engine = { init: vi.fn(), synthesize: vi.fn().mockRejectedValueOnce(failure).mockResolvedValue(audio),
       dispose: vi.fn(), abortGeneration: vi.fn() };
     const tts = createOmniVoiceTts({ loadRuntime: async () => engine });
-    await expect(tts.generate('Hej!', { voice })).resolves.toHaveProperty('voiceRecovery', { selectedSeed: 42, seed: 43 });
+    await expect(tts.generate('Hej!', { voice })).resolves.toHaveProperty('voiceRecovery', { selectedSeed: playbackSeed, seed: recoverySeed });
     await expect(tts.generate('Igen!', { voice })).resolves.not.toHaveProperty('voiceRecovery');
-    expect(engine.synthesize.mock.calls.map(([request]) => [request.seed, request.numStep])).toEqual([[42, 24], [43, 24], [42, 24]]);
+    expect(engine.synthesize.mock.calls.map(([request]) => [request.seed, request.numStep])).toEqual([[playbackSeed, 24], [recoverySeed, 24], [playbackSeed, 24]]);
     await tts.dispose();
   });
 

@@ -126,6 +126,31 @@ it('uploads large weights once and detaches small metadata from their backing pa
   } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); await engine.dispose(); }
 });
 
+it.each([[2, Uint8Array, 9], [3, Int8Array, -9]])('releases type %i host weights while retaining small metadata and exact repeated inference', async (dataType, ArrayType, number) => {
+  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const payload = new ArrayType(2048).fill(number);
+  const tensor = (name, offset, length) => ({ name, dims: [length], dataType,
+    rawData: new Uint8Array(payload.buffer, offset, length), typedData: new Map(), externalData: new Map(), dataLocation: 0 });
+  const graph = { initializers: [tensor('weight', 0, 1050), tensor('metadata', 1500, 1)],
+    inputs: [{ name: 'x', dataType: 1, dims: [1050] }], outputs: [{ name: 'y', dataType: 1, dims: [1050] }], nodes: [
+      { opType: 'Cast', name: 'cast', inputs: ['weight'], outputs: ['float'], attributes: new Map([['to', { type: 2, value: 1 }]]) },
+      { opType: 'Add', name: 'add', inputs: ['x', 'float'], outputs: ['y'], attributes: new Map() },
+    ] };
+  const session = new WebGpuOnnxSession({ graph, functions: [] }, engine, false, 1024 * 1024);
+  try {
+    session.releaseHostWeights();
+    expect(session.initializers.get('weight').rawData).toBeNull();
+    const metadata = session.initializers.get('metadata').rawData;
+    expect(metadata.buffer).not.toBe(payload.buffer); expect(metadata[0]).toBe(new Uint8Array(payload.buffer)[1500]);
+    const weight = session.weights.get('weight');
+    for (const n of [3, 7]) {
+      const result = (await session.run({ x: { data: new Float32Array(1050).fill(n), shape: [1050] } })).y;
+      expect([...result.data]).toEqual(new Array(1050).fill(n + number));
+      expect(session.weights.get('weight')).toBe(weight);
+    }
+  } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); expect(engine.tensors.size).toBe(0); await engine.dispose(); }
+});
+
 it('recycles unused named outputs before later operators allocate scratch storage', async () => {
   const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: [4] }], outputs: [{ name: 'y', dataType: 1, dims: [2] }], nodes: [
@@ -161,5 +186,18 @@ it('applies one shared retained-byte budget to both shapes and releases all stor
       expect([...session.cachedPlans.values()].reduce((sum, plan) => sum + plan.stats.planBytes, 0)).toBeLessThanOrEqual(512);
     }
     await expect(session.run({ x: { data: new Float32Array(2), shape: [3] } })).rejects.toThrow(/count/);
+  } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); expect(engine.tensors.size).toBe(0); await engine.dispose(); }
+});
+
+it('keeps one alternating plan when both exceed the shared budget and replaces it when shapes move on', async () => {
+  const { engine, session } = await setup(512);
+  try {
+    for (const [index, [length, cacheHit]] of [[32, false], [64, false], [32, true], [64, false], [32, true],
+      [48, false], [56, false], [48, false], [56, true], [64, false], [64, false], [64, true]].entries()) {
+      const data = Float32Array.from({ length }, (_, i) => i - index - 12);
+      expect([...(await session.run({ x: { data, shape: [length] } })).y.data]).toEqual([...data].map(value => Math.max(0, value)));
+      expect(session.lastRun.cacheHit, `request ${index}, length ${length}`).toBe(cacheHit);
+      expect([...session.cachedPlans.values()].reduce((sum, plan) => sum + plan.stats.planBytes, 0)).toBeLessThanOrEqual(512);
+    }
   } finally { await session.dispose(); expect(engine.buffers.size).toBe(0); expect(engine.tensors.size).toBe(0); await engine.dispose(); }
 });

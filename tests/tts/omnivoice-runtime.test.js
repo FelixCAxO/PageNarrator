@@ -1,18 +1,18 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createOmniVoiceRuntime, estimateOmniVoiceFrames, omniVoiceUnmaskSchedule, unmaskOmniVoiceTokens } from '../../src/tts/omnivoice/runtime.js';
-import { halfToFloat } from '../../src/engines/tensor-format.js';
-import { applyOmniVoiceRmsNormCorrection } from '../../src/tts/omnivoice/rmsnorm-correction.js';
+import { floatToHalf, halfToFloat } from '../../src/engines/tensor-format.js';
+import { prepareOmniVoiceGraph } from '../../src/tts/omnivoice/rmsnorm-correction.js';
 import { getOmniVoiceSpeakerReference } from '../../src/tts/omnivoice/speakers.js';
 
-vi.mock('../../src/tts/omnivoice/rmsnorm-correction.js', () => ({ applyOmniVoiceRmsNormCorrection: vi.fn(async bytes => ({
-  bytes, version: 'verified-test-graph', norms: 113, originalSha256: 'original', modifiedSha256: 'corrected',
+vi.mock('../../src/tts/omnivoice/rmsnorm-correction.js', () => ({ prepareOmniVoiceGraph: vi.fn(async bytes => ({
+  bytes, version: 'verified-test-graph', norms: 113, originalSha256: 'original', normalizationSha256: 'corrected', modifiedSha256: 'projected',
 })) }));
 
 const request = { text: 'Hej!', lang: 'sv', instruct: '女, 青年, 低音调', speed: 1, seed: 42, numStep: 2 };
 const reference = getOmniVoiceSpeakerReference(request);
 const config = { num_audio_codebook: 8, audio_vocab_size: 1025, audio_mask_id: 1024, sampling_rate: 24000, frame_rate: 75 };
 
-function fixture() {
+function fixture(options = {}) {
   const tensors = [];
   class Tensor {
     constructor(type, data, dims) {
@@ -26,7 +26,8 @@ function fixture() {
     const count = feeds.target_positions.dims[1], offset = feeds.input_ids.dims[2] - count;
     expect([...feeds.target_positions.data]).toEqual(Array.from({ length: count }, (_, index) => BigInt(offset + index)));
     expect(feeds.past_key_27.dims).toEqual([1, 8, feeds.input_ids.dims[2], 128]);
-    const length = feeds.target_positions.dims[1];
+    const length = count - Number(feeds.pn_audio_start.data[0]);
+    expect(length).toBeGreaterThan(0);
     const logits = new Float32Array(8 * length * 1025).fill(-2);
     for (let row = 0; row < 8 * length; row += 1) logits[row * 1025 + 3] = 8;
     return { audio_logits: new Tensor('float32', logits, [1, 8, length, 1025]) };
@@ -45,11 +46,90 @@ function fixture() {
     arrayBuffer: async () => new ArrayBuffer(4),
   }));
   const gpu = { requestAdapter: async () => ({ features: new Set(['shader-f16']) }) };
-  const runtime = createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, gpu, decoderRuntime });
+  const runtime = createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, gpu, decoderRuntime, ...options });
   return { runtime, tensors, main, decoder, ort, tokenizer, fetchModel, gpu, decoderRuntime };
 }
 
 describe('PageNarrator OmniVoice inference bridge', () => {
+  it('reports the actual guidance scale for each synthesis', async () => {
+    const f = fixture(); await f.runtime.init('https://model.test');
+    for (const [guidanceScale, speed] of [[2, 1], [3, .85]]) {
+      const result = await f.runtime.synthesize({ ...request, guidanceScale, speed });
+      expect(result.speaker.guidanceScale).toBe(guidanceScale);
+      expect(result.speaker.speed).toBe(speed);
+    }
+    await f.runtime.dispose();
+  });
+  it('identifies an oversized section before running inference so the adapter can split it', async () => {
+    const f = fixture(); await f.runtime.init('https://model.test');
+    await expect(f.runtime.synthesize({ ...request, text: '1'.repeat(2000) }))
+      .rejects.toMatchObject({ name: 'OmniVoiceSectionLengthError' });
+    expect(f.main.run).not.toHaveBeenCalled(); expect(f.decoder.run).not.toHaveBeenCalled();
+    await f.runtime.dispose();
+  });
+
+  it.each([true, false])('splits only a decoder buffer-limit failure and keeps the runtime usable (buffer=%s)', async buffer => {
+    const f = fixture(); await f.runtime.init('https://model.test');
+    const failure = new Error(buffer ? 'ONNX FusedZeroInsertConv1d decoder: Tensor exceeds the WebGPU device buffer limit.' : 'Decoder failed.');
+    f.decoder.run.mockRejectedValueOnce(failure);
+    const failed = f.runtime.synthesize(request);
+    if (buffer) await expect(failed).rejects.toMatchObject({ name: 'OmniVoiceSectionLengthError', cause: failure });
+    else await expect(failed).rejects.toBe(failure);
+    for (const tensor of f.tensors) expect(tensor.dispose).toHaveBeenCalledOnce();
+    await expect(f.runtime.synthesize(request)).resolves.toMatchObject({ sampleRate: 24000 });
+    expect(f.ort.InferenceSession.create).toHaveBeenCalledOnce();
+    expect(f.decoderRuntime.InferenceSession.create).toHaveBeenCalledOnce();
+    await f.runtime.dispose();
+  });
+
+  it('reports the audio reference language while conditioning on the requested target language', async () => {
+    const f = fixture({ getSpeaker: () => ({ ...reference, text: 'A source recording.', referenceLanguage: 'en' }) });
+    await f.runtime.init('https://model.test');
+    const result = await f.runtime.synthesize(request);
+    expect(result.speaker.referenceLanguage).toBe('en');
+    expect(f.tokenizer.encode.mock.calls.some(([text]) => text.startsWith('<|denoise|><|lang_start|>sv<|lang_end|>'))).toBe(true);
+    await f.runtime.dispose();
+  });
+  it('keeps complete attention positions while requesting only generated output rows', async () => {
+    const f = fixture(); await f.runtime.init('https://model.test');
+    await f.runtime.synthesize(request);
+    const frames = estimateOmniVoiceFrames(request.text, request.speed, reference);
+    const conditional = f.main.run.mock.calls[0][0], unconditional = f.main.run.mock.calls[1][0];
+    expect(conditional.pn_audio_start.dims).toEqual([1]);
+    expect([...conditional.pn_audio_start.data]).toEqual([BigInt(conditional.input_ids.dims[2] - frames)]);
+    expect([...unconditional.pn_audio_start.data]).toEqual([0n]);
+    for (const feeds of [conditional, unconditional]) {
+      expect(feeds.attention_mask.dims).toEqual([1, 1, 1, 1]);
+      expect([...feeds.attention_mask.data]).toEqual([1]);
+      expect(feeds.target_positions.dims).toEqual([1, feeds.input_ids.dims[2]]);
+      expect([...feeds.target_positions.data]).toEqual(Array.from({ length: feeds.input_ids.dims[2] }, (_, index) => BigInt(index)));
+    }
+    expect(f.runtime.getDiagnostics().mainGraphCorrection).toMatchObject({ normalizationSha256: 'corrected', modifiedSha256: 'projected' });
+    await f.runtime.dispose(); expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
+  });
+
+  it.each([Float32Array, Uint16Array])('preserves every 24-step decision and random draw with compact conditional rows (%s)', ArrayType => {
+    const frames = 5, prefix = 7, full = new ArrayType(8 * (prefix + frames) * 1025), compact = new ArrayType(8 * frames * 1025);
+    const unconditional = new ArrayType(compact.length);
+    full.fill(ArrayType === Uint16Array ? 0x7e01 : NaN);
+    for (let index = 0; index < compact.length; index++) {
+      const c = (index % 127 - 63) / 32, u = (index % 67 - 33) / 16;
+      compact[index] = ArrayType === Uint16Array ? floatToHalf(c) : c;
+      unconditional[index] = ArrayType === Uint16Array ? floatToHalf(u) : u;
+    }
+    for (let book = 0; book < 8; book++) full.set(compact.subarray(book * frames * 1025, (book + 1) * frames * 1025), (book * (prefix + frames) + prefix) * 1025);
+    const a = new BigInt64Array(8 * frames).fill(1024n), b = a.slice();
+    let seedA = 42, seedB = 42, callsA = 0, callsB = 0;
+    const randomA = () => { callsA++; seedA = (Math.imul(seedA, 1664525) + 1013904223) >>> 0; return (seedA + .5) / 4294967296; };
+    const randomB = () => { callsB++; seedB = (Math.imul(seedB, 1664525) + 1013904223) >>> 0; return (seedB + .5) / 4294967296; };
+    for (const count of omniVoiceUnmaskSchedule(a.length, 24)) {
+      unmaskOmniVoiceTokens(full, unconditional, a, frames, prefix, count, randomA);
+      unmaskOmniVoiceTokens(compact, unconditional, b, frames, 0, count, randomB);
+      expect(b).toEqual(a); expect(callsB).toBe(callsA); expect(seedB).toBe(seedA);
+    }
+    expect([...b].every(value => value !== 1024n)).toBe(true);
+  });
+
   it('reports remaining work without changing decoder tokens or PCM', async () => {
     const f = fixture();
     await f.runtime.init('https://model.test');
@@ -64,7 +144,7 @@ describe('PageNarrator OmniVoice inference bridge', () => {
   });
   it('rejects an unrecognized graph before creating either inference session', async () => {
     const f = fixture();
-    applyOmniVoiceRmsNormCorrection.mockRejectedValueOnce(new Error('Exact pinned graph required'));
+    prepareOmniVoiceGraph.mockRejectedValueOnce(new Error('Exact pinned graph required'));
     await expect(f.runtime.init('https://model.test')).rejects.toThrow('Exact pinned graph');
     expect(f.ort.InferenceSession.create).not.toHaveBeenCalled();
     expect(f.decoderRuntime.InferenceSession.create).not.toHaveBeenCalled();
@@ -76,7 +156,7 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     for (const type of ['float32', 'float16']) {
       const f = fixture();
       f.main.run.mockImplementation(async feeds => {
-        const length = feeds.target_positions.dims[1], size = 8 * length * 1025;
+        const length = feeds.target_positions.dims[1] - Number(feeds.pn_audio_start.data[0]), size = 8 * length * 1025;
         const storage = new Uint16Array(size + 3), bits = storage.subarray(3);
         for (let index = 0; index < bits.length; index++) {
           const value = index % 65536;
@@ -146,6 +226,37 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     expect([...codes]).toEqual([7n, 7n, 7n, 7n, 7n, 7n, 7n, 19n]);
   });
 
+  it.each([[false, false], [false, true], [true, false], [true, true]])('matches float32 sampling across all finite half values and 24 steps, cHalf=%s uHalf=%s', (cHalf, uHalf) => {
+    const frames = 9, prefix = 5;
+    const bits = length => Uint16Array.from({ length }, (_, index) => (index % 65536 & 0x7c00) === 0x7c00 ? 0 : index % 65536);
+    const c = bits(8 * (frames + prefix) * 1025), u = bits(8 * frames * 1025);
+    const cf = Float32Array.from(c, halfToFloat), uf = Float32Array.from(u, halfToFloat);
+    const sample = (conditional, unconditional) => {
+      const codes = new BigInt64Array(frames * 8).fill(1024n); codes[13] = 7n;
+      let state = 42, calls = 0;
+      const rng = () => { calls++; state = (Math.imul(state, 1664525) + 1013904223) >>> 0; return (state + .5) / 4294967296; };
+      for (const count of omniVoiceUnmaskSchedule(codes.length - 1, 24)) unmaskOmniVoiceTokens(conditional, unconditional, codes, frames, prefix, count, rng);
+      return { codes: [...codes], calls };
+    };
+    expect(sample(cHalf ? c : cf, uHalf ? u : uf)).toEqual(sample(cf, uf));
+  });
+
+  it.each([[true, 0x7e00], [true, 0x7c00], [true, 0xfc00], [false, 0x7e00], [false, 0x7c00], [false, 0xfc00]])('rejects non-finite half logits, conditional=%s bits=%i', (conditional, value) => {
+    const c = new Uint16Array(8 * 1025), u = new Uint16Array(c.length), codes = new BigInt64Array(8).fill(1024n);
+    (conditional ? c : u)[1024] = value;
+    expect(() => unmaskOmniVoiceTokens(c, u, codes, 1, 0, 1, () => .5)).toThrow('non-finite logits');
+  });
+
+  it('skips unused non-finite prefix and decided rows in half storage', () => {
+    const c = new Uint16Array(8 * 2 * 1025).fill(0x7e00), u = new Uint16Array(8 * 1025).fill(0x7e00);
+    c.fill(0, 1025, 2 * 1025); u.fill(0, 0, 1025);
+    const codes = new BigInt64Array(8).fill(7n); codes[0] = 1024n;
+    const random = vi.fn(() => .5);
+    unmaskOmniVoiceTokens(c, u, codes, 1, 1, 1, random);
+    expect([...codes]).toEqual([0n, 7n, 7n, 7n, 7n, 7n, 7n, 7n]);
+    expect(random).toHaveBeenCalledOnce();
+  });
+
   it('loads only WebGPU sessions, forwards style/text and decodes complete audio tokens', async () => {
     const f = fixture();
     f.main.getDiagnostics = vi.fn(() => ({ hostWeightBytes: 100 }));
@@ -181,14 +292,14 @@ describe('PageNarrator OmniVoice inference bridge', () => {
   ])('normalizes only mathematical styling in spoken %s without changing the request', async (text, spoken) => {
     const f = fixture(), input = Object.freeze({ ...request, text });
     f.decoder.run.mockImplementation(async ({ audio_codes }) => {
-      expect(audio_codes.dims).toEqual([1, 8, estimateOmniVoiceFrames(spoken, request.speed)]);
+      expect(audio_codes.dims).toEqual([1, 8, estimateOmniVoiceFrames(spoken, request.speed, reference)]);
       return { audio_values: new f.ort.Tensor('float32', Float32Array.of(0.2, -0.3, 0.1), [1, 1, 3]) };
     });
     await f.runtime.init('https://model.test');
     await f.runtime.synthesize(input);
     expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} ${spoken}<|text_end|>`, { add_special_tokens: false });
     expect(input.text).toBe(text);
-    for (const speed of [0.5, 1, 1.5]) expect(estimateOmniVoiceFrames(text, speed)).toBe(estimateOmniVoiceFrames(spoken, speed));
+    for (const speed of [0.5, 1, 1.5]) expect(estimateOmniVoiceFrames(text, speed, reference)).toBe(estimateOmniVoiceFrames(spoken, speed, reference));
     await f.runtime.dispose();
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
   });
@@ -220,6 +331,20 @@ describe('PageNarrator OmniVoice inference bridge', () => {
       const speaker = getOmniVoiceSpeakerReference(input);
       expect(f.tokenizer.encode).toHaveBeenLastCalledWith(`<|text_start|>${speaker.text} ${lang === 'tr' ? 'bugün kısa bir hikâye okuyoruz. bugünkü kitap burada.' : text}<|text_end|>`, { add_special_tokens: false });
       expect(input.text).toBe(text);
+    }
+    await f.runtime.dispose();
+  });
+
+  it('applies measured Cantonese spelling only when requested and retains the original document text', async () => {
+    const f = fixture(), text = '您好，您嘅書喺枱面。';
+    f.decoder.run.mockImplementation(async () => ({ audio_values: new f.ort.Tensor('float32', Float32Array.of(.2, -.3, .1), [1, 1, 3]) }));
+    await f.runtime.init('https://model.test');
+    for (const [lang, pronunciationVariant, spoken] of [['yue', null, text], ['yue', 'yue-nei5', '你好，你嘅書喺枱面。'], ['zh', null, text]]) {
+      const input = Object.freeze({ ...request, text, lang, pronunciationVariant });
+      const result = await f.runtime.synthesize(input), reference = getOmniVoiceSpeakerReference(input);
+      expect(f.tokenizer.encode).toHaveBeenLastCalledWith(`<|text_start|>${reference.text} ${spoken}<|text_end|>`, { add_special_tokens: false });
+      expect(result.speaker.pronunciationVariant).toBe(pronunciationVariant); expect(input.text).toBe(text);
+      expect(estimateOmniVoiceFrames(text, 1, reference)).toBe(estimateOmniVoiceFrames(spoken, 1, reference));
     }
     await f.runtime.dispose();
   });
@@ -257,13 +382,14 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     expect(f.tokenizer.encode).toHaveBeenCalledWith(`<|text_start|>${reference.text} Hey!<|text_end|>`, { add_special_tokens: false });
     expect(f.tokenizer.encode).toHaveBeenCalledWith(expect.stringMatching(/^<\|denoise\|>/), { add_special_tokens: false });
     const conditioned = feeds[4];
-    expect(conditioned.length).toBe(6 + reference.frames + 24);
-    expect([...conditioned.mask]).toEqual([...Array(6).fill(0), ...Array(reference.frames + 24).fill(1)]);
+    const frames = estimateOmniVoiceFrames('Hey!', request.speed, reference);
+    expect(conditioned.length).toBe(6 + reference.frames + frames);
+    expect([...conditioned.mask]).toEqual([...Array(6).fill(0), ...Array(reference.frames + frames).fill(1)]);
     expect([...conditioned.positions]).toEqual(Array.from({ length: conditioned.length }, (_, i) => BigInt(i)));
     for (let book = 0; book < 8; book += 1) {
       expect([...conditioned.ids.slice(book * conditioned.length + 6, book * conditioned.length + 6 + reference.frames)])
         .toEqual([...reference.codes.slice(book * reference.frames, (book + 1) * reference.frames)]);
-      expect([...conditioned.ids.slice(book * conditioned.length + 6 + reference.frames, (book + 1) * conditioned.length)]).toEqual(Array(24).fill(1024n));
+      expect([...conditioned.ids.slice(book * conditioned.length + 6 + reference.frames, (book + 1) * conditioned.length)]).toEqual(Array(frames).fill(1024n));
     }
     const changed = await f.runtime.synthesize({ ...request, instruct: '男, 青年, 低音调' });
     expect(changed.speaker.id).toBe('male-1');
@@ -275,7 +401,7 @@ describe('PageNarrator OmniVoice inference bridge', () => {
   it.each([Uint16Array, Int16Array])('reads two-byte float16 views including negative values (%s)', async View => {
     const f = fixture();
     f.main.run.mockImplementation(async feeds => {
-      const length = feeds.target_positions.dims[1];
+      const length = feeds.target_positions.dims[1] - Number(feeds.pn_audio_start.data[0]);
       const data = new View(8 * length * 1025).fill(0xc000); // -2
       for (let row = 0; row < 8 * length; row += 1) data[row * 1025 + 3] = 0x4800; // 8
       return { audio_logits: new f.ort.Tensor('float16', data, [1, 8, length, 1025]) };
@@ -352,8 +478,10 @@ describe('PageNarrator OmniVoice inference bridge', () => {
   it('rejects non-finite logits before decoding and releases every tensor', async () => {
     const f = fixture();
     await f.runtime.init('https://model.test');
-    f.main.run.mockImplementationOnce(async feeds => ({ audio_logits: new f.ort.Tensor('float32',
-      new Float32Array(8 * feeds.target_positions.dims[1] * 1025).fill(NaN), [1, 8, feeds.target_positions.dims[1], 1025]) }));
+    f.main.run.mockImplementationOnce(async feeds => {
+      const length = feeds.target_positions.dims[1] - Number(feeds.pn_audio_start.data[0]);
+      return { audio_logits: new f.ort.Tensor('float32', new Float32Array(8 * length * 1025).fill(NaN), [1, 8, length, 1025]) };
+    });
     await expect(f.runtime.synthesize(request)).rejects.toThrow('non-finite');
     expect(f.decoder.run).not.toHaveBeenCalled();
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
@@ -372,8 +500,10 @@ describe('PageNarrator OmniVoice inference bridge', () => {
     expect(f.tensors.every(tensor => tensor.dispose.mock.calls.length === 1)).toBe(true);
   });
 
-  it.each([{ ...request, speed: NaN }, { ...request, numStep: 0 }, { ...request, whisper: 'true' }, { ...request, lang: 'unsupported' }, { ...request, lang: undefined }, { ...request, lang: 'ar' }, { ...request, text: '' },
-    { ...request, text: 'abc '.repeat(2000) }])('rejects invalid or oversized requests without inference', async bad => {
+  it.each([{ ...request, guidanceScale: -1 }, { ...request, guidanceScale: 5 }, { ...request, guidanceScale: NaN }, { ...request, guidanceScale: null }, { ...request, guidanceScale: '3' }, { ...request, speed: NaN }, { ...request, numStep: 0 }, { ...request, whisper: 'true' }, { ...request, lang: 'unsupported' }, { ...request, lang: undefined }, { ...request, lang: 'ar' }, { ...request, text: '' },
+    { ...request, text: 'abc '.repeat(2000) }, { ...request, pronunciationVariant: true },
+    { ...request, pronunciationVariant: 'unknown' }, { ...request, pronunciationVariant: 'yue-nei5' },
+    { ...request, lang: 'zh', pronunciationVariant: 'yue-nei5' }])('rejects invalid or oversized requests without inference', async bad => {
     const f = fixture();
     await f.runtime.init('https://model.test');
     await expect(f.runtime.synthesize(bad)).rejects.toThrow();

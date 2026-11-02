@@ -22,6 +22,9 @@ it('shares pipeline preparation across sessions and compiles independent typed p
   expect(engine.typed['fill:float16']).toBe('PageNarrator float16 fill');
   expect(engine.typed['cast:float16:float32']).toBe('PageNarrator float16 to float32');
   expect(engine.half.checkedGatherTensor).toBeTruthy();
+  expect(engine.half.packedMatmul).toBe('PageNarrator packed half MatMul');
+  expect(engine.half.siluGate).toBe('PageNarrator half SiLU gate');
+  expect(engine.half.scaledMaskedSoftmax).toBe('PageNarrator half scaled masked softmax');
 });
 
 it('propagates shared pipeline compilation failures instead of publishing readiness', async () => {

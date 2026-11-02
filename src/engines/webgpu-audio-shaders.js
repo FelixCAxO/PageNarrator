@@ -1,24 +1,45 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-export function halfRmsNormShader(width) {
+export const HALF_SILU_GATE_SHADER = `enable f16;
+@group(0) @binding(0) var<storage, read> gate: array<f16>;
+@group(0) @binding(1) var<storage, read> up: array<f16>;
+@group(0) @binding(2) var<storage, read_write> dst: array<f16>;
+@group(0) @binding(3) var<storage, read> cfg: array<u32>;
+@compute @workgroup_size(64)
+fn main(@builtin(global_invocation_id) position: vec3<u32>) {
+  let index = position.x + position.y * cfg[2u] * 64u;
+  if (index >= cfg[0u]) { return; }
+  var gi = index; var ui = index;
+  if (cfg[3u] == 0u) {
+    gi = 0u; ui = 0u; var remaining = index;
+    for (var axis = i32(cfg[1u]) - 1; axis >= 0; axis -= 1) {
+      let coord = remaining % cfg[8u + u32(axis)]; remaining /= cfg[8u + u32(axis)];
+      gi += coord * cfg[16u + u32(axis)]; ui += coord * cfg[24u + u32(axis)];
+    }
+  }
+  let x = f32(gate[gi]);
+  let sigmoid = f16(1.0 / (1.0 + exp(-x)));
+  let activated = f16(x * f32(sigmoid));
+  dst[index] = f16(f32(activated) * f32(up[ui]));
+}
+`;
+
+export function halfRmsNormShader(width, transpose = false) {
   return `enable f16;
 @group(0) @binding(0) var<storage, read> src: array<f16>;
 @group(0) @binding(1) var<storage, read> weight: array<f16>;
 @group(0) @binding(2) var<storage, read_write> dst: array<f16>;
 @group(0) @binding(3) var<storage, read> cfg: array<u32>;
-var<workgroup> squares: array<f32, ${width}>;
 var<workgroup> sums: array<f32, 64>;
 var<workgroup> root: f32;
 @compute @workgroup_size(64)
 fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_index) lane: u32) {
   let row = group.x + group.y * cfg[1u];
   if (row >= cfg[0u]) { return; }
+  var sum = 0.0;
   for (var col = lane; col < ${width}u; col += 64u) {
     let x = f32(src[row * ${width}u + col]);
-    squares[col] = x * x;
+    sum += x * x;
   }
-  workgroupBarrier();
-  var sum = 0.0;
-  for (var col = lane; col < ${width}u; col += 64u) { sum += squares[col]; }
   sums[lane] = sum;
   workgroupBarrier();
   for (var step = 32u; step > 0u; step /= 2u) {
@@ -27,17 +48,26 @@ fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_index
   }
   if (lane == 0u) { root = sqrt(sums[0u] / ${width}.0 + 0.000001); }
   workgroupBarrier();
-  let inverse = 1.0 / root;
+  let inverse = 1.0 / root;${transpose ? `
+  let outputRow = (row / (cfg[2u] * cfg[3u]) * cfg[2u] + row % cfg[2u]) * cfg[3u] + (row / cfg[2u]) % cfg[3u];` : ''}
   for (var col = lane; col < ${width}u; col += 64u) {
     let normalized = f16(f32(src[row * ${width}u + col]) * inverse);
-    dst[row * ${width}u + col] = f16(f32(normalized) * f32(weight[col]));
+    dst[${transpose ? 'outputRow' : 'row'} * ${width}u + col] = f16(f32(normalized) * f32(weight[col]));
   }
 }`;
 }
 
 // A 32 x 32 output tile gives each lane a 4 x 4 register block. Audio has no
 // height coordinate, so its inner gather avoids the general image divisions.
-export const CONV_1D_SHADER = `
+export const CONV_1D_SHADER = conv1dShader();
+export const ZERO_INSERT_CONV_1D_SHADER = conv1dShader(true);
+export const ZERO_TAIL_CONV_1D_SHADER = conv1dShader(true, true);
+
+function conv1dShader(zeroInserted = false, zeroTail = false) {
+  const gather = zeroInserted
+    ? "if (source >= 0 && source < i32(cfg[3u]) && u32(source) % cfg[23u] == 0u) { x = src[(batch * cfg[1u] + g * cfg[7u] + xk / cfg[10u]) * cfg[22u] + u32(source) / cfg[23u]]; }"
+    : "if (source >= 0 && source < i32(cfg[3u])) { x = src[(batch * cfg[1u] + g * cfg[7u] + xk / cfg[10u]) * cfg[3u] + u32(source)]; }";
+  return `
 @group(0) @binding(0) var<storage, read> src: array<f32>;
 @group(0) @binding(1) var<storage, read> weight: array<f32>;
 @group(0) @binding(2) var<storage, read> bias: array<f32>;
@@ -59,7 +89,7 @@ fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_id) l
       let xp = group.x * 32u + index % 32u; let xk = block + index / 32u;
       if (xp < cfg[6u] && xk < kSize) {
         let source = i32(xp * cfg[12u] + (xk % cfg[10u]) * cfg[14u]) - i32(cfg[16u]);
-        if (source >= 0 && source < i32(cfg[3u])) { x = src[(batch * cfg[1u] + g * cfg[7u] + xk / cfg[10u]) * cfg[3u] + u32(source)]; }
+        ${gather}
       }
       tileW[index] = w; tileX[index] = x;
     }
@@ -76,11 +106,12 @@ fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_id) l
     var b = 0.0; if (cfg[17u] != 0u && channel + row < cfg[8u]) { b = bias[oc]; }
     for (var column = 0u; column < 4u; column += 1u) {
       var value = sums[row][column] + b; if (cfg[18u] != 0u) { value = max(value, 0.0); }
-      if (channel + row < cfg[8u] && pixel + column < cfg[6u]) { dst[(batch * cfg[4u] + oc) * cfg[6u] + pixel + column] = value; }
+      if (channel + row < cfg[8u] && pixel + column < cfg[6u]) { dst[(batch * cfg[4u] + oc) * cfg[6u] + pixel + column] = ${zeroTail ? 'select(value, 0.0, pixel + column + 1u == cfg[6u])' : 'value'}; }
     }
   }
 }
 `;
+}
 
 // Tile each stride phase separately. Only kernel taps that can contribute to
 // that phase enter the matrix product; input and weight tiles are shared.

@@ -4,6 +4,7 @@ import { readFile, writeFile, mkdir, copyFile, readdir } from 'node:fs/promises'
 import { resolve } from 'node:path';
 import { OMNIVOICE_DATA } from '../src/tts/omnivoice/model-data.js';
 import { getOmniVoiceLanguageOptions } from '../src/tts/omnivoice/languages.js';
+import { selectOmniVoiceSpeakers, toOmniVoiceCatalogEntry } from './lib/omnivoice-speaker-selection.mjs';
 
 const option=name=>process.argv.find(arg=>arg.startsWith(`--${name}=`))?.slice(name.length+3);
 const candidates=resolve(option('candidates')||'artifacts/omnivoice-fixed-voices/reference-native-v1');
@@ -34,7 +35,7 @@ for(const speaker of pool.speakers){
   const reasons=[];
   if(result.signal.physicalFailure)reasons.push('signal');
   if(result.signal.dnsmos.speech<minimum.speech||result.signal.dnsmos.background<minimum.background||result.signal.dnsmos.overall<minimum.overall)reasons.push('acoustics');
-  if(result.recognition.cer>minimum.maximumCer)reasons.push('transcript');
+  if(!Number.isFinite(result.recognition?.cer)||result.recognition.cer>minimum.maximumCer)reasons.push('transcript');
   if(margin<=0)reasons.push('style');
   evaluated.push({speaker,result,reasons});
 }
@@ -65,19 +66,8 @@ else{
   for(const lang of languages)for(const gender of ['female','male']){
     const available=evaluated.filter(item=>item.speaker.lang===lang&&item.speaker.gender===gender
       &&!item.reasons.some(reason=>['signal','acoustics','style'].includes(reason)));
-    const chosen=[];
-    while(chosen.length<10){
-      const remaining=available.filter(item=>!chosen.includes(item)&&!chosen.some(other=>other.speaker.hash===item.speaker.hash));
-      assert.ok(remaining.length,`Fewer than ten valid ${lang} ${gender} references`);
-      remaining.sort((a,b)=>{
-        const admitted=item=>Number(!item.reasons.length);
-        const content=item=>Number(!item.reasons.includes('style'))+Number(!item.reasons.includes('acoustics'))+Number(!item.reasons.includes('transcript'));
-        return admitted(b)-admitted(a)||content(b)-content(a)||b.result.signal.dnsmos.overall-a.result.signal.dnsmos.overall;
-      });
-      const item=remaining[0],variation=chosen.length+1;
-      chosen.push(item);
-      selected.push({...item,id:`${lang}-${gender}-${variation}`,variation});
-    }
+    const chosen=selectOmniVoiceSpeakers(available);
+    chosen.forEach((item,index)=>selected.push({...item,id:`${lang}-${gender}-${index+1}`,variation:index+1}));
   }
   assert.equal(selected.length,640);
   const speakers=[],referenceAnalysis=[];
@@ -94,7 +84,7 @@ else{
   await writeFile(`${output}/speakers.json`,JSON.stringify({version:3,modelRevision:pool.modelRevision,speakers},null,2)+'\n');
   await writeFile(`${output}/reference-analysis.json`,JSON.stringify(referenceAnalysis,null,2)+'\n');
   if(process.argv.includes('--write-catalog')){
-    const catalog={version:3,modelRevision:pool.modelRevision,speakers:speakers.map(({id,lang,text,gender,variation,seed,frames,codes,hash})=>({id,lang,text,gender,variation,seed,frames,codes,hash}))};
+    const catalog={version:3,modelRevision:pool.modelRevision,speakers:speakers.map(toOmniVoiceCatalogEntry)};
     await writeFile('src/tts/omnivoice/speaker-data.js','// Generated language-specific references; see scripts/build-omnivoice-speakers.mjs and scripts/select-omnivoice-speakers.mjs.\nexport default '+JSON.stringify(catalog)+';\n');
   }
   console.log(JSON.stringify({output,selected:speakers.length,automaticReferencePasses:receipt.automaticPasses,reviewRequired:receipt.reviewRequired}));

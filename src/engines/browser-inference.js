@@ -58,7 +58,7 @@ export class InferenceSession {
     const buffers = new Set([...session.weights.values()].flatMap(weight => weight.shards ? weight.shards.map(shard => shard.tensor.buffer) : [weight.buffer]));
     return { hostWeightBytes: [...session.initializers.values()].reduce((sum, tensor) => sum + (tensor.rawData?.byteLength || 0), 0),
       gpuWeightBytes: [...buffers].reduce((sum, buffer) => sum + buffer.size, 0),
-      retainedPlanBytes: [...session.cachedPlans.values()].reduce((sum, plan) => sum + plan.stats.planBytes, 0),
+      retainedPlanBytes: session.getRetainedPlanBytes(),
       lastRun: session.lastRun };
   }
 }

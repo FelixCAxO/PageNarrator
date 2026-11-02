@@ -27,7 +27,7 @@ clean-room process is claimed.
 The licensed reference's attribution is retained in the new runtime header,
 this provenance file, and the packaged third-party notices.
 
-Continuous narration uses the reference's long-form conditioning interface with 640 bundled fixed speaker prompts: ten female and ten male variations per selectable language, generated from the pinned model and authored native-language reference texts. `scripts/build-omnivoice-speakers.mjs` regenerates candidate reference WAVs, codec tokens and provenance; the runtime's injected `getSpeaker` dependency allows the builder to generate these unconditioned reference samples. Playback always resolves the selected preset from `speaker-data.js`, within the selected language, independent of document text, position, worker lifetime or retry sampling seed. Changing language selects its own fixed reference set. The reference-audio mask includes the fixed prompt, while unconditional input and audio decoding contain only new target tokens. Prompt tokens are never modified or decoded as part of the new output. All playback sections use 24 refinement steps and sampling seeds 42–51. User audio import and encoding remain unavailable. A conservative signal check rejects non-finite samples, constant output, severe clipping and obvious broadband static before playback. On failure the worker reloads and retries once with the next sampling seed and the same explicit speaker ID/reference. Further sections return to the selected sampling seed. `voiceRecovery` records selected and retry seeds; failure after one retry stops reading. Signal checks do not qualify pronunciation, naturalness, cross-device identity or overall language quality. Native listening remains separate from ASR, DNSMOS and WavLM screening.
+Continuous narration uses the reference's long-form conditioning interface with 640 bundled fixed speaker prompts: ten female and ten male variations per selectable language. The catalog contains 525 references encoded from publisher recordings, six references derived from those recordings, and 109 generated references. Attributed sources are LibriTTS-R, google/fleurs, SpiCE and JVNV. Each reference retains its source license (CC BY 4.0 or CC BY-SA 4.0), source IDs, audio/archive/encoder hashes and preprocessing metadata; see the corresponding source notices in public/legal. `scripts/build-omnivoice-speakers.mjs` regenerates candidate reference WAVs, codec tokens and provenance; the runtime's injected `getSpeaker` dependency allows the builder to generate these unconditioned reference samples. Playback always resolves the selected preset from `speaker-data.js`, within the selected language, independent of document text, position, worker lifetime or retry sampling seed. Changing language selects its own fixed reference set. The reference-audio mask includes the fixed prompt, while unconditional input and audio decoding contain only new target tokens. Prompt tokens are never modified or decoded as part of the new output. The per-preset playback index retains the selected seed, refinement step count, conditioning cue, guidance scale, speed and optional pronunciation variant; references without overrides retain the documented defaults. User-facing audio import remains unavailable; development tooling can encode recorded references. A conservative signal check rejects non-finite samples, constant output, severe clipping and obvious broadband static before playback. On failure the worker reloads and retries once with the next sampling seed and the same explicit speaker ID/reference. Further sections return to the selected sampling seed. `voiceRecovery` records selected and retry seeds; failure after one retry stops reading. Signal checks do not qualify pronunciation, naturalness, cross-device identity or overall language quality. Native listening remains separate from ASR, DNSMOS and WavLM screening.
 
 Browser choices: expose all 646 languages from the pinned upstream language catalog; use a one-second
 Latin duration reference (25 code frames) with upstream Unicode script weights, deterministic seeded position noise,
@@ -41,8 +41,8 @@ positions fail explicitly. The reader's existing chunking remains in use.
 Sessions and tensors are released after in-flight inference settles on stop,
 failure or disposal. Inference runs in a dedicated module worker; disposal
 terminates that worker to free its inference memory before the next read.
-No remote executable scripts, ASR, voice cloning, or
-remote PCM/text upload are implemented.
+Local synthesis uses the bundled encoded voice references. No remote executable
+scripts, ASR, or remote PCM/text upload are implemented.
 
 ## Model interface
 
@@ -72,8 +72,29 @@ The pinned OmniVoice reference requires Transformers 5.3.0 or newer. The derived
 graph SHA-256 is `4ace0df24c6b611fd19f47bc5c44b482ef0e20acd868d81e4f2a2f24f807a0e0`.
 Variance, inverse scale and normalization remain float32 until the existing
 half cast; learned-weight multiplication remains half. No learned weights,
-public inputs/outputs or unrelated operations change, and only the original
+public inputs/outputs or unrelated operations change in this normalization stage, and only the original
 hash-verified graph enters CacheStorage. Runtime diagnostics record both hashes.
+
+The main playback runtime also applies an exact-hash-guarded output
+projection. `prepareOmniVoiceGraph` combines the playback transforms in one parse/write
+pass and adds an internal int64 `pn_audio_start [1]`
+feed, slices the final normalized hidden states from that position, and sends
+only generated audio rows through the unchanged final learned projection,
+reshape and transpose. Full attention, positional inputs and KV outputs remain
+unchanged on every diffusion pass. Conditional and unconditional logits both
+return `[1,8,T,1025]`, so sampling no longer skips a conditional prefix. Learned
+weights, sampling arithmetic, random draws and diffusion steps stay unchanged.
+The normalization-plus-projection graph SHA-256 is
+`d4de7933bfa728c1724c03778c65eacffce3f93dcd7b26b110b2c5314be38258`.
+Playback additionally keeps the eight key/value heads compact instead of
+materializing their twofold repetition for sixteen query heads. Metadata
+reshapes expose a separate group dimension to the existing batched MatMul
+broadcasting, and restore the original interfaces around attention's unchanged
+scaling, masking and softmax. Dot-product order, full bidirectional attention,
+learned tensors and public KV outputs remain unchanged. The final derived
+playback graph SHA-256 is
+`8deaf4fa4d77c8147711fda95f763b76b9d6259b93be127df95c99af896b8afb`;
+runtime diagnostics retain the original, normalization-stage and final hashes.
 The main-model development probe uses the same correction on both paths and
 independently promotes 253 reference MatMul operations to float32 accumulation,
 then rounds their outputs back to half, matching PageNarrator's accumulation

@@ -43,6 +43,7 @@ async function fixture({ rejectLaunch = false } = {}) {
       } else if (request.method === 'page') value = { view: [0, 0, 600, 800], rotate: 90, userUnit: 2, pageNumber: request.pageNumber };
       else if (request.method === 'text') value = structuredClone(text);
       else if (request.method === 'inspect') value = structuredClone(inspection);
+      else if (request.method === 'fonts') value = null;
       else if (request.method === 'cleanup') { await new Promise(resolve => setTimeout(resolve, 2)); value = null; }
       else if (request.method === 'destroy') { open.delete(request.id); value = { closed: true }; }
       else if (request.method === 'closeAll') { value = [...open].map(id => ({ id, closed: true })); open.clear(); }
@@ -75,6 +76,7 @@ describe('real browser acceptance adapter contract', () => {
     const document = await task.promise, page = await document.getPage(2);
     expect(document.numPages).toBe(3); expect(page).toMatchObject({ rotate: 90, userUnit: 2, view: [0, 0, 600, 800] });
     expect(await page.getTextContent()).toEqual(text); expect(await page.inspect()).toEqual(inspection);
+    await page.ensureFonts(); expect(f.calls.at(-1)).toBe('fonts');
     page.cleanup(); const following = page.getTextContent(); await following;
     expect(f.calls.slice(-2)).toEqual(['cleanup', 'text']); expect(f.maximumActive()).toBe(1);
     await task.destroy();

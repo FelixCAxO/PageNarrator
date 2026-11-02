@@ -5,6 +5,7 @@ import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { browserAdapterConfiguration } from '../../scripts/lib/browser-adapter.mjs';
+import { startJobSupervisor } from '../../scripts/weak-hardware/windows-job.mjs';
 import { STORAGE_KEYS } from '../../src/lib/storage-keys.js';
 import {
   TEST_FLAG_STORAGE_KEYS,
@@ -31,8 +32,9 @@ export function resolveExtensionDir({ extensionDir = null, testInfo = null, env 
   return path.resolve(selected);
 }
 
-export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null, backgroundThrottling = false } = {}) {
+export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null, backgroundThrottling = false, browserCommitBytes = null } = {}) {
   if (locale && !/^[a-z]{2}(?:_[A-Z]{2})?$/u.test(locale)) throw new Error('Expected a Chrome locale code.');
+  if (browserCommitBytes !== null && (!Number.isSafeInteger(browserCommitBytes) || browserCommitBytes <= 0)) throw new Error('Expected a positive browser commit limit in bytes.');
   const selectedExtensionDir = resolveExtensionDir({ extensionDir, testInfo });
   const preparedExtension = hostPermissions.length
     ? await createExtensionCopyWithHostPermissions(selectedExtensionDir, hostPermissions)
@@ -54,29 +56,33 @@ export async function launchExtensionContext({ extensionDir = null, hostPermissi
       ...browserAdapterConfiguration().args,
     ],
   };
-  const nativeBrowser = backgroundThrottling
-    ? await launchWithNativeBackgrounding(userDataDir, launchOptions)
+  const nativeBrowser = backgroundThrottling || browserCommitBytes !== null
+    ? await launchWithNativeBackgrounding(userDataDir, launchOptions, browserCommitBytes, backgroundThrottling)
     : null;
   const context = nativeBrowser?.context || await chromium.launchPersistentContext(userDataDir, launchOptions);
 
   const cleanup = async () => {
     if (nativeBrowser) await nativeBrowser.close();
     else await context.close();
-    await rm(userDataDir, { recursive: true, force: true });
+    await rm(userDataDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
     await preparedExtension.cleanup();
   };
 
-  return { context, cleanup, userDataDir, extensionDir: preparedExtension.extensionDir };
+  return { context, cleanup, userDataDir, extensionDir: preparedExtension.extensionDir, jobSupervisor: nativeBrowser?.supervisor ?? null };
 }
 
-async function launchWithNativeBackgrounding(userDataDir, { args, headless }) {
+async function launchWithNativeBackgrounding(userDataDir, { args, headless }, browserCommitBytes = null, backgroundThrottling = true) {
   // A CDP connection without defaults avoids Playwright's always-visible focus emulation.
-  const child = spawn(chromium.executablePath(), [
+  const browserArgs = [
     `--user-data-dir=${userDataDir}`, '--remote-debugging-port=0', '--no-first-run', '--no-default-browser-check',
     '--disable-component-extensions-with-background-pages',
     ...(headless ? ['--headless=new'] : []), ...args, 'about:blank',
-  ], { stdio: 'ignore', windowsHide: true });
+  ];
+  const supervisor = browserCommitBytes === null ? null : await startJobSupervisor();
+  let child;
   try {
+    if (supervisor) await supervisor.launch({ exe: chromium.executablePath(), args: browserArgs, limits: { jobMemoryBytes: String(browserCommitBytes) } });
+    else child = spawn(chromium.executablePath(), browserArgs, { stdio: 'ignore', windowsHide: true });
     let endpoint;
     await expect.poll(async () => {
       const activePort = await readFile(path.join(userDataDir, 'DevToolsActivePort'), 'utf8').catch(() => '');
@@ -84,20 +90,20 @@ async function launchWithNativeBackgrounding(userDataDir, { args, headless }) {
       if (port && browserPath) endpoint = `ws://127.0.0.1:${port}${browserPath}`;
       return Boolean(endpoint);
     }, { timeout: 15_000 }).toBe(true);
-    const browser = await chromium.connectOverCDP(endpoint, { noDefaults: true });
+    const browser = await chromium.connectOverCDP(endpoint, { noDefaults: backgroundThrottling });
     return {
-      context: browser.contexts()[0],
+      context: browser.contexts()[0], supervisor,
       async close() {
-        if (child.exitCode === null && child.signalCode === null) {
+        if (child && child.exitCode === null && child.signalCode === null) {
           const exited = new Promise(resolve => child.once('exit', resolve));
           child.kill();
           await exited;
         }
-        await browser.close();
+        try { await browser.close(); } finally { await supervisor?.terminate(); }
       },
     };
   } catch (error) {
-    child.kill();
+    child?.kill(); await supervisor?.terminate();
     throw error;
   }
 }
@@ -118,7 +124,7 @@ async function createExtensionCopyWithHostPermissions(extensionDir, hostPermissi
   }
   return {
     extensionDir: copyDir,
-    cleanup: () => rm(tmpRoot, { recursive: true, force: true }),
+    cleanup: () => rm(tmpRoot, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 }),
   };
 }
 

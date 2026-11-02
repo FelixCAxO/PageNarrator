@@ -19,6 +19,16 @@ async function chunks(doc, settings) {
 }
 
 describe('unknown Type3 semantics need recognition before narration', () => {
+  it('routes authoritative unmapped-glyph metadata to OCR even for long native prose', async () => {
+    const doc = document(prose, 0);
+    doc.page.getTextContent = async () => ({ items: [item(prose + '\ue01b')], unmappedGlyphs: 1, unknownType3Glyphs: 0 });
+    const first = await readPdfPageRecord(doc, 1);
+    expect(first.hasUnmappedText).toBe(true); expect(first.needsOcr).toBe(true); expect(doc.page.inspect).not.toHaveBeenCalled();
+    await expect(chunks(doc)).rejects.toMatchObject({ code: 'scanned_pdf_unsupported' });
+    const recognizePage = vi.fn(async () => recovered), recognized = await chunks(doc, { recognizePage });
+    expect(recognizePage).toHaveBeenCalledOnce(); expect(recognized.map(chunk => chunk.speech).join(' ')).toBe(recovered[0].str);
+    await expect(chunks(doc, { recognizePage: async () => [item(prose + '\ue01b')] })).rejects.toMatchObject({ code: 'scanned_pdf_unsupported' });
+  });
   it.each(['Short prose with \ue000.', prose])('retains the recognition requirement for short or long native prose', async text => {
     const doc = document(text), result = await readPdfPageRecord(doc, 1);
     expect(result.hasUnknownType3Text).toBe(true); expect(result.needsOcr).toBe(true);

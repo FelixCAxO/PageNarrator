@@ -30,8 +30,8 @@ const adapter = { Tensor: inference.Tensor, InferenceSession: { async create(sou
   const run = session.run.bind(session);
   session.run = (feeds, outputs) => {
     if (feeds.input_ids) {
-      mainCalls++; const length = feeds.input_ids.dims[2];
-      assert(feeds.attention_mask.dims.join(',') === `1,1,${length},${length}` && feeds.attention_mask.data.every(n => n === 1), 'Main inference lost full bidirectional attention.');
+      mainCalls++;
+      assert(feeds.attention_mask.dims.join(',') === '1,1,1,1' && feeds.attention_mask.data.length === 1 && feeds.attention_mask.data[0] === 1, 'Main inference lost full bidirectional attention.');
       const callback = onRunStart; onRunStart = null; callback?.();
     }
     return run(feeds, outputs);

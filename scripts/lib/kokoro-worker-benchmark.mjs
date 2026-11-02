@@ -61,32 +61,40 @@ export async function measureKokoroWorker(page, { device, entry, phase, repeat, 
 }
 
 export async function runKokoroWorkerBenchmark({ page, device, corpus, repeats, report, captureDirectory = null }) {
-  for (const entry of corpus.cases) {
-    await page.evaluate(() => registry.releaseVoiceModel());
-    for (let repeat = 0; repeat <= repeats; repeat++) {
-      const result = await measureKokoroWorker(page, { device, entry, repeat, phase: repeat ? 'warm' : 'runtime-cold', captureAudio: Boolean(captureDirectory) });
-      if (captureDirectory) {
-        await mkdir(captureDirectory, { recursive: true });
-        const raw = Buffer.from(result.pcmBase64, 'base64'), pcm = new Float32Array(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength)); delete result.pcmBase64;
-        if (createHash('sha256').update(raw).digest('hex') !== result.pcmFloat32Sha256) throw new Error('Captured raw PCM transport changed.');
-        const wav = waveBytes(pcm), rawFile = resolve(captureDirectory, `${device}-${entry.id}-${repeat}.f32`), wavFile = rawFile.replace(/\.f32$/, '.wav');
-        await writeFile(rawFile, raw, { flag: 'wx' }); await writeFile(wavFile, wav, { flag: 'wx' });
-        result.recording = { rawFloat32: { file: rawFile, bytes: raw.length, sha256: result.pcmFloat32Sha256 }, wav: { file: wavFile, bytes: wav.length, sha256: createHash('sha256').update(wav).digest('hex') } };
+  const cdp = await page.context().browser().newBrowserCDPSession();
+  const cpu = async () => (await cdp.send('SystemInfo.getProcessInfo')).processInfo;
+  try {
+    for (const entry of corpus.cases) {
+      await page.evaluate(() => registry.releaseVoiceModel());
+      for (let repeat = 0; repeat <= repeats; repeat++) {
+        const before = await cpu();
+        const result = await measureKokoroWorker(page, { device, entry, repeat, phase: repeat ? 'warm' : 'runtime-cold', captureAudio: Boolean(captureDirectory) });
+        const after = await cpu();
+        result.browserCpuSeconds = after.reduce((sum, item) => sum + Math.max(0, item.cpuTime - (before.find(previous => previous.id === item.id)?.cpuTime ?? 0)), 0);
+        result.browserCpuScope = 'CDP process-tree CPU delta around the instrumented sample, including browser/worker/GPU processes and snapshot overhead; not inference-only CPU or energy.';
+        if (captureDirectory) {
+          await mkdir(captureDirectory, { recursive: true });
+          const raw = Buffer.from(result.pcmBase64, 'base64'), pcm = new Float32Array(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.byteLength)); delete result.pcmBase64;
+          if (createHash('sha256').update(raw).digest('hex') !== result.pcmFloat32Sha256) throw new Error('Captured raw PCM transport changed.');
+          const wav = waveBytes(pcm), rawFile = resolve(captureDirectory, `${device}-${entry.id}-${repeat}.f32`), wavFile = rawFile.replace(/\.f32$/, '.wav');
+          await writeFile(rawFile, raw, { flag: 'wx' }); await writeFile(wavFile, wav, { flag: 'wx' });
+          result.recording = { rawFloat32: { file: rawFile, bytes: raw.length, sha256: result.pcmFloat32Sha256 }, wav: { file: wavFile, bytes: wav.length, sha256: createHash('sha256').update(wav).digest('hex') } };
+        }
+        const first = report.cases.find(value => value.device === device && value.id === entry.id);
+        result.identicalToFirst = !first || (result.pcmFloat32Sha256 === first.pcmFloat32Sha256
+          && JSON.stringify(result.nativeInputs) === JSON.stringify(first.nativeInputs)
+          && JSON.stringify(result.chunks) === JSON.stringify(first.chunks));
+        report.cases.push(result);
+        console.log(JSON.stringify({ id: entry.id, device, repeat, completionMs: result.completionMs, firstAudioReadyMs: result.firstAudioReadyMs, identical: result.identicalToFirst }));
+        if (!result.identicalToFirst) throw new Error('Frozen cold/warm speech or model feeds changed.');
       }
-      const first = report.cases.find(value => value.device === device && value.id === entry.id);
-      result.identicalToFirst = !first || (result.pcmFloat32Sha256 === first.pcmFloat32Sha256
-        && JSON.stringify(result.nativeInputs) === JSON.stringify(first.nativeInputs)
-        && JSON.stringify(result.chunks) === JSON.stringify(first.chunks));
-      report.cases.push(result);
-      console.log(JSON.stringify({ id: entry.id, device, repeat, completionMs: result.completionMs, firstAudioReadyMs: result.firstAudioReadyMs, identical: result.identicalToFirst }));
-      if (!result.identicalToFirst) throw new Error('Frozen cold/warm speech or model feeds changed.');
+      await page.evaluate(() => registry.releaseVoiceModel());
     }
-    await page.evaluate(() => registry.releaseVoiceModel());
-  }
-  await page.waitForFunction(() => performanceWorkers.every(worker => worker.probeTerminated));
-  report.workerPerformance = await page.evaluate(() => performanceWorkers.map(worker => ({ id: worker.probeId, terminated: worker.probeTerminated,
-    final: worker.final ?? null, cpuCleanupScope: worker.final ? null : 'CPU synchronous execution is preempted by Worker.terminate; the execution context closes, so native counters are unavailable afterward.' })));
-  if (report.workerPerformance.some(worker => worker.final && (!worker.final.modelReferencesReleased || worker.final.phonemizerNativeBytes
-    || worker.final.engines.some(engine => !engine.closed || engine.remainingBuffers || engine.remainingTensors
-      || engine.unexpectedDeviceLoss || engine.completionError)))) throw new Error('Original worker benchmark retained native resources or recorded a GPU failure.');
+    await page.waitForFunction(() => performanceWorkers.every(worker => worker.probeTerminated));
+    report.workerPerformance = await page.evaluate(() => performanceWorkers.map(worker => ({ id: worker.probeId, terminated: worker.probeTerminated,
+      final: worker.final ?? null, cpuCleanupScope: worker.final ? null : 'CPU synchronous execution is preempted by Worker.terminate; the execution context closes, so native counters are unavailable afterward.' })));
+    if (report.workerPerformance.some(worker => worker.final && (!worker.final.modelReferencesReleased || worker.final.phonemizerNativeBytes
+      || worker.final.engines.some(engine => !engine.closed || engine.remainingBuffers || engine.remainingTensors
+        || engine.unexpectedDeviceLoss || engine.completionError)))) throw new Error('Original worker benchmark retained native resources or recorded a GPU failure.');
+  } finally { await cdp.detach(); }
 }

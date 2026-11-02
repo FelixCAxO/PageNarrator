@@ -387,7 +387,7 @@ export async function extractPdfTextFromDocument(document, {
 
   for (let pageNumber = firstPage; pageNumber <= document.numPages; pageNumber += 1) {
     const record = await readPdfPageRecord(document, pageNumber, { pdfjs });
-    if (record.hasOutlinedText || record.hasUnknownType3Text) throw createScannedPdfUnsupportedError();
+    if (record.hasOutlinedText || record.hasUnknownType3Text || record.hasUnmappedText) throw createScannedPdfUnsupportedError();
     pageRecords.push(record);
   }
 
@@ -446,7 +446,7 @@ export async function* iteratePdfSpeechChunks(document, {
   let inspectionFailure = null;
   const remainingPageCount = document.numPages - firstPage + 1;
   const emitRecord = function* emitRecord(record, { filterRunningContent = true, runningContent = null } = {}) {
-    if ((record.hasOutlinedText || record.hasUnknownType3Text) && record.needsOcr) throw createScannedPdfUnsupportedError();
+    if ((record.hasOutlinedText || record.hasUnknownType3Text || record.hasUnmappedText) && record.needsOcr) throw createScannedPdfUnsupportedError();
     const pageChunk = createPdfPageChunk(record, {
       runningContent: filterRunningContent ? runningContent : null,
     });
@@ -542,6 +542,7 @@ export async function readPdfPageRecord(document, pageNumber, { pdfjs = null, re
   try {
     const content = await page.getTextContent();
     const hasUnknownType3Text = content?.unknownType3Glyphs > 0;
+    const hasUnmappedText = content?.unmappedGlyphs > 0;
     let items = Array.isArray(content?.items) ? content.items : [];
     const sourcePageView = getPdfPageView(page);
     const pageRotation = page.rotate || 0;
@@ -551,12 +552,12 @@ export async function readPdfPageRecord(document, pageNumber, { pdfjs = null, re
     const operatorInspection = model.speech.trim().length >= 500
       ? { hasRasterImage: false, hasRenderableNonText: false, inspectionFailed: false, error: null }
       : await inspectPdfPageOperators(page, { pdfjs });
-    let needsOcr = Boolean(hasUnknownType3Text || operatorInspection.hasOutlinedText || (!hasMeaningfulText && operatorInspection.hasRasterImage));
+    let needsOcr = Boolean(hasUnknownType3Text || hasUnmappedText || operatorInspection.hasOutlinedText || (!hasMeaningfulText && operatorInspection.hasRasterImage));
     if (needsOcr && recognizePage) {
       items = await recognizePage(page);
       model = createPdfPageModel(items, { pageView: sourcePageView, pageRotation });
       hasMeaningfulText = Boolean(model.speech.trim());
-      needsOcr = !hasMeaningfulText || Boolean((hasUnknownType3Text || operatorInspection.hasOutlinedText) && model.speech === nativeSpeech);
+      needsOcr = !hasMeaningfulText || Boolean((hasUnknownType3Text || hasUnmappedText || operatorInspection.hasOutlinedText) && model.speech === nativeSpeech);
     }
     const contentKind = hasMeaningfulText
       ? 'text'
@@ -576,6 +577,7 @@ export async function readPdfPageRecord(document, pageNumber, { pdfjs = null, re
       contentKind,
       hasOutlinedText: Boolean(operatorInspection.hasOutlinedText),
       hasUnknownType3Text,
+      hasUnmappedText,
       needsOcr,
       inspectionError: operatorInspection.error,
       hasImages: contentKind === 'raster-image',

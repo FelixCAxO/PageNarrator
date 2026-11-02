@@ -1,15 +1,15 @@
 {
   "method": "One native X11 display capture per image; crop top 80 pixels, convert to RGB. No screenshot composition, resizing, or UI layout overrides.",
-  "environment": "Isolated Playwright 1.60.0 / Chromium 148.0.7778.96 / linux / Xvfb / Openbox.",
+  "environment": "Isolated Playwright 1.64.1 / Chromium 156.0.8078.4 / linux / Xvfb / Openbox.",
   "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
-  "capturedAt": "2026-10-27T10:19:17.426Z",
-  "nodeVersion": "v22.23.3",
+  "capturedAt": "2026-11-02T08:57:32.519Z",
+  "nodeVersion": "v26.12.1",
   "inputPackage": {
-    "fileCount": 330,
-    "bytes": 78015894,
-    "sha256": "23d3890720f44556dff55d9c32d8cec0a6a6d845af331a5be30c2950f839cbdf"
+    "fileCount": 351,
+    "bytes": 79250895,
+    "sha256": "21e00fdbc085119d924dd04a7d46ad31b43b9a981cfc063f1c7771bb336a5a03"
   },
   "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
   "sourceSha256": {
@@ -17,7 +17,7 @@
     "src/popup.css": "ba31bc9c9a976735bbba81be1037f95ec45f530ae2b7ff1d4f9af4d6e8c52e21",
     "src/popup.js": "b0546e5aa13946f6408ecb05acd991c1b78a591a8903cbcabbe7ce0caf3221b2",
     "src/pdf-viewer.html": "7432363b1a41f6eeca741fe31a8d07879a1566071c33203bf2534a9ae94f8fcf",
-    "src/pdf-viewer.css": "d81684b2a17881be8d4ed5c21a3e6624edef394a7ada9b89eff6fefecadde0ee",
+    "src/pdf-viewer.css": "8819053897a09f10bb17fdaee52400184a59c37dc9e4a7e4a616b64968645480",
     "src/pdf-viewer.js": "bdaee215bc4a4cd4b3f3ea8c983ebefa52330aff54326a61e2288eef3c4c347d",
     "website/public/cws-demo.html": "c684671986eb2a0e58b2505f7756428d8ed0df7796f3fd0eb14509a99168ffcd",
     "scripts/capture-current-product-media.mjs": "2a23e1d4174cb0ef19aecefe80c36fe27eaf4c09ff5cbf441d1867addf2f79cc"
@@ -28,8 +28,8 @@
   "images": [
     {
       "name": "screenshot-01-toolbar-player-idle.png",
-      "sha256": "0ac15fe4b597a3e2b465432ef0dba43f756f6a669a245099beb47bf139e27947",
-      "rawCaptureSha256": "021327561f42dcff119df65e4419a7308a61d4ff464a3ea2f8f3c6eb0d63c6a8",
+      "sha256": "0f959b958c3c16b767b48cd32968921f8ac1629cd5d28faf9b2739330a7ee89b",
+      "rawCaptureSha256": "14cc3e7905f7df5a143bf3660b39ac23a427cafbf72c36fce926457f3fdb2abc",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -46,8 +46,8 @@
     },
     {
       "name": "screenshot-02-toolbar-player-reading.png",
-      "sha256": "bc29ce928471dd44aa88665f1443b6efb1ba14c00c4a0600405c30022cb07812",
-      "rawCaptureSha256": "f3d76b5ebb27a5d535e6a05b310db13ca34a623078ed843de7b2200c33a0c494",
+      "sha256": "d20fdadea2b8995286feee4167ec9f66b551de53de70cf50dfda788f4eea3ada",
+      "rawCaptureSha256": "6bcc421af2314e77dcc76bb7fe93d38b866daf342226008ef5c51131e71988ce",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -66,8 +66,8 @@
     },
     {
       "name": "screenshot-03-toolbar-player-settings.png",
-      "sha256": "e9673a1dbefeff8614e8dc8ab05e456b2b902c59675298969dbfd2b834b65adc",
-      "rawCaptureSha256": "abf4694282b75f92348456a5d27bc025d4b955b202263020ba46dc2db20892b1",
+      "sha256": "7bd407532e5c0daca88db705ee172f19df925c2cf64cc4f8e5e7e4250d54a4ed",
+      "rawCaptureSha256": "ebfbb4fa661e7d34bf02d38e1a63728a42bfe4d1a5e58159efcee7f6c5473568",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Paused",
@@ -87,8 +87,8 @@
     },
     {
       "name": "screenshot-04-toolbar-player-pdf.png",
-      "sha256": "1b919fe6522e7ff5516ebb8d9a46d5e2b353cc9c973fc66ea1bcc2a5ff0441ae",
-      "rawCaptureSha256": "ffca2c2ed4b22336c248be16042fab50fbb726553b940d1c36f4dc08e5114887",
+      "sha256": "cff9b05009e8eb51cc6ef930705f5866c91410d9240816a34a51bc283bff5393",
+      "rawCaptureSha256": "108b9c3659935edd469643dd0daa1396263980cf3c46e31608ae5734263c1de1",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -107,8 +107,8 @@
     },
     {
       "name": "screenshot-05-omnivoice-controls.png",
-      "sha256": "60c5a4e6c9fe27ef92d8e61fcfeb07c6f7e19c6f7f0491755f58adffe2aa7916",
-      "rawCaptureSha256": "f6971d88ecf31fe1b5b4576c604d4eea8ca2ca1302e05a6e40c768217ea8f685",
+      "sha256": "ae5ce00496987f59bdd3b43bf0b2f4259226b0d05a3cdbb7b0e9df2a58006fae",
+      "rawCaptureSha256": "4d27a951e2a93194e75d82b4fd5a9d39456e8d2bdb95ac63ba64992f3e113625",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -118,8 +118,7 @@
           "popup-omnivoice-gender",
           "popup-omnivoice-variation",
           "popup-omnivoice-whisper",
-          "popup-speed",
-          "start-reading"
+          "popup-speed"
         ]
       }
     }

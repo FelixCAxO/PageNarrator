@@ -47,6 +47,51 @@ fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_id) l
 }
 `;
 
+// Even inner/output dimensions let each word load and store carry two half values.
+export const PACKED_HALF_MATMUL_SHADER = `enable f16;
+@group(0) @binding(0) var<storage, read> lhs: array<u32>;
+@group(0) @binding(1) var<storage, read> rhs: array<u32>;
+@group(0) @binding(2) var<storage, read_write> dst: array<u32>;
+@group(0) @binding(3) var<uniform> cfg: array<vec4<u32>, 8>;
+fn pn_config(index: u32) -> u32 { return cfg[index / 4u][index % 4u]; }
+var<workgroup> tileL: array<f32, 256>;
+var<workgroup> tileR: array<f32, 256>;
+@compute @workgroup_size(8, 8)
+fn main(@builtin(workgroup_id) group: vec3<u32>, @builtin(local_invocation_id) local: vec3<u32>) {
+  let lane = local.y * 8u + local.x;
+  var ai = 0u; var bi = 0u; var remaining = group.z;
+  for (var axis = i32(pn_config(3u)) - 1; axis >= 0; axis -= 1) {
+    let coord = remaining % pn_config(8u + u32(axis)); remaining /= pn_config(8u + u32(axis));
+    ai += coord * pn_config(16u + u32(axis)); bi += coord * pn_config(24u + u32(axis));
+  }
+  let baseA = ai * pn_config(0u) * pn_config(2u); let baseB = bi * pn_config(2u) * pn_config(1u);
+  let baseOut = group.z * pn_config(0u) * pn_config(1u);
+  let row = group.y * 16u + local.y * 2u;
+  let col = group.x * 16u + local.x * 2u;
+  var sum00 = 0.0; var sum01 = 0.0; var sum10 = 0.0; var sum11 = 0.0;
+  for (var block = 0u; block < pn_config(2u); block += 16u) {
+    for (var chunk = 0u; chunk < 2u; chunk += 1u) {
+      let pair = lane + chunk * 64u;
+      let r = pair / 8u; let c = pair % 8u * 2u;
+      var a = vec2<f32>(0.0); var b = vec2<f32>(0.0);
+      if (group.y * 16u + r < pn_config(0u) && block + c < pn_config(2u)) { a = vec2<f32>(bitcast<vec2<f16>>(lhs[(baseA + (group.y * 16u + r) * pn_config(2u) + block + c) / 2u])); }
+      if (block + r < pn_config(2u) && group.x * 16u + c < pn_config(1u)) { b = vec2<f32>(bitcast<vec2<f16>>(rhs[(baseB + (block + r) * pn_config(1u) + group.x * 16u + c) / 2u])); }
+      tileL[pair * 2u] = a.x; tileL[pair * 2u + 1u] = a.y;
+      tileR[pair * 2u] = b.x; tileR[pair * 2u + 1u] = b.y;
+    }
+    workgroupBarrier();
+    for (var j = 0u; j < 16u; j += 1u) {
+      let a0 = tileL[(local.y * 2u) * 16u + j]; let a1 = tileL[(local.y * 2u + 1u) * 16u + j];
+      let b0 = tileR[j * 16u + local.x * 2u]; let b1 = tileR[j * 16u + local.x * 2u + 1u];
+      sum00 += a0 * b0; sum01 += a0 * b1; sum10 += a1 * b0; sum11 += a1 * b1;
+    }
+    workgroupBarrier();
+  }
+  if (row < pn_config(0u) && col < pn_config(1u)) { dst[(baseOut + row * pn_config(1u) + col) / 2u] = bitcast<u32>(vec2<f16>(vec2<f32>(sum00, sum01))); }
+  if (row + 1u < pn_config(0u) && col < pn_config(1u)) { dst[(baseOut + (row + 1u) * pn_config(1u) + col) / 2u] = bitcast<u32>(vec2<f16>(vec2<f32>(sum10, sum11))); }
+}
+`;
+
 // tanh rounds to +/-1 in float32 by |x|=10. Bounded input prevents the
 // sinh/cosh overflow permitted for the WGSL builtin at larger finite values.
 export const BOUNDED_TANH_SHADER = `

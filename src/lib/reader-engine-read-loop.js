@@ -626,11 +626,12 @@ export function createReadLoopOrchestrator({
           && Number.isFinite(openingRealTimeFactor) && openingRealTimeFactor * playbackSpeed >= 1;
         const shortHeading = ['page-title', 'heading'].includes(state.activeChunks[index]?.type)
           && getChunkSpeechText(state.activeChunks[index]).length < profileBeforePlayback.targetMinLength;
+        const nextPreload = speechPreloads.get(index + 1);
+        const estimatedOmniStart = selectedVoice.engine === 'omnivoice' && typeof nextPreload?.waitForPlaybackLead === 'function';
         // Build a reserve when synthesis cannot keep pace; a wider queue alone creates no head start.
-        if (index === startChunk && speechPreloads.has(index + 1) && (shortHeading || slowOmniStart)) {
+        if (index === startChunk && nextPreload && (shortHeading || slowOmniStart || estimatedOmniStart)) {
           if (slowOmniStart) flowRecorder.record({ kind: 'startup_audio_buffer_wait', chunkIndex: index,
             engine: selectedVoice.engine, realTimeFactor: openingRealTimeFactor, playbackSpeed });
-          const nextPreload = speechPreloads.get(index + 1);
           const openingDuration = openingSpeech?.durationSeconds / playbackSpeed;
           if (slowOmniStart) {
             const reserveAhead = Math.min(3, Math.max(1, profileBeforePlayback.preloadAhead), state.activeChunks.length - index - 1);

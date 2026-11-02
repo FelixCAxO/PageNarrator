@@ -33,6 +33,10 @@ export function kokoroPerformanceSnapshot() {
       deviceLost: engine.lost ? { reason: engine.lost.reason, message: engine.lost.message } : null,
       unexpectedDeviceLoss: Boolean(engine.lost && !(engine.closed && engine.lost.reason === 'destroyed')),
       completionError: engine.completionError ? { name: engine.completionError.name, message: engine.completionError.message } : null })),
+    sessions: sessions.map(({ session }) => {
+      const buffers = new Set([...session.initializers.values()].map(tensor => tensor.rawData?.buffer).filter(Boolean));
+      return { hostWeightBackingBytes: [...buffers].reduce((sum, buffer) => sum + buffer.byteLength, 0) };
+    }),
     modelReferencesReleased: sessions.every(session => session.session.model === null),
     phonemizerNativeBytes: phonemizers.reduce((sum, value) => sum + value.diagnostics().nativeMemoryBytes, 0), inputs };
 }

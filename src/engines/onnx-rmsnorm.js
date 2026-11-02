@@ -38,3 +38,14 @@ export function fuseHalfRmsNorms(nodes, initializers, valueTypes) {
     return node;
   });
 }
+
+export function fuseHalfRmsNormTransposes(nodes,initializers,valueTypes) {
+  const producers=new Map(nodes.flatMap(node=>node.outputs.map(name=>[name,node])));
+  const plain=(node,op,inputs,attrs=[])=>node?.opType===op&&(!node.domain||node.domain==='ai.onnx')&&node.inputs.length===inputs&&node.outputs.length===1&&Object.keys(node.attrs).every(key=>attrs.includes(key));
+  return nodes.map(node=>{
+    if(!plain(node,'Transpose',1,['perm'])||!Array.isArray(node.attrs.perm)||node.attrs.perm.length!==4||!node.attrs.perm.every((axis,i)=>axis===[0,2,1,3][i]))return node;
+    const norm=producers.get(node.inputs[0]),weight=norm&&initializers.get(norm.inputs[1]);
+    if(!plain(norm,'FusedHalfRmsNorm',2)||weight?.dataType!==10||weight.dims.length!==1||weight.dims[0]!==128||![...norm.inputs,...norm.outputs,...node.outputs].every(name=>valueTypes.get(name)===10))return node;
+    return {...node,opType:'FusedHalfRmsNormTranspose',inputs:[...norm.inputs],attrs:{}};
+  });
+}

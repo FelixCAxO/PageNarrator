@@ -36,7 +36,7 @@ export function getDocument(input) {
     if (closed) throw closedError();
     const useWorker = params.disableWorker ? false : params.useWorker ?? (typeof Worker === 'function' && !params.loadAsset && !globalThis.process?.versions?.node);
     document = await openPdfDocument(data, { wasm, loadAsset: useWorker ? undefined : loadAsset,
-      useWorker, assetBaseUrl, password: params.password, useSystemFonts: params.useSystemFonts, signal });
+      useWorker, assetBaseUrl, password: params.password, useSystemFonts: params.useSystemFonts, recoverUnsupportedArtwork: params.recoverUnsupportedArtwork, signal });
     if (closed) { document.destroy(); throw closedError(); } return document;
   };
   task.promise = Promise.race([Promise.resolve().then(load), aborted]); return task;

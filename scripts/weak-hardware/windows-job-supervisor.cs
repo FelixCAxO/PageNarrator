@@ -358,18 +358,31 @@ namespace PageNarrator.WeakHardware
             }
         }
 
+        static bool IsPossibleChild(int child, int parent, Dictionary<int, DateTime> created)
+        {
+            DateTime childTime, parentTime;
+            return !created.TryGetValue(child, out childTime) || !created.TryGetValue(parent, out parentTime) || childTime >= parentTime;
+        }
+
         static List<object> DescribeBrowserTree(string matchCommandLine, HashSet<int> jobPids)
         {
             var parents = new Dictionary<int, int>();
             var names = new Dictionary<int, string>();
+            var created = new Dictionary<int, DateTime>();
             var matches = new HashSet<int>();
-            using (var searcher = new ManagementObjectSearcher("SELECT ProcessId, ParentProcessId, Name, CommandLine FROM Win32_Process"))
+            using (var searcher = new ManagementObjectSearcher("SELECT ProcessId, ParentProcessId, Name, CommandLine, CreationDate FROM Win32_Process"))
             {
                 foreach (ManagementObject process in searcher.Get())
                 {
                     int pid = Convert.ToInt32(process["ProcessId"]);
                     parents[pid] = Convert.ToInt32(process["ParentProcessId"]);
                     names[pid] = Convert.ToString(process["Name"]);
+                    string creationDate = Convert.ToString(process["CreationDate"]);
+                    if (!string.IsNullOrEmpty(creationDate))
+                    {
+                        try { created[pid] = ManagementDateTimeConverter.ToDateTime(creationDate).ToUniversalTime(); }
+                        catch (ArgumentException) { }
+                    }
                     string commandLine = Convert.ToString(process["CommandLine"]);
                     if (!string.IsNullOrEmpty(matchCommandLine) && commandLine != null
                         && commandLine.IndexOf(matchCommandLine, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -387,7 +400,8 @@ namespace PageNarrator.WeakHardware
                 changed = false;
                 foreach (var entry in parents)
                 {
-                    if (!tree.Contains(entry.Key) && tree.Contains(entry.Value) && entry.Key != entry.Value)
+                    // Parent PIDs can be reused while an older, unrelated child remains alive.
+                    if (!tree.Contains(entry.Key) && tree.Contains(entry.Value) && entry.Key != entry.Value && IsPossibleChild(entry.Key, entry.Value, created))
                     {
                         tree.Add(entry.Key);
                         changed = true;
@@ -402,6 +416,7 @@ namespace PageNarrator.WeakHardware
                 entry["pid"] = pid;
                 entry["name"] = names.ContainsKey(pid) ? names[pid] : null;
                 entry["parentPid"] = parents.ContainsKey(pid) ? (object)parents[pid] : null;
+                entry["creationTimeUtc"] = created.ContainsKey(pid) ? created[pid].ToString("o") : null;
                 entry["listedInJob"] = jobPids.Contains(pid);
                 entry["commandLineMatched"] = matches.Contains(pid);
                 IntPtr handle = OpenProcess(PROCESS_QUERY_LIMITED_INFORMATION | PROCESS_VM_READ, false, pid);

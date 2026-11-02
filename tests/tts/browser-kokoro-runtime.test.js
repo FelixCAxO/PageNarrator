@@ -191,7 +191,7 @@ describe('Kokoro data-only loader', () => {
     const loadData = vi.fn(async file => file.includes('.onnx') ? new Uint8Array() : new TextEncoder().encode(JSON.stringify(file === 'tokenizer.json' ? tokenizerJson : tokenizerConfig)));
     const backend = await loadBrowserKokoroBackend(undefined, { device: 'wasm', dtype: 'q8', loadData,
       phonemizerFactory: async () => phonemizer, cpuEngineFactory, inference: { Tensor, InferenceSession: { create: createSession } } });
-    expect(createSession.mock.calls[0][1]).toEqual({ executionProviders: ['wasm'], engine: compute });
+    expect(createSession.mock.calls[0][1]).toEqual({ executionProviders: ['wasm'], releaseHostWeights: true, engine: compute });
     expect(cpuEngineFactory).toHaveBeenCalledTimes(1); await backend.dispose(); await backend.dispose();
     expect(events).toEqual(['session', 'compute']); expect(phonemizer.dispose).toHaveBeenCalledTimes(1);
   });

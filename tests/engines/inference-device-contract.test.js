@@ -5,7 +5,7 @@ import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 
 vi.mock('../../src/engines/onnx-model.js', () => ({ decodeOnnxModel: vi.fn() }));
 vi.mock('../../src/engines/webgpu-compute.js', async original => ({
-  ...await original(), WebGpuCompute: { create: vi.fn() },
+  ...await original(), WebGpuCompute: class { static create = vi.fn(); },
 }));
 
 const info = (name, dataType = 1) => ({ name, dataType, dims: [2] });

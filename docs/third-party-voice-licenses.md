@@ -1,12 +1,14 @@
 # Voice licenses
 
-Catalog license review: 2026-08-26. Runtime and retained-data documentation updated: 2026-10-17.
+Catalog license review: 2026-08-26. Runtime and retained-data documentation updated: 2026-11-02.
 
 PageNarrator 1.0.3 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
 
 ## Experimental OmniVoice
 
 Reader settings expose an additional experimental OmniVoice engine, separately from the reviewed Kokoro catalog. The pinned model metadata for `MarkShark2/omnivoice-onnx-kv-b1-fp16` declares Apache-2.0. PageNarrator's GPL-3.0-or-later tokenizer, graph executor, main speech inference and audio decoder run the retained data in an original packaged worker. The browser bridge replaces the former vendored bridge; its mathematical reference is k2-fsa/OmniVoice's Apache-2.0 inference implementation, with attribution retained. The retired executable implementations are excluded from runtime and source packaging. Sources, revisions, and implementation choices are recorded in [PROVENANCE.md](../vendor/omnivoice/PROVENANCE.md). VoiceStudio application code is not included. Remaining integration, quality and performance gates are recorded in the browser-engine documentation.
+
+The 640 OmniVoice presets contain 525 references encoded from publisher recordings, six references derived from recordings, and 109 generated references. The 531 recording-based entries retain attribution to LibriTTS-R (348), google/fleurs (173), SpiCE (9), or JVNV (1). These are preset counts, not counts of distinct people. LibriTTS-R, FLEURS and SpiCE data retain CC BY 4.0; JVNV data retain CC BY-SA 4.0. Source notices and full license texts ship with the extension: [LibriTTS-R](../public/legal/LibriTTS-R-NOTICE.txt), [FLEURS](../public/legal/FLEURS-NOTICE.txt), [SpiCE](../public/legal/SpiCE-NOTICE.txt), [JVNV](../public/legal/JVNV-NOTICE.txt), [CC BY 4.0](../public/legal/CC-BY-4.0.txt), and [CC BY-SA 4.0](../public/legal/CC-BY-SA-4.0.txt). The catalog retains reader and recording IDs, source audio and archive hashes, encoder hashes, preprocessing, and parent reference hashes for derived data. PageNarrator resamples to mono 24 kHz, pads codec boundaries where needed, and encodes the complete selected utterance. Recorded data keep their separate license from the model and application code.
 
 ## Runtime-ready catalog
 
@@ -21,7 +23,7 @@ These voices are upstream grade C+ or higher and have no per-voice CC BY entry i
 
 All other Kokoro voice IDs remain excluded from the v1.0.0 selector because they are below the current quality floor, ungraded, non-English, or carry separate per-voice attribution requirements. Adding one requires a fresh source, license, and listening review.
 
-The public selected manifest must match `src/tts/voices/voice-registry.js`. The release ZIP includes `legal/Apache-2.0.txt`, `legal/GPL-3.0.txt`, and `legal/THIRD_PARTY_NOTICES.txt`, and `tests/voice/voice-license-readiness.test.js` enforces the built-in Kokoro-only catalog.
+The public selected manifest must match `src/tts/voices/voice-registry.js`. The release ZIP includes `legal/Apache-2.0.txt`, `legal/GPL-3.0.txt`, and `legal/THIRD_PARTY_NOTICES.txt`, and `tests/voice/voice-license-readiness.test.js` enforces the Kokoro voice allowlist and attribution for recorded OmniVoice references.
 
 ## Original browser speech implementation and retained data
 

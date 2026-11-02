@@ -21,7 +21,13 @@ The seven pinned speech/OCR graphs use 73 operator types. Build and package chec
 
 ### Admitted PDF programs
 
-Native CMYK processing keeps four inks plus alpha through final ICC conversion. Qualified paths include bounded Normal groups and Forms, specified masks and overprint, ICC4 contributions, and a single-rectangle Multiply program. Support depends on the exact producer, consumer, profile, and resource limits; unsupported combinations return errors. Detailed historical diagnostics are retained locally.
+Native CMYK processing keeps four inks plus alpha through final ICC conversion. Qualified paths include bounded Normal groups and Forms, specified masks and overprint, ICC4 contributions, and a single-rectangle Multiply program. Support depends on the exact producer, consumer, profile, and resource limits.
+
+The browser facade recovers unsupported shading and pattern artwork when the page still has mapped, readable text. It omits only that artwork, retains a bounded list of warnings, and shows a page notice. It does not suppress parser failures, resource limits, cancellation, unreadable fonts, Type3 glyph painting failures, or pages without readable text. Set `recoverUnsupportedArtwork: false` for strict diagnostics; the document core remains strict by default. Worker/canvas recovery handles transient failures separately and does not keep retrying permanent page errors.
+
+Empty TrueType glyph subsets are normalized into a browser-loadable container without changing advances or adding visible outlines. Authoritative unmapped-glyph counts reach the reader even on long prose pages, so it invokes the existing OCR path when that page is reached. OCR must produce readable, changed text before narration proceeds; the preflight still flags missing mappings for review.
+
+Run `npm run probe:pdf-document -- "path/to/book.pdf"` before relying on a new document. This checks text and browser font loading on every page through the production facade and module worker in Chromium, reports recovered artwork and remaining failures, and verifies disposal. The JSON report defaults to `artifacts/engines/pdf-document-audit.json`; this preflight does not certify page raster output or spoken audio. Detailed historical diagnostics are retained locally.
 
 ## Verification status
 

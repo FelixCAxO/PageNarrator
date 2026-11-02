@@ -5,7 +5,7 @@ import { NativePdfReader } from '../../src/pdf/native-reader.js';
 import { createPdfPatternReader } from '../../src/pdf/shading-pattern.js';
 import { planPdfTilingRaster, renderPdfTilingPattern } from '../../src/pdf/tiling-pattern.js';
 import { pdfPayloadBuffers } from '../../src/pdf/payload-buffers.js';
-import { tilingPdf } from './tiling-pattern-fixture.js';
+import { rotatedHatch, tilingPdf } from './tiling-pattern-fixture.js';
 import { options, pdf, stream } from './fixtures.js';
 
 const identity = [1, 0, 0, 1, 0, 0];
@@ -59,8 +59,29 @@ describe('coloured Normal tiling cell compilation', () => {
   it('preserves explicit Normal intrinsic cell alpha', async () => {
     await payload({ alpha: .5 }, value => expect(patternOf(value).commands.find(c => c.op === 'paint').fillAlpha).toBe(.5));
   });
+  it('compiles rotated Type 3 hatching with clipped strokes and line settings', async () => {
+    await payload(rotatedHatch, value => {
+      const pattern = patternOf(value);
+      expect(pattern.tilingType).toBe(3); pattern.matrix.forEach((n, i) => expect(n).toBeCloseTo(rotatedHatch.matrix[i]));
+      expect(pattern.commands.filter(c => c.op === 'paint' && c.kind === 'S')).toHaveLength(6);
+      expect(pattern.commands).toContainEqual({ op: 'lineStyle', name: 'w', value: 3.6 });
+      expect(pattern.commands).toContainEqual({ op: 'dash', dash: [], phase: 0 });
+      expect(pattern.commands.find(c => c.op === 'paint' && c.kind === 'n').clip).toBe('nonzero');
+      expect(value.items).toEqual([]);
+    });
+  });
+  it('inherits stroke settings from the content entry rather than the later pattern paint', async () => {
+    const form = stream('9 w 0 J 0 j 12 M [] 0 d /Pattern cs /P scn 0 0 10 10 re f', '/Subtype /Form /BBox [0 0 20 20] /Resources << /Pattern << /P 5 0 R >> >>');
+    await payload({ tilingType: 3, cellContent: '0 0 m 1 1 l S', pageResources: '/XObject << /F 8 0 R >>', extra: [form],
+      pageContent: '2 w 1 J 2 j 5 M [2 3] 1 d /F Do' }, value => {
+      const commands = patternOf(value).commands;
+      for (const [name, number] of [['w', 2], ['J', 1], ['j', 2], ['M', 5]]) expect(commands).toContainEqual({ op: 'lineStyle', name, value: number });
+      expect(commands).toContainEqual({ op: 'dash', dash: [2, 3], phase: 1 });
+      expect(commands.find(c => c.op === 'paint').lineWidth).toBe(2);
+    });
+  });
   it.each([
-    ['BT /F1 12 Tf (Hidden) Tj ET', 'BT'], ['0 0 1 1 re S', 'S'], ['/Pattern cs', 'Nested'], ['/X Do', 'Form'],
+    ['BT /F1 12 Tf (Hidden) Tj ET', 'BT'], ['/Pattern cs', 'Nested'], ['/X Do', 'Form'],
   ])('refuses unsupported cell artwork before side effects: %s', async (cellContent, message) => {
     await expect(payload({ cellContent, imageObject: stream('', '/Subtype /Form /BBox [0 0 1 1]') })).rejects.toMatchObject({ code: 'pdf_unsupported', message: expect.stringContaining(message) });
   });
@@ -145,6 +166,22 @@ describe('tiling context and retained artwork admission', () => {
 
 describe('constant-spacing device raster and resource cleanup', () => {
   const descriptor = { type: 1, bbox: [0, 0, 1, 1], steps: [1, 1], commands: [] };
+  it.each([
+    [8.2, 8.2, -6.2, 6.2, 9.125, 5.375],
+    [-8.2, 8.2, 6.2, 6.2, -9.125, 5.375],
+    [8.2, 1.2, 2.2, 6.2, 9.125, -5.375],
+  ])('preserves a Type 3 rotated/skewed lattice, phase and BBox origin: %j', (...matrix) => {
+    const plan = planPdfTilingRaster({ ...descriptor, tilingType: 3, bbox: [.25, -.25, 1.25, .75] }, matrix);
+    const [a, b, c, d, e, f] = plan.patternMatrix, [sx, , , sy, tx, ty] = plan.cellMatrix;
+    expect(a * plan.width).toBeCloseTo(Math.round(matrix[0])); expect(b * plan.width).toBeCloseTo(Math.round(matrix[1]));
+    expect(c * plan.height).toBeCloseTo(Math.round(matrix[2])); expect(d * plan.height).toBeCloseTo(Math.round(matrix[3]));
+    expect(a * tx + c * ty + e).toBeCloseTo(matrix[4]); expect(b * tx + d * ty + f).toBeCloseTo(matrix[5]);
+    expect(sx).toBe(plan.width); expect(sy).toBe(plan.height);
+  });
+  it('allows Type 3 extra distortion and rejects a quantized singular lattice', () => {
+    expect(planPdfTilingRaster({ ...descriptor, tilingType: 3, bbox: [4, 0, 5, 1] }, [15.5, 0, 0, 12, 0, 0]).displacement).toBe(2.5);
+    expect(() => planPdfTilingRaster({ ...descriptor, tilingType: 3 }, [1.2, 1.2, 1.4, 1.3, 0, 0])).toThrow(/periods/);
+  });
   it('keeps phase and uses a BBox-based periodic domain with symmetric signed rounding', () => {
     const plan = planPdfTilingRaster({ ...descriptor, bbox: [.2, -.3, 1.2, .7] }, [16.4, 0, 0, -12.4, 18.25, 133.25]);
     expect(plan.width).toBe(16); expect(plan.height).toBe(12); expect(plan.cellMatrix).toEqual([16, 0, 0, -12, -3.2, 8.399999999999999]);
@@ -160,6 +197,19 @@ describe('constant-spacing device raster and resource cleanup', () => {
     expect(() => planPdfTilingRaster(descriptor, [16, 1, 0, 12, 0, 0])).toThrow(/Oblique/);
   });
   const ctx = { canvas: { width: 10, height: 10 }, getTransform: () => ({ a: 16, b: 0, c: 0, d: 12, e: 0, f: 0 }) };
+  it('paints the repeated cell with its oblique brush transform and releases its surface', async () => {
+    const budget = { pixels: 0 }, setTransform = vi.fn(), renderCell = vi.fn(async () => {}), surfaces = [];
+    vi.stubGlobal('DOMMatrix', class { constructor(matrix) { this.values = matrix; } });
+    vi.stubGlobal('OffscreenCanvas', class { constructor(width, height) { this.width = width; this.height = height; surfaces.push(this); } getContext() { return { setTransform() {}, beginPath() {}, rect() {}, clip() {} }; } });
+    const target = { ...ctx, getTransform: () => ({ a: 8, b: 8, c: -6, d: 6, e: 10, f: 20 }),
+      save() {}, restore() {}, setTransform() {}, fillRect: vi.fn(), createPattern: vi.fn(() => ({ setTransform })) };
+    try { await renderPdfTilingPattern({ ...descriptor, tilingType: 3 }, target, { surfaceBudget: budget, renderCell }); }
+    finally { vi.unstubAllGlobals(); }
+    expect(setTransform.mock.calls[0][0].values).toEqual([8 / 12, 8 / 12, -6 / 9, 6 / 9, 10, 20]);
+    expect(renderCell).toHaveBeenCalledWith([], expect.any(Object), [12, 0, 0, 9, -0, -0]);
+    expect(target.fillRect).toHaveBeenCalledWith(0, 0, 10, 10); expect(budget.pixels).toBe(0);
+    expect(surfaces[0]).toMatchObject({ width: 0, height: 0 });
+  });
   it.each([{ pixels: 16_000_000 - 383 }, { pixels: 0, tilingExecutions: 4096 }, { pixels: 0, tilingCommands: 500000 }, { pixels: 0, tilingPixels: 64_000_000 }])('reserves both cell/snapshot pixels and bounds render work before allocating: %j', async budget => {
     const allocation = vi.fn(); vi.stubGlobal('OffscreenCanvas', allocation);
     try { await expect(renderPdfTilingPattern({ ...descriptor, commands: [{ op: 'save' }] }, ctx, { surfaceBudget: budget, renderCell: async () => {} })).rejects.toMatchObject({ code: 'pdf_limit' }); }

@@ -6,7 +6,7 @@ import { resolve, extname, sep } from 'node:path';
 import { chromium } from '@playwright/test';
 import manifest from '../tests/fixtures/browser-speech-models.json' with { type: 'json' };
 import { waveBytes } from './lib/kokoro-speech-acceptance.mjs';
-import { acquireMeasurementLock } from './weak-hardware/measurement-lock.mjs';
+import { ensureMeasurementLock } from './weak-hardware/measurement-lock.mjs';
 import { browserAdapterConfiguration } from './lib/browser-adapter.mjs';
 import { getOmniVoiceLanguageOptions } from '../src/tts/omnivoice/languages.js';
 import referenceTexts from '../tests/fixtures/omnivoice-reference-texts.json' with {type:'json'};
@@ -15,7 +15,7 @@ import whisperTexts from '../tests/fixtures/omnivoice-whisper-reference-texts.js
 const argument = (name, fallback) => process.argv.find(value=>value.startsWith(`--${name}=`))?.split('=').slice(1).join('=') ?? fallback;
 const count=Number(argument('count','10')), startSeed=Number(argument('start-seed','42'));
 if(!Number.isInteger(count)||count<1||count>100||!Number.isInteger(startSeed)||startSeed<0
-  ||process.argv.slice(2).some(value=>!/^--(?:count|start-seed|output|languages|append|plan|references|runtime)=/u.test(value)))throw new Error('Use --count=1..100 --start-seed=N --output=DIRECTORY --languages=all|sv,en --append=1 --plan=FILE --references=FILE --runtime=FILE');
+  ||process.argv.slice(2).some(value=>!/^--(?:count|start-seed|output|languages|append|plan|references|runtime|source-root)=/u.test(value)))throw new Error('Use --count=1..100 --start-seed=N --output=DIRECTORY --languages=all|sv,en --append=1 --plan=FILE --references=FILE --runtime=FILE --source-root=DIRECTORY');
 const root = process.cwd(), output = resolve(argument('output','artifacts/omnivoice-fixed-voices/reference-candidates'));
 const text = 'The morning light fills the room. I speak clearly and calmly, with a steady and natural voice.';
 const requestedLanguages=argument('languages','en').split(',');
@@ -23,8 +23,9 @@ const languageCodes=requestedLanguages.includes('all')?['sv',...getOmniVoiceLang
 if(new Set(languageCodes).size!==languageCodes.length||languageCodes.some(code=>!Object.hasOwn(referenceTexts,code)))throw new Error('Unknown or duplicate reference language');
 const multilingual=process.argv.some(value=>value.startsWith('--languages='));
 const jobs=argument('plan','')?JSON.parse(await readFile(argument('plan',''),'utf8')).jobs:languageCodes.flatMap(lang=>['female','male'].flatMap(gender=>Array.from({length:count},(_,index)=>({lang,gender,seed:startSeed+index,variation:index+1}))));
-if(jobs.some(job=>!Object.hasOwn(referenceTexts,job.lang)||!['female','male'].includes(job.gender)||!Number.isInteger(job.seed)||job.seed<0||(job.guidanceScale!=null&&job.guidanceScale!==2&&!argument('runtime',''))))throw new Error('Invalid reference generation plan');
-const runtimePath='/'+argument('runtime','src/tts/omnivoice/runtime.js').replaceAll('\\','/');
+if(jobs.some(job=>(job.pronunciationVariant!=null&&(job.lang!=='yue'||job.pronunciationVariant!=='yue-nei5'||(argument('source-root','')&&!argument('runtime',''))))||!Object.hasOwn(referenceTexts,job.lang)||!['female','male'].includes(job.gender)||!Number.isInteger(job.seed)||job.seed<0||(job.guidanceScale!=null&&(!Number.isFinite(job.guidanceScale)||job.guidanceScale<0||job.guidanceScale>4||(job.guidanceScale!==2&&argument('source-root','')&&!argument('runtime',''))))))throw new Error('Invalid reference generation plan');
+const sourceRoot=argument('source-root','').replaceAll('\\','/').replace(/\/$/u,'');
+const runtimePath='/'+argument('runtime',`${sourceRoot?sourceRoot+'/':''}src/tts/omnivoice/runtime.js`).replaceAll('\\','/');
 const modelRoot = resolve('.cache/engine-models', manifest.modelId);
 const referencePool=argument('references','')?JSON.parse(await readFile(argument('references',''),'utf8')).speakers:[];
 async function replaceFile(source,target){
@@ -36,7 +37,7 @@ async function replaceFile(source,target){
     }
   }
 }
-const lock = await acquireMeasurementLock({ owner:{ purpose:'Build fixed OmniVoice reference speakers' }, onWait:holder=>console.log(`Waiting for measurement process ${holder?.pid}.`) });
+const lock = await ensureMeasurementLock({ owner:{ purpose:'Build fixed OmniVoice reference speakers' }, onWait:holder=>console.log(`Waiting for measurement process ${holder?.pid}.`) });
 let browser;
 const server = createServer(async (request,response)=>{
   try {
@@ -70,9 +71,10 @@ try {
     await replaceFile(resolve(output,'speakers.tmp'),resolve(output,'speakers.json'));
     console.log(JSON.stringify({speaker:speaker.id,seconds:pcm.length/24000,elapsedMs:speaker.elapsedMs}));
   });
-  const adapter=await page.evaluate(async ({text,jobs,referenceTexts,whisperTexts,multilingual,existing,referencePool,runtimePath})=>{
+  const adapter=await page.evaluate(async ({text,jobs,referenceTexts,whisperTexts,multilingual,existing,referencePool,runtimePath,sourceRoot,modelRevision})=>{
+    const sourceBase=sourceRoot?'/'+sourceRoot:'';
     const [{createOmniVoiceRuntime},{BytePairTokenizer},api,{createOmniVoiceRequest}]=await Promise.all([
-      runtimePath,'/src/engines/bytepair-tokenizer.js','/src/engines/browser-inference.js','/src/lib/omnivoice-settings.js',
+      runtimePath,`${sourceBase}/src/engines/bytepair-tokenizer.js`,`${sourceBase}/src/engines/browser-inference.js`,`${sourceBase}/src/lib/omnivoice-settings.js`,
     ].map(file=>import(new URL(file,location.href).href)));
     const tokenizer=new BytePairTokenizer(await(await fetch('/models/tokenizer.json')).json(),await(await fetch('/models/tokenizer_config.json')).json());
     let denoise=true, separator=' ';
@@ -82,7 +84,7 @@ try {
       return encode(denoise?value:value.replace('<|denoise|>',''),options);
     };
     let codes, selectedReference = null;
-    const {getOmniVoiceSpeakerReference} = await import('/src/tts/omnivoice/speakers.js');
+    const {getOmniVoiceSpeakerReference} = await import(`${sourceBase}/src/tts/omnivoice/speakers.js`);
     const wrapped={Tensor:api.Tensor,InferenceSession:{async create(source,options){const session=await api.InferenceSession.create(source,options);return{async run(feeds,outputs){if(feeds.audio_codes)codes=Array.from(feeds.audio_codes.data,Number);return session.run(feeds,outputs);},release:()=>session.release()};}}};
     const runtime=createOmniVoiceRuntime({ort:wrapped,decoderRuntime:wrapped,tokenizer,fetch:fetch.bind(globalThis),getSpeaker:()=>selectedReference});
     try{
@@ -107,16 +109,22 @@ try {
         const pooled=referencePool.find(reference=>reference.id===job.referenceKey);
         if(job.referenceKey&&!pooled)throw new Error('Unknown pooled reference');
         selectedReference=pooled?{...pooled,codes:BigInt64Array.from(pooled.codes,BigInt),referenceId:pooled.id}:referenceId?getOmniVoiceSpeakerReference({...request,speakerId:referenceId}):null;
-        if(job.instruct)request.instruct=job.instruct;
-        const result=await runtime.synthesize({...request,seed,numStep,speed:job.speed||1,...(job.guidanceScale!=null?{guidanceScale:job.guidanceScale}:{})});
+        if(Object.hasOwn(job,'instruct'))request.instruct=job.instruct;
+        const result=await runtime.synthesize({...request,seed,numStep,speed:job.speed||1,guidanceScale:job.guidanceScale??2,pronunciationVariant:job.pronunciationVariant??null});
         const hash=Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256',BigInt64Array.from(codes,BigInt))),value=>value.toString(16).padStart(2,'0')).join('');
-        referencePool.push({id,lang,gender,seed,text:spokenText,frames:codes.length/8,codes,hash});
-        await globalThis.saveSpeaker({id,lang,gender,variation,seed,whisper,referenceId,text:spokenText,instruct:request.instruct,numStep,frames:codes.length/8,codes,hash,speaker:result.speaker,pcm:Array.from(result.pcm),elapsedMs:Math.round(performance.now()-started)});
+        const recorded=['recording','recording-derived'].includes(selectedReference?.durationSource);
+        const generated={id,lang,gender,seed,text:spokenText,frames:codes.length/8,codes,hash,...(recorded?{
+          durationSource:'recording-derived',referenceLanguage:lang,source:{...selectedReference.source,kind:'recording-derived',
+            parentReferenceHash:selectedReference.hash,parentReferenceId:selectedReference.referenceId||selectedReference.id,
+            generation:{modelRevision,lang,seed,numStep,guidanceScale:job.guidanceScale??2,speed:job.speed||1,pronunciationVariant:job.pronunciationVariant??null,instruct:request.instruct}},
+        }:{})};
+        referencePool.push(generated);
+        await globalThis.saveSpeaker({...generated,variation,whisper,referenceId,instruct:request.instruct,numStep,speaker:result.speaker,pcm:Array.from(result.pcm),elapsedMs:Math.round(performance.now()-started)});
       }
     }finally{await runtime.dispose();}
     const a=await navigator.gpu.requestAdapter();return {vendor:a.info.vendor,architecture:a.info.architecture};
-  },{text,jobs,referenceTexts,whisperTexts,multilingual,existing:speakers.map(speaker=>speaker.id),referencePool:[...referencePool,...speakers],runtimePath});
-  await writeFile(resolve(output,'provenance.json'),JSON.stringify({adapter,browser:browser.version(),model:manifest,speakers:speakers.length},null,2)+'\n');
+  },{text,jobs,referenceTexts,whisperTexts,multilingual,existing:speakers.map(speaker=>speaker.id),referencePool:[...referencePool,...speakers],runtimePath,sourceRoot,modelRevision:manifest.revision});
+  await writeFile(resolve(output,'provenance.json'),JSON.stringify({adapter,browser:browser.version(),model:manifest,speakers:speakers.length,sourceRoot,runtimePath},null,2)+'\n');
   await writeFile(resolve(output,'generation.tmp'),JSON.stringify({status:'complete',speakers:speakers.length,languages:languageCodes,jobs}));
   await replaceFile(resolve(output,'generation.tmp'),resolve(output,'generation.json'));
   if(!jobs.every(({id,lang,gender,seed,whisper})=>speakers.some(speaker=>speaker.id===(id||`${multilingual?lang+'-':''}${gender}-seed-${seed}${whisper?'-whisper':''}`))))throw new Error('Incomplete speaker candidate pool');

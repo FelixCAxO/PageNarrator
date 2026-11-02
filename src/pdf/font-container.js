@@ -92,6 +92,19 @@ export function remapTrueTypeCmap(bytes, glyphCount, aliases = new Map()) {
     if (tag !== 'DSIG') tables.set(tag, bytes.subarray(offset, offset + length));
   }
   completeTrueTypeMetrics(tables, glyphCount, aliases);
+  if (tables.has('glyf') && tables.get('glyf').length === 0) {
+    // Empty PDF subsets need a nonempty browser table; glyph 0 still has no contours.
+    // https://learn.microsoft.com/en-us/typography/opentype/spec/loca
+    const head = tables.get('head'), locations = tables.get('loca');
+    const format = head?.length >= 54 ? new DataView(head.buffer, head.byteOffset, head.length).getInt16(50) : -1;
+    const stride = format === 0 ? 2 : format === 1 ? 4 : 0;
+    if (!stride || !Number.isInteger(glyphCount) || glyphCount < 1 || glyphCount > 65535 || !locations || locations.length < (glyphCount + 1) * stride || locations.some(byte => byte !== 0)) throw new PdfEngineError('Invalid empty TrueType glyph locations.', 'pdf_corrupt');
+    const loca = locations.slice(), view = new DataView(loca.buffer);
+    for (let gid = 1; gid <= glyphCount; gid++) {
+      if (stride === 2) view.setUint16(gid * stride, 6); else view.setUint32(gid * stride, 12);
+    }
+    tables.set('glyf', new Uint8Array(12)); tables.set('loca', loca);
+  }
   if (!tables.has('post')) {
     // PDF subsets may omit printer metadata that browser sanitizers require.
     // OpenType post v3 carries no glyph names; cmap retains every glyph mapping.

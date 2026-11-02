@@ -209,6 +209,34 @@ try {
         engine.write(indexData, Int32Array.of(2, 0)); guarded.replay();
         compare('checked Gather clears prior failure on replay', await readHalf(checked), Float32Array.of(3, 1), { absolute: 0, relative: 0 });
         await engine.releaseMany([indexData, maskData, tableData, ...guarded.outputs], [...guarded.scratchBuffers(), ...guarded.parameters]);
+        const { WebGpuOnnxSession } = await import('/src/engines/webgpu-onnx-session.js');
+        const graph = { initializers: [], inputs: [{ name: 'indices', dataType: 7, dims: [2] }, { name: 'mask', dataType: 7, dims: [2] },
+          { name: 'table', dataType: 10, dims: [3, 1] }], outputs: [{ name: 'y', dataType: 10, dims: [2, 1] }], nodes: [
+          { opType: 'Mul', inputs: ['indices', 'mask'], outputs: ['uncertain'], attributes: new Map() },
+          { opType: 'Gather', inputs: ['table', 'uncertain'], outputs: ['y'], attributes: new Map() },
+        ] };
+        const beforeChecked = { buffers: engine.buffers.size, tensors: engine.tensors.size };
+        const checkedSession = new WebGpuOnnxSession({ graph, functions: [] }, engine, false, 4096);
+        const checkedFeeds = { indices: { data: BigInt64Array.of(0n, 9n), shape: [2] }, mask: { data: BigInt64Array.of(1n, 0n), shape: [2] },
+          table: { data: Uint16Array.from([1, 2, 3], floatToHalf), shape: [3, 1] } };
+        const originalRead = engine.read; let activeReads = 0, maximumReads = 0;
+        engine.read = async function (...args) {
+          activeReads++; maximumReads = Math.max(maximumReads, activeReads);
+          try { return await originalRead.apply(this, args); } finally { activeReads--; }
+        };
+        try {
+          compare('ONNX checked Gather returns validated output', Float32Array.from((await checkedSession.run(checkedFeeds)).y.data, halfToFloat), Float32Array.of(1, 1), { absolute: 0, relative: 0 });
+          if (maximumReads < 2) throw new Error('Validation and output readbacks did not overlap.');
+          checkedFeeds.mask.data.set([1n, 1n]);
+          let rejected = false;
+          try { await checkedSession.run(checkedFeeds); } catch (error) { rejected = /Gather index/.test(error.message); }
+          if (!rejected || activeReads) throw new Error('Invalid output escaped validation or a read remained pending.');
+          checkedFeeds.indices.data.set([2n, 0n]);
+          compare('ONNX checked Gather recovers after rejected replay', Float32Array.from((await checkedSession.run(checkedFeeds)).y.data, halfToFloat), Float32Array.of(3, 1), { absolute: 0, relative: 0 });
+          if (!checkedSession.lastRun.cacheHit) throw new Error('Checked-Gather recovery did not reuse the captured plan.');
+          inferenceContracts.push({ name: 'overlapping checked-Gather readbacks', maximumReads, invalidReplayRejected: true, recoveredCachedReplay: true });
+        } finally { engine.read = originalRead; await checkedSession.dispose(); }
+        if (activeReads || engine.buffers.size !== beforeChecked.buffers || engine.tensors.size !== beforeChecked.tensors) throw new Error('Checked session retained readbacks or GPU storage.');
         const referenceModule = '/node_modules/onnxruntime-web-omnivoice/dist/ort.webgpu.bundle.min.mjs', fixtureModule = '/scripts/lib/onnx-debug-outputs.mjs';
         const [ort, { matmulFixture }] = await Promise.all([import(referenceModule), import(fixtureModule)]);
         ort.env.wasm.numThreads = 1; ort.env.wasm.wasmPaths = `${location.origin}/node_modules/onnxruntime-web-omnivoice/dist/`;

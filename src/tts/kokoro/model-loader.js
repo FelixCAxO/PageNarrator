@@ -38,7 +38,7 @@ export async function loadBrowserKokoroBackend(modelId = KOKORO_DATA.modelId, { 
     const tokenizer = createKokoroTokenizer(decode(tokenizerJson), decode(tokenizerConfig));
     const corrected = phaseCorrection ? await applyKokoroPhaseCorrection(graph) : null;
     if (device === 'wasm') compute = await cpuEngineFactory({ runtime });
-    const graphSession = await inference.InferenceSession.create(corrected?.bytes ?? graph, { executionProviders: [device], ...(compute ? { engine: compute } : {}) });
+    const graphSession = await inference.InferenceSession.create(corrected?.bytes ?? graph, { executionProviders: [device], releaseHostWeights: true, ...(compute ? { engine: compute } : {}) });
     session = graphSession;
     if (compute) {
       const ownedCompute = compute;

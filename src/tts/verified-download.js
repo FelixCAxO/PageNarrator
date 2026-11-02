@@ -1,6 +1,7 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 
 /** @typedef {{ path: string, bytes: number, sha256: string }} PinnedFile */
+/** @typedef {PinnedFile & { chunkBytes: number, hashes: readonly string[] }} VerificationChunks */
 
 /** Return a hash-pinned model file from the cache, or download, verify and cache it.
  * Slow links remain usable while bytes arrive; callers can cancel at any time.
@@ -8,17 +9,26 @@
  * @param {{ label: string, cache?: Cache | null, fetcher?: typeof fetch | null, stallMs?: number,
  *   onCacheError?: (error: unknown) => void, onCachePutError?: (error: unknown) => void,
  *   onCacheInvalid?: (error: unknown) => void, onDownload?: () => void,
- *   onProgress?: (loaded: number, total: number) => void, signal?: AbortSignal|null }} options
+ *   onProgress?: (loaded: number, total: number) => void, signal?: AbortSignal|null,
+ *   verificationChunks?: VerificationChunks|null }} options
  * @returns {Promise<Uint8Array<ArrayBuffer>>}
  */
 export async function loadVerifiedFile(url, file, { label, cache = null, fetcher = null, stallMs = 30_000,
-  onCacheError = () => {}, onCachePutError = onCacheError, onCacheInvalid = () => {}, onDownload = () => {}, onProgress = () => {}, signal = null }) {
+  onCacheError = () => {}, onCachePutError = onCacheError, onCacheInvalid = () => {}, onDownload = () => {}, onProgress = () => {}, signal = null, verificationChunks = null }) {
   signal?.throwIfAborted();
+  if (verificationChunks && (verificationChunks.path !== file.path || verificationChunks.bytes !== file.bytes || verificationChunks.sha256 !== file.sha256
+    || !Number.isSafeInteger(verificationChunks.chunkBytes) || verificationChunks.chunkBytes <= 0
+    || !Array.isArray(verificationChunks.hashes) || verificationChunks.hashes.length !== Math.max(1, Math.ceil(file.bytes / verificationChunks.chunkBytes))
+    || verificationChunks.hashes.some(hash => !/^[a-f0-9]{64}$/.test(hash)))) {
+    throw new Error(`Invalid ${label} verification chunks: ${file.path}.`);
+  }
   const cached = await cache?.match(url).catch(onCacheError);
   signal?.throwIfAborted();
   if (cached?.ok) {
     try {
-      const bytes = await verify(new Uint8Array(await cached.arrayBuffer()), file, label);
+      // Cache arrayBuffer() also stages whole files; reuse the bounded stream reader.
+      const bytes = await verify(await download(url, file, { label, fetcher: async () => cached, stallMs,
+        onProgress: () => {}, signal }), file, label, verificationChunks, signal);
       signal?.throwIfAborted();
       return bytes;
     }
@@ -30,7 +40,7 @@ export async function loadVerifiedFile(url, file, { label, cache = null, fetcher
   }
   if (!fetcher) throw new Error(`${label} data is unavailable offline: ${file.path}.`);
   onDownload();
-  const bytes = await verify(await download(url, file, { label, fetcher, stallMs, onProgress, signal }), file, label);
+  const bytes = await verify(await download(url, file, { label, fetcher, stallMs, onProgress, signal }), file, label, verificationChunks, signal);
   signal?.throwIfAborted();
   // Response(typedArray) clones all weights; stream verified views to bound cache-write staging.
   let offset = 0;
@@ -103,10 +113,18 @@ async function download(url, file, { label, fetcher, stallMs, onProgress, signal
   }
 }
 
-/** @param {Uint8Array<ArrayBuffer>} bytes @param {PinnedFile} file @param {string} label */
-async function verify(bytes, file, label) {
+/** @param {Uint8Array<ArrayBuffer>} bytes @param {PinnedFile} file @param {string} label
+ * @param {VerificationChunks|null} chunks @param {AbortSignal|null} signal */
+async function verify(bytes, file, label, chunks, signal) {
   if (bytes.byteLength !== file.bytes) throw new Error(`Invalid ${label} data size: ${file.path}.`);
-  const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', bytes));
-  if (Array.from(digest, value => value.toString(16).padStart(2, '0')).join('') !== file.sha256) throw new Error(`${label} data hash mismatch: ${file.path}.`);
+  const hashes = chunks?.hashes ?? [file.sha256];
+  for (let index = 0; index < hashes.length; index++) {
+    signal?.throwIfAborted();
+    // WebCrypto copies its input; bundled chunk pins bound staging for large weights.
+    const part = chunks ? bytes.subarray(index * chunks.chunkBytes, (index + 1) * chunks.chunkBytes) : bytes;
+    const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', part));
+    signal?.throwIfAborted();
+    if (Array.from(digest, value => value.toString(16).padStart(2, '0')).join('') !== hashes[index]) throw new Error(`${label} data hash mismatch: ${file.path}.`);
+  }
   return bytes;
 }

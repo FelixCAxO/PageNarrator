@@ -163,6 +163,20 @@ body {
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.35);
 }
 
+.pdf-page-warning {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+  padding: 6px 10px;
+  background: #fff3cd;
+  color: #5c4300;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
 .pdf-page canvas {
   display: block;
 }

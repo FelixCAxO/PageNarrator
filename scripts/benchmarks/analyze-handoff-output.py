@@ -1,7 +1,8 @@
-"""Match source WAVs to WASAPI output; report added handoff gaps, excluding source silence."""
+"""Match source WAVs to captured output; report added handoff gaps, excluding source silence."""
 import argparse
 import json
 import math
+import tempfile
 from pathlib import Path
 
 import numpy as np
@@ -40,15 +41,21 @@ def analyze(root):
     ends = [event for event in flow["diagnostics"]["log"] if event["kind"] == "chunk_end"]
     starts = [event for event in flow["diagnostics"]["log"] if event["kind"] == "chunk_play"]
     matches = []
+    clock_offset = 0.0
     for index, clip in enumerate(flow["clips"][:len(ends)]):
         assert clip["rate"] == 1, "Acoustic alignment requires unchanged playback rate"
         source = mono(root / f"clip-{index}.wav")
-        expected = clip["at"] / 1000 - capture["startedEpochSeconds"]
+        wall_expected = clip["at"] / 1000 - capture["startedEpochSeconds"]
+        # Render and wall clocks drift; carry forward only a verified PCM anchor.
+        expected = wall_expected + clock_offset
         start = max(0, round((expected - .2) * 24000))
         stop = min(len(output), round((expected + len(source) / 24000 + 1.5) * 24000))
         offset, score = align(output[start:stop], source)
         position = (start + offset) / 24000
-        matches.append(dict(index=index, score=score, startSeconds=position, endSeconds=position + len(source) / 24000))
+        matches.append(dict(index=index, score=score, startSeconds=position, endSeconds=position + len(source) / 24000,
+                            wallExpectedSeconds=wall_expected, clockOffsetMs=1000 * (position - wall_expected)))
+        if score >= .9:
+            clock_offset = position - wall_expected
     gaps = [1000 * (right["startSeconds"] - left["endSeconds"]) for left, right in zip(matches, matches[1:])]
     ready = []
     for index, end in enumerate(ends[:len(gaps)]):
@@ -91,6 +98,35 @@ if __name__ == "__main__":
         offset, score = align(output, source)
         assert offset == 480 and score > .99999
         print("Known 20 ms offset recovered with exact source correlation.")
+        with tempfile.TemporaryDirectory(prefix="pn-handoff-control-") as directory:
+            root = Path(directory).resolve()
+            assert root.parent == Path(tempfile.gettempdir()).resolve() and root.name.startswith("pn-handoff-control-")
+            for stalled in [False, True]:
+                rng = np.random.default_rng(43)
+                parts, clips, events = [np.zeros(3600, dtype=np.float32)], [], []
+                position = .15
+                for index in range(7):
+                    source = rng.normal(0, .1, 2400).astype(np.float32)
+                    wavfile.write(root / f"clip-{index}.wav", 24000, source)
+                    # Advance the wall clock 80 ms per clip without changing render gaps.
+                    wall = position + .08 * index
+                    clips.append(dict(at=wall * 1000, rate=1))
+                    events.extend([dict(kind="chunk_play", chunkIndex=index, t=wall),
+                                   dict(kind="chunk_end", chunkIndex=index, t=wall + .1),
+                                   dict(kind="audio_preload_decode_latency", chunkIndex=index, t=0)])
+                    gap = .25 if stalled and index == 2 else .02
+                    parts.extend([source, np.zeros(round(gap * 24000), dtype=np.float32)])
+                    position += .1 + gap
+                wavfile.write(root / "output.wav", 24000, np.concatenate(parts))
+                (root / "flow.json").write_text(json.dumps(dict(diagnostics=dict(log=events), clips=clips)), encoding="utf-8")
+                (root / "output.wav.json").write_text(json.dumps(dict(startedEpochSeconds=0, scope="Synthetic render-clock drift control")), encoding="utf-8")
+                assert analyze(root) is not stalled
+                report = json.loads((root / "acoustic-analysis.json").read_text(encoding="utf-8"))
+                assert min(match["score"] for match in report["matches"]) > .99999
+                assert abs(report["maximumAddedGapMs"] - (250 if stalled else 20)) < .01
+                if stalled:
+                    assert report["status"] == "failed", "Clock correction must not hide a real handoff stall"
+        print("Clock drift preserved exact 20 ms gaps and still rejected an inserted 250 ms stall.")
     else:
         assert args.root
         raise SystemExit(0 if analyze(args.root) else 1)

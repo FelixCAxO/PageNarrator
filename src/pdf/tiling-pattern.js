@@ -8,7 +8,8 @@ const limit = message => { throw new PdfEngineError(message, 'pdf_limit'); };
 
 export function readPdfTilingPattern(reader, id) {
   if (reader.node(id).kind !== 'stream') corrupt('A PDF tiling pattern must be a stream.');
-  if (reader.number(reader.field(id, 'PaintType')) !== 1 || reader.number(reader.field(id, 'TilingType')) !== 1) unsupported('This PDF tiling pattern paint or tiling type is not implemented.');
+  const tilingType = reader.number(reader.field(id, 'TilingType'));
+  if (reader.number(reader.field(id, 'PaintType')) !== 1 || ![1, 3].includes(tilingType)) unsupported('This PDF tiling pattern paint or tiling type is not implemented.');
   const bbox = reader.array(reader.field(id, 'BBox')).map(n => reader.number(n, NaN));
   const steps = ['XStep', 'YStep'].map(key => reader.number(reader.field(id, key), NaN));
   if (bbox.length !== 4 || bbox.some(n => !Number.isFinite(n)) || !(bbox[2] > bbox[0] && bbox[3] > bbox[1])
@@ -16,25 +17,37 @@ export function readPdfTilingPattern(reader, id) {
   if (bbox[2] - bbox[0] > Math.abs(steps[0]) || bbox[3] - bbox[1] > Math.abs(steps[1])) unsupported('Overlapping PDF tiling pattern cells are not implemented.');
   const resources = reader.field(id, 'Resources');
   if (!resources || reader.node(resources).kind !== 'dictionary') corrupt('A PDF tiling pattern requires a resource dictionary.');
-  return { type: 1, bbox, steps, resources, sourceId: reader.node(id).id };
+  return { type: 1, tilingType, bbox, steps, resources, sourceId: reader.node(id).id };
 }
 
-/** TilingType1: constant integer device periods, at most one pixel distortion. */
+/** Constant integer device periods; Type 3 permits additional cell distortion. */
 export function planPdfTilingRaster(pattern, matrix) {
   const { bbox, steps } = pattern;
   if (!Array.isArray(matrix) || matrix.length !== 6 || matrix.some(n => !Number.isFinite(n))
     || !Array.isArray(bbox) || bbox.length !== 4 || bbox.some(n => !Number.isFinite(n)) || !(bbox[2] > bbox[0] && bbox[3] > bbox[1])
     || !Array.isArray(steps) || steps.length !== 2 || steps.some(n => !Number.isFinite(n) || n === 0)) corrupt('Invalid PDF tiling raster descriptor.');
   if (bbox[2] - bbox[0] > Math.abs(steps[0]) || bbox[3] - bbox[1] > Math.abs(steps[1])) unsupported('Overlapping PDF tiling pattern cells are not implemented.');
-  if (!(matrix[1] === 0 && matrix[2] === 0 || matrix[0] === 0 && matrix[3] === 0)) unsupported('Oblique PDF tiling lattices are not implemented.');
+  const oblique = !(matrix[1] === 0 && matrix[2] === 0 || matrix[0] === 0 && matrix[3] === 0);
+  if (oblique && pattern.tilingType !== 3) unsupported('Oblique PDF tiling lattices are not implemented.');
   const round = n => Math.sign(n) * Math.floor(Math.abs(n) + .5), periods = steps.map(Math.abs);
   const quantized = matrix.map((n, i) => i < 4 ? round(n * periods[i < 2 ? 0 : 1]) / periods[i < 2 ? 0 : 1] : n);
-  if (quantized.some(n => !Number.isFinite(n)) || !(quantized[0] || quantized[1]) || !(quantized[2] || quantized[3])) limit('PDF tiling periods exceed numeric limits.');
+  const determinant = quantized[0] * quantized[3] - quantized[1] * quantized[2];
+  if (quantized.some(n => !Number.isFinite(n)) || !Number.isFinite(determinant) || !determinant) limit('PDF tiling periods exceed numeric limits.');
   let displacement = 0;
   for (const x of [bbox[0], bbox[2]]) for (const y of [bbox[1], bbox[3]]) displacement = Math.max(displacement,
     Math.hypot((quantized[0] - matrix[0]) * x + (quantized[2] - matrix[2]) * y, (quantized[1] - matrix[1]) * x + (quantized[3] - matrix[3]) * y));
   if (!Number.isFinite(displacement)) limit('PDF tiling distortion exceeds numeric limits.');
-  if (displacement > 1) unsupported('PDF tiling requires more than one pixel of cell distortion.');
+  if (displacement > 1 && pattern.tilingType !== 3) unsupported('PDF tiling requires more than one pixel of cell distortion.');
+  if (oblique) {
+    // Rasterize along the lattice axes; CanvasPattern supplies rotation/skew.
+    const width = Math.ceil(Math.hypot(quantized[0], quantized[1]) * periods[0]), height = Math.ceil(Math.hypot(quantized[2], quantized[3]) * periods[1]);
+    const cellMatrix = [width / periods[0], 0, 0, height / periods[1], -bbox[0] * width / periods[0], -bbox[1] * height / periods[1]];
+    const phase = [matrix[4] + quantized[0] * bbox[0] + quantized[2] * bbox[1], matrix[5] + quantized[1] * bbox[0] + quantized[3] * bbox[1]];
+    const patternMatrix = [quantized[0] * periods[0] / width, quantized[1] * periods[0] / width,
+      quantized[2] * periods[1] / height, quantized[3] * periods[1] / height, ...phase];
+    if (![width, height].every(n => Number.isSafeInteger(n) && n > 0) || [...cellMatrix, ...patternMatrix].some(n => !Number.isFinite(n))) limit('PDF tiling raster exceeds numeric limits.');
+    return { width, height, phase, cellMatrix, patternMatrix, displacement };
+  }
   // Starting the periodic domain at BBox avoids independently clipped wrap
   // fragments, whose antialiased source-over edges would leave visible seams.
   const points = [];
@@ -68,7 +81,7 @@ export async function renderPdfTilingPattern(pattern, ctx, { surfaceBudget, canc
     ctx.save(); try {
       ctx.setTransform(1, 0, 0, 1, 0, 0); ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over'; ctx.imageSmoothingEnabled = false;
       const brush = ctx.createPattern(cell, 'repeat'); if (!brush) throw new PdfEngineError('Could not create PDF tiling cell pattern.', 'pdf_render');
-      brush.setTransform(new DOMMatrix().translate(...raster.phase)); ctx.fillStyle = brush;
+      brush.setTransform(raster.patternMatrix ? new DOMMatrix(raster.patternMatrix) : new DOMMatrix().translate(...raster.phase)); ctx.fillStyle = brush;
       const columns = Math.min(ctx.canvas.width, MAX_IMAGE_BAND_PIXELS), rows = Math.max(1, Math.floor(MAX_IMAGE_BAND_PIXELS / columns)); let bands = 0;
       for (let y = 0; y < ctx.canvas.height; y += rows) for (let x = 0; x < ctx.canvas.width; x += columns) {
         if (bands++) { await new Promise(resolve => setTimeout(resolve, 0)); cancellation?.(); }

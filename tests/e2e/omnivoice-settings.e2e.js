@@ -5,6 +5,7 @@ import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
+import { getOmniVoicePresetSeed } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const base = { gender: 'female', variation: 1, whisper: false };
 const cases = [
@@ -107,7 +108,7 @@ test('every OmniVoice control reaches real synthesis and survives reopening', as
         wavs: await Promise.all(__settingAudio.wavs.slice(start.wavs).map(async bytes => Array.from(new Uint8Array(await bytes)))) }), start);
       expect(actual.jobs).toHaveLength(1);
       expect(actual.wavs).toHaveLength(1);
-      expect(actual.jobs[0]).toMatchObject({ text: texts[language], lang: language, speed: 1, seed: 41 + settings.variation });
+      expect(actual.jobs[0]).toMatchObject({ text: texts[language], lang: language, speed: 1, seed: getOmniVoicePresetSeed(language, settings.gender, settings.variation) });
       expect(actual.jobs[0].instruct).toBe(settings.gender);
       expect(actual.jobs[0].speaker.id).toBe(`${settings.gender}-${settings.variation}`);
       expect(actual.jobs[0].whisper === true).toBe(settings.whisper);
@@ -202,8 +203,8 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     expect(actual.plays.map(job => job.text).join(' ')).toBe(paragraphs.join(' '));
     expect(actual.plays.length).toBeGreaterThanOrEqual(3);
     expect(actual.plays[0].instruct).toBe('female');
-    expect(actual.plays[0].seed).toBe(42);
-    expect(actual.plays.slice(1).every(job => job.seed === 45 && job.instruct === 'female')).toBe(true);
+    expect(actual.plays[0].seed).toBe(getOmniVoicePresetSeed('en', 'female', 1));
+    expect(actual.plays.slice(1).every(job => job.seed === getOmniVoicePresetSeed('en', 'female', 4) && job.instruct === 'female')).toBe(true);
     expect(actual.plays.every(job => job.numStep === 24)).toBe(true);
     expect(actual.plays[1].speaker.referenceId).toBe('en-female-4');
     expect(actual.plays.slice(1).every(job => job.speaker.referenceHash === actual.plays[1].speaker.anchorHash)).toBe(true);

@@ -1,10 +1,11 @@
+import {fuseHalfRotaryEmbeddings,executeHalfRotary} from './onnx-rotary.js';
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { decodeOnnxModel } from './onnx-model.js';
 import { constantIntegers, constantNumbers, tensorBytes } from './onnx-tensor.js';
 import { GPU_BINARY_OPERATIONS, GPU_UNARY_OPERATIONS, WebGpuCompute } from './webgpu-compute.js';
-import { modelFeed } from './bounded-integers.js';
-import { fuseSnakeActivations } from './onnx-optimize.js';
-import { fuseHalfRmsNorms } from './onnx-rmsnorm.js';
+import { IntegerRangeProofError, modelFeed } from './bounded-integers.js';
+import { eliminateHalfCastRoundTrips, fuseHalfScaledMaskedSoftmax, fuseHalfSiluGates, fuseSnakeActivations, fuseZeroInsertConvolutions, reuseIdenticalTransforms } from './onnx-optimize.js';
+import { fuseHalfRmsNorms, fuseHalfRmsNormTransposes } from './onnx-rmsnorm.js';
 import { executeIndexNode, metadataTensor } from './onnx-metadata.js';
 import { bindExternalData } from './onnx-external-data.js';
 import { floatToHalf, halfToFloat, ONNX_TYPES, tensorArray } from './tensor-format.js';
@@ -12,7 +13,7 @@ import { tensorSize } from './tensor-shape.js';
 import { selectExecutionPlan } from './onnx-execution-plan.js';
 import { executeMetadataMath } from './onnx-metadata-math.js';
 import { createKokoroKernels } from './kokoro-kernels.js';
-import { METADATA_LIMIT, metadataInputNames, metadataParameters } from './onnx-metadata-inputs.js';
+import { METADATA_LIMIT, indexRangeInputNames, metadataInputNames, metadataParameters } from './onnx-metadata-inputs.js';
 import { axisIndex, slicePlan } from './index-shape.js';
 
 const OPERATORS = new Set([...Object.keys(GPU_BINARY_OPERATIONS), ...Object.keys(GPU_UNARY_OPERATIONS),
@@ -25,6 +26,15 @@ const MICROSOFT_OPERATORS = new Set(['DynamicQuantizeLSTM', 'FastGelu', 'SkipLay
 const KOKORO_OPERATORS = new Set(['Gemm', 'LayerNormalization', 'LSTM', 'STFT', 'DynamicQuantizeLinear', 'DequantizeLinear',
   'MatMulInteger', 'ConvInteger', 'Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'CumSum', 'ScatterND']);
 const text = new TextDecoder('utf-8', { fatal: true });
+
+function planStorageBytes(plans) {
+  const buffers = new Set(); let other = 0;
+  for (const plan of plans) {
+    if (plan.buffers) for (const buffer of plan.buffers) buffers.add(buffer);
+    else other += plan.stats.planBytes;
+  }
+  return other + [...buffers].reduce((sum, buffer) => sum + buffer.size, 0);
+}
 
 function attributes(node) {
   return Object.fromEntries([...node.attributes].map(([key, item]) =>
@@ -87,6 +97,9 @@ export class WebGpuOnnxSession {
     this.maxCachedPlans = maxCachedPlans;
     this.cachedPlans = new Map();
     this.cachedPlan = null;
+    this.lastInputKey = null;
+    this.booleanFeeds = new Map();
+    this.workspacePlans = new Map();
     for (const [kind, infos] of [['input', model.graph.inputs], ['output', model.graph.outputs]]) {
       const unique = new Set();
       for (const info of infos) {
@@ -134,7 +147,17 @@ export class WebGpuOnnxSession {
       });
     }
     if (typeof engine.rmsNorm === 'function') this.nodes = fuseHalfRmsNorms(this.nodes, this.initializers, this.valueTypes);
+    if (typeof engine.siluGate === 'function') this.nodes = fuseHalfSiluGates(this.nodes, this.valueTypes);
+    if (engine.half?.scaledMaskedSoftmax) this.nodes = fuseHalfScaledMaskedSoftmax(this.nodes, this.initializers, this.valueTypes);
+    this.nodes = eliminateHalfCastRoundTrips(this.nodes, this.valueTypes);
+    this.nodes = reuseIdenticalTransforms(this.nodes);
+    if (engine.half?.rmsNormTranspose128) this.nodes = fuseHalfRmsNormTransposes(this.nodes, this.initializers, this.valueTypes);
+    if (engine.half?.rotary) this.nodes = fuseHalfRotaryEmbeddings(this.nodes, this.valueTypes);
+    if (engine.cnn?.convZeroInsert1d) this.nodes = fuseZeroInsertConvolutions(this.nodes, this.initializers, this.outputNames,
+      new Map([...this.initializers.values(), ...model.graph.inputs, ...(model.graph.values ?? []), ...model.graph.outputs].map(info => [info.name, info])), Boolean(engine.cnn.convZeroTail1d));
     this.metadataInputs = metadataInputNames(this.nodes, this.inputNames);
+    this.indexRangeInputs = engine instanceof WebGpuCompute ? indexRangeInputNames(this.nodes, this.inputNames, this.valueTypes, this.metadataInputs) : new Set();
+    this.rangeExpansionApplied = false;
   }
 
   weight(name) {
@@ -151,7 +174,7 @@ export class WebGpuOnnxSession {
   releaseHostWeights() {
     // Metadata constants must own their bytes, or a tiny view pins the complete model payload.
     for (const [name, tensor] of this.initializers) {
-      if ([1, 10].includes(tensor.dataType) && tensorSize(tensor.dims) > 1024) {
+      if ([1, 2, 3, 10].includes(tensor.dataType) && tensorSize(tensor.dims) > 1024) {
         this.weight(name);
         tensor.rawData = null;
         tensor.typedData.clear();
@@ -203,6 +226,7 @@ export class WebGpuOnnxSession {
       return batch.unary(node.opType, asGpu(input), a);
     }
     switch (node.opType) {
+      case 'FusedHalfScaledMaskedSoftmax': return batch.scaledMaskedSoftmax(input, asGpu(value(node.inputs[1])), asGpu(value(node.inputs[2])));
       case 'ConstantOfShape': {
         rejectUnknown(a, ['value'], node.opType);
         const fill = a.value ? constantNumbers(a.value) : [0], type = a.value?.dataType ?? 1;
@@ -315,12 +339,17 @@ export class WebGpuOnnxSession {
       }
       case 'FusedSnake': return batch.snake(input, asGpu(value(node.inputs[1])), asGpu(value(node.inputs[2])));
       case 'FusedHalfRmsNorm': return batch.rmsNorm(input, asGpu(value(node.inputs[1])));
-      case 'Conv': case 'ConvTranspose': {
-        rejectUnknown(a, ['strides', 'dilations', 'pads', 'auto_pad', 'group', 'kernel_shape', ...(node.opType === 'ConvTranspose' ? ['output_padding'] : [])], node.opType);
+      case 'FusedHalfRmsNormTranspose': return batch.rmsNormTranspose(input, asGpu(value(node.inputs[1])));
+      case 'FusedHalfSiluGate': return batch.siluGate(input, asGpu(value(node.inputs[1])));
+      case 'FusedHalfRotary': return executeHalfRotary(node, {input,batch,value,numbers,asGpu});
+      case 'Conv': case 'ConvTranspose': case 'FusedZeroInsertConv1d': {
+        rejectUnknown(a, ['strides', 'dilations', 'pads', 'auto_pad', 'group', 'kernel_shape', ...(node.opType === 'ConvTranspose' ? ['output_padding'] : []),
+          ...(node.opType === 'FusedZeroInsertConv1d' ? ['zeroInsertStride', 'zeroTail'] : [])], node.opType);
         const weight = asGpu(value(node.inputs[1]));
         if (a.kernel_shape && a.kernel_shape.some((dim, i) => dim !== weight.shape[i + 2])) throw new Error('Convolution kernel_shape does not match its weights.');
         return batch.convolution(input, weight, node.inputs[2] ? asGpu(value(node.inputs[2])) : null,
-          { ...spatialOptions(a), group: a.group ?? 1, transpose: node.opType === 'ConvTranspose', outputPadding: a.output_padding });
+          { ...spatialOptions(a), group: a.group ?? 1, transpose: node.opType === 'ConvTranspose', outputPadding: a.output_padding,
+            ...(node.opType === 'FusedZeroInsertConv1d' ? { zeroInsertStride: a.zeroInsertStride, zeroTail: a.zeroTail } : {}) });
       }
       case 'GlobalAveragePool': {
         rejectUnknown(a, [], node.opType);
@@ -390,7 +419,16 @@ export class WebGpuOnnxSession {
       plan = selectExecutionPlan(this.nodes, this.outputNames, outputNames);
       this.lastExecutionPlan = plan;
     }
-    this.running = this.infer(feeds, plan);
+    this.running = (async () => {
+      this.rangeExpansionApplied = false;
+      try { return await this.infer(feeds, plan); }
+      catch (error) {
+        if (!this.rangeExpansionApplied || !(error instanceof IntegerRangeProofError || error?.cause instanceof IntegerRangeProofError)) throw error;
+        // A wider proof can reject valid correlated arithmetic; drain, then retry exact ranges once.
+        this.indexRangeInputs.clear();
+        return this.infer(feeds, plan);
+      }
+    })();
     try { return await this.running; }
     finally { this.running = null; }
   }
@@ -400,7 +438,7 @@ export class WebGpuOnnxSession {
     const normalized = {};
     for (const info of this.model.graph.inputs) {
       if (this.initializers.has(info.name)) continue;
-      normalized[info.name] = modelFeed(info, feeds[info.name]);
+      normalized[info.name] = modelFeed(info, feeds[info.name], this.booleanFeeds);
     }
     feeds = normalized;
     const hostFeeds = new Set([...this.metadataInputs].filter(name => ['int32', 'bool'].includes(feeds[name].type) && feeds[name].data.length <= METADATA_LIMIT));
@@ -413,6 +451,8 @@ export class WebGpuOnnxSession {
     });
     const key = JSON.stringify([plan.outputNames, this.inputNames.map(name => feeds[name].shape), aliasIds,
       [...hostFeeds].map(name => [name, Array.from(feeds[name].data)])]);
+    const previousKey = this.lastInputKey;
+    this.lastInputKey = key;
     let cached = this.cachedPlans.get(key);
     // Token ranges may shrink between diffusion steps without changing any captured proof.
     if (cached && [...cached.inputs].some(([name, tensor]) => feeds[name].bounds
@@ -429,15 +469,19 @@ export class WebGpuOnnxSession {
         written.add(tensor);
       }
       cached.batch.replay();
-      await cached.batch.validate?.();
-      const result = await this.readOutputs(cached.outputs);
+      const result = await this.readValidatedOutputs(cached.batch, cached.outputs);
       this.lastRun = { ...cached.stats, cacheHit: true, allocations: 0 };
       return result;
     }
     if (this.cachedPlans.size >= this.maxCachedPlans) await this.releasePlan(this.cachedPlans.keys().next().value);
+    const exactAliases = new Set(this.inputNames.filter(name => !this.indexRangeInputs.has(name)).map(name => feeds[name].data));
     const values = new Map();
     const uploaded = [];
-    let batch = this.engine.batch({ capture: true });
+    const shareWorkspace = this.maxCachedPlans > 1 && this.engine instanceof WebGpuCompute;
+    const borrowedBuffers = shareWorkspace ? [...new Set([...this.cachedPlans.values()].flatMap(plan => [...(plan.workspaceBuffers ?? [])]))] : [];
+    const placeWorkspace = this.maxCachedPlans === 1 && this.engine instanceof WebGpuCompute;
+    const workspacePlan = placeWorkspace ? this.workspacePlans.get(key) : null;
+    let batch = this.engine.batch({ capture: true, borrowedBuffers, workspacePlan, recordWorkspace: placeWorkspace });
     const batches = [batch];
     let metadataReadbacks = 0;
     const consumers = new Map(plan.consumers);
@@ -445,7 +489,9 @@ export class WebGpuOnnxSession {
     const inputs = new Map();
     const sharedInputs = new Map();
     const retired = new Set();
+    const holds = [];
     let retained = false;
+    let completed = false;
     try {
       for (const info of this.model.graph.inputs) {
         if (this.initializers.has(info.name)) continue;
@@ -458,8 +504,12 @@ export class WebGpuOnnxSession {
         const shared = sharedInputs.get(feed.data) || new Map();
         let tensor = shared.get(shapeKey);
         if (!tensor) {
-          tensor = feed.bounds ? this.engine.uploadInt32(feed.data, feed.shape) : this.engine.upload(feed.data, feed.shape, feed.type);
-          shared.set(shapeKey, tensor); sharedInputs.set(feed.data, shared); uploaded.push(tensor);
+          const expand = feed.bounds?.min > 0 && this.indexRangeInputs.has(info.name) && !exactAliases.has(feed.data);
+          tensor = expand ? this.engine.tensor(feed.shape, null, null, 'int32', Object.freeze({ min: 0, max: feed.bounds.max }))
+            : feed.bounds ? this.engine.uploadInt32(feed.data, feed.shape) : this.engine.upload(feed.data, feed.shape, feed.type);
+          uploaded.push(tensor);
+          if (expand) { this.rangeExpansionApplied = true; this.engine.write(tensor, feed.data); }
+          shared.set(shapeKey, tensor); sharedInputs.set(feed.data, shared);
         }
         values.set(info.name, tensor);
         inputs.set(info.name, tensor);
@@ -552,39 +602,66 @@ export class WebGpuOnnxSession {
         }
       }
       batch.submit({ retainParameters: true });
-      await batch.validate?.();
       const outputs = new Map(plan.outputNames.map(name => [name, value(name)]));
-      const result = await this.readOutputs(outputs);
+      const result = await this.readValidatedOutputs(batch, outputs);
       for (const tensor of retired) tensor.batch.outputs.delete(tensor);
       if (retired.size) { await this.engine.releaseMany([...retired]); retired.clear(); }
       const intermediateBytes = batches.reduce((sum, item) => sum + item.allocatedBytes, 0);
-      const planBytes = intermediateBytes + uploaded.reduce((sum, tensor) => sum + tensor.buffer.size, 0)
+      const workspaceBuffers = shareWorkspace && !metadataReadbacks ? new Set(batch.workspaceBuffers) : null;
+      const buffers = workspaceBuffers ? new Set([...workspaceBuffers, ...uploaded.map(tensor => tensor.buffer), ...batch.parameters,
+        ...(batch.validationTensor ? [batch.validationTensor.buffer] : [])]) : null;
+      const planBytes = buffers ? planStorageBytes([{ buffers }]) : intermediateBytes + uploaded.reduce((sum, tensor) => sum + tensor.buffer.size, 0)
         + batches.reduce((sum, item) => sum + item.parameters.reduce((total, buffer) => total + buffer.size, 0), 0);
       this.lastRun = { nodes: plan.nodes.length, allocations: batches.reduce((sum, item) => sum + item.allocationCount, 0),
         reusedBuffers: batches.reduce((sum, item) => sum + item.reuseCount, 0), intermediateBytes, planBytes, metadataReadbacks, cacheHit: false };
+      if (workspacePlan) this.lastRun.workspacePlacement = { hits: batches[0].placementHits, fallbacks: batches[0].placementFallbacks };
       // Duration-dependent shapes must be recomputed when values change, even for identical feed shapes.
-      if (!metadataReadbacks && planBytes <= this.maxPlanBytes) {
-        const retainedBytes = () => [...this.cachedPlans.values()].reduce((sum, item) => sum + item.stats.planBytes, 0);
-        while (this.cachedPlans.size && retainedBytes() + planBytes > this.maxPlanBytes) await this.releasePlan(this.cachedPlans.keys().next().value);
-        this.cachedPlan = { key, batch, inputs, uploaded, outputs, stats: this.lastRun };
+      // Alternating plans that cannot coexist must not evict each other on every pass.
+      const previousPlan = this.cachedPlans.get(previousKey);
+      if (!metadataReadbacks && planBytes <= this.maxPlanBytes
+        && (!previousPlan || planStorageBytes([previousPlan, { buffers, stats: this.lastRun }]) <= this.maxPlanBytes)) {
+        if (workspaceBuffers) for (const buffer of workspaceBuffers) holds.push(this.engine.tensor([buffer.size / 4], null, buffer));
+        while (this.cachedPlans.size && planStorageBytes([...this.cachedPlans.values(), { buffers, stats: this.lastRun }]) > this.maxPlanBytes) await this.releasePlan(this.cachedPlans.keys().next().value);
+        this.cachedPlan = { key, batch, inputs, uploaded, outputs, buffers, workspaceBuffers, holds, stats: this.lastRun };
         this.cachedPlans.set(key, this.cachedPlan);
         retained = true;
       }
+      if (placeWorkspace) {
+        // Keep only CPU placement hints for two oversized shapes; every run still releases its GPU storage.
+        if (metadataReadbacks || retained || workspacePlan && (batch.placementFallbacks || batch.outputIndex !== workspacePlan.slots.length)) this.workspacePlans.delete(key);
+        else if (!workspacePlan && planBytes > this.maxPlanBytes) {
+          const learned = batch.planWorkspace();
+          if (learned) {
+            this.workspacePlans.delete(key); this.workspacePlans.set(key, learned);
+            while (this.workspacePlans.size > 2) this.workspacePlans.delete(this.workspacePlans.keys().next().value);
+          }
+        }
+      }
+      completed = true;
       return result;
     } finally {
+      if (!completed) this.workspacePlans.delete(key);
       for (const item of batches) if (!item.submitted) item.cancel({ retainParameters: true });
-      if (!retained) await this.engine.releaseMany([...uploaded, ...batches.flatMap(item => [...item.outputs])], batches.flatMap(item => [...item.scratchBuffers(), ...item.parameters]));
+      if (!retained) await this.engine.releaseMany([...uploaded, ...batches.flatMap(item => [...item.outputs]), ...holds], batches.flatMap(item => [...item.scratchBuffers(), ...item.parameters]));
     }
   }
 
-  async readOutputs(tensors) {
+  async readValidatedOutputs(batch, tensors) {
+    // Queue both readbacks together; validation still gates output and both settle before cleanup.
+    const [validation, outputs] = await Promise.allSettled([batch.validate?.(), this.readOutputs(tensors, false)]);
+    if (validation.status === 'rejected') throw validation.reason;
+    if (outputs.status === 'rejected') throw outputs.reason;
+    return outputs.value;
+  }
+
+  async readOutputs(tensors, validate = true) {
     const result = {};
     for (const [name, tensor] of tensors) {
       const info = this.model.graph.outputs.find(output => output.name === name);
       const type = ONNX_TYPES[info.dataType], actual = tensor.cpu ? ONNX_TYPES[tensor.dataType] : tensor.dataType;
       if ((actual !== type && !(type === 'int64' && actual === 'int32')) || (info.dims && (info.dims.length !== tensor.shape.length
         || info.dims.some((dim, i) => typeof dim === 'number' && dim !== tensor.shape[i])))) throw new Error(`Output ${name} does not match its declared shape/type.`);
-      const data = tensor.cpu ? tensor.data : await this.engine.read(tensor);
+      const data = tensor.cpu ? tensor.data : await this.engine.read(tensor, { validate });
       const ArrayType = tensorArray(type);
       result[name] = { data: tensor.cpu && type === 'float16' ? Uint16Array.from(data, floatToHalf)
         : data instanceof ArrayType ? data : type === 'int64' ? BigInt64Array.from(data, value => BigInt(value)) : ArrayType.from(data), shape: [...tensor.shape], type };
@@ -598,12 +675,14 @@ export class WebGpuOnnxSession {
     for (const plan of plans) {
       this.cachedPlans.delete(plan.key);
       if (this.cachedPlan === plan) this.cachedPlan = null;
-      try { await this.engine.releaseMany([...plan.uploaded, ...plan.batch.outputs], [...plan.batch.scratchBuffers(), ...plan.batch.parameters]); }
+      try { await this.engine.releaseMany([...plan.uploaded, ...plan.batch.outputs, ...(plan.holds ?? [])], [...plan.batch.scratchBuffers(), ...plan.batch.parameters]); }
       catch (error) { errors.push(error); }
     }
     if (errors.length === 1) throw errors[0];
     if (errors.length) throw new AggregateError(errors, 'Execution-plan cleanup failed.');
   }
+
+  getRetainedPlanBytes() { return planStorageBytes(this.cachedPlans.values()); }
 
   async dispose() {
     if (this.disposal) return this.disposal;
@@ -616,8 +695,8 @@ export class WebGpuOnnxSession {
         if (this.ownsEngine) await this.engine.dispose();
         else if (this.weights.size) await this.engine.releaseMany([...this.weights.values()].flatMap(weight => weight.shards ? weight.shards.map(shard => shard.tensor) : [weight]));
       } catch (error) { errors.push(error); }
-      this.weights.clear(); this.initializers.clear(); this.valueTypes.clear(); this.metadataInputs.clear();
-      this.nodes.length = 0; this.model = null; this.cachedPlan = null; this.cachedPlans.clear(); this.lastExecutionPlan = null;
+      this.weights.clear(); this.initializers.clear(); this.valueTypes.clear(); this.metadataInputs.clear(); this.indexRangeInputs.clear(); this.booleanFeeds.clear();
+      this.nodes.length = 0; this.model = null; this.cachedPlan = null; this.cachedPlans.clear(); this.workspacePlans.clear(); this.lastExecutionPlan = null; this.lastInputKey = null;
       if (errors.length === 1) throw errors[0];
       if (errors.length) throw new AggregateError(errors, 'Inference session cleanup failed.');
     })();

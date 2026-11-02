@@ -22,7 +22,8 @@ import { PDF_INHERITED_RGB_RECTANGLE, preparePdfInheritedRgbRectangle, assertPdf
 
 const IDENTITY = [1, 0, 0, 1, 0, 0];
 const TYPE3_COLOR_OPERATORS = new Set(['g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN', 'sh', 'ri']);
-const TILING_OPERATORS = new Set(['q', 'Q', 'cm', 'm', 'l', 'c', 'v', 'y', 're', 'h', 'W', 'W*', 'f', 'F', 'f*', 'n',
+const TILING_OPERATORS = new Set(['q', 'Q', 'cm', 'w', 'J', 'j', 'M', 'd', 'm', 'l', 'c', 'v', 'y', 're', 'h', 'W', 'W*',
+  'S', 's', 'f', 'F', 'f*', 'B', 'B*', 'b', 'b*', 'n',
   'g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN', 'gs', 'BI', 'Do', 'ri', 'i']);
 const CONTRIBUTION_OPERATORS = new Set(['q', 'Q', 'cm', 'm', 'l', 'c', 'v', 'y', 're', 'h', 'W', 'W*', 'f', 'F', 'f*', 'n',
   'g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN', 'gs', 'ri', 'i']);
@@ -31,8 +32,20 @@ const color = values => `rgb(${values.map(n => Math.round(Math.max(0, Math.min(1
 const unsupported = message => { throw new PdfEngineError(message); };
 const corrupt = message => { throw new PdfEngineError(message, 'pdf_corrupt'); };
 
-export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset, view = [0, 0, 612, 792], fontPrefix = '') {
+export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset, view = [0, 0, 612, 792], fontPrefix = '', { recoverUnsupportedArtwork = false } = {}) {
   const commands = [], items = [], fonts = new Map(), fontCache = new Map(), imageCache = new Map(), activeForms = new Set();
+  const artworkWarnings = new Map(); let firstArtworkError = null;
+  async function artwork(kind, read, allowRecovery = true) {
+    try { return await read(); }
+    catch (error) {
+      if (!recoverUnsupportedArtwork || !allowRecovery || error.code !== 'pdf_unsupported' || reader.api.pn_pdf_error()) throw error;
+      const key = `${kind}:${error.message}`;
+      if (!artworkWarnings.has(key) && artworkWarnings.size >= 32) throw new PdfEngineError('PDF artwork recovery budget exceeded.', 'pdf_limit');
+      firstArtworkError ||= error;
+      artworkWarnings.set(key, { kind, code: error.code, message: error.message });
+      return { unavailable: true };
+    }
+  }
   const nativeTextStates = new WeakMap();
   let warnedInheritedRgb = false;
   const printStateAt = createPdfPrintStateReader(reader), blendProfiles = new Map(), opaqueImagePixels = new WeakSet(), contributionProfiles = new WeakMap();
@@ -48,7 +61,8 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
     matrix: [...IDENTITY], lineMatrix: [...IDENTITY], inText: false, fill: 'rgb(0,0,0)', stroke: 'rgb(0,0,0)', textMode: 0,
     fillSpace: deviceGray(), strokeSpace: deviceGray(), fillValues: [0], strokeValues: [0], outputProfile: null, outputProfileBytes: null, outputProfileKey: 0, nativeCmyk: false, printState: PDF_CMYK_PRINT_DEFAULTS,
     fillOverprint: false, strokeOverprint: false, overprintMode: 0, textKnockout: true, nativeMaskScope: false,
-    fillAlpha: 1, strokeAlpha: 1, blend: 'source-over', lineWidth: 1, strokeAdjustment: false, fillPattern: null, strokePattern: null, softMask: null, alphaIsShape: false });
+    fillAlpha: 1, strokeAlpha: 1, blend: 'source-over', lineWidth: 1, lineCap: 0, lineJoin: 0, miterLimit: 10, dash: [], dashPhase: 0,
+    strokeAdjustment: false, fillPattern: null, strokePattern: null, softMask: null, alphaIsShape: false });
   function groupIsolation(group, label) {
     if (reader.node(group).kind !== 'dictionary') corrupt(`Invalid PDF ${label} group attributes.`);
     const type = reader.field(group, 'Type');
@@ -143,7 +157,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
   function number(id) { const n = reader.number(id, NaN); if (!Number.isFinite(n)) corrupt('Expected numeric PDF operand.'); return n; }
   function lineStyle(name, value, s) {
     if (name === 'w' && value < 0 || ['J', 'j'].includes(name) && (!Number.isInteger(value) || value < 0 || value > 2) || name === 'M' && value < 1) corrupt('Invalid PDF line style.');
-    if (name === 'w') s.lineWidth = value;
+    s[{ w: 'lineWidth', J: 'lineCap', j: 'lineJoin', M: 'miterLimit' }[name]] = value;
     commands.push({ op: 'lineStyle', name, value });
   }
   function retainText(added, removed = 0) {
@@ -339,6 +353,8 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       fillAlpha: 1, strokeAlpha: 1, blend: 'source-over', softMask: null, alphaIsShape: false, patternArtwork: true };
     try {
       commands.push({ op: 'color', fill: true, value: initial.fill }, { op: 'color', fill: false, value: initial.stroke });
+      for (const [name, property] of Object.entries({ w: 'lineWidth', J: 'lineCap', j: 'lineJoin', M: 'miterLimit' })) commands.push({ op: 'lineStyle', name, value: initial[property] });
+      commands.push({ op: 'dash', dash: initial.dash, phase: initial.dashPhase });
       if (context.depth + 1 > 16) throw new PdfEngineError('PDF Form nesting limit exceeded.', 'pdf_limit');
       await interpret(iteratePdfContent(reader, program, pattern.resources, loadAsset), pattern.resources, initial, context.depth + 1);
       return commands.slice(first);
@@ -351,7 +367,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
     const patternContext = { initial: { ...initial }, depth };
     // Patterns are local to each content context, including inherited Form colours.
     // ISO32000-1 8.7.2 does not retain the outer context's pattern anchoring.
-    const localPattern = pattern => pattern && { ...pattern, matrix: multiply(patternInitialMatrix, pattern.patternMatrix) };
+    const localPattern = pattern => pattern && !pattern.unavailable ? { ...pattern, matrix: multiply(patternInitialMatrix, pattern.patternMatrix) } : pattern;
     let s = { ...initial, fillPattern: localPattern(initial.fillPattern), strokePattern: localPattern(initial.strokePattern) }, operands = [], pathBounds = null, clip = null, compatibility = 0;
     const stack = [], marked = []; let textClips = [], clippingText = false, firstTextCommand = 0, textPainted = false, textStateChanged = false;
     const numeric = count => { if (operands.length !== count) corrupt('Incorrect PDF operand count.'); return operands.map(number); };
@@ -378,7 +394,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       }
       else if (op === 'cm') { const args = numeric(6); s.ctm = multiply(s.ctm, args); commands.push({ op: 'transform', args }); }
       else if (['w', 'J', 'j', 'M'].includes(op)) { const [value] = numeric(1); lineStyle(op, value, s); }
-      else if (op === 'd') { if (operands.length !== 2) corrupt('Invalid PDF dash operands.'); const dash = reader.array(operands[0]).map(number), phase = number(operands[1]); if (dash.some(n => n < 0) || dash.length && dash.every(n => n === 0)) corrupt('Invalid PDF dash pattern.'); commands.push({ op: 'dash', dash, phase }); }
+      else if (op === 'd') { if (operands.length !== 2) corrupt('Invalid PDF dash operands.'); const dash = reader.array(operands[0]).map(number), phase = number(operands[1]); if (dash.some(n => n < 0) || dash.length && dash.every(n => n === 0)) corrupt('Invalid PDF dash pattern.'); s.dash = dash; s.dashPhase = phase; commands.push({ op: 'dash', dash, phase }); }
       else if (['m', 'l', 'c', 'v', 'y', 're', 'h'].includes(op)) {
         const n = op === 'h' ? 0 : op === 'c' ? 6 : ['v', 'y', 're'].includes(op) ? 4 : 2, args = numeric(n);
         if (op === 're') { bound(args[0], args[1]); bound(args[0] + args[2], args[1]); bound(args[0], args[1] + args[3]); bound(args[0] + args[2], args[1] + args[3]); }
@@ -392,17 +408,18 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
           || s.fillOverprint || s.strokeOverprint || s.alphaIsShape || s.softMask || s.blend !== 'source-over')) unsupported('This PDF backdrop-independent contribution program is not implemented.');
         if (s.icc4ContributionScope && (strokes || fills && s.fillAlpha !== 1)) unsupported('This PDF normal ICC4 contribution paint is not implemented.');
         if (s.nativeCmyk && (fills || strokes)) nativeState(s, fills, strokes, fills !== strokes ? 'elementary' : 'closed');
-        if (s.patternArtwork && fills && s.fillSpace.name === 'Pattern') unsupported('Nested PDF tiling patterns are not implemented.');
+        if (s.patternArtwork && (fills && s.fillSpace.name === 'Pattern' || strokes && s.strokeSpace.name === 'Pattern')) unsupported('Nested PDF tiling patterns are not implemented.');
         if (s.softMask && (fills || strokes)) unsupported('PDF soft masks on elementary path paints are not implemented yet.');
         if (fills && s.fillSpace.name === 'Pattern' && !s.fillPattern || strokes && s.strokeSpace.name === 'Pattern' && !s.strokePattern) corrupt('A PDF Pattern colour has no selected pattern.');
-        if (pathBounds && fills && s.fillPattern?.type === 1) s.fillPattern = await patternAt(s.fillPattern.sourceId, resource, patternInitialMatrix, patternContext);
-        if (pathBounds && strokes && s.strokePattern?.type === 1) s.strokePattern = await patternAt(s.strokePattern.sourceId, resource, patternInitialMatrix, patternContext);
+        if (pathBounds && fills && s.fillPattern?.type === 1) s.fillPattern = await artwork('pattern', () => patternAt(s.fillPattern.sourceId, resource, patternInitialMatrix, patternContext), !s.type3Glyph);
+        if (pathBounds && strokes && s.strokePattern?.type === 1) s.strokePattern = await artwork('pattern', () => patternAt(s.strokePattern.sourceId, resource, patternInitialMatrix, patternContext), !s.type3Glyph);
         commands.push({ op: 'paint', kind: op, clip, fillAlpha: s.fillAlpha, strokeAlpha: s.strokeAlpha, blend: s.blend, lineWidth: s.lineWidth, strokeAdjustment: s.strokeAdjustment,
+          ...(fills && s.fillPattern?.unavailable ? { skipFill: true } : {}), ...(strokes && s.strokePattern?.unavailable ? { skipStroke: true } : {}),
           ...(s.nativeCmyk && fills ? { nativeCmykFill: nativeInk(s, true), ...(nativeBlend(s, true) !== 'source-over' ? { nativeCmykFillBlend: nativeBlend(s, true) } : {}) } : {}),
           ...(s.nativeCmyk && strokes ? { nativeCmykStroke: nativeInk(s, false), ...(nativeBlend(s, false) !== 'source-over' ? { nativeCmykStrokeBlend: nativeBlend(s, false) } : {}) } : {}),
-          ...(fills && s.fillPattern && (s.fillPattern.type !== 1 || pathBounds) ? { fillPattern: s.fillPattern } : {}),
-          ...(strokes && s.strokePattern && (s.strokePattern.type !== 1 || pathBounds) ? { strokePattern: s.strokePattern } : {}) }); clip = null;
-        if (pathBounds && ['f', 'F', 'f*', 'B', 'B*', 'b', 'b*'].includes(op)) {
+          ...(fills && s.fillPattern && !s.fillPattern.unavailable && (s.fillPattern.type !== 1 || pathBounds) ? { fillPattern: s.fillPattern } : {}),
+          ...(strokes && s.strokePattern && !s.strokePattern.unavailable && (s.strokePattern.type !== 1 || pathBounds) ? { strokePattern: s.strokePattern } : {}) }); clip = null;
+        if (pathBounds && !s.fillPattern?.unavailable && ['f', 'F', 'f*', 'B', 'B*', 'b', 'b*'].includes(op)) {
           const width = pathBounds[2] - pathBounds[0], height = pathBounds[3] - pathBounds[1], pageHeight = view[3] - view[1], pageWidth = view[2] - view[0];
           if (height >= pageHeight * .002 && height <= pageHeight * .05 && width >= height * 2 && width <= pageWidth * .15) outlinedWords++;
         }
@@ -426,19 +443,22 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
           if (s.patternArtwork) unsupported('Nested PDF tiling patterns are not implemented.');
           if (!['scn', 'SCN'].includes(op) || operands.length !== 1 || reader.node(operands[0]).kind !== 'name') corrupt('Invalid PDF shading pattern colour operands.');
           const dictionary = reader.field(resource, 'Pattern'), target = dictionary && reader.field(dictionary, reader.name(operands[0])); if (!target) corrupt('Missing PDF shading pattern resource.');
-          s[fill ? 'fillPattern' : 'strokePattern'] = await patternAt(target, resource, patternInitialMatrix);
+          s[fill ? 'fillPattern' : 'strokePattern'] = await artwork('pattern', () => patternAt(target, resource, patternInitialMatrix), !s.type3Glyph);
         } else {
           if (operands.some(id => reader.node(id).kind !== 'number')) unsupported('PDF pattern colors are not implemented yet.');
           const values = numeric(space.components), nativeColor = convertPdfColor(space, values, s.outputProfile), value = color(nativeColor); s[fill ? 'fillValues' : 'strokeValues'] = values; s[fill ? 'fill' : 'stroke'] = value; commands.push({ op: 'color', fill, value, nativeColor, ...nativeMarker(s) });
         }
       } else if (op === 'sh') {
-        if (s.nativeCmyk && s.fillOverprint) unsupported('Native PDF overprinted shading paints are not implemented yet.');
-        if (s.nativeCmyk) unsupported('Native PDF shading paint is not implemented yet.');
-        if (s.softMask) unsupported('PDF soft masks on elementary shading paints are not implemented yet.');
-        if (operands.length !== 1 || !reader.name(operands[0])) corrupt('Invalid PDF shading operand.');
-        const dictionary = reader.field(resource, 'Shading'), target = dictionary && reader.field(dictionary, reader.name(operands[0]));
-        if (!target) corrupt('Missing PDF shading resource.');
-        commands.push({ op: 'shading', ...await readPdfShading(reader, target, resource, loadAsset), alpha: s.fillAlpha, blend: s.blend }); hasRenderableNonText = true;
+        const shading = await artwork('shading', async () => {
+          if (s.nativeCmyk && s.fillOverprint) unsupported('Native PDF overprinted shading paints are not implemented yet.');
+          if (s.nativeCmyk) unsupported('Native PDF shading paint is not implemented yet.');
+          if (s.softMask) unsupported('PDF soft masks on elementary shading paints are not implemented yet.');
+          if (operands.length !== 1 || !reader.name(operands[0])) corrupt('Invalid PDF shading operand.');
+          const dictionary = reader.field(resource, 'Shading'), target = dictionary && reader.field(dictionary, reader.name(operands[0]));
+          if (!target) corrupt('Missing PDF shading resource.');
+          return readPdfShading(reader, target, resource, loadAsset);
+        }, !s.type3Glyph);
+        if (!shading.unavailable) commands.push({ op: 'shading', ...shading, alpha: s.fillAlpha, blend: s.blend }); hasRenderableNonText = true;
       } else if (op === 'gs') {
         if (operands.length !== 1) corrupt('Invalid PDF graphics-state operands.');
         const states = reader.field(resource, 'ExtGState'), target = states && reader.field(states, reader.name(operands[0])); if (!target) corrupt('Missing PDF ExtGState.');
@@ -702,7 +722,10 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
     } else unsupported('This PDF annotation default appearance is not implemented yet.');
   }
   if (pageContext && commands.length) commands.splice(0, commands.length, { op: 'group', commands: commands.slice(), colorProfile: pageContext.outputProfileBytes, ...nativeMarker(pageContext), alpha: 1, blend: 'source-over', isolated: true });
+  if (firstArtworkError && (!items.some(item => item.str.trim()) || unmappedGlyphs || unknownType3Glyphs)) throw firstArtworkError;
   return { commands, items, fonts: [...fonts.values()].map(({ family, bytes, ascent, descent, vertical = false, localFaces, requiresLocalFace }) => ({ family, bytes, ascent, descent, vertical, ...(localFaces ? { localFaces } : {}), ...(requiresLocalFace === true ? { requiresLocalFace: true } : {}) })),
-    inspection: { hasRasterImage, hasRenderableNonText, hasOutlinedText: outlinedWords >= 50, unmappedGlyphs, unknownType3Glyphs, recognizedSymbolGlyphs, repairFlags: reader.api.pn_pdf_repair_flags(), decodingWarnings: reader.codecWarnings?.slice(warningStart) || [], inspectionFailed: false, error: null } };
+    inspection: { hasRasterImage, hasRenderableNonText, hasOutlinedText: outlinedWords >= 50, unmappedGlyphs, unknownType3Glyphs, recognizedSymbolGlyphs,
+      ...(artworkWarnings.size ? { artworkWarnings: [...artworkWarnings.values()] } : {}),
+      repairFlags: reader.api.pn_pdf_repair_flags(), decodingWarnings: reader.codecWarnings?.slice(warningStart) || [], inspectionFailed: false, error: null } };
   } finally { nativeImageSources.destroy(); }
 }
