@@ -21,7 +21,7 @@ describe('release metadata', () => {
     const changelog = read('website/public/changelog.html');
     const readerUi = read('docs/reader-ui.md');
     expect(read('CHANGELOG.md')).toContain('## 1.0.2 (2026-10-27)');
-    expect(read('CHANGELOG.md')).toContain('## 1.0.3 (2026-10-30, local release)');
+    expect(read('CHANGELOG.md')).toContain('## 1.0.3 (2026-11-02, local release candidate)');
 
     expect(changelog).toContain('Version 1.0.2');
     expect(changelog).toContain('Version 1.0.1');

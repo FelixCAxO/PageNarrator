@@ -36,6 +36,14 @@ it('accepts explicit current-directory worker filenames', async () => {
   expect(await readKokoroWorkerAssets(root)).toMatchObject({ coordinatorPath: 'assets/worker-A1.js', helperPath: 'assets/cpu-pool-worker-B2.js' });
 });
 
+it('binds static template URLs emitted by Vite 8', async () => {
+  const source = 'new Worker(new URL(new URL(`worker-A1.js`,import.meta.url).href,``+import.meta.url),{type:`module`});'
+    + 'new Worker(new URL(new URL(`cpu-pool-worker-B2.js`,import.meta.url).href,``+import.meta.url),{type:`module`})';
+  expect(await readKokoroWorkerAssets(await fixture(source))).toMatchObject({
+    coordinatorPath: 'assets/worker-A1.js', helperPath: 'assets/cpu-pool-worker-B2.js',
+  });
+});
+
 it.each([
   ['ambiguous coordinator', `${coordinatorLiteral};${coordinatorLiteral};${helperLiteral}`],
   ['missing helper literal', coordinatorLiteral],
@@ -44,6 +52,7 @@ it.each([
   ['protocol-relative URL', `${coordinatorLiteral.replace('worker-A1.js', '//packaged.invalid/assets/worker-A1.js')};${helperLiteral}`],
   ['outside asset directory', `${coordinatorLiteral.replace('worker-A1.js', '../worker-A1.js')};${helperLiteral}`],
   ['query-bearing URL', `${coordinatorLiteral.replace('worker-A1.js', 'worker-A1.js?other=1')};${helperLiteral}`],
+  ['interpolated template URL', `${coordinatorLiteral.replace('"worker-A1.js"', '`worker-${suffix}.js`')};${helperLiteral}`],
 ])('refuses an unbound packaged worker role: %s', async (_name, source) => {
   await expect(readKokoroWorkerAssets(await fixture(source))).rejects.toThrow(/Cannot identify the packaged Kokoro/);
 });

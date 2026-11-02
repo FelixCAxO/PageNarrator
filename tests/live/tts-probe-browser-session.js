@@ -17,7 +17,7 @@ export async function readKokoroWorkerAssets(extensionDir) {
   const asset = 'assets/worker-client.js';
   const bytes = await readFile(path.join(extensionDir, asset));
   const source = bytes.toString('utf8');
-  const paths = [...source.matchAll(/new URL\(\s*(["'])([^"']+)\1\s*,\s*import\.meta\.url\s*\)/g)]
+  const paths = [...source.matchAll(/new URL\(\s*(["'`])([^"'`]+)\1\s*,\s*import\.meta\.url\s*\)/g)]
     .map(match => match[2]);
   const find = prefix => {
     const matches = paths.filter(file => new RegExp(`^(?:\\./)?${prefix}-[A-Za-z0-9_-]+\\.js$`).test(file));
