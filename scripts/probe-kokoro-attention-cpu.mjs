@@ -2,7 +2,7 @@
 import { createHash } from 'node:crypto';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { debugOutputModel } from './lib/onnx-debug-outputs.mjs';
 import { kokoroOperatorFixture } from './lib/kokoro-operator-fixture.mjs';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';

@@ -5,7 +5,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { expect, it } from 'vitest';
-import * as oracle from 'onnxruntime-node';
+import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
 import { kokoroProbeModelMode, prepareKokoroProbeModel, requireNewKokoroProbeReport } from '../../scripts/lib/kokoro-probe-model.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 

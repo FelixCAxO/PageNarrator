@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import * as oracle from 'onnxruntime-node';
+import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
 import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
 

@@ -17,6 +17,7 @@ export function kokoroNumericalPlan(version, outputDir) {
   }
   const mathSteps = [
     ['node_modules/vitest/vitest.mjs', 'run', 'tests/engines/kokoro-cpu.test.js', 'tests/engines/wasm-ocr-compute.test.js',
+      'tests/engines/node-onnx-oracle.test.js',
       'tests/engines/kokoro-numerical-reference.test.js',
       'tests/engines/kokoro-resize-reference.test.js', 'tests/engines/kokoro-stft-reference.test.js',
       'tests/engines/kokoro-parallel-native.test.js', 'tests/engines/kokoro-kernels.test.js', 'tests/engines/kokoro-phase-contract.test.js'],

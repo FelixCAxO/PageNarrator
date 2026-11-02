@@ -22,6 +22,7 @@
 - Resolve the development dependency audit findings with patched glob matching while retaining import-resolution lint checks.
 - Correct native and GPU Kokoro arithmetic so CPU q8/fp32 and NVIDIA/Intel GPU fp32 waveform comparisons pass all three cases twice on both graph versions under unchanged limits.
 - Compact fragmented CPU tensor storage and retire recycled scratch safely while retaining the 512 MiB memory ceiling.
+- Prevent development-oracle shutdown hangs by disabling the native telemetry uploader before ONNX Runtime initializes.
 
 Prepared locally at the maintainer's instruction with the same disclosed limitations as 1.0.2. Independent voice/PDF reviews remain pending, physical hardware tiers are unqualified, and historical waveform mismatches remain failed diagnostics. The local 180-section OmniVoice read had a maximum 3.5 ms playback handoff and 3.8% warmed resident-memory growth before cleanup; this is one-host evidence, not broad performance qualification. A finite reserve can still drain if synthesis stays slower than playback. See [verification status](docs/release-readiness.md). This local preparation authorizes no publication or deployment and changes no acceptance threshold or failed result.
 

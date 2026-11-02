@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import { spawn } from 'node:child_process';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { WebGpuOnnxSession } from '../src/engines/webgpu-onnx-session.js';
 import { InferenceSession, Tensor } from '../src/engines/browser-inference.js';

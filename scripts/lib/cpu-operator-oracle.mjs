@@ -1,4 +1,4 @@
-import * as oracle from 'onnxruntime-node';
+import oracle from './node-onnx-oracle.mjs';
 import { kokoroOperatorFixture } from './kokoro-operator-fixture.mjs';
 
 export async function cpuOperator(op, inputs, output, attributes = {}, domain = '') {

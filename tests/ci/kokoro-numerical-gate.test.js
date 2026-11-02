@@ -20,6 +20,7 @@ it('requires math checks and keeps fresh CPU/GPU waveform comparisons for produc
   expect(plan.steps).toHaveLength(6);
   expect(plan.steps.filter(args => args.includes('--unmodified-model'))).toHaveLength(3);
   expect(plan.mathSteps).toHaveLength(2);
+  expect(plan.mathSteps[0]).toContain('tests/engines/node-onnx-oracle.test.js');
   const run = vi.fn(() => ({ status: 0 }));
   expect(verifyKokoroNumerics({ version: '1.0.2', outputDir: 'fresh-evidence', run }).status).toBe('pass');
   expect(run).toHaveBeenCalledTimes(8);

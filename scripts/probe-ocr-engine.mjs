@@ -41,7 +41,7 @@ if (checkpointIndex !== null) {
 const adapterConfiguration = browserAdapterConfiguration();
 const output = resolve(root, `artifacts/engines/ocr-${modelKind}-${benchmark ? 'benchmark' : 'parity'}${large ? '-large' : ''}${onlyLarge ? '-single' : ''}${reductionAccuracy ? '-reduction-accuracy' : checkpointName ? `-checkpoint-${checkpointIndex}` : ''}${nodeReference ? '-node-reference' : ''}${adapterConfiguration.suffix}.json`);
 const nodeRuntimeDirectory = `node_modules/onnxruntime-node/bin/napi-v6/${process.platform}/${process.arch}`;
-const nodeReferenceFiles = nodeReference ? ['scripts/lib/ocr-node-reference.mjs', 'node_modules/onnxruntime-node/package.json',
+const nodeReferenceFiles = nodeReference ? ['scripts/lib/ocr-node-reference.mjs', 'scripts/lib/node-onnx-oracle.mjs', 'node_modules/onnxruntime-node/package.json',
   ...(await readdir(resolve(root, nodeRuntimeDirectory))).filter(name => /\.(?:node|dll|dylib)$|\.so(?:\.\d+)*$/.test(name)).map(name => `${nodeRuntimeDirectory}/${name}`)] : [];
 const nodeVersion = nodeReference ? JSON.parse(await readFile(resolve(root, 'node_modules/onnxruntime-node/package.json'), 'utf8')).version : null;
 const pins = () => engineSourcePins(root, ['scripts/probe-ocr-engine.mjs', 'scripts/lib/browser-adapter.mjs', 'scripts/lib/engine-source-pins.mjs',

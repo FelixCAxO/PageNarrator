@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { decodeOnnxModel } from '../src/engines/onnx-model.js';
 import { KOKORO_DATA } from '../src/tts/kokoro/model-data.js';
 import { applyKokoroPhaseCorrection } from '../src/tts/kokoro/phase-correction.js';

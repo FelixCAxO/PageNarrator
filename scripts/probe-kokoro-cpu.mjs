@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { readFile, mkdir, writeFile } from 'node:fs/promises';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { kokoroOperatorFixture } from './lib/kokoro-operator-fixture.mjs';
 import { referenceStft } from '../src/engines/kokoro-kernels-shape.js';

@@ -4,7 +4,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { WebGpuOnnxSession } from '../src/engines/webgpu-onnx-session.js';
 import { createEnglishPhonemizer } from '../src/tts/kokoro/english-phonemizer.js';

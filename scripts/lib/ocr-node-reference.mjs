@@ -3,7 +3,7 @@
 import { createHash } from 'node:crypto';
 
 export async function createNodeOcrReference(model, { runtime = null } = {}) {
-  const ort = runtime || await import('onnxruntime-node');
+  const ort = runtime || (await import('./node-onnx-oracle.mjs')).default;
   const session = await ort.InferenceSession.create(model, { executionProviders: ['cpu'],
     intraOpNumThreads: 1, interOpNumThreads: 1, graphOptimizationLevel: 'disabled', logSeverityLevel: 3 });
   if (session.inputNames.length !== 1 || !session.outputNames.length) {

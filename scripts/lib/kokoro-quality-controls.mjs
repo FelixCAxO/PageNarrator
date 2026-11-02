@@ -92,7 +92,7 @@ export async function qualityLegacyPins(root) {
     'node_modules/@huggingface/transformers/dist/transformers.node.mjs',
     'node_modules/kokoro-js/node_modules/@huggingface/transformers/package.json',
     'node_modules/kokoro-js/node_modules/@huggingface/transformers/dist/transformers.node.mjs',
-    'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs',
+    'node_modules/onnxruntime-node/package.json', 'scripts/lib/kokoro-legacy-quality.mjs', 'scripts/lib/node-onnx-oracle.mjs',
     'scripts/lib/kokoro-quality-controls.mjs', 'scripts/lib/kokoro-speech-acceptance.mjs'];
   for (const file of KOKORO_DATA.files.filter(entry => entry.path.startsWith('voices/'))) {
     const path = `node_modules/kokoro-js/${file.path}`, bytes = await readFile(resolve(root, path));

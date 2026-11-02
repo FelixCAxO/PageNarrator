@@ -3,7 +3,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { WebGpuOnnxSession } from '../src/engines/webgpu-onnx-session.js';
 import { decodeOnnxModel } from '../src/engines/onnx-model.js';

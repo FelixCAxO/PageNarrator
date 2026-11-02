@@ -6,7 +6,7 @@ import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { performance } from 'node:perf_hooks';
 import { chromium } from '@playwright/test';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { createEnglishPhonemizer } from '../src/tts/kokoro/english-phonemizer.js';
 import { createKokoroTokenizer } from '../src/tts/kokoro/tokenizer.js';
 import { KOKORO_DATA } from '../src/tts/kokoro/model-data.js';

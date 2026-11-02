@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { performance } from 'node:perf_hooks';
-import * as reference from 'onnxruntime-node';
+import reference from './lib/node-onnx-oracle.mjs';
 import { WasmOcrCompute } from '../src/engines/wasm-ocr-compute.js';
 import { WebGpuOnnxSession } from '../src/engines/webgpu-onnx-session.js';
 

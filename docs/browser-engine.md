@@ -19,6 +19,8 @@ OCR keeps four shared attempts with legacy slash priority and at most four defer
 
 The seven pinned speech/OCR graphs use 73 operator types. Build and package checks reject retired runtimes, unknown WASM, remote executables, and files outside the verified graph. Comparison packages remain development-only. Vite preload helpers and retained data keep their own notices.
 
+Node comparison tools load ONNX Runtime through `scripts/lib/node-onnx-oracle.mjs`. It sets `ORT_DISABLE_TELEMETRY=1` before the native import: ONNX Runtime 1.31.1's Windows telemetry uploader can otherwise wait during DLL destruction after worker threads have stopped. Disabling events after initialization leaves that uploader alive. The loader preserves the original runtime exports and inference settings; shutdown verification requires natural process exit. See the [native initialization guard](https://github.com/microsoft/onnxruntime/blob/v1.31.1/onnxruntime/core/platform/telemetry_1ds.cc) and [environment opt-out](https://github.com/microsoft/onnxruntime/blob/v1.31.1/onnxruntime/core/platform/telemetry_environment.h).
+
 ### Admitted PDF programs
 
 Native CMYK processing keeps four inks plus alpha through final ICC conversion. Qualified paths include bounded Normal groups and Forms, specified masks and overprint, ICC4 contributions, and a single-rectangle Multiply program. Support depends on the exact producer, consumer, profile, and resource limits.

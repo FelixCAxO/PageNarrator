@@ -5,6 +5,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
+import './lib/node-onnx-oracle.mjs';
 import { Qwen2Tokenizer } from '@huggingface/transformers';
 import manifest from '../tests/fixtures/browser-speech-models.json' with { type: 'json' };
 

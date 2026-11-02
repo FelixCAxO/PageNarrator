@@ -5,7 +5,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
 import { spawn } from 'node:child_process';
-import * as oracle from 'onnxruntime-node';
+import oracle from './lib/node-onnx-oracle.mjs';
 import { decodeOnnxModel } from '../src/engines/onnx-model.js';
 import { WasmKokoroCompute } from '../src/engines/kokoro-cpu-compute.js';
 import { debugOutputModel } from './lib/onnx-debug-outputs.mjs';
