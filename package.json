@@ -91,6 +91,7 @@
     "node": "^22.23.4 || ^24.22.1 || >=26.12.1"
   },
   "overrides": {
+    "minimatch": "^11.0.4",
     "protobufjs": ">=7.6.6 <8",
     "sharp": "$sharp",
     "tar": "^7.5.22",

@@ -2,6 +2,16 @@
 
 The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
+## Dependency and waveform follow-up, 2026-11-02
+
+The full dependency audit now reports zero vulnerabilities. minimatch is overridden to 11.0.4, which replaces the vulnerable preprocessing path. ESLint loads the exported `no-unresolved` rule directly instead of importing unused rules that require minimatch's removed `makeRe` export. Every configured lint rule stays enabled. A regression checks both a valid import and rejection of a missing import; full lint, both type checks and 45,195 unit tests pass with four optional skips.
+
+The waveform comparisons remain unresolved. Fresh operator checks and all six diagnostic lanes complete successfully, but every strict PCM comparison still fails. With identical independent operands, the quantizer has zero differing outputs and the phase cumulative sum matches exactly. A fresh fp32 prefix trace stays within the existing operator bounds through the text/duration layers; the vocoder amplifies the remaining floating-point differences.
+
+A diagnostic compares ONNX Runtime CPU with itself using the same prepared graph, style, tokens and speed. Replaying its unmodified phase accumulator reproduces the waveform exactly for all three cases. Moving each nonzero accumulator value by one adjacent float32 value makes every case fail the unchanged PCM bounds: 10,956–73,480 samples differ, with maximum amplitude differences of 0.0659–0.2188. This demonstrates sensitivity to small phase-rounding changes, not speech-quality equivalence or proof that every implementation detail is correct. It does not validate a production arithmetic change or justify relaxing tolerances. No engine, weight, graph or acceptance-bound change was adopted.
+
+Evidence stays in ignored `artifacts/waveform-audit-fix-20261102/`, including the identity controls and both perturbation directions. The earlier audit findings below are historical and now resolved; the waveform failures remain failed/unqualified. The maintainer considers the missing private PDF fixture obsolete, so restoring that file is no longer requested; its frozen benchmark remains not performed.
+
 ## Local v1.0.3 candidate refresh, 2026-11-02
 
 The maintainer requested a fresh local build and verification before preparing 1.0.3. The existing version-specific authorization still covers a local commit and matching extension/source ZIPs. It grants no release waiver, push, publication, website deployment or Store submission.
@@ -16,7 +26,7 @@ Independent numerical operator checks pass, including 36 GPU cases with resource
 
 The frozen 100-page PDF acceptance run cannot start: one private source PDF is unavailable, affecting three benchmark pages. No byte-identical copy was found in the local corpus caches. The reference paths, hashes, pages and thresholds remain unchanged; the earlier revision-06 score is historical evidence, not a fresh pass. Independent voice reviews and all 50 PDF naturalness passages remain pending, and physical minimum/recommended hardware tiers remain unqualified. Historical PCM mismatches remain failed/unqualified diagnostics. These limitations prevent a full release qualification.
 
-The full development dependency audit now reports ten moderate findings propagated from minimatch 10.2.6 ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)); the runtime audit passes. A trial override to minimatch 11.0.1 cleared that advisory but broke eslint-plugin-import-x's required named export. The override was rejected and the compatible lockfile restored. Follow the lint toolchain's compatible fix before claiming a clean full audit; no advisory is waived or reported as resolved.
+The initial development dependency audit reported ten moderate findings propagated from minimatch 10.2.6 ([GHSA-g3hv-75wg-m249](https://github.com/advisories/GHSA-g3hv-75wg-m249)); the runtime audit passed. A trial override to minimatch 11.0.1 cleared that advisory but broke eslint-plugin-import-x's required named export. That first override was rejected and the compatible lockfile restored. The later follow-up above resolves the advisory while retaining the configured import-resolution rule.
 
 Fresh raw evidence stays in ignored `artifacts/release-readiness-1.0.3-20261102/`. The sanitized report beside the paired local ZIPs records the final commit, archive hashes, browser/model results, skipped opt-in lanes and remaining qualification work. The previous preparation below is retained as dated history and does not qualify subsequent changes.
 

@@ -1,6 +1,6 @@
 import parser from '@typescript-eslint/parser';
 import typescript from '@typescript-eslint/eslint-plugin';
-import imports from 'eslint-plugin-import-x';
+import noUnresolved from 'eslint-plugin-import-x/rules/no-unresolved';
 import globals from 'globals';
 
 export default [
@@ -21,7 +21,8 @@ export default [
       parserOptions: { project: './tsconfig.eslint.json' },
       globals: { ...globals.browser, ...globals.node, ...globals.es2022 },
     },
-    plugins: { '@typescript-eslint': typescript, import: imports },
+    // Load the rule we use; unused legacy rules require minimatch's removed makeRe API.
+    plugins: { '@typescript-eslint': typescript, import: { rules: { 'no-unresolved': noUnresolved } } },
     settings: { 'import-x/ignore': ['^cloudflare:'] },
     rules: {
       'no-empty': ['error', { allowEmptyCatch: false }],
