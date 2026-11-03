@@ -27,7 +27,6 @@
     "npm run typecheck",
     "npm run typecheck:boundaries",
     "npm run test:pdf-corpus",
-    "npm run test:pdf-acceptance",
     "node scripts/verify-kokoro-numerics.mjs",
     {
       "command": "node scripts/verify-voice-quality.mjs",

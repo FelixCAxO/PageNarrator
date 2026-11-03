@@ -2,7 +2,7 @@
 
 The latest published release is 1.0.2, authorized by the maintainer on 2026-10-27 with the remaining limitations disclosed in its public verification report. The repository was recreated with one initial commit; retired earlier release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
 
-On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching local extension/source ZIPs with the same disclosed limitations as 1.0.2. This local preparation changes no gate results or thresholds and includes no push, publication, deployment or Store submission. Keep pending human reviews, unqualified hardware, failed waveform diagnostics and limited OmniVoice timing coverage visible in the accompanying verification report.
+On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching local extension/source ZIPs with the same disclosed limitations as 1.0.2. This local preparation changes no gate results or thresholds and includes no push, publication, deployment or Store submission. Record current bounded numerical passes alongside historical failures, pending human reviews, unqualified hardware and limited OmniVoice timing coverage in the accompanying verification report.
 
 ## Public source repository
 
@@ -14,10 +14,10 @@ On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching 
 
 ## Release
 
-1. Run `npm run test:models` and `npm run verify:release` from the repository root. The full gate needs the pinned private PDF library references.
+1. Run `npm run test:models` and `npm run verify:release` from the repository root. Independent listening and physical-hardware evidence remain required for an unwaived full qualification. The retired private PDF benchmark is no longer a prerequisite.
 2. Record v1.0.0's waived physical hardware and human/listening reviews (2026-10-24) and accepted Kokoro duration/PCM limitation (2026-10-25). These are not passes. Keep failed/unqualified diagnostics and unchanged thresholds. All other applicable automatic checks remain required; the explicit v1.0.1 extension was authorized on 2026-10-25 and neither version grants exceptions to v1.0.2. See [policy](../config/release-policy.json) and [verification status](release-readiness.md).
-3. Run `npm run test:pdf-acceptance` against revision 06: 90 private reference pages plus ten authored controls. Retain revision 05 and its original 97/100 result; corrected checkpoints are regression corrections, not new holdout evidence. Reference generation alone is not a product pass. Keep results and failures. The separate historical lane is `npm run test:pdf-acceptance:historical`; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
-4. Build from a clean reviewed commit. Source packaging rejects tracked edits and stages an exact `git archive` export of HEAD. Untracked and ignored files never enter the source ZIP. A distributed source ZIP can be rebuilt only with its declared files unchanged under `SOURCE-MANIFEST.json`.
+3. Keep `npm run test:pdf-corpus` and packaged PDF reading/OCR checks required. `npm run test:pdf-acceptance` remains an optional historical private-library check; the older arXiv lane is `npm run test:pdf-acceptance:historical`. Preserve their fixtures, references, thresholds and original results, including revision 05's 97/100. A retired or unperformed benchmark is never reported as passing; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
+4. Build from a clean reviewed commit. Source packaging rejects tracked edits and stages an exact `git archive` export of HEAD. Both archives and the extracted build are prepared before replacing final files; replacement failures restore the previous set. If restoration itself fails, the error names the retained backup directory. Test packaging without preflight requires an explicit output directory outside canonical `releases/`. Untracked and ignored files never enter the source ZIP. A distributed source ZIP can be rebuilt only with its declared files unchanged under `SOURCE-MANIFEST.json`.
 5. Distribute `releases/pagenarrator-<version>.zip` and `releases/pagenarrator-<version>-source.zip` together. Fixed entry times make identical contents reproduce the ZIP hash. Compare the upload's SHA-256 with the tested file.
 6. Attach a public verification report to the same release. Record the exact source commit and archive hashes, tool/browser versions, commands and results, documented skips, waived checks, and accepted failures. Publish only an allowlist of summary fields: exclude private document names/text, absolute paths, browser profiles, credentials, and raw diagnostics. Link the report from the release notes and verification guide. A partial public rerun must stay separate from the historical full-gate record.
 
@@ -64,7 +64,7 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 - Check desktop and mobile pages. `npm run test:benchmarks` checks layout at 320, 375, 768, and 1366 px.
 - Verify `/pricing`, `/activate`, and `/refund` redirect to `/chrome-extension`.
 - Keep Cloudflare Single Redirect `54d11e0e1dc54b96b256b400ac3bbc37` for `https://www.pagenarrator.com/*` → `https://pagenarrator.com/${1}`, HTTP 301 with query strings. Path redirects stay in `_redirects`.
-- Check changelog v1.0.2 and terms preserving GPL-3.0-or-later, MIT, and Apache License 2.0 rights.
+- Check the changelog for the release version and terms preserving GPL-3.0-or-later, MIT, and Apache License 2.0 rights.
 - Verify no checkout script, price, purchase action, activation UI, or payment endpoint.
 - Keep the scoped URL rewrite `0795bb621e1343c6be34d2baa6492787` for host `pagenarrator.com` and exactly `/cws-demo` or `/cws-demo.html`, rewriting only the origin path to `/pagenarrator-removed-capture-fixture`. This prevents retained Pages asset aliases from serving an old local capture; both public URLs must return HTTP 404. Query strings and reader-facing routes are unchanged.
 - Keep the independent support mailbox Worker healthy. Follow `docs/support-mailbox.md` and verify the Gmail reply composer opens with `PageNarrator Support <support@pagenarrator.com>` in From.

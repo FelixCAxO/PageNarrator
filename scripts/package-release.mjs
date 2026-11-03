@@ -1,9 +1,9 @@
 import { deflateRawSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import { execFileSync } from 'node:child_process';
-import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, realpathSync, renameSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
-import { join, relative, resolve, sep } from 'node:path';
+import { basename, join, relative, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { assertReleasePackage, DEFAULT_RELEASE_ARTIFACT_BUDGETS } from './assert-release-package.mjs';
 
@@ -13,10 +13,18 @@ export async function packageRelease(packageDir, options = {}) {
 
   const packageJson = JSON.parse(readFileSync(resolve('package.json'), 'utf8'));
   const outputDir = resolve(options.outputDir || 'releases');
+  const canonicalDir = resolve('releases');
+  if (options.skipPreflight && !options.dryRun && (!options.outputDir || outputDir === canonicalDir
+    || existsSync(outputDir) && existsSync(canonicalDir) && realpathSync(outputDir) === realpathSync(canonicalDir))) {
+    throw new Error('Test packaging requires an explicit output directory outside the canonical releases directory.');
+  }
   mkdirSync(outputDir, { recursive: true });
 
   const outputPath = join(outputDir, `pagenarrator-${packageJson.version}.zip`);
   const extractedDir = join(outputDir, `pagenarrator-${packageJson.version}`);
+  if (options.skipPreflight && !options.dryRun && existsSync(join(outputDir, `pagenarrator-${packageJson.version}-source.zip`))) {
+    throw new Error('Test packaging cannot replace a source-bound release; choose a separate output directory.');
+  }
   const files = listFiles(sourceDir);
   if (options.dryRun) {
     return {
@@ -30,30 +38,62 @@ export async function packageRelease(packageDir, options = {}) {
       })),
     };
   }
-  writeFileSync(outputPath, createZip(sourceDir, files));
-  assertZipBudget(outputPath, options.budgets);
+  const binary = createZip(sourceDir, files);
+  assertZipBudget(binary.length, options.budgets);
   const rawBuildBytes = totalFileBytes(sourceDir, files);
-  const zipBytes = statSync(outputPath).size;
+  const zipBytes = binary.length;
   // Convey matching source alongside the binary without loading or duplicating it in the extension.
   const sourcePath = options.skipPreflight ? null : join(outputDir, `pagenarrator-${packageJson.version}-source.zip`);
-  if (sourcePath) {
-    const sourceRoot = fileURLToPath(new URL('..', import.meta.url));
-    writeFileSync(sourcePath, createSourceArchive(sourceRoot, {
-      name: `pagenarrator-${packageJson.version}.zip`, sha256: createHash('sha256').update(readFileSync(outputPath)).digest('hex'),
-    }));
-  }
+  const source = sourcePath ? createSourceArchive(fileURLToPath(new URL('..', import.meta.url)), {
+    name: `pagenarrator-${packageJson.version}.zip`, sha256: createHash('sha256').update(binary).digest('hex'),
+  }) : null;
 
-  if (existsSync(extractedDir)) {
-    const parent = realpathSync(outputDir), target = realpathSync(extractedDir);
-    if (!target.startsWith(`${parent}${sep}`) || target === realpathSync(sourceDir)) throw new Error('Refusing to replace an extracted package outside its output directory or over the source.');
-    rmSync(target, { recursive: true, force: true });
+  for (const path of [outputPath, sourcePath].filter(Boolean)) {
+    if (existsSync(path) && !statSync(path).isFile()) throw new Error(`Package archive destination is not a file: ${path}`);
   }
-  cpSync(sourceDir, extractedDir, { recursive: true });
+  if (existsSync(extractedDir)) {
+    if (!statSync(extractedDir).isDirectory()) throw new Error('Extracted package destination is not a directory.');
+    const parent = realpathSync(outputDir), target = realpathSync(extractedDir);
+    const input = realpathSync(sourceDir);
+    if (!target.startsWith(`${parent}${sep}`) || target === input || input.startsWith(`${target}${sep}`)) throw new Error('Refusing to replace an extracted package outside its output directory or over the source.');
+  }
+  const staging = mkdtempSync(join(outputDir, '.pn-package-'));
+  const entries = [outputPath, ...(sourcePath ? [sourcePath] : []), extractedDir].map((target, i) => ({
+    target, staged: join(staging, `new-${i}`), backup: join(staging, `old-${basename(target)}`), saved: false, installed: false,
+  }));
+  let preserveBackups = false;
+  try {
+    writeFileSync(entries[0].staged, binary);
+    if (source) writeFileSync(entries[1].staged, source);
+    cpSync(sourceDir, entries.at(-1).staged, { recursive: true });
+    // Replace only fully prepared output; restore the previous set if any rename fails.
+    try {
+      for (const entry of entries) {
+        if (existsSync(entry.target)) { renameSync(entry.target, entry.backup); entry.saved = true; }
+        renameSync(entry.staged, entry.target); entry.installed = true;
+      }
+    } catch (error) {
+      const errors = [error];
+      for (const entry of [...entries].reverse()) {
+        try {
+          if (entry.installed) rmSync(entry.target, { recursive: true, force: true });
+          if (entry.saved) renameSync(entry.backup, entry.target);
+        } catch (rollbackError) { errors.push(rollbackError); }
+      }
+      if (errors.length > 1) {
+        preserveBackups = true;
+        throw new AggregateError(errors, `Package replacement could not be restored; recover previous files from ${staging}.`);
+      }
+      throw error;
+    }
+  } finally {
+    if (!preserveBackups) rmSync(staging, { recursive: true, force: true });
+  }
 
   return {
     outputPath,
     sourcePath,
-    sourceSha256: sourcePath ? createHash('sha256').update(readFileSync(sourcePath)).digest('hex') : null,
+    sourceSha256: source ? createHash('sha256').update(source).digest('hex') : null,
     extractedDir,
     fileCount: files.length,
     rawBuildBytes: preflight?.metrics?.rawBuildBytes ?? rawBuildBytes,
@@ -114,12 +154,11 @@ export function createSourceArchive(sourceRoot, binary, candidateId = process.en
   }
 }
 
-function assertZipBudget(outputPath, budgets = {}) {
+function assertZipBudget(zipBytes, budgets = {}) {
   const budget = {
     ...DEFAULT_RELEASE_ARTIFACT_BUDGETS,
     ...(budgets || {}),
   }.zipBytes;
-  const zipBytes = statSync(outputPath).size;
   if (Number.isFinite(Number(budget)) && zipBytes > Number(budget)) {
     throw new Error(`zip size ${zipBytes} exceeds budget ${budget}`);
   }

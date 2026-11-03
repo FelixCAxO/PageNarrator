@@ -2,6 +2,14 @@
 
 The latest published GitHub release is [v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2), released on 2026-10-27 at the maintainer's explicit instruction after the results and limitations were disclosed. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md) binds the tested source and downloads. Human reviews remain pending, physical qualification did not pass, and timing and PCM failures remain unqualified. Publication changes no test result or threshold. Chrome Web Store availability is pending.
 
+## Release packaging and checklist repair, 2026-11-03
+
+The packager now validates the binary budget and source identity, then stages both archives and the extracted extension before replacing final files. A replacement error restores the previous set; if restoration itself fails, the error identifies the retained backups. Test packaging requires an explicit non-canonical directory and cannot replace an existing source-bound pair. Regression cases cover source rejection, write/copy/rename failures, rollback failure, unsafe destinations and matching successful replacements. Earlier mismatched canonical artifacts are preserved when refreshing the local candidate; their old reports are not reclassified.
+
+The retired private-library PDF acceptance benchmark is excluded from the mandatory release plan. Both private historical commands remain available with their original fixtures, references, thresholds and results. The current original-PDF corpus and packaged PDF/OCR checks remain required. This removes an obsolete fixture dependency, grants no quality or hardware waiver and records no new private-benchmark score. The launch checklist, contributor instructions and hardware guide now reflect the current scope, bounded numerical passes and tested Node/npm versions.
+
+Fresh regression and package evidence is retained in `artifacts/release-fixes-20261103/`. The earlier pre-release review and failed packaging reproduction remain in `artifacts/pre-release-check-20261103/`. Independent listening and physical-device qualification remain unqualified; this is local release preparation only.
+
 ## Development-oracle shutdown repair, 2026-11-02
 
 The native ONNX Runtime 1.31.1 telemetry uploader caused the Windows process-exit hangs. Read-only native debugging found the last thread waiting in a condition variable during DLL static destruction; disassembly matches `OneDsTelemetry::Shutdown()` calling `FlushAndTeardown()`, and runtime type information identifies `Microsoft::Applications::Events::LogManagerImpl`. Windows had already stopped the workers that the uploader awaited. Session disposal and JavaScript handle cleanup cannot finish that global native object's teardown.

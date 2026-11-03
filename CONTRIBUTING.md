@@ -13,7 +13,7 @@ Use Node.js 26.12.1 with npm 12.2.1. `.nvmrc` selects this tested Current releas
 
 Run `npm test`, `npm run lint`, `npm run typecheck`, `npm run typecheck:boundaries`, and `npm run build`.
 
-For browser tests, run `npx playwright install chromium` and `npm run test:models`, then `npm run verify:integration`. The full `npm run verify:release` also requires private PDF references. See [verification status](docs/release-readiness.md). Run performance measurements alone; simulated limits do not prove physical hardware support or listening quality.
+For browser tests, run `npx playwright install chromium` and `npm run test:models`, then `npm run verify:integration`. The full `npm run verify:release` also requires independent listening and physical-hardware evidence. The retired private PDF acceptance benchmarks remain optional historical commands; current PDF corpus and browser checks stay required. See [verification status](docs/release-readiness.md). Run performance measurements alone; simulated limits do not prove physical hardware support or listening quality.
 
 In PowerShell, use `npm.cmd` when forwarding test-runner flags after `--`.
 

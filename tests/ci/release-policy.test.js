@@ -52,10 +52,11 @@ describe('explicit v1.0.0 release policy', () => {
     const executed = run.mock.calls.map(call => call[0]);
     expect(executed).toEqual(steps.filter(step => !step.waiver).map(step => step.command));
     expect(executed).toEqual(expect.arrayContaining(['npm test', 'npm run test:e2e:local',
-      'npm run test:pdf-acceptance',
+      'npm run test:pdf-corpus',
       'npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model',
       'npm run probe:tts:lower-spec:no-build', 'npm run probe:tts:lower-spec-pdf:no-build']));
-    expect(gates.release.indexOf('npm run test:pdf-acceptance')).toBe(gates.release.indexOf('npm run test:pdf-corpus') + 1);
+    expect(gates.release).not.toContain('npm run test:pdf-acceptance');
+    expect(gates.release.indexOf('node scripts/verify-kokoro-numerics.mjs')).toBe(gates.release.indexOf('npm run test:pdf-corpus') + 1);
     expect(gates.fast).not.toContain('npm run test:pdf-acceptance');
     expect(recordWaivers).toHaveBeenCalledWith('release', '1.0.0', [
       expect.objectContaining({ gateId: 'human-listening-reviews', status: 'waived', verification: 'not-performed' }),

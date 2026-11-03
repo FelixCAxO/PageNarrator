@@ -42,6 +42,8 @@ Remove-Item Env:\PN_SUMMER2026_PDF_DIR
 
 ## Fixed PDF acceptance benchmark
 
+As of 2026-11-03, this frozen private-library benchmark is optional historical evidence at the maintainer's instruction and is excluded from the current mandatory release gate. Its unavailable source fixture is not requested again. References, thresholds and previous results remain unchanged; it is recorded as not performed for the current candidate. The current original-PDF corpus and packaged PDF/OCR checks remain required.
+
 `npm run test:pdf-acceptance` evaluates `private-library-v1-20261024`: 90 independently referenced native-text pages from 30 private PDFs and ten unchanged authored controls. The public manifest, `tests/fixtures/pdf-library-acceptance-manifest.json`, contains random fixture IDs, categories, expected routing codes, and integrity pins for private metadata. PDF hashes, page numbers, source identities, books, excerpts, previews, reference layouts, and gold stay private and out of both ZIPs. A document's SHA-256 is never used as its public identity.
 
 Revision 06 gold is 272,736 bytes, SHA-256 `707b7609dc222e7761503fbb48a2603cc5ffd6225c6320bb3ef9d7d5df8b6efa`, and defaults to `.cache/pdf-library-v1-20261028-reference-06-verified/gold.json`. Keep its pinned `manifest.private.json` alongside it. The loader verifies both manifests, roster, reference, and PDF hashes. Missing or changed inputs fail. Candidate output never supplies reference text. Reports contain private runtime evidence and must remain local unless explicitly redacted.
