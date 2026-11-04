@@ -44,10 +44,21 @@ describe('native audio parity', () => {
     const native = processPcm(pcm, 0.0005, 0.015);
     expect(native).not.toBeNull();
     expect(native.pcm16).toEqual(legacyPcm16(pcm));
-    const bytes = new Uint8Array(await pcmToWavBlob(pcm, 24000).arrayBuffer());
-    expect(bytes.subarray(44)).toEqual(legacyPcm16(pcm));
+    const padded = new Float32Array(pcm.length + 240);
+    padded.set(Float32Array.from(pcm, sample => Math.max(-1, Math.min(1, sample))), 120);
+    const bytes = new Uint8Array(await pcmToWavBlob(padded, 24000).arrayBuffer());
+    expect(bytes.subarray(44)).toEqual(legacyPcm16(padded));
     expect(new DataView(bytes.buffer).getUint32(24, true)).toBe(24000);
-    expect(new DataView(bytes.buffer).getUint32(40, true)).toBe(pcm.length * 2);
+    expect(new DataView(bytes.buffer).getUint32(40, true)).toBe(padded.length * 2);
+  });
+
+  it('scales over-range speech before encoding instead of flattening loud syllables', async () => {
+    const pcm = new Float32Array(480);
+    pcm.set([0.5, 1, 1.5, -1.25], 200);
+    const wav = new DataView(await pcmToWavBlob(pcm, 24000).arrayBuffer());
+    expect([200, 201, 202, 203].map(index => wav.getInt16(44 + index * 2, true)))
+      .toEqual([10922, 21844, 32767, -27306]);
+    expect(pcm[202]).toBe(1.5);
   });
 
   it('preserves rounding near PCM16 boundaries over deterministic float32 samples', () => {
@@ -89,6 +100,23 @@ describe('native audio parity', () => {
     const reference = await synthesizeSpeechChunk(tts(Array.from), 'Hello world. Read more.');
     await expectSameSpeech(native, reference);
     expect(native.wordTimings[2].start).toBeGreaterThan(2.5);
+  });
+
+  it('fades both sides of a stream join without shifting or changing the interior', async () => {
+    const pcm = new Float32Array(480).fill(0.5);
+    const speech = await synthesizeSpeechChunk({
+      async *stream() {
+        for (const text of ['First.', 'Second.']) {
+          yield { text, audio: { audio: pcm, sampling_rate: 24000 } };
+        }
+      },
+    }, 'First. Second.');
+    const wav = new DataView(await speech.blob.arrayBuffer());
+    const sample = index => wav.getInt16(44 + index * 2, true);
+    expect(speech.durationSeconds).toBeCloseTo(0.04);
+    expect([0, 479, 480, 959].map(sample)).toEqual([0, 0, 0, 0]);
+    expect([60, 120, 420, 540, 600].map(sample)).toEqual([8191, 16383, 8054, 8191, 16383]);
+    expect(pcm[0]).toBe(0.5);
   });
 
   it('preserves progressive segment WAV, timing and spoken-word offsets', async () => {

@@ -60,6 +60,18 @@ it('keeps surrogate pairs and combining marks together when a word must be split
   await tts.dispose();
 });
 
+it('smooths an internal join without shortening or mutating the original sections', async () => {
+  const pcm = new Float32Array(480).fill(0.25);
+  const { tts } = setup(18, () => ({ ...audio, pcm }));
+  try {
+    const result = await tts.generate('First piece. Second piece.', { voice });
+    expect(result.audio).toHaveLength(960);
+    expect([0, 359, 479, 480, 600, 959].map(index => result.audio[index]))
+      .toEqual([0.25, 0.25, 0, 0, 0.25, 0.25]);
+    expect(pcm.every(sample => sample === 0.25)).toBe(true);
+  } finally { await tts.dispose(); }
+});
+
 it('stops between sections when reading is cancelled', async () => {
   const controller = new AbortController();
   const { tts, engine } = setup(18, () => { controller.abort(); return audio; });

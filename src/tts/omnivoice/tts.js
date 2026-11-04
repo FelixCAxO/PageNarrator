@@ -91,7 +91,17 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
             if (results.some(result => result.sampleRate !== results[0].sampleRate)) throw new Error('OmniVoice section sample rates differ.');
             const pcm = new Float32Array(results.reduce((length, result) => length + result.pcm.length, 0));
             let offset = 0;
-            for (const result of results) { pcm.set(result.pcm, offset); offset += result.pcm.length; }
+            for (const [index, result] of results.entries()) {
+              pcm.set(result.pcm, offset);
+              // The final WAV encoder only sees the outer edges of this recovered section.
+              const fade = Math.min(Math.round(result.sampleRate * 0.005), Math.floor(result.pcm.length / 2));
+              for (let i = 0; i < fade; i += 1) {
+                const gain = i / fade;
+                if (index > 0) pcm[offset + i] *= gain;
+                if (index < results.length - 1) pcm[offset + result.pcm.length - 1 - i] *= gain;
+              }
+              offset += result.pcm.length;
+            }
             return { pcm, sampleRate: results[0].sampleRate };
           }
         }

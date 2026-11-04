@@ -1132,19 +1132,35 @@ function pcmChunksToWavBlob(chunks, sampleRate, roundToFloat32 = false, encodedC
   let offset = 44;
   for (let chunkIndex = 0; chunkIndex < chunks.length; chunkIndex += 1) {
     const pcm = chunks[chunkIndex];
-    const pcm16 = encodedChunks[chunkIndex]
-      ?? processPcm(pcm, SPEECH_WINDOW_THRESHOLD_FLOOR, SPEECH_WINDOW_THRESHOLD_RATIO)?.pcm16;
+    const chunkStart = offset;
+    // Scale an over-range waveform before quantization so loud syllables keep their shape.
+    let peak = 1;
+    for (let i = 0; i < pcm.length; i += 1) {
+      const amplitude = Math.abs(pcm[i]);
+      if (amplitude > peak && Number.isFinite(amplitude)) peak = amplitude;
+    }
+    const pcm16 = peak === 1 ? (encodedChunks[chunkIndex]
+      ?? processPcm(pcm, SPEECH_WINDOW_THRESHOLD_FLOOR, SPEECH_WINDOW_THRESHOLD_RATIO)?.pcm16) : null;
     if (pcm16) {
       new Uint8Array(buf, offset, pcm16.byteLength).set(pcm16);
       offset += pcm16.byteLength;
-      continue;
+    } else {
+      for (let i = 0; i < pcm.length; i += 1) {
+        // Preserve the Float32 rounding previously applied by concatenation, including plain arrays.
+        const value = roundToFloat32 ? Math.fround(pcm[i]) : pcm[i];
+        const sample = Math.max(-1, Math.min(1, value / peak));
+        v.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
+        offset += 2;
+      }
     }
-    for (let i = 0; i < pcm.length; i += 1) {
-      // Preserve the Float32 rounding previously applied by concatenation, including plain arrays.
-      const value = roundToFloat32 ? Math.fround(pcm[i]) : pcm[i];
-      const sample = Math.max(-1, Math.min(1, value));
-      v.setInt16(offset, sample < 0 ? sample * 0x8000 : sample * 0x7FFF, true);
-      offset += 2;
+    // Independent synthesis chunks can jump to or from silence and click at playback boundaries.
+    const fadeSamples = Math.min(Math.round(sampleRate * 0.005), Math.floor(pcm.length / 2));
+    for (let i = 0; i < fadeSamples; i += 1) {
+      const gain = i / fadeSamples;
+      const start = chunkStart + i * 2;
+      const end = offset - (i + 1) * 2;
+      v.setInt16(start, v.getInt16(start, true) * gain, true);
+      v.setInt16(end, v.getInt16(end, true) * gain, true);
     }
   }
 
