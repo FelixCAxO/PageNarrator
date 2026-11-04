@@ -64,7 +64,7 @@ describe('Original PDF WASM, CMap, Font, and ICC asset configuration', () => {
 
     expect(params).toEqual({
       url: 'https://example.test/document.pdf',
-      withCredentials: false,
+      withCredentials: true,
       useSystemFonts: true,
       rangeChunkSize: 64 * 1024,
       enableScripting: false,
@@ -79,7 +79,7 @@ describe('Original PDF WASM, CMap, Font, and ICC asset configuration', () => {
     const baseline = getPdfDocumentParams('https://example.test/document.pdf');
     expect(baseline).toEqual({
       url: 'https://example.test/document.pdf',
-      withCredentials: false,
+      withCredentials: true,
       useSystemFonts: true,
       rangeChunkSize: 64 * 1024,
       enableScripting: false,

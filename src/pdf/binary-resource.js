@@ -2,7 +2,7 @@
 import { PdfEngineError } from './native-reader.js';
 
 export const MAX_SOURCE_BYTES = 128 * 1024 * 1024;
-export async function binaryResource(value, { signal = new AbortController().signal, maxBytes, fetchImpl = globalThis.fetch, credentials = 'omit', progress = null, validatePrefix = null } = {}) {
+export async function binaryResource(value, { signal = new AbortController().signal, maxBytes, fetchImpl = globalThis.fetch, credentials = 'omit', progress = null, validatePrefix = null, pdfSource = false } = {}) {
   signal.throwIfAborted(); const url = new URL(value, import.meta.url);
   // Local development extraction uses the identical parser/data without a browser fetch shim.
   if (url.protocol === 'file:' && globalThis.process?.versions?.node) {
@@ -14,7 +14,13 @@ export async function binaryResource(value, { signal = new AbortController().sig
     progress?.(bytes.length, bytes.length); return bytes;
   }
   if (!['http:', 'https:', 'file:', 'blob:', 'data:', 'chrome-extension:'].includes(url.protocol)) throw new PdfEngineError('Unsupported PDF source URL.', 'pdf_network');
-  const response = await fetchImpl(url.href, { signal, credentials });
+  // Let normal browser navigation resolve login and other document redirects.
+  const directPdf = pdfSource && (url.protocol === 'https:' || url.protocol === 'http:');
+  const response = await fetchImpl(url.href, { signal, credentials, ...(directPdf ? { redirect: 'manual' } : {}) });
+  if (directPdf && (response.type === 'opaqueredirect' || response.status === 401 || response.status === 403)) {
+    void Promise.resolve(response.body?.cancel?.()).catch(() => false);
+    throw new PdfEngineError('The PDF link redirected or requires access.', 'pdf_access');
+  }
   if (!response.ok) {
     void Promise.resolve(response.body?.cancel?.()).catch(() => false);
     throw new PdfEngineError(`Could not download the PDF resource (${response.status}).`, 'pdf_network');

@@ -187,13 +187,21 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
 }));
 
 pdfReadyPromise = renderPdf().catch((error) => {
-  pdfViewerLogger.error('PDF viewer failed to render document.', error);
   const recovery = classifyPdfLoadError(error);
+  if (recovery.code !== 'pdf_access') pdfViewerLogger.error('PDF viewer failed to render document.', error);
   if (!statusEl.textContent || statusEl.textContent === t("Loading document...") || statusEl.textContent === t("Loading PDF...")) {
     statusEl.textContent = recovery.message;
+    const sourceUrl = recovery.code === 'pdf_access' && getPdfSourceUrl({ url: location.href });
+    if (sourceUrl && /^https?:\/\//i.test(sourceUrl)) {
+      const originalLink = document.createElement('a');
+      originalLink.href = sourceUrl;
+      originalLink.textContent = t('Open original link');
+      statusEl.append(' ', originalLink);
+    }
   }
   throw error;
 });
+void pdfReadyPromise.catch(suppressPdfViewerError);
 
 async function repairPdfDocument(reason = 'worker-crash') {
   if (pdfViewerTornDown) return;

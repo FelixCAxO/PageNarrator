@@ -76,7 +76,7 @@ describe('PDF extraction', () => {
   it('builds URL loading parameters without making a caller-owned ArrayBuffer copy', () => {
     expect(getPdfDocumentParams('https://example.test/report.pdf')).toEqual({
       url: 'https://example.test/report.pdf',
-      withCredentials: false,
+      withCredentials: true,
       useSystemFonts: true,
       rangeChunkSize: 64 * 1024,
       enableScripting: false,
@@ -84,7 +84,7 @@ describe('PDF extraction', () => {
 
     expect(getPdfDocumentParams('http://example.test/report.pdf')).toMatchObject({
       url: 'http://example.test/report.pdf',
-      withCredentials: false,
+      withCredentials: true,
       rangeChunkSize: 64 * 1024,
     });
     expect(getPdfDocumentParams('blob:https://example.test/id')).toBeNull();
@@ -179,10 +179,10 @@ describe('PDF extraction', () => {
     })).rejects.toThrow('Current tab did not return PDF data.');
   });
 
-  it('fails with a useful message when the PDF cannot be downloaded', async () => {
+  it.each([[401, 'pdf_access'], [403, 'pdf_access'], [404, 'pdf_network']])('classifies HTTP %i when downloading a PDF', async (status, code) => {
     await expect(extractPdfArticle({
       tab: { title: 'report.pdf', url: 'https://example.test/report.pdf' },
-      fetch: async () => ({ ok: false, status: 403 }),
-    })).rejects.toThrow('Could not download the PDF');
+      fetch: async () => ({ ok: false, status }),
+    })).rejects.toMatchObject({ code });
   });
 });

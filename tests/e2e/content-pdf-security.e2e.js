@@ -1,5 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
+import { once } from 'node:events';
 import {
   getExtensionId,
   launchExtensionContext,
@@ -13,6 +15,50 @@ async function fixturePdfUrl() {
   const bytes = await readFile('tests/fixtures/pdfs/single-column.pdf');
   return `data:application/pdf;base64,${bytes.toString('base64')}`;
 }
+
+test('opens a PDF with the existing browser session and stops at a sign-in redirect', async ({}, testInfo) => {
+  const pdf = await readFile('tests/fixtures/pdfs/single-column.pdf');
+  const signInRequests = [];
+  const server = createServer((request, response) => {
+    if (request.url === '/sign-in') {
+      signInRequests.push(request.url);
+      response.writeHead(200, { 'Content-Type': 'text/html' }).end('Sign in');
+    } else if (request.url === '/session') {
+      response.writeHead(200, { 'Set-Cookie': 'fixture-session=active; Path=/; HttpOnly; SameSite=Lax' }).end('Session ready');
+    } else if (request.headers.cookie?.includes('fixture-session=active')) {
+      response.writeHead(200, { 'Content-Type': 'application/pdf' }).end(pdf);
+    } else {
+      response.writeHead(302, { Location: 'http://localhost:' + server.address().port + '/sign-in' }).end();
+    }
+  }).listen(0, '127.0.0.1');
+  await once(server, 'listening');
+  try {
+    const { context, cleanup } = await launchExtensionContext({ hostPermissions: ['http://127.0.0.1/*'], testInfo });
+    try {
+      const origin = 'http://127.0.0.1:' + server.address().port;
+      const page = await context.newPage();
+      const id = await getExtensionId(context);
+      const viewerUrl = `chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(origin + '/protected.pdf')}`;
+      const errors = [];
+      page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+      await page.goto(viewerUrl);
+      await expect(page.locator('#pdf-status')).toContainText('Open the original link in Chrome');
+      await expect(page.getByRole('link', { name: 'Open original link' })).toHaveAttribute('href', origin + '/protected.pdf');
+      expect(signInRequests).toEqual([]);
+      expect(errors.filter(message => message.includes('CORS'))).toEqual([]);
+
+      await page.goto(origin + '/session');
+      await page.goto(viewerUrl);
+      await expect(page.locator('#pdf-status')).toContainText('1 page loaded');
+      await expect(page.locator('.textLayer')).toContainText('PageNarrator single column fixture');
+      expect(signInRequests).toEqual([]);
+    } finally {
+      await cleanup();
+    }
+  } finally {
+    server.close();
+  }
+});
 
 test('blocks web-origin PDF viewer framing and private runtime resource reads', async ({}, testInfo) => {
   const { context, cleanup } = await launchExtensionContext({ testInfo });

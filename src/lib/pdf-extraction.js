@@ -331,7 +331,7 @@ export function getPdfDocumentParams(sourceUrl, options = {}) {
 
   return {
     url: sourceUrl,
-    withCredentials: false,
+    withCredentials: true,
     useSystemFonts: true,
     rangeChunkSize: PDF_RANGE_CHUNK_SIZE,
     enableScripting: false,
@@ -968,7 +968,7 @@ export async function extractPdfArticle(options = {}) {
   if (typeof fetchImpl !== 'function') throw new Error('PDF download is not available in this browser.');
 
   const bytes = await binaryResource(sourceUrl, { signal: signal || new AbortController().signal,
-    maxBytes: MAX_SOURCE_BYTES, fetchImpl, credentials: 'include',
+    maxBytes: MAX_SOURCE_BYTES, fetchImpl, credentials: 'include', pdfSource: true,
     validatePrefix: requirePdfData ? prefix => { if (!hasPdfMagic(prefix)) throw createPdfDetectionMiss(); } : null });
 
   if (streamChunks) {

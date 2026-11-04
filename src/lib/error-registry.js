@@ -102,6 +102,11 @@ export const ERROR_REGISTRY = Object.freeze({
     actionLabel: 'Try another PDF',
     recoveryHint: 'This PDF is damaged or unsupported.',
   },
+  pdf_access: {
+    code: 'pdf_access',
+    message: 'Open the original link in Chrome and sign in if prompted. Once the PDF is visible, try reading again. If it still redirects, download the PDF and open the local copy.',
+    actionLabel: 'Retry',
+  },
   pdf_network: {
     code: 'pdf_network',
     message: 'Could not download the PDF. Check the link and your connection.',

@@ -1,6 +1,7 @@
 import { getErrorRecord } from './error-registry.js';
 
 export function classifyPdfLoadError(error) {
+  if (error?.code === 'pdf_access') return getErrorRecord('pdf_access');
   const message = error?.message || String(error || '');
   if (/invalid pdf|corrupt|damaged|unsupported|missing pdf/i.test(message)) {
     return getErrorRecord('pdf_corrupt');

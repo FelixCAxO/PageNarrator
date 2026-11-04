@@ -22,7 +22,8 @@ export function getDocument(input) {
     // Initial version downloads bounded source bytes before parsing; range-first opening remains a measured performance gate.
     let data = params.data;
     if (!data) data = await binaryResource(params.url, { signal, fetchImpl, maxBytes: MAX_SOURCE_BYTES,
-      credentials: params.withCredentials ? 'include' : 'omit', progress: (loaded, total) => task.onProgress?.({ loaded, total }) });
+      credentials: params.withCredentials ? 'include' : 'omit', pdfSource: true,
+      progress: (loaded, total) => task.onProgress?.({ loaded, total }) });
     if (data instanceof ArrayBuffer) data = new Uint8Array(data);
     if (!(data instanceof Uint8Array) || data.length > MAX_SOURCE_BYTES) throw new PdfEngineError('PDF input must contain at most 128 MiB of bytes.', 'pdf_limit');
     const wasmUrl = params.wasmUrl || pdfExtensionAssetUrl(PDF_WASM_ASSET_PATH);
