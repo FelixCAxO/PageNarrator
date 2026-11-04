@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
-import { privateOcrFixturePath, readPrivateOcrFixture } from '../../scripts/lib/ocr-private-fixtures.mjs';
+import { privateOcrFixturePath, readPrivateOcrFixture } from '../../tooling/scripts/lib/ocr-private-fixtures.mjs';
 import { launchExtensionContext, getExtensionId, resolveExtensionDir } from './extension-fixture.js';
 import { ocrWordErrorRate, isOcrWordInRegion, validateOcrReferenceRegions } from '../helpers/ocr-word-error-rate.js';
 import { measureOcrReadingOrder } from '../helpers/ocr-reading-order.js';

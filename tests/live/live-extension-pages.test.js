@@ -16,8 +16,8 @@ import { CdpConnection } from './cdp-connection.js';
 import {
   createLiveExtensionPagesEvidence,
   writeLiveExtensionPagesEvidence,
-} from '../../scripts/run-live-tests.mjs';
-import { resolveCandidateCommitSha } from '../../scripts/run-verification-gate.mjs';
+} from '../../tooling/scripts/run-live-tests.mjs';
+import { resolveCandidateCommitSha } from '../../tooling/scripts/run-verification-gate.mjs';
 
 const RUN_LIVE_TESTS = process.env.PAGENARRATOR_LIVETEST === '1';
 const LIVE_TEST_TIMEOUT_MS = Number(process.env.PAGENARRATOR_LIVETEST_TIMEOUT_MS || 7_200_000);

@@ -5,8 +5,8 @@ import { appendFileSync } from 'node:fs';
 import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
-import { processMemorySampler } from '../../scripts/benchmarks/engine-resources.mjs';
-import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { processMemorySampler } from '../../tooling/scripts/benchmarks/engine-resources.mjs';
+import { acquireMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 import { longNarrationParagraphs as paragraphs } from './fixtures/long-narration.js';
 
 const median = values => [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];

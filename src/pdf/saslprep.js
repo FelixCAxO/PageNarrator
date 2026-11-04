@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 // Original RFC4013/3454 preparation and Unicode3.2 NFKC; no platform-version drift.
-import data from '../../vendor/pdf-unicode/saslprep.json' with { type: 'json' };
+import data from '../../engines/vendor/pdf-unicode/saslprep.json' with { type: 'json' };
 import { PdfEngineError } from './native-reader.js';
 
 const MAX_INPUT_UNITS = 65536, MAX_OUTPUT_SCALARS = 262144;

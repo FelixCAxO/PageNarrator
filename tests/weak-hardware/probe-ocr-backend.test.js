@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { finalizeAttempt } from '../live/tts-probe-results.js';
 import { forceProbePdfOcrCpu, summarizeProbePdfOcr, probePdfOcrAdapterFailures } from '../live/tts-probe-ocr.js';
-import { createProfileEvidence } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { createProfileEvidence } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 import { probeState } from '../live/tts-probe-settings.js';
 import { describeProbeGpuAdapterSelection } from '../live/tts-probe-browser.js';
 

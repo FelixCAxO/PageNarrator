@@ -3,9 +3,9 @@ import {
   assessMeasurementValidity,
   assessRunEnvironment,
   resolveExecutionBackend,
-} from '../../scripts/weak-hardware/evidence-contract.mjs';
+} from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 import { OUTCOMES } from './live-tts-hardware-profiles.js';
-import { computeJobCpuUsage } from '../../scripts/weak-hardware/windows-job.mjs';
+import { computeJobCpuUsage } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 import { KOKORO_DATA } from '../../src/tts/kokoro/model-data.js';
 
 // The page-evaluate timeout used to end the attempt at this bound. A blocked

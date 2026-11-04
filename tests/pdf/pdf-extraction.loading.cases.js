@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 import { getDocument } from '../../src/pdf/pdf-engine.js';
 import { configurePdfWorker, extractPdfArticle, extractPdfTextFromData, getPdfDocumentParams, getPdfReadableWordCount, getPdfWorkerUrl } from "../../src/lib/pdf-extraction.js";
 const originalAssets = {
-  wasmUrl: new URL('../../native/pdf.wasm', import.meta.url).href,
-  standardFontDataUrl: new URL('../../vendor/pdf-data/standard_fonts/', import.meta.url).href,
+  wasmUrl: new URL('../../engines/native/pdf.wasm', import.meta.url).href,
+  standardFontDataUrl: new URL('../../engines/vendor/pdf-data/standard_fonts/', import.meta.url).href,
 };
 
 describe('PDF extraction', () => {

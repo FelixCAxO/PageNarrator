@@ -3,7 +3,7 @@ import{mkdtemp,writeFile,rm}from'node:fs/promises';
 import{join,resolve,sep}from'node:path';
 import{tmpdir}from'node:os';
 import{createHash}from'node:crypto';
-import{readOcrDevelopmentGate}from'../../scripts/lib/ocr-development-gate.mjs';
+import{readOcrDevelopmentGate}from'../../tooling/scripts/lib/ocr-development-gate.mjs';
 
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex'),directories=[];
 afterEach(async()=>{

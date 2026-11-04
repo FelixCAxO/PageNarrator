@@ -2,7 +2,7 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
 import { buildPdfBytes } from '../helpers/pdf-test-generator.js';
-import { sha256 } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { sha256 } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import {
   COMPLEX_ARTICLE,
   SCANNED_PDF_SENTENCES,

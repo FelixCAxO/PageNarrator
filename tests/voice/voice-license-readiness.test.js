@@ -4,19 +4,19 @@ import omniVoiceCatalog from '../../src/tts/omnivoice/speaker-data.js';
 
 describe('current release voice license readiness', () => {
   it('retains the license and attribution for recorded OmniVoice references', () => {
-    const license = readFileSync(new URL('../../public/legal/CC-BY-4.0.txt', import.meta.url), 'utf8');
-    const notice = readFileSync(new URL('../../public/legal/LibriTTS-R-NOTICE.txt', import.meta.url), 'utf8');
-    const notices = readFileSync(new URL('../../public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
+    const license = readFileSync(new URL('../../extension/public/legal/CC-BY-4.0.txt', import.meta.url), 'utf8');
+    const notice = readFileSync(new URL('../../extension/public/legal/LibriTTS-R-NOTICE.txt', import.meta.url), 'utf8');
+    const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
     expect(license).toContain('Attribution 4.0 International');
     expect(notice).toContain('made available by Google LLC');
     expect(notice).toContain('Miipher');
     expect(notices).toContain('LibriTTS-R-NOTICE.txt');
-    const fleursNotice = readFileSync(new URL('../../public/legal/FLEURS-NOTICE.txt', import.meta.url), 'utf8');
+    const fleursNotice = readFileSync(new URL('../../extension/public/legal/FLEURS-NOTICE.txt', import.meta.url), 'utf8');
     expect(fleursNotice).toContain('Conneau');
     expect(fleursNotice).toContain('CC BY 4.0');
-    const shareAlike = readFileSync(new URL('../../public/legal/CC-BY-SA-4.0.txt', import.meta.url), 'utf8');
-    const jvnvNotice = readFileSync(new URL('../../public/legal/JVNV-NOTICE.txt', import.meta.url), 'utf8');
-    const spiceNotice = readFileSync(new URL('../../public/legal/SpiCE-NOTICE.txt', import.meta.url), 'utf8');
+    const shareAlike = readFileSync(new URL('../../extension/public/legal/CC-BY-SA-4.0.txt', import.meta.url), 'utf8');
+    const jvnvNotice = readFileSync(new URL('../../extension/public/legal/JVNV-NOTICE.txt', import.meta.url), 'utf8');
+    const spiceNotice = readFileSync(new URL('../../extension/public/legal/SpiCE-NOTICE.txt', import.meta.url), 'utf8');
     expect(shareAlike).toContain('Attribution-ShareAlike 4.0 International');
     expect(jvnvNotice).toContain('Detai Xin');
     expect(jvnvNotice).toContain('CC BY-SA 4.0');
@@ -66,11 +66,11 @@ describe('current release voice license readiness', () => {
     const worker = readFileSync(new URL('../../src/tts/omnivoice/worker.js', import.meta.url), 'utf8');
     const loader = readFileSync(new URL('../../src/tts/omnivoice/loader.js', import.meta.url), 'utf8');
     const bridge = readFileSync(new URL('../../src/tts/omnivoice/runtime.js', import.meta.url), 'utf8');
-    const notices = readFileSync(new URL('../../public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
+    const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
     expect(adapter).toContain("import { createOmniVoiceWorker } from './worker-client.js'");
     expect(worker).toContain("import { loadBundledRuntime } from './loader.js'");
     expect(loader).toContain("import('./runtime.js')");
-    expect(existsSync(new URL('../../vendor/omnivoice/runtime.js', import.meta.url))).toBe(false);
+    expect(existsSync(new URL('../../engines/vendor/omnivoice/runtime.js', import.meta.url))).toBe(false);
     expect(bridge).toContain('Licensed under GPL-3.0-or-later');
     expect(notices).toContain('Copyright 2026 Xiaomi Corp. (Han Zhu)');
     expect(notices).not.toContain('permission unresolved');
@@ -88,15 +88,15 @@ describe('current release voice license readiness', () => {
 
   it('ships the GPL project license and retains third-party notices', () => {
     const projectLicense = readFileSync(new URL('../../LICENSE', import.meta.url), 'utf8');
-    const packagedProjectLicense = readFileSync(new URL('../../public/legal/GPL-3.0.txt', import.meta.url), 'utf8');
-    const license = readFileSync(new URL('../../public/legal/Apache-2.0.txt', import.meta.url), 'utf8');
-    const notices = readFileSync(new URL('../../public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
+    const packagedProjectLicense = readFileSync(new URL('../../extension/public/legal/GPL-3.0.txt', import.meta.url), 'utf8');
+    const license = readFileSync(new URL('../../extension/public/legal/Apache-2.0.txt', import.meta.url), 'utf8');
+    const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
     const metadata = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
     expect(metadata.license).toBe('GPL-3.0-or-later');
     expect(projectLicense).toContain('GNU GENERAL PUBLIC LICENSE');
     expect(projectLicense).toContain('Version 3, 29 June 2007');
     expect(notices).toContain('Copyright (c) 2026 Felix Olsson');
-    expect(existsSync(new URL('../../public/legal/MIT.txt', import.meta.url))).toBe(false);
+    expect(existsSync(new URL('../../extension/public/legal/MIT.txt', import.meta.url))).toBe(false);
     expect(packagedProjectLicense).toBe(projectLicense);
     expect(license).toContain('Apache License');
     expect(license).toContain('Version 2.0, January 2004');

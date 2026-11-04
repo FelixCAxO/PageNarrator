@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 export const bytes = text => new Uint8Array(Buffer.from(text, 'latin1'));
-export const wasm = await readFile(new URL('../../native/pdf.wasm', import.meta.url));
-export const loadAsset = async name => new Uint8Array(await readFile(new URL(`../../vendor/pdf-data/${name}`, import.meta.url)));
+export const wasm = await readFile(new URL('../../engines/native/pdf.wasm', import.meta.url));
+export const loadAsset = async name => new Uint8Array(await readFile(new URL(`../../engines/vendor/pdf-data/${name}`, import.meta.url)));
 export const options = { wasm, loadAsset, useWorker: false };
 export function pdf(objects, trailer = '/Root 1 0 R') {
   let output = '%PDF-1.7\n'; const offsets = [0];

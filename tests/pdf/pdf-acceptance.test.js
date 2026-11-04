@@ -3,7 +3,7 @@ import { mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { loadPdfBenchmarkGold } from '../helpers/pdf-benchmark-gold.js';
-import { runPdfAcceptance, validateNaturalnessRatings } from '../../scripts/run-pdf-acceptance.mjs';
+import { runPdfAcceptance, validateNaturalnessRatings } from '../../tooling/scripts/run-pdf-acceptance.mjs';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
 import { PDF_NATURALNESS_SAMPLE } from '../fixtures/pdf-naturalness-sample.js';
 

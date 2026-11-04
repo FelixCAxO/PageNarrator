@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { auditPdfDocument } from '../../scripts/probe-pdf-document.mjs';
+import { auditPdfDocument } from '../../tooling/scripts/probe-pdf-document.mjs';
 
 describe('whole-document PDF preflight', () => {
   it('checks pages beyond a failure, reports recovery, and disposes every page and document', async () => {

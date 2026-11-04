@@ -53,7 +53,7 @@ export async function routeOmniVoiceModelFiles(context) {
   const fixtureRoot = path.resolve(process.env.PN_BROWSER_MODEL_DIR || '.cache/engine-models', browserModels.modelId);
   for (const file of browserModels.files) {
     const asset = path.join(fixtureRoot, file.path), hash = createHash('sha256');
-    if (!existsSync(asset) || statSync(asset).size !== file.bytes) throw new Error('OmniVoice fixtures are missing. Run node scripts/download-browser-models.mjs --speech.');
+    if (!existsSync(asset) || statSync(asset).size !== file.bytes) throw new Error('OmniVoice fixtures are missing. Run node tooling/scripts/download-browser-models.mjs --speech.');
     for await (const chunk of createReadStream(asset)) hash.update(chunk);
     if (hash.digest('hex') !== file.sha256) throw new Error(`OmniVoice fixture hash differs: ${file.path}`);
   }

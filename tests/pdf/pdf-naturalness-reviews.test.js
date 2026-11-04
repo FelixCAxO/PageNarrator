@@ -6,7 +6,7 @@ import path from 'node:path';
 import { JSDOM } from 'jsdom';
 import { PDF_NATURALNESS_SAMPLE } from '../fixtures/pdf-naturalness-sample.js';
 import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../fixtures/pdf-library-naturalness-sample.js';
-import { combinePdfNaturalnessReviews, createPdfNaturalnessReviewHtml, runPdfNaturalnessReviewCommand } from '../../scripts/pdf-naturalness-reviews.mjs';
+import { combinePdfNaturalnessReviews, createPdfNaturalnessReviewHtml, runPdfNaturalnessReviewCommand } from '../../tooling/scripts/pdf-naturalness-reviews.mjs';
 
 const hash = value => createHash('sha256').update(value).digest('hex');
 const packet = { backend: 'original', rubric: 'Test rubric', passages: PDF_NATURALNESS_SAMPLE.map(sample => {

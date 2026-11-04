@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { describe, expect, it } from 'vitest';
 
@@ -24,7 +24,7 @@ function collectManifestPaths(manifest) {
 
 describe('manifest integrity', () => {
   it('points source manifest entry files at real files before bundling', () => {
-    const manifest = readJson('manifest.json');
+    const manifest = readJson('extension/manifest.json');
     expect(manifest.incognito).toBe('not_allowed');
 
     expect(collectManifestPaths(manifest)).toEqual(expect.arrayContaining([
@@ -45,6 +45,18 @@ describe('manifest integrity', () => {
     const manifest = JSON.parse(readFileSync(manifestPath, 'utf8'));
     // Offscreen sender authorization uses this exact emitted path without runtime.getManifest.
     expect(manifest.background.service_worker).toBe('service-worker-loader.js');
+    const sourceLocales = join(ROOT, 'extension/public/_locales');
+    const builtLocales = join(distRoot, '_locales');
+    const locales = readdirSync(sourceLocales).sort();
+    expect(locales).toHaveLength(26);
+    expect(readdirSync(builtLocales).sort()).toEqual(locales);
+    for (const locale of locales) {
+      expect(readFileSync(join(builtLocales, locale, 'messages.json')))
+        .toEqual(readFileSync(join(sourceLocales, locale, 'messages.json')));
+    }
+    for (const icon of Object.values(manifest.icons)) {
+      expect(readFileSync(join(distRoot, icon))).toEqual(readFileSync(join(ROOT, 'extension/public', icon)));
+    }
     for (const filePath of collectManifestPaths(manifest)) {
       const absolutePath = join(distRoot, filePath);
       expect(existsSync(absolutePath), filePath).toBe(true);

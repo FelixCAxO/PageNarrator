@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { extractTranslationStrings, validateTranslatedCatalog, mergeTranslationCatalog } from '../../scripts/prepare-translations.mjs';
+import { extractTranslationStrings, validateTranslatedCatalog, mergeTranslationCatalog } from '../../tooling/scripts/prepare-translations.mjs';
 
 describe('translation preparation', () => {
   it('finds visible text, accessible labels and dynamic placeholders without executing source', () => {

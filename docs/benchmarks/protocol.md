@@ -8,7 +8,7 @@ Resolve each module in the tested commit. Historical line numbers are references
 
 | Stage | Owning source / signature | Tests |
 |---|---|---|
-| Packaging | `vite.config.js`, default manifest; `scripts/package-release.mjs`, `packageRelease` | `tests/build/` |
+| Packaging | `tooling/vite.config.js`, default manifest; `tooling/scripts/package-release.mjs`, `packageRelease` | `tests/build/` |
 | User action, selection, permissions | `src/popup.js`, `getActiveTab`, `warmContentScriptAccess`, `startRead` | `tests/e2e/extension-fixture.js` (reference only; its seeded/permission-modified modes are excluded) |
 | HTML extraction/order | `src/lib/core/article-extraction.js`, `chooseArticleExtraction`; selection `306-420`; normalization `513-529` | `tests/reading/` |
 | PDF extraction/order | `src/lib/pdf-extraction.js`; delegates layout to `src/lib/pdf-page-model.js` and segmentation to `src/lib/pdf-stream-chunking.js` | `tests/pdf/`, `tests/reader-engine/pdf-streaming-resume-recovery.test.js` |
@@ -46,6 +46,6 @@ Use a fresh profile with visible setup and settings. Do not seed storage, use te
 
 Keep `--mute-audio` enabled for automated tests, probes, and screenshots, including headed runs. Analyze saved PCM or render-thread captures without playing test speech through desktop speakers or headphones. These captures cannot qualify OS/device output latency. Device loopback needs an explicitly selected isolated output; the capture script rejects the default route.
 
-For waveform analysis, install `scripts/benchmarks/requirements-audio-analysis.txt` in an isolated Python environment. Run `scripts/benchmarks/analyze-handoff-output.py` with that interpreter. Pinned NumPy/SciPy versions are benchmark tools, not extension dependencies. Analysis never plays the audio.
+For waveform analysis, install `tooling/scripts/benchmarks/requirements-audio-analysis.txt` in an isolated Python environment. Run `tooling/scripts/benchmarks/analyze-handoff-output.py` with that interpreter. Pinned NumPy/SciPy versions are benchmark tools, not extension dependencies. Analysis never plays the audio.
 
 Record OS, browser and Node versions, CPU, RAM, GPU, driver, power mode, background load, and actual backend. Keep physical measurements separate from capability overrides and constrained-host runs. Missing target hardware remains a coverage limit.

@@ -5,7 +5,7 @@ import { JSDOM } from 'jsdom';
 import { describe, expect, it } from 'vitest';
 
 const read = path => readFileSync(path, 'utf8');
-const scope = JSON.parse(read('config/language-rollout.json'));
+const scope = JSON.parse(read('tooling/config/language-rollout.json'));
 const variants = scope.languages.flatMap(language => language.locales).map(locale => ({
   locale, tag: locale.replace('_', '-'), prefix: locale === 'en' ? '' : `/${locale.replace('_', '-').toLowerCase()}`,
 }));
@@ -21,7 +21,7 @@ const parser = new DOMParser();
 
 describe('complete localized website', () => {
   it('keeps all pages, the sitemap and language links current without a translation service', () => {
-    execFileSync(process.execPath, ['scripts/build-localized-website.mjs', '--check'], { timeout: 120_000 });
+    execFileSync(process.execPath, ['tooling/scripts/build-localized-website.mjs', '--check'], { timeout: 120_000 });
     expect(variants).toHaveLength(26);
     expect([...sitemap.matchAll(/<loc>/gu)]).toHaveLength(14 * 26);
   }, 120_000);
@@ -71,7 +71,7 @@ describe('complete localized website', () => {
 
   it.each(variants.filter(variant => variant.locale !== 'en'))('$locale preserves all links, code, brands and technical values in the authored copy', variant => {
     const catalog = JSON.parse(read(`website/locales/pages/${variant.locale}.json`));
-    const englishUi = JSON.parse(read('_locales/en/messages.json')), localizedUi = JSON.parse(read(`_locales/${variant.locale}/messages.json`));
+    const englishUi = JSON.parse(read('extension/public/_locales/en/messages.json')), localizedUi = JSON.parse(read(`extension/public/_locales/${variant.locale}/messages.json`));
     const controls = Object.fromEntries(Object.entries(englishUi).filter(([, value]) => ['Read page', 'Read selected', 'Prepare voice', 'Skip code snippets'].includes(value.message)).map(([key, value]) => [value.message, localizedUi[key].message]));
     for (const [source, translated] of Object.entries(catalog)) {
       expect(translated).not.toMatch(/987\s*6|\{\{inline\d+\}\}/u);

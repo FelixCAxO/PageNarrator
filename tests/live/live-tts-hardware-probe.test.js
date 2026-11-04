@@ -6,9 +6,9 @@ import { summarizeProbeBudgetFailures, summarizeTtsProbeRuns } from './live-tts-
 import { computeLaneVerdict, isPassingLaneVerdict } from './tts-probe-observations.js';
 import { getProbeCleanupFailures } from './live-tts-hardware-probe-assertions.js';
 
-import { RUN_STATUS } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { RUN_STATUS } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
-import { ensureMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { ensureMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 
 import { RUN_TTS_PROBE, RUN_ID, PROBE_PROFILE_SELECTION, SCHEDULING_MODE, probeState, PROBE_PROFILES, PROBE_DOCUMENT_TYPES, getRequiredProbeSections, ROOT_DIR, PROBE_TEST_TIMEOUT_MS } from './tts-probe-settings.js';
 import { prepareRunContext } from './tts-probe-environment.js';

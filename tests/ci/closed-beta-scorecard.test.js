@@ -93,7 +93,7 @@ function writeCsv(rows) {
 }
 
 function runScorecard(rows) {
-  const scriptPath = fileURLToPath(new URL('../../scripts/summarize-closed-beta.mjs', import.meta.url));
+  const scriptPath = fileURLToPath(new URL('../../tooling/scripts/summarize-closed-beta.mjs', import.meta.url));
   let output = '';
   try {
     output = execFileSync(process.execPath, [scriptPath, writeCsv(rows)], { encoding: 'utf8' });
@@ -110,7 +110,7 @@ describe('closed beta scorecard', () => {
       new URL('../../docs/closed-beta-results-template.csv', import.meta.url),
       'utf8',
     ));
-    expect(packageJson.default.scripts['beta:scorecard']).toBe('node scripts/summarize-closed-beta.mjs');
+    expect(packageJson.default.scripts['beta:scorecard']).toBe('node tooling/scripts/summarize-closed-beta.mjs');
     expect(template.trim().split(/\r?\n/)[0].split(',')).toEqual(HEADERS);
     expect(template).not.toMatch(/\b(url|selected_text|page_title|article_text|license_key|email|device_id|custom_voice_endpoint)\b/i);
   });

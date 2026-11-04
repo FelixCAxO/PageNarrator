@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
-import { debugOutputModel, debugOverrideModel, matmulFixture, spatialMeanFixture, halfIntermediateFixture } from '../../scripts/lib/onnx-debug-outputs.mjs';
+import { debugOutputModel, debugOverrideModel, matmulFixture, spatialMeanFixture, halfIntermediateFixture } from '../../tooling/scripts/lib/onnx-debug-outputs.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 it('adds a tensor checkpoint without changing original node or weight fields', () => {
   // Independent wire fields from the existing minimal Relu fixture.

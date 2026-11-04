@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import { readFileSync } from 'node:fs';
-import { comparePcm, waveBytes } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
+import { comparePcm, waveBytes } from '../../tooling/scripts/lib/kokoro-speech-acceptance.mjs';
 import { VOICES } from '../../src/tts/voices/voice-registry.js';
 
 await test('audio export is PCM and rejects corrupt samples before encoding', () => {

@@ -43,7 +43,7 @@ it('validates indexing attributes before choosing a view', () => {
 });
 
 it('keeps view outputs, writable ScatterND copies, replay updates and disposal independent', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const attributes = values => new Map(Object.entries(values).map(([key, value]) => [key, { type: 7, value }]));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: [4] },
     { name: 'indices', dataType: 7, dims: [1, 1] }, { name: 'updates', dataType: 1, dims: [1] }],

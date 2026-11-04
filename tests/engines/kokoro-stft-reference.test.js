@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
+import oracle from '../../tooling/scripts/lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 it('rounds the float32 window product before spectral accumulation', async () => {
   const signal = Float32Array.of(1 + 2 ** -23, -1), window = Float32Array.of(1 - 2 ** -24, 1);
@@ -10,7 +10,7 @@ it('rounds the float32 window product before spectral accumulation', async () =>
     { name: 'step', type: 7, shape: [] }, { name: 'window', type: 1, shape: [2] },
     { name: 'length', type: 7, shape: [] }], [{ name: 'y', type: 1, shape: [1, 1, 2, 2] }], { onesided: 1 });
   const reference = await oracle.InferenceSession.create(model, { executionProviders: ['cpu'], graphOptimizationLevel: 'disabled' });
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   try {
     const expected = (await reference.run({ x: new oracle.Tensor('float32', signal, [1, 2]),
       window: new oracle.Tensor('float32', window, [2]), step: new oracle.Tensor('int64', BigInt64Array.of(1n), []),

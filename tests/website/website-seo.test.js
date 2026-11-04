@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { join } from 'node:path';
 import { JSDOM } from 'jsdom';
 import { describe, expect, it } from 'vitest';
-import { websiteHtmlFiles } from '../../scripts/smoke-production.mjs';
+import { websiteHtmlFiles } from '../../tooling/scripts/smoke-production.mjs';
 
 const publicDir = join(import.meta.dirname, '../../website/public');
 const socialVersion = createHash('sha256').update(readFileSync(join(publicDir, 'og-image.jpg'))).digest('hex').slice(0, 12);

@@ -2,8 +2,8 @@ import { mkdtemp, mkdir, readFile, writeFile, rm, realpath } from 'node:fs/promi
 import { tmpdir } from 'node:os';
 import { join, sep } from 'node:path';
 import { expect, it } from 'vitest';
-import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, qualityTranscriptWords, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip, verifyQualityBuild } from '../../scripts/lib/kokoro-quality-controls.mjs';
-import { hashDirectory } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { QUALITY_CORPUS_SHA256, hashQualityBytes, assessQualityTranscript, qualityTranscriptWords, selectQualityCases, qualitySourceAssociation, saveQualityClip, reusableQualityClip, verifyQualityBuild } from '../../tooling/scripts/lib/kokoro-quality-controls.mjs';
+import { hashDirectory } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 
 it('pins the existing validation/test split and selects bounded voice/category groups without merging partitions', async () => {
   const bytes = await readFile('tests/voice/fixtures/quality-corpus.json'); expect(hashQualityBytes(bytes)).toBe(QUALITY_CORPUS_SHA256);

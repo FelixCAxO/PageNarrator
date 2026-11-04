@@ -132,7 +132,7 @@ async function buildIsolatedExtension() {
 
 function runViteBuild(outDir) {
   const viteBin = path.join(rootDir, 'node_modules', 'vite', 'bin', 'vite.js');
-  return execFileAsync(process.execPath, [viteBin, 'build'], {
+  return execFileAsync(process.execPath, [viteBin, 'build', '--config', 'tooling/vite.config.js'], {
     cwd: rootDir,
     env: {
       ...process.env,

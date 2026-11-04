@@ -12,11 +12,11 @@ import { createRunFaults } from './tts-probe-run-faults.js';
 
 import { MODEL_CACHE_EXPRESSION, READER_ENGINE_OBSERVATION_EXPRESSION, classifyProbeOutcome, createBusyPageWait, evaluateLaneExpectations, evaluateLifecycleResult, evaluateSoakResult, resolveExecutionBackend, statusForError, summarizeAudioTap, summarizePageBlocking, summarizeModelCache, summarizeWorkerThreads } from './tts-probe-observations.js';
 
-import { RUN_STATUS } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { RUN_STATUS } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
-import { readCpuTicks } from '../../scripts/weak-hardware/host-load.mjs';
+import { readCpuTicks } from '../../tooling/scripts/weak-hardware/host-load.mjs';
 
-import { startLoadGenerator } from '../../scripts/weak-hardware/load-generator.mjs';
+import { startLoadGenerator } from '../../tooling/scripts/weak-hardware/load-generator.mjs';
 
 import { resetColdStartCaches } from './tts-probe-browser-session.js';
 import { evaluateExpression, BUSY_PAGE_WAITS, closeTargetBestEffort, PAGE_EVALUATE_TIMEOUT_MS } from './tts-probe-cdp.js';

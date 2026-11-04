@@ -1,5 +1,5 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-import mappings from '../../vendor/pdf-symbols/mappings.json' with { type: 'json' };
+import mappings from '../../engines/vendor/pdf-symbols/mappings.json' with { type: 'json' };
 const styles = Object.freeze({ 'FontAwesome5Brands-Regular': 'brands', 'FontAwesome5Free-Regular': 'regular', 'FontAwesome5Free-Solid': 'solid' });
 const encoded = new Map();
 for (const [name, entry] of Object.entries(mappings.fontAwesome)) for (const style of entry.styles) encoded.set(`${style}:${entry.unicode}`, name);

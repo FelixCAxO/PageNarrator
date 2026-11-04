@@ -24,7 +24,7 @@ function getAllMarkdownFiles(dir) {
 function getDocsAndReadmeFiles() {
   const docsDir = join(ROOT_DIR, 'docs');
   const readme = join(ROOT_DIR, 'README.md');
-  const files = [readme, ...['CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md'].map(name => join(ROOT_DIR, name))];
+  const files = [readme];
   if (existsSync(docsDir)) {
     files.push(...getAllMarkdownFiles(docsDir));
   }
@@ -34,7 +34,7 @@ function getDocsAndReadmeFiles() {
 describe('documentation integrity & synchronization', () => {
   const docFiles = getDocsAndReadmeFiles();
   const packageJson = JSON.parse(readFileSync(join(ROOT_DIR, 'package.json'), 'utf8'));
-  const manifestJson = JSON.parse(readFileSync(join(ROOT_DIR, 'manifest.json'), 'utf8'));
+  const manifestJson = JSON.parse(readFileSync(join(ROOT_DIR, 'extension/manifest.json'), 'utf8'));
   const validScripts = new Set(Object.keys(packageJson.scripts));
   const standardNpmScripts = new Set(['test', 'build', 'lint', 'typecheck', 'dev', 'start', 'ci']);
 

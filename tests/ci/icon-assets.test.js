@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import manifest from '../../manifest.json' with { type: 'json' };
+import manifest from '../../extension/manifest.json' with { type: 'json' };
 
 const root = process.cwd();
 
@@ -37,13 +37,13 @@ describe('icon assets', () => {
     expect(manifest.action.default_icon).toEqual(expectedIcons);
 
     for (const [size, path] of Object.entries(expectedIcons)) {
-      expectPngWithAlpha(path, { width: Number(size), height: Number(size) });
+      expectPngWithAlpha(`extension/public/${path}`, { width: Number(size), height: Number(size) });
     }
   });
 
   it('keeps transparent source artwork available for stores and docs', () => {
-    const transparentIcon = 'icons/PageNarrator_Icon_Transparent.png';
-    const transparentIconWithText = 'icons/PageNarrator_Icon_With_Text_Transparent.png';
+    const transparentIcon = 'extension/artwork/PageNarrator_Icon_Transparent.png';
+    const transparentIconWithText = 'extension/artwork/PageNarrator_Icon_With_Text_Transparent.png';
 
     expect(existsSync(join(root, transparentIcon))).toBe(true);
     expect(existsSync(join(root, transparentIconWithText))).toBe(true);

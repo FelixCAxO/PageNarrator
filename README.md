@@ -31,7 +31,19 @@ Kokoro supports WebGPU and a slower CPU fallback. OmniVoice requires WebGPU with
 
 ## Privacy
 
-Missing voice files download from Hugging Face; hosts receive your IP address and requested file paths, not narration text. Offline use needs the same cached voice and processing mode; clearing storage may require another download. Online PDFs are fetched from their host. Resume data stays local. PageNarrator does not request always-on website access. [Privacy policy](https://pagenarrator.com/privacy) · [Security](SECURITY.md).
+Missing voice files download from Hugging Face; hosts receive your IP address and requested file paths, not narration text. Offline use needs the same cached voice and processing mode; clearing storage may require another download. Online PDFs are fetched from their host. Resume data stays local. PageNarrator does not request always-on website access. [Privacy policy](https://pagenarrator.com/privacy) · [Security](docs/SECURITY.md).
+
+## Repository map
+
+| Folder | What lives here |
+| --- | --- |
+| [src/](src/) | Extension UI, reading, speech, and PDF code |
+| [extension/](extension/) | Chrome manifest, runtime assets, translations, and icon artwork |
+| [engines/](engines/) | Native sources, reference binaries, and vendored data |
+| [tooling/](tooling/) | Build, release, benchmark, and maintenance tools |
+| [tests/](tests/) | Test suites and fixtures |
+| [website/](website/) | Website templates, translations, generated pages, and Cloudflare config |
+| [docs/](docs/) | Architecture, guides, [changelog](docs/CHANGELOG.md), and release documentation |
 
 ## Build and test
 
@@ -44,8 +56,18 @@ npm ci
 npm run build
 ```
 
-Load `dist/` as an unpacked extension. See [contributing and tests](CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3).
+Load `dist/` as an unpacked extension.
 
-Original code: [GPL-3.0-or-later](LICENSE); combined distribution: GPLv3. Keep [third-party notices](public/legal/THIRD_PARTY_NOTICES.txt) and distribute the matching source ZIP with the extension. [License details](docs/third-party-voice-licenses.md).
+| Command | Purpose |
+| --- | --- |
+| `npm test` | Run the unit suite |
+| `npm run verify:fast` | Run the local verification gate |
+| `npm run preview` | Build and launch the extension in a local browser |
+| `npm run build:website` | Regenerate localized pages and stage the site |
+| `npm run package` | Build the extension and matching source ZIPs |
+
+See [contributing and tests](docs/CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3).
+
+Original code: [GPL-3.0-or-later](LICENSE); combined distribution: GPLv3. Keep [third-party notices](extension/public/legal/THIRD_PARTY_NOTICES.txt) and distribute the matching source ZIP with the extension. [License details](docs/third-party-voice-licenses.md).
 
 [Support mailbox setup](docs/support-mailbox.md) to reply as `support@pagenarrator.com` (`website/workers/support-mailbox.js`).

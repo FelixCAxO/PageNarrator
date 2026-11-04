@@ -9,14 +9,14 @@ import {
   sampleHostLoad,
   sampleNvidiaGpus,
   waitForQuietHost,
-} from '../../scripts/weak-hardware/host-load.mjs';
+} from '../../tooling/scripts/weak-hardware/host-load.mjs';
 import {
   createRunId,
   describeLaunch,
   hashDirectory,
   resolveRevision,
   resolveRunOutputDir,
-} from '../../scripts/weak-hardware/run-provenance.mjs';
+} from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 
 const roots = [];
 afterEach(() => {

@@ -5,11 +5,11 @@ import path from 'node:path';
 import { statusForError } from './tts-probe-observations.js';
 import { needsFreshDocumentTarget } from './tts-probe-workloads.js';
 
-import { RUN_STATUS } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { RUN_STATUS } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
-import { sampleHostLoad, sampleTopProcesses } from '../../scripts/weak-hardware/host-load.mjs';
+import { sampleHostLoad, sampleTopProcesses } from '../../tooling/scripts/weak-hardware/host-load.mjs';
 
-import { hashDirectory } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { hashDirectory } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { prepareProbeExtension, reopenProbePdfDocument } from './tts-probe-document-targets.js';
 import { startProbeBrowserSession, stopProbeBrowserSession } from './tts-probe-browser-session.js';
 import { createAttemptRecord, writeProbeOutput } from './tts-probe-results.js';

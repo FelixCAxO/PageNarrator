@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
-import { REQUIRED_RELEASE_FILES, RELEASE_PACKAGE_CLEAN_ASSERTIONS, assertReleasePackage, findScriptInterpreter } from '../../scripts/assert-release-package.mjs';
-import { ORIGINAL_RUNTIME_FILES } from '../../scripts/lib/release-engine-files.mjs';
+import { REQUIRED_RELEASE_FILES, RELEASE_PACKAGE_CLEAN_ASSERTIONS, assertReleasePackage, findScriptInterpreter } from '../../tooling/scripts/assert-release-package.mjs';
+import { ORIGINAL_RUNTIME_FILES } from '../../tooling/scripts/lib/release-engine-files.mjs';
 
 async function withPackage(run) {
   const root = mkdtempSync(join(tmpdir(), 'pagenarrator-package-policy-'));

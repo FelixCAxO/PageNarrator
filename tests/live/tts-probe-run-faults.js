@@ -1,7 +1,7 @@
 // Per-run model acquisition faults and GPU contention for weak-hardware lanes.
 // Each fault is applied through CDP to the context that downloads the model
 // (the toolbar-player page) and verified, so an unapplied fault cannot pass.
-import { startGpuLoadGenerator } from '../../scripts/weak-hardware/gpu-load-generator.mjs';
+import { startGpuLoadGenerator } from '../../tooling/scripts/weak-hardware/gpu-load-generator.mjs';
 
 export const RUN_FAULT_KINDS = Object.freeze({
   DOWNLOAD_INTERRUPTED: 'model-download-interrupted',

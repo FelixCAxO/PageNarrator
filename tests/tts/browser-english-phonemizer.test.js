@@ -3,10 +3,10 @@ import { describe, expect, it } from 'vitest';
 import { createEnglishPhonemizer } from '../../src/tts/kokoro/english-phonemizer.js';
 import { normalizeEnglishText, englishInteger } from '../../src/tts/kokoro/normalizer.js';
 import { KOKORO_PHONEMES } from '../../src/tts/kokoro/phoneme-vocabulary.js';
-import { arpaToPhones, compilePronunciations } from '../../scripts/build-pronunciation-data.mjs';
+import { arpaToPhones, compilePronunciations } from '../../tooling/scripts/build-pronunciation-data.mjs';
 
-const bytes = readFileSync('public/assets/phonemizer/english.wasm');
-const dictionary = readFileSync('public/assets/phonemizer/pronunciations.bin');
+const bytes = readFileSync('extension/public/assets/phonemizer/english.wasm');
+const dictionary = readFileSync('extension/public/assets/phonemizer/pronunciations.bin');
 const create = (data = dictionary) => createEnglishPhonemizer({ wasmBinary: bytes, pronunciationData: data });
 
 describe('original English normalizer', () => {

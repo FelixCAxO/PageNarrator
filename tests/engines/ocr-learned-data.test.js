@@ -4,7 +4,7 @@ import { createHash } from 'node:crypto';
 import { TesseractLineModel } from '../../src/engines/tesseract-line-model.js';
 
 it('loads the packaged independent learned data and includes its original notice and full license', async () => {
-  const directory = new URL('../../public/assets/ocr/', import.meta.url);
+  const directory = new URL('../../extension/public/assets/ocr/', import.meta.url);
   const manifest = JSON.parse(await readFile(new URL('english-lstm.json', directory), 'utf8'));
   expect(manifest.candidateOnly).toBe(false);
   expect(manifest.productionSelection).toBe('independent-line-verification');
@@ -20,7 +20,7 @@ it('loads the packaged independent learned data and includes its original notice
   expect(notices.some(value => value.includes('All data in the repository are licensed under the Apache'))).toBe(true);
   expect(notices.some(value => value.includes('Version 2.0, January 2004') && value.includes('END OF TERMS AND CONDITIONS'))).toBe(true);
   const weights = await readFile(new URL(manifest.weights.path, directory));
-  const wasm = await readFile(new URL('../../public/native/ocr-lstm-engine.wasm', import.meta.url));
+  const wasm = await readFile(new URL('../../extension/public/native/ocr-lstm-engine.wasm', import.meta.url));
   const model = await TesseractLineModel.create(manifest, weights, wasm);
   try {
     const output = await model.runPixels(new Int8Array(36 * 12).fill(127), 12);

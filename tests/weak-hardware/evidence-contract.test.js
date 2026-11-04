@@ -8,7 +8,7 @@ import {
   resolveCpuAffinity,
   resolveExecutionBackend,
   validateProfileEvidence,
-} from '../../scripts/weak-hardware/evidence-contract.mjs';
+} from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
 const HOST_TOPOLOGY = [
   ...[0, 1, 10, 11, 12, 13, 22, 23].map((logicalProcessor) => ({ logicalProcessor, efficiencyClass: 1 })),

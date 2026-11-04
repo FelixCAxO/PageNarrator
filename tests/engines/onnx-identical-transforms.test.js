@@ -70,7 +70,7 @@ it('requires ordinary single-input/output casts and attribute-free Identity alia
 });
 
 it('keeps named outputs, repeated input updates, plan replay and cleanup correct when casts share one tensor', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const cast = output => ({ opType: 'Cast', inputs: ['x'], outputs: [output], attributes: new Map([['to', { type: 2, value: 1 }]]) });
   const graph = { initializers: [], inputs: [{ name: 'x', dims: [4], dataType: 6 }],
     outputs: ['a', 'b', 'sum'].map(name => ({ name, dims: [4], dataType: 1 })), nodes: [cast('a'), cast('b'),

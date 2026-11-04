@@ -9,7 +9,7 @@ it.each([
   ['engine', NativeCompute], ['ocr-engine', WasmOcrCompute],
   ['kokoro-engine', WasmKokoroCompute], ['ocr-lstm-engine', WasmTesseractCompute],
 ])('%s preserves minimum float32 Exp values, including scalar tails', async (name, Compute) => {
-  const engine = await Compute.create(readFileSync(`public/native/${name}.wasm`));
+  const engine = await Compute.create(readFileSync(`extension/public/native/${name}.wasm`));
   try {
     // Cover both sides of the half-minimum threshold and every SIMD position.
     const input = Float32Array.of(-104, -103.9, -103.7, -103.5,

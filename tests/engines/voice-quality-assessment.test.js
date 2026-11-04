@@ -1,9 +1,9 @@
 import { createHash } from 'node:crypto';
 import { expect, it } from 'vitest';
-import { assessVoiceListening, VOICE_QUALITY_PROTOCOL as protocol, VOICE_REVIEW_CORPUS as corpus, voiceCaseId } from '../../scripts/lib/voice-quality-assessment.mjs';
-import { QUALITY_CORPUS_SHA256 } from '../../scripts/lib/kokoro-quality-controls.mjs';
-import { createVoiceReviewHtml } from '../../scripts/voice-listening-reviews.mjs';
-import { verifyVoiceQuality } from '../../scripts/verify-voice-quality.mjs';
+import { assessVoiceListening, VOICE_QUALITY_PROTOCOL as protocol, VOICE_REVIEW_CORPUS as corpus, voiceCaseId } from '../../tooling/scripts/lib/voice-quality-assessment.mjs';
+import { QUALITY_CORPUS_SHA256 } from '../../tooling/scripts/lib/kokoro-quality-controls.mjs';
+import { createVoiceReviewHtml } from '../../tooling/scripts/voice-listening-reviews.mjs';
+import { verifyVoiceQuality } from '../../tooling/scripts/verify-voice-quality.mjs';
 
 // Synthetic unit-test panels only. These are never written as real review evidence.
 function study(listeners = 20) {

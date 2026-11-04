@@ -12,7 +12,7 @@ import { parseIccProfile, adaptXyzToD50, xyzD50ToRgb } from '../../src/pdf/icc-c
 import { simplePdf, stream, options, loadAsset } from './fixtures.js';
 import { createPdfPageModel } from '../../src/lib/pdf-page-model.js';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
-import { matchesOrderedCheckpoints } from '../../scripts/pdf-acceptance-metrics.mjs';
+import { matchesOrderedCheckpoints } from '../../tooling/scripts/pdf-acceptance-metrics.mjs';
 import { convertType1Font } from '../../src/pdf/type1-container.js';
 
 afterEach(() => vi.unstubAllGlobals());

@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 import sharp from 'sharp';
-import { hasPrivateOcrFixtures, readPrivateOcrFixture } from '../../scripts/lib/ocr-private-fixtures.mjs';
+import { hasPrivateOcrFixtures, readPrivateOcrFixture } from '../../tooling/scripts/lib/ocr-private-fixtures.mjs';
 import { writeFile } from 'node:fs/promises';
 import { ocrWordErrorRate } from '../helpers/ocr-word-error-rate.js';
 import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';

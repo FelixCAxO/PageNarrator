@@ -5,8 +5,8 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { expect, it } from 'vitest';
-import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
-import { kokoroProbeModelMode, prepareKokoroProbeModel, requireNewKokoroProbeReport } from '../../scripts/lib/kokoro-probe-model.mjs';
+import oracle from '../../tooling/scripts/lib/node-onnx-oracle.mjs';
+import { kokoroProbeModelMode, prepareKokoroProbeModel, requireNewKokoroProbeReport } from '../../tooling/scripts/lib/kokoro-probe-model.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 
 it('defaults both comparison paths to production and keeps explicit unmodified reproduction', async () => {
@@ -48,21 +48,21 @@ for (const [dtype, file, originalSha256, modifiedSha256] of graphs) {
 }
 
 it('wires the same prepared graph into each full-model candidate and independent reference', () => {
-  const cpu = readFileSync('scripts/probe-kokoro-model-cpu.mjs', 'utf8');
+  const cpu = readFileSync('tooling/scripts/probe-kokoro-model-cpu.mjs', 'utf8');
   expect(cpu).toContain('WebGpuOnnxSession.create(probeModel, { engine })');
   expect(cpu).toContain('oracle.InferenceSession.create(probeModel,');
   expect(cpu).toContain('model${modelMode === \'production\' ? \'-production\' : \'\'}.json');
-  const gpu = readFileSync('scripts/probe-kokoro-model-gpu.mjs', 'utf8');
+  const gpu = readFileSync('tooling/scripts/probe-kokoro-model-gpu.mjs', 'utf8');
   expect(gpu).toContain('oracle.InferenceSession.create(probeModel,');
   expect(gpu).toContain('response.end(probeModel)');
-  const semantic = readFileSync('scripts/probe-kokoro-semantics.mjs', 'utf8');
+  const semantic = readFileSync('tooling/scripts/probe-kokoro-semantics.mjs', 'utf8');
   expect(semantic).toContain('createKokoroBrowserSession(probeModel, root)');
   expect(semantic).toContain('WebGpuOnnxSession.create(probeModel, { engine })');
   expect(semantic).toContain('oracle.InferenceSession.create(probeModel,');
   expect(semantic).not.toContain('Candidate applies a separately recorded');
 });
 
-it.each(['scripts/probe-kokoro-model-cpu.mjs', 'scripts/probe-kokoro-model-gpu.mjs', 'scripts/probe-kokoro-semantics.mjs'])('rejects conflicting model modes before inference in %s', script => {
+it.each(['tooling/scripts/probe-kokoro-model-cpu.mjs', 'tooling/scripts/probe-kokoro-model-gpu.mjs', 'tooling/scripts/probe-kokoro-semantics.mjs'])('rejects conflicting model modes before inference in %s', script => {
   const result = spawnSync(process.execPath, [script, '--unmodified-model', '--phase-correction'], { encoding: 'utf8', windowsHide: true });
   expect(result.status).not.toBe(0);
   expect(result.stderr).toContain('not both');

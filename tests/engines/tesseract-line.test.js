@@ -6,7 +6,7 @@ import { TesseractLineModel } from '../../src/engines/tesseract-line-model.js';
 import { normalizeTesseractLine, decodeTesseractLine, tesseractLineSession } from '../../src/engines/tesseract-line-recognizer.js';
 import { recognizePdfOcrNeuralLines } from '../../src/lib/pdf-ocr-neural-batch.js';
 
-const wasm = readFileSync('public/native/ocr-lstm-engine.wasm');
+const wasm = readFileSync('extension/public/native/ocr-lstm-engine.wasm');
 let engine, model;
 afterEach(async () => { await model?.dispose(); await engine?.dispose(); model = engine = null; });
 

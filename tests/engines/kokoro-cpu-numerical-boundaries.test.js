@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
+import oracle from '../../tooling/scripts/lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 const options = { executionProviders: ['cpu'], intraOpNumThreads: 1, interOpNumThreads: 1, graphOptimizationLevel: 'disabled' };
 
@@ -12,7 +12,7 @@ it('preserves the distinct quantization results on either side of the captured a
   const model = kokoroOperatorFixture('DynamicQuantizeLinear', [{ name: 'x', type: 1, shape: [4] }],
     [{ name: 'q', type: 2, shape: [4] }, { name: 'scale', type: 1, shape: [] }, { name: 'zero', type: 2, shape: [] }]);
   const reference = await oracle.InferenceSession.create(model, options);
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   try {
     const expected = await reference.run({ x: new oracle.Tensor('float32', input, [4]) });
     const batch = engine.batch(), result = engine.kokoro.dynamicQuantizeLinear(batch, engine.upload(input, [4]));
@@ -30,7 +30,7 @@ it.each([112, 1024])('matches the independent float32 harmonic phase sum for %i 
   const model = kokoroOperatorFixture('CumSum', [{ name: 'x', type: 1, shape }, { name: 'axis', type: 7, shape: [] }],
     [{ name: 'sum', type: 1, shape }]);
   const reference = await oracle.InferenceSession.create(model, options);
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   try {
     const expected = (await reference.run({ x: new oracle.Tensor('float32', input, shape),
       axis: new oracle.Tensor('int64', BigInt64Array.of(1n), []) })).sum.data;

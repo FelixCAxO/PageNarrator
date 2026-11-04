@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { createOcrWorkerResultCapture, ocrPageResultLines } from '../../scripts/lib/ocr-worker-result-capture.mjs';
+import { createOcrWorkerResultCapture, ocrPageResultLines } from '../../tooling/scripts/lib/ocr-worker-result-capture.mjs';
 
 it('keeps bare independent-line results out of primary page observations', () => {
   const primary = [], verification = [], capture = createOcrWorkerResultCapture(primary, verification);

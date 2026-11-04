@@ -11,8 +11,8 @@ import {
   isJobSupervisorSupported,
   summarizeJobEnforcement,
   vendorNameForId,
-} from '../../scripts/weak-hardware/windows-job.mjs';
-import { createProfileEvidence } from '../../scripts/weak-hardware/evidence-contract.mjs';
+} from '../../tooling/scripts/weak-hardware/windows-job.mjs';
+import { createProfileEvidence } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 import { CdpWebSocketConnection } from '../live/cdp-connection.js';
 import { createProbeBrowserArgs, createProbeProfileArgumentPattern, selectProbeSupervisor, verifyBrowserTreeGone } from '../live/tts-probe-browser.js';
 import { finalizeAttempt } from '../live/tts-probe-results.js';

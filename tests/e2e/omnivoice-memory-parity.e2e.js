@@ -6,8 +6,8 @@ import { launchExtensionContext, seedRealTtsFlowFlags } from './extension-fixtur
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
 import { OMNIVOICE_MODEL_BASE_URL } from '../../src/tts/omnivoice/loader.js';
-import { waveBytes } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
-import { ensureMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { waveBytes } from '../../tooling/scripts/lib/kokoro-speech-acceptance.mjs';
+import { ensureMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const root = path.resolve(process.env.PN_PARITY_OUTPUT || 'artifacts/omnivoice-memory/parity');

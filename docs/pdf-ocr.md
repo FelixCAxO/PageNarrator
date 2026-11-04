@@ -25,6 +25,6 @@ Automatic reading can skip compact symbolic numeric matrices. Nearby prose remai
 
 ## Models and checks
 
-`public/assets/ocr/models.json` records sources, licenses, and SHA-256 hashes. `scripts/build-ocr-recognizer.mjs` rebuilds the graph from its pinned source. Private test documents and browser profiles stay out of packages.
+`extension/public/assets/ocr/models.json` records sources, licenses, and SHA-256 hashes. `tooling/scripts/build-ocr-recognizer.mjs` rebuilds the graph from its pinned source. Private test documents and browser profiles stay out of packages.
 
 Run `npm run test:pdf` and the packaged `tests/e2e/pdf-ocr.e2e.js` journeys. `tests/pdf/native-ocr.test.js` checks native preprocessing. Browser tests cover recognition, order, word geometry, selection, zoom, and rerendering. They do not qualify unseen documents, pronunciation, or physical hardware.

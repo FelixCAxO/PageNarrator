@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { MODEL_FILE_URL_PATTERN, RUN_FAULT_KINDS, createRunFaults } from '../live/tts-probe-run-faults.js';
-import { normalizeGpuLoadSpec } from '../../scripts/weak-hardware/gpu-load-generator.mjs';
+import { normalizeGpuLoadSpec } from '../../tooling/scripts/weak-hardware/gpu-load-generator.mjs';
 import { getTtsProbeProfiles } from '../live/live-tts-hardware-profiles.js';
 
 // Minimal CDP double: answers evaluations from a queue and records commands.

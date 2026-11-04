@@ -3,11 +3,11 @@ import { expect, it } from 'vitest';
 import { Tensor, InferenceSession } from '../../src/engines/browser-inference.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 it.each([[9, 'bool', 'uint8'], [2, 'uint8', 'bool']])(
   'preserves the logical %s input contract despite identical byte storage', async (onnxType, expected, wrong) => {
-    const engine = await WasmKokoroCompute.create(await readFile(new URL('../../public/native/kokoro-engine.wasm', import.meta.url)));
+    const engine = await WasmKokoroCompute.create(await readFile(new URL('../../extension/public/native/kokoro-engine.wasm', import.meta.url)));
     let session, output;
     const actual = new Tensor(expected, Uint8Array.of(0, 1), [2]), mismatch = new Tensor(wrong, Uint8Array.of(0, 1), [2]);
     try {

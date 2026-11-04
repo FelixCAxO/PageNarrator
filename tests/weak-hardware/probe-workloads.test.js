@@ -21,7 +21,7 @@ import {
 import { EXTENDED_TTS_PROBE_DOCUMENT_TYPES, READ_TO_END_TTS_PROBE_DOCUMENT_TYPES, getTtsProbeDocumentTypes } from '../live/live-tts-hardware-probe-documents.js';
 import { getDocument } from '../../src/pdf/pdf-engine.js';
 import { options as originalPdfOptions } from '../pdf-engine/fixtures.js';
-import { sha256 } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { sha256 } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { createPdfPageModel } from '../../src/lib/pdf-page-model.js';
 import { chunkText } from '../../src/lib/speech-chunks.js';
 

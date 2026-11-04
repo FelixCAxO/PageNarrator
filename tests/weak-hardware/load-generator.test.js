@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { normalizeLoadSpec, startLoadGenerator } from '../../scripts/weak-hardware/load-generator.mjs';
+import { normalizeLoadSpec, startLoadGenerator } from '../../tooling/scripts/weak-hardware/load-generator.mjs';
 
 describe('controlled contention load generator', () => {
   it('validates the declared load', () => {

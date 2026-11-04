@@ -10,11 +10,11 @@ import { MODEL_CACHE_EXPRESSION, READER_ENGINE_OBSERVATION_EXPRESSION, classifyP
 import { PROBE_WORKLOADS, TRANSCRIPT_EXPRESSION, scoreWorkloadContent, selectScoredContent } from './tts-probe-workloads.js';
 import { getResumePositionStorageKey } from '../../src/lib/storage-keys.js';
 import { MODEL_ID, MODEL_REVISION } from '../../src/lib/voice-model.js';
-import { RUN_STATUS } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { RUN_STATUS } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
-import { readCpuTicks } from '../../scripts/weak-hardware/host-load.mjs';
+import { readCpuTicks } from '../../tooling/scripts/weak-hardware/host-load.mjs';
 
-import { sha256 } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { sha256 } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { seedProbeDocumentTarget, queueProbeReadAction, waitForProbeReadCleanup, clickProbePopupControl } from './tts-probe-controls.js';
 import { evaluateExpression, PAGE_EVALUATE_TIMEOUT_MS } from './tts-probe-cdp.js';
 import { waitFor, getProbeSpeed, PROBE_TIMEOUT_MS, ProbeCrashError } from './tts-probe-settings.js';

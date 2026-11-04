@@ -7,7 +7,7 @@ import { referenceCumulativeSum, referenceKokoroUnary, referenceScatterNd } from
 import { cpuOperator, cpuStft } from '../helpers/cpu-operator-oracle.js';
 
 let engine;
-const engineBinary = () => readFileSync(process.env.PN_KOKORO_TEST_WASM || 'public/native/kokoro-engine.wasm');
+const engineBinary = () => readFileSync(process.env.PN_KOKORO_TEST_WASM || 'extension/public/native/kokoro-engine.wasm');
 beforeEach(async () => { engine = await WasmKokoroCompute.create(engineBinary()); });
 afterEach(async () => { await engine?.dispose(); });
 const size = shape => shape.reduce((a, b) => a * b, 1);

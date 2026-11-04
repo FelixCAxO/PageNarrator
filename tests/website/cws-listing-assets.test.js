@@ -212,7 +212,7 @@ describe('Chrome Web Store listing assets', () => {
   });
 
   it('OCR-audits forbidden copy in every submitted CWS PNG asset', () => {
-    const result = spawnSync(process.execPath, ['scripts/audit-cws-media-text.mjs'], {
+    const result = spawnSync(process.execPath, ['tooling/scripts/audit-cws-media-text.mjs'], {
       cwd: root,
       encoding: 'utf8',
       env: { ...process.env, FORCE_COLOR: '0' },
@@ -236,7 +236,7 @@ describe('Chrome Web Store listing assets', () => {
         </svg>
       `)).png().toFile(fixturePath);
 
-      const result = spawnSync(process.execPath, ['scripts/audit-cws-media-text.mjs', fixturePath], {
+      const result = spawnSync(process.execPath, ['tooling/scripts/audit-cws-media-text.mjs', fixturePath], {
         cwd: root,
         encoding: 'utf8',
         env: { ...process.env, FORCE_COLOR: '0' },
@@ -268,7 +268,7 @@ describe('Chrome Web Store listing assets', () => {
         </svg>
       `)).png().toFile(fixturePath);
 
-      const result = spawnSync(process.execPath, ['scripts/audit-cws-media-text.mjs', fixturePath], {
+      const result = spawnSync(process.execPath, ['tooling/scripts/audit-cws-media-text.mjs', fixturePath], {
         cwd: root,
         encoding: 'utf8',
         env: { ...process.env, FORCE_COLOR: '0' },
@@ -283,7 +283,7 @@ describe('Chrome Web Store listing assets', () => {
   }, 120000);
 
   it('captures listing media from PageNarrator-owned content only', () => {
-    const captureScript = readText('scripts/capture-current-product-media.mjs');
+    const captureScript = readText('tooling/scripts/capture-current-product-media.mjs');
 
     expect(captureScript).not.toMatch(/https?:\/\/(?!127\.0\.0\.1|localhost)[^'"`\s]+\.pdf|arxiv\.org/i);
     expect(captureScript).toContain('A PageNarrator reading guide');
@@ -292,7 +292,7 @@ describe('Chrome Web Store listing assets', () => {
 
   it('records current capture inputs and the UI states shown by each screenshot', () => {
     const provenance = JSON.parse(readText('docs/cws-listing/capture-provenance.json'));
-    const version = JSON.parse(readText('manifest.json')).version;
+    const version = JSON.parse(readText('extension/manifest.json')).version;
     // Local toolchain releases can retain older captures only while all UI source hashes still match.
     expect(provenance.version).toMatch(/^\d+\.\d+\.\d+$/u);
     expect(provenance.version.localeCompare(version, 'en', { numeric: true })).toBeLessThanOrEqual(0);
@@ -300,9 +300,19 @@ describe('Chrome Web Store listing assets', () => {
       createHash('sha256').update(readFileSync(join(root, 'website/public/assets/pagenarrator-icon.png'))).digest('hex'),
     );
     for (const path of ['src/popup.html', 'src/popup.css', 'src/popup.js', 'src/pdf-viewer.html', 'src/pdf-viewer.css', 'src/pdf-viewer.js',
-      neutralCwsDemoPath, 'scripts/capture-current-product-media.mjs']) {
-      const hash = createHash('sha256').update(readText(path)).digest('hex');
-      expect(provenance.sourceSha256?.[path], `Recapture media after changing ${path}`).toBe(hash);
+      neutralCwsDemoPath, 'tooling/scripts/capture-current-product-media.mjs']) {
+      const legacyPath = path.replace(/^tooling\/scripts\//, 'scripts/');
+      const recordedPath = Object.hasOwn(provenance.sourceSha256, path) ? path : legacyPath;
+      // Older captures predate the repository move and used relative favicon links.
+      let source = readText(path);
+      if (!Object.hasOwn(provenance.sourceSha256, 'tooling/scripts/capture-current-product-media.mjs')) {
+        if (path === 'src/popup.html' || path === 'src/pdf-viewer.html') {
+          source = source.replace('href="/icons/icon-32.png"', 'href="../icons/icon-32.png"');
+        }
+        if (recordedPath !== path) source = source.replace("'extension/artwork',", "'icons',").replace(path, legacyPath);
+      }
+      const hash = createHash('sha256').update(source).digest('hex');
+      expect(provenance.sourceSha256?.[recordedPath], `Recapture media after changing ${path}`).toBe(hash);
     }
     for (const image of provenance.images) {
       expect(image.sha256).toBe(createHash('sha256').update(readFileSync(join(root, 'docs/cws-listing', image.name))).digest('hex'));
@@ -319,7 +329,7 @@ describe('Chrome Web Store listing assets', () => {
   });
 
   it('captures the native browser display without synthesizing screenshot UI', () => {
-    const source = readText('scripts/capture-current-product-media.mjs');
+    const source = readText('tooling/scripts/capture-current-product-media.mjs');
     const screenshots = source.split('async function writePromoTile(')[0];
     expect(screenshots).toContain("execFileSync('import', ['-window', 'root', raw])");
     expect(screenshots).toContain('chrome.action.openPopup()');
@@ -357,7 +367,7 @@ describe('Chrome Web Store listing assets', () => {
     }
     expect(lightPixels / sampled, 'white or light gray share').toBeLessThan(0.25);
     expect(Math.min(...edgeSaturation), 'every edge pixel is saturated color').toBeGreaterThan(0.35);
-    expect(readText('scripts/capture-current-product-media.mjs')).not.toMatch(/Listen to webpages and PDFs/);
+    expect(readText('tooling/scripts/capture-current-product-media.mjs')).not.toMatch(/Listen to webpages and PDFs/);
   });
 
   it('keeps the player header in the screenshot-derived social image', async () => {

@@ -1,5 +1,5 @@
 import{expect,it}from'vitest';
-import{ocrResourceFailures}from'../../scripts/lib/ocr-resource-gates.mjs';
+import{ocrResourceFailures}from'../../tooling/scripts/lib/ocr-resource-gates.mjs';
 
 const cpuEngine=()=>({backend:'wasm',allocations:3,peakArenaBytes:131072,maximumArenaBytes:512*1024*1024});
 const gpuEngine=()=>({backend:'webgpu',allocations:3,peakLiveBufferBytes:64,closed:true,remainingBuffers:0,remainingTensors:0,

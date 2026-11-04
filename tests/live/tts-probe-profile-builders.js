@@ -1,4 +1,4 @@
-import { createProfileEvidence } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { createProfileEvidence } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
 export const GIB = 1024 * 1024 * 1024;
 

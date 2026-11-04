@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
 import { HISTORICAL_PDF_GOLD_SHA256 } from '../helpers/pdf-benchmark-gold.js';
-import { assertCurrentPdfCorpusControl, readPdfCorpusImplementationPins } from '../../scripts/lib/pdf-corpus-control-integrity.mjs';
+import { assertCurrentPdfCorpusControl, readPdfCorpusImplementationPins } from '../../tooling/scripts/lib/pdf-corpus-control-integrity.mjs';
 
 // Original public100 identities; all result text/measurements below are authored unit data.
 // No private excerpts, PDF source, corpus report, model or browser is read/executed.
@@ -11,7 +11,7 @@ function arrangement() {
   const goldEvidence = { path: 'explicit-private-gold.json', bytes: 81070, sha256: HISTORICAL_PDF_GOLD_SHA256,
     historicalManifestSha256: 'fac19a254f0e507ddf677159397a1e9a0283311c3a26a37d7f33d42c62a27d83', historicalRealPaperRecords: 90 };
   const implementationPins = [
-    { path: 'native/pdf.wasm', bytes: 1234, sha256: hash('a') },
+    { path: 'engines/native/pdf.wasm', bytes: 1234, sha256: hash('a') },
     { path: 'src/lib/pdf-page-model.js', bytes: 123, sha256: hash('b') },
     { path: 'src/lib/pdf-vertical-model.js', bytes: 122, sha256: hash('c') },
     { path: 'src/pdf/browser-pdf.js', bytes: 121, sha256: hash('d') },
@@ -86,24 +86,24 @@ describe('current paired PDF control admission before candidate filtering', () =
   });
   it('rejects a native source-only edit while source-digest, WASM and build metadata stay unchanged', async () => {
     const pins = await readPdfCorpusImplementationPins(fileURLToPath(new URL('../../', import.meta.url)));
-    // Input identities come from build-native-pdf.mjs; read-only collection, no build/PDF work.
+    // Input identities come from build-native-pdf.mjs; read-only collection, no tooling/build/PDF work.
     const nativeInputs = [
-      'native/pdf.cpp', 'native/pdf-type1.cpp', 'native/pdf-codecs.cpp', 'native/pdf-fax.cpp',
-      'native/pdf-jbig2.cpp', 'native/pdf-mq.h', 'native/pdf-crypto.cpp', 'native/pdf-crypto.h', 'native/pdf-jpx.cpp',
-      'native/pdf-inline.cpp',
-      'native/pdf-cff-path.cpp',
-      'native/pdf-ttf-path.cpp',
+      'engines/native/pdf.cpp', 'engines/native/pdf-type1.cpp', 'engines/native/pdf-codecs.cpp', 'engines/native/pdf-fax.cpp',
+      'engines/native/pdf-jbig2.cpp', 'engines/native/pdf-mq.h', 'engines/native/pdf-crypto.cpp', 'engines/native/pdf-crypto.h', 'engines/native/pdf-jpx.cpp',
+      'engines/native/pdf-inline.cpp',
+      'engines/native/pdf-cff-path.cpp',
+      'engines/native/pdf-ttf-path.cpp',
     ];
     for (const source of nativeInputs) {
       expect(pins.some(pin => pin.path === source), source).toBe(true);
       const { own, expected } = arrangement();
       own.implementationPins = structuredClone(pins); expected.implementationPins = structuredClone(pins);
-      const wasm = pins.find(pin => pin.path === 'native/pdf.wasm').sha256;
+      const wasm = pins.find(pin => pin.path === 'engines/native/pdf.wasm').sha256;
       own.wasmSha256 = expected.wasmSha256 = wasm;
       expect(assertCurrentPdfCorpusControl(own, expected).records).toBe(100);
       const changedSource = expected.implementationPins.find(pin => pin.path === source);
       changedSource.sha256 = changedSource.sha256[0] === 'f' ? hash('e') : hash('f');
-      for (const unchanged of ['native/pdf.wasm', 'native/pdf.json']) {
+      for (const unchanged of ['engines/native/pdf.wasm', 'engines/native/pdf.json']) {
         expect(expected.implementationPins.find(pin => pin.path === unchanged)).toEqual(own.implementationPins.find(pin => pin.path === unchanged));
       }
       expect(own.sourceSha256).toBe(expected.sourceSha256);

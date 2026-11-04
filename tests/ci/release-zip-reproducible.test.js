@@ -5,7 +5,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { inflateRawSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
-import { createSourceArchive, packageRelease } from '../../scripts/package-release.mjs';
+import { createSourceArchive, packageRelease } from '../../tooling/scripts/package-release.mjs';
 
 function zipEntries(zip) {
   const entries = {};
@@ -54,7 +54,7 @@ describe('release ZIP', () => {
     git(['config', 'user.email', 'test@example.invalid']);
     for (const [path, contents] of Object.entries({ 'src/worker.js': 'committed source',
       '.gitignore': 'docs/cws-listing/debug-*.png\n.cache/\n', 'package.json': '{"version":"1.0.1"}',
-      'public/index.html': 'committed page', 'eslint.config.js': 'export default [];' })) {
+      'extension/public/index.html': 'committed page', 'tooling/eslint.config.js': 'export default [];' })) {
       const target = join(root, path);
       mkdirSync(join(target, '..'), { recursive: true });
       writeFileSync(target, contents);
@@ -68,7 +68,7 @@ describe('release ZIP', () => {
     const binary = { name: 'extension.zip', sha256: 'a'.repeat(64) };
     const archive = createSourceArchive(root, binary, commit), entries = zipEntries(archive);
     expect(Object.keys(entries).sort()).toEqual(['.gitignore', 'SOURCE-MANIFEST.json', 'SOURCE-README.txt',
-      'eslint.config.js', 'package.json', 'public/index.html', 'src/worker.js']);
+      'extension/public/index.html', 'package.json', 'src/worker.js', 'tooling/eslint.config.js']);
     const manifest = JSON.parse(entries['SOURCE-MANIFEST.json']);
     expect(manifest.candidateId).toBe(commit); expect(manifest.binary).toEqual(binary);
     for (const row of manifest.files) expect(row.sha256).toBe(createHash('sha256').update(entries[row.path]).digest('hex'));
@@ -83,7 +83,7 @@ describe('release ZIP', () => {
     for (const [path, bytes] of Object.entries(entries)) {
       mkdirSync(join(exported, path, '..'), { recursive: true }); writeFileSync(join(exported, path), bytes);
     }
-    writeFileSync(join(exported, 'public/credentials.json'), 'unlisted private sentinel');
+    writeFileSync(join(exported, 'extension/public/credentials.json'), 'unlisted private sentinel');
     expect(createSourceArchive(exported, binary, commit).equals(archive)).toBe(true);
     writeFileSync(join(exported, 'src/worker.js'), 'changed source export');
     expect(() => createSourceArchive(exported, binary, commit)).toThrow('differs from its manifest');

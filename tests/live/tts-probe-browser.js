@@ -3,8 +3,8 @@ import { existsSync, readFileSync, rmSync } from 'node:fs';
 import path from 'node:path';
 import { setTimeout as delay } from 'node:timers/promises';
 import { CdpConnection, CdpWebSocketConnection } from './cdp-connection.js';
-import { resolveCpuAffinity } from '../../scripts/weak-hardware/evidence-contract.mjs';
-import { describeLaunch } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { resolveCpuAffinity } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
+import { describeLaunch } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import {
   buildJobLimits,
   formatChromeAdapterLuid,
@@ -13,7 +13,7 @@ import {
   startJobSupervisor,
   summarizeJobEnforcement,
   vendorNameForId,
-} from '../../scripts/weak-hardware/windows-job.mjs';
+} from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 
 export class ProbeEnvironmentBlockedError extends Error {
   constructor(message) {

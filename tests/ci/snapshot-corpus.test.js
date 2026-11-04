@@ -5,7 +5,7 @@ import { mkdtemp, readFile, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-import { privateCaptureOutput, snapshotCorpus } from '../../scripts/snapshot-corpus.mjs';
+import { privateCaptureOutput, snapshotCorpus } from '../../tooling/scripts/snapshot-corpus.mjs';
 
 const directories = [];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');

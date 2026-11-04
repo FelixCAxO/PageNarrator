@@ -11,7 +11,7 @@ describe('local live TTS probe wiring', () => {
 
     expect(packageJson.scripts['probe:tts:lower-spec']).toBe('npm run build && npm run probe:tts:lower-spec:no-build');
     expect(packageJson.scripts['probe:tts:lower-spec:no-build']).toContain('PAGENARRATOR_TTS_PROBE_PROFILE=lower-spec');
-    expect(packageJson.scripts['requirements:tts']).toBe('node scripts/summarize-tts-requirements.mjs');
+    expect(packageJson.scripts['requirements:tts']).toBe('node tooling/scripts/summarize-tts-requirements.mjs');
     expect(packageJson.scripts['probe:tts:requirements']).toContain('PAGENARRATOR_TTS_PROBE_PROFILE=requirements');
   });
 
@@ -27,11 +27,11 @@ describe('local live TTS probe wiring', () => {
 
   it('wires the weak-hardware matrix, unit suite and measurement lock locally', () => {
     const packageJson = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
-    const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
+    const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
 
-    expect(packageJson.scripts['probe:weak-hardware:no-build']).toBe('node scripts/weak-hardware/run-matrix.mjs');
-    expect(packageJson.scripts['test:weak-hardware']).toBe('vitest run tests/weak-hardware');
-    expect(packageJson.scripts['measurement:lock']).toBe('node scripts/weak-hardware/measurement-lock.mjs');
+    expect(packageJson.scripts['probe:weak-hardware:no-build']).toBe('node tooling/scripts/weak-hardware/run-matrix.mjs');
+    expect(packageJson.scripts['test:weak-hardware']).toBe('vitest run --config tooling/vite.config.js tests/weak-hardware');
+    expect(packageJson.scripts['measurement:lock']).toBe('node tooling/scripts/weak-hardware/measurement-lock.mjs');
     expect(gates['weak-hardware']).toEqual(['npm run build', 'npm run probe:weak-hardware:no-build']);
     expect(gates.release).not.toContain('npm run probe:weak-hardware:no-build');
   });
@@ -47,11 +47,11 @@ describe('local live TTS probe wiring', () => {
 
   it('keeps real-model article and PDF reads available locally', () => {
     const packageJson = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
-    const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
+    const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
     const realModelTest = readFileSync(new URL('../e2e/real-model-read.e2e.js', import.meta.url), 'utf8');
 
     expect(packageJson.scripts['test:e2e:real-model']).toBe(
-      'cross-env PN_E2E_REAL_MODEL=1 playwright test --project=real-model'
+      'cross-env PN_E2E_REAL_MODEL=1 playwright test --config tooling/playwright.config.js --project=real-model'
     );
     expect(realModelTest).toContain("ttsPerformanceProfile: 'quality'");
     expect(realModelTest).toContain("ttsPerformanceProfile: 'auto'");
@@ -79,7 +79,7 @@ describe('local live TTS probe wiring', () => {
   });
 
   it('keeps lower-spec probes in the local manual-live gate', () => {
-    const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
+    const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
     expect(gates['manual-live']).toEqual(expect.arrayContaining([
       'npm run test:live:no-build',
       'npm run probe:tts:lower-spec:no-build',
@@ -89,7 +89,7 @@ describe('local live TTS probe wiring', () => {
   });
 
   it('keeps strict physical assessment available separately from the explicit v1 release waiver', () => {
-    const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
+    const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
     expect(gates.release).toContainEqual({ command: 'npm run requirements:tts -- --fail-on-non-pass', gateId: 'physical-hardware' });
     expect(gates['manual-live']).toContain('npm run requirements:tts');
 
@@ -101,7 +101,7 @@ describe('local live TTS probe wiring', () => {
       const json = join(root, 'summary.json');
       const markdown = join(root, 'summary.md');
       writeFileSync(input, JSON.stringify({ attempts: [] }));
-      const args = [fileURLToPath(new URL('../../scripts/summarize-tts-requirements.mjs', import.meta.url)),
+      const args = [fileURLToPath(new URL('../../tooling/scripts/summarize-tts-requirements.mjs', import.meta.url)),
         input, '--json', json, '--md', markdown];
       const diagnostic = spawnSync(process.execPath, args, { cwd: root, encoding: 'utf8' });
       expect(diagnostic.status, diagnostic.stderr).toBe(0);

@@ -3,12 +3,12 @@ import { tmpdir } from 'node:os';
 import { join, sep } from 'node:path';
 import { createHash } from 'node:crypto';
 import { expect, it, vi } from 'vitest';
-import { prepareVoiceReviews, readVoiceReviewPacket, evaluateVoiceReceipt } from '../../scripts/voice-listening-reviews.mjs';
-import { VOICE_REVIEW_CORPUS as corpus } from '../../scripts/lib/voice-quality-assessment.mjs';
-import { QUALITY_CORPUS_SHA256, qualityFingerprint, saveQualityClip } from '../../scripts/lib/kokoro-quality-controls.mjs';
+import { prepareVoiceReviews, readVoiceReviewPacket, evaluateVoiceReceipt } from '../../tooling/scripts/voice-listening-reviews.mjs';
+import { VOICE_REVIEW_CORPUS as corpus } from '../../tooling/scripts/lib/voice-quality-assessment.mjs';
+import { QUALITY_CORPUS_SHA256, qualityFingerprint, saveQualityClip } from '../../tooling/scripts/lib/kokoro-quality-controls.mjs';
 
 let freeze;
-vi.mock('../../scripts/lib/kokoro-quality-controls.mjs', async original => ({ ...await original(), readQualityFreeze: vi.fn(async () => freeze) }));
+vi.mock('../../tooling/scripts/lib/kokoro-quality-controls.mjs', async original => ({ ...await original(), readQualityFreeze: vi.fn(async () => freeze) }));
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 
 async function fixture() {

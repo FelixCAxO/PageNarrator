@@ -19,7 +19,7 @@ const REQUIRED_MESSAGES = [
 describe('onboarding and review prompt i18n', () => {
   it('defines launch copy for every onboarding and review prompt key', () => {
     const messages = JSON.parse(
-      readFileSync(new URL('../../_locales/en/messages.json', import.meta.url), 'utf8'),
+      readFileSync(new URL('../../extension/public/_locales/en/messages.json', import.meta.url), 'utf8'),
     );
 
     for (const key of REQUIRED_MESSAGES) {

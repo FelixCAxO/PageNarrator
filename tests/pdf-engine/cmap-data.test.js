@@ -40,7 +40,7 @@ describe('original bounded CMap record execution', () => {
     await expect(loadPredefinedCmap('../unsafe', loadAsset)).rejects.toThrow(/not supported/);
   });
   it('independently verifies retained source hashes through the static manifest', async () => {
-    const manifest = JSON.parse(await readFile('vendor/pdf-cmaps/manifest.json'));
+    const manifest = JSON.parse(await readFile('engines/vendor/pdf-cmaps/manifest.json'));
     expect(manifest.executableCode).toBe(false); expect(manifest.files.filter(file => file.role === 'character-map')).toHaveLength(168);
   });
 });

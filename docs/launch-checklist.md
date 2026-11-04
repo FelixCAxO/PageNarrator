@@ -15,7 +15,7 @@ On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching 
 ## Release
 
 1. Run `npm run test:models` and `npm run verify:release` from the repository root. Independent listening and physical-hardware evidence remain required for an unwaived full qualification. The retired private PDF benchmark is no longer a prerequisite.
-2. Record v1.0.0's waived physical hardware and human/listening reviews (2026-10-24) and accepted Kokoro duration/PCM limitation (2026-10-25). These are not passes. Keep failed/unqualified diagnostics and unchanged thresholds. All other applicable automatic checks remain required; the explicit v1.0.1 extension was authorized on 2026-10-25 and neither version grants exceptions to v1.0.2. See [policy](../config/release-policy.json) and [verification status](release-readiness.md).
+2. Record v1.0.0's waived physical hardware and human/listening reviews (2026-10-24) and accepted Kokoro duration/PCM limitation (2026-10-25). These are not passes. Keep failed/unqualified diagnostics and unchanged thresholds. All other applicable automatic checks remain required; the explicit v1.0.1 extension was authorized on 2026-10-25 and neither version grants exceptions to v1.0.2. See [policy](../tooling/config/release-policy.json) and [verification status](release-readiness.md).
 3. Keep `npm run test:pdf-corpus` and packaged PDF reading/OCR checks required. `npm run test:pdf-acceptance` remains an optional historical private-library check; the older arXiv lane is `npm run test:pdf-acceptance:historical`. Preserve their fixtures, references, thresholds and original results, including revision 05's 97/100. A retired or unperformed benchmark is never reported as passing; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
 4. Build from a clean reviewed commit. Source packaging rejects tracked edits and stages an exact `git archive` export of HEAD. Both archives and the extracted build are prepared before replacing final files; replacement failures restore the previous set. If restoration itself fails, the error names the retained backup directory. Test packaging without preflight requires an explicit output directory outside canonical `releases/`. Untracked and ignored files never enter the source ZIP. A distributed source ZIP can be rebuilt only with its declared files unchanged under `SOURCE-MANIFEST.json`.
 5. Distribute `releases/pagenarrator-<version>.zip` and `releases/pagenarrator-<version>-source.zip` together. Fixed entry times make identical contents reproduce the ZIP hash. Compare the upload's SHA-256 with the tested file.
@@ -50,7 +50,7 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 
 ### Final checks
 
-- `node scripts/assert-release-package.mjs dist` must pass. It rejects retired executables and bundled interpreters, including PDF.js QuickJS.
+- `node tooling/scripts/assert-release-package.mjs dist` must pass. It rejects retired executables and bundled interpreters, including PDF.js QuickJS.
 - Check clean-install, webpage, selected-text, PDF, 3× speed, highlights, cleanup, pauses, and resume.
 - On a clean install, missing voice files download from Hugging Face only after Prepare voice or Read. Test failure/retry, restart, offline reuse of the same cached voice/mode, and a required download after cache clearing. Model requests must contain no narration text. Packaged English OCR must work offline.
 - Confirm no licensing or payment network request.
@@ -72,7 +72,7 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 <details>
 <summary>Recorded Pages setup and rollback target</summary>
 
-Project `pagenarrator-site` uses repository `FelixCAxO/PageNarrator` (ID `1422933371`), branch `main`. On 2026-10-26 its Git build settings were corrected to repository root, command `npm run build:website`, and filtered output `artifacts/website`. Production builds remain on, previews/PR comments off. Watch paths cover `website/*`, the website build/smoke scripts, locale rollout config and package metadata. Verify these settings before publishing; never restore the earlier raw `website/public` upload.
+Project `pagenarrator-site` uses repository `FelixCAxO/PageNarrator` (ID `1422933371`), branch `main`. On 2026-10-26 its Git build settings were corrected to repository root, command `npm run build:website`, and filtered output `artifacts/website`. Production builds remain on, previews/PR comments off. Before merging the repository layout change, update production build watch rules to include `website/*`, `tooling/scripts/build-website*.mjs`, `tooling/scripts/build-homepage-css.mjs`, `tooling/scripts/build-localized-website.mjs`, `tooling/scripts/smoke-production.mjs`, `tooling/config/language-rollout.json`, and the root package metadata. Verify these settings before publishing; never restore the earlier raw `website/public` upload.
 
 Retired project `pagenarrator` points to deleted repository `1224875446` with automatic builds disabled. Retain its last successful deployment for rollback. Domain rollback needs both custom-domain associations and CNAME targets restored to `pagenarrator.pages.dev`. The September 26, 2026 smoke record checked 16 pages, 20 redirects, and 22 resources.
 

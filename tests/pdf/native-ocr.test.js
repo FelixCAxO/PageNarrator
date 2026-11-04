@@ -7,7 +7,7 @@ import { detectPdfOcrLines } from '../../src/lib/pdf-ocr-detector.js';
 import { recognizePdfOcrNeuralLines } from '../../src/lib/pdf-ocr-neural-batch.js';
 
 beforeAll(async () => {
-  const instance = await initializeNativeKernels(await readFile(new URL('../../public/native/kernels.wasm', import.meta.url)));
+  const instance = await initializeNativeKernels(await readFile(new URL('../../extension/public/native/kernels.wasm', import.meta.url)));
   expect(typeof instance?.exports.rgba_pack).toBe('function');
 });
 afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
@@ -212,7 +212,7 @@ it('retains exact fallback conversions when a malformed native module omits its 
     pcm_process: vi.fn(), rgba_pack: vi.fn(), detector_components: vi.fn() } };
   vi.spyOn(WebAssembly, 'Instance').mockImplementation(function () { return malformed; });
   const fallback = await import('../../src/lib/native-kernels.js');
-  expect(await fallback.initializeNativeKernels(await readFile(new URL('../../public/native/kernels.wasm', import.meta.url)))).toBeNull();
+  expect(await fallback.initializeNativeKernels(await readFile(new URL('../../extension/public/native/kernels.wasm', import.meta.url)))).toBeNull();
   const pixels = Uint8ClampedArray.from({ length: 64 * 64 * 4 }, (_, index) => index % 251);
   expectSameBytes(fallback.packRgba(pixels, 64, 64, 'detector'), referencePack(pixels, 64, 64, 'detector'));
   expect(malformed.exports.rgba_pack).not.toHaveBeenCalled();

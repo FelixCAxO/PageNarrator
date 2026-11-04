@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { REQUIRED_RELEASE_FILES } from '../../scripts/assert-release-package.mjs';
+import { REQUIRED_RELEASE_FILES } from '../../tooling/scripts/assert-release-package.mjs';
 import { KOKORO_MODEL_REVISION, getVoiceOptions } from '../../src/lib/voice-registry.js';
 
 describe('on-demand built-in voice data', () => {

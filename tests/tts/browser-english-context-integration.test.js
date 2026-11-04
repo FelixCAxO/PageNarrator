@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { createEnglishPhonemizer } from '../../src/tts/kokoro/english-phonemizer.js';
 
-const wasmBinary = readFileSync('public/assets/phonemizer/english.wasm');
-const pronunciationData = readFileSync('public/assets/phonemizer/pronunciations.bin');
+const wasmBinary = readFileSync('extension/public/assets/phonemizer/english.wasm');
+const pronunciationData = readFileSync('extension/public/assets/phonemizer/pronunciations.bin');
 
 describe.each(['en-us', 'en-gb', 'en'])('read context through the actual native phonemizer in %s', dialect => {
   it('preserves contextual cache separation, perfect verbs and nominal permissions', async () => {

@@ -80,7 +80,7 @@ export function loadPdfLibraryBenchmarkGold({ goldPath = process.env.PN_PDF_LIBR
       if (!equal(record?.[key], expected[key])) invalid('private source/order mismatch: ' + expected.id + '.');
     }
     if (record.narrationStartPage !== undefined && record.narrationStartPage !== startPage) invalid('private narration context.');
-    if (expected.narrationStartPage !== record.narrationStartPage) invalid('public/private context mismatch.');
+    if (expected.narrationStartPage !== record.narrationStartPage) invalid('extension/public/private context mismatch.');
     if (typeof record.privateFilePath !== 'string' || !path.isAbsolute(record.privateFilePath)) invalid('private source location.');
     const location = realpathSync(record.privateFilePath), relative = path.relative(privateRoot, location);
     if (!relative || relative === '..' || relative.startsWith(`..${path.sep}`) || path.isAbsolute(relative)

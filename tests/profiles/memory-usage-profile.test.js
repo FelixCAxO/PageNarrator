@@ -9,13 +9,13 @@ import {
   profileMemorySteps,
   readRuntimeMemoryUsage,
   summarizeMemoryUsage,
-} from '../../scripts/memory-usage-profile.mjs';
+} from '../../tooling/scripts/memory-usage-profile.mjs';
 import { buildReadingModel, renderReadingModelForSpeechChunks } from '../../src/lib/reading-model.js';
 import { chunkText } from '../../src/lib/speech-chunks.js';
 import {
   createMemoryProfileArticleHtml,
   createReaderPipelineMemoryProfileSteps,
-} from '../../scripts/profile-memory-usage.mjs';
+} from '../../tooling/scripts/profile-memory-usage.mjs';
 
 describe('memory usage profiling', () => {
   it('records retained memory for each named step without storing step results', async () => {
@@ -222,7 +222,7 @@ describe('memory usage profiling', () => {
     const outputPath = join(tempDir, 'reader-pipeline-memory.json');
 
     try {
-      execFileSync(process.execPath, ['--expose-gc', 'scripts/profile-memory-usage.mjs'], {
+      execFileSync(process.execPath, ['--expose-gc', 'tooling/scripts/profile-memory-usage.mjs'], {
         cwd: new URL('../..', import.meta.url),
         env: {
           ...process.env,
@@ -276,7 +276,7 @@ describe('memory usage profiling', () => {
   it('exposes a package script for optimization memory reports', () => {
     const packageJson = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
 
-    expect(packageJson.scripts['profile:memory']).toBe('node --expose-gc scripts/profile-memory-usage.mjs');
-    expect(packageJson.scripts['test:profiles']).toBe('vitest run --config vitest.profiles.config.js');
+    expect(packageJson.scripts['profile:memory']).toBe('node --expose-gc tooling/scripts/profile-memory-usage.mjs');
+    expect(packageJson.scripts['test:profiles']).toBe('vitest run --config tooling/vitest.profiles.config.js');
   });
 });

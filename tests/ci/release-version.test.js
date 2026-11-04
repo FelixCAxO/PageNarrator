@@ -9,7 +9,7 @@ describe('release metadata', () => {
   it('keeps extension and package versions in sync', () => {
     const packageJson = JSON.parse(read('package.json'));
     const packageLock = JSON.parse(read('package-lock.json'));
-    const manifest = JSON.parse(read('manifest.json'));
+    const manifest = JSON.parse(read('extension/manifest.json'));
 
     expect(packageJson.version).toBe('1.0.3');
     expect(packageLock.version).toBe(packageJson.version);
@@ -20,13 +20,14 @@ describe('release metadata', () => {
   it('documents the published release, previous releases and retained PDF highlight policy', () => {
     const changelog = read('website/public/changelog.html');
     const readerUi = read('docs/reader-ui.md');
-    expect(read('CHANGELOG.md')).toContain('## 1.0.2 (2026-10-27)');
-    expect(read('CHANGELOG.md')).toContain('## 1.0.3 (2026-11-03, local release candidate)');
+    expect(read('docs/CHANGELOG.md')).toContain('## 1.0.2 (2026-10-27)');
+    expect(read('docs/CHANGELOG.md')).toContain('## 1.0.3 (2026-11-04)');
 
+    expect(changelog).toContain('Version 1.0.3');
     expect(changelog).toContain('Version 1.0.2');
     expect(changelog).toContain('Version 1.0.1');
     expect(changelog).toContain('Version 1.0.0');
-    expect(changelog.match(/<h2>Version /g)).toHaveLength(3);
+    expect(changelog.match(/<h2>Version /g)).toHaveLength(4);
     expect(readerUi).toContain('deterministic render-window management');
     expect(readerUi).toContain('CSS text-range highlight first');
     expect(readerUi).toContain('queued next-region overlay is disabled for PDFs');

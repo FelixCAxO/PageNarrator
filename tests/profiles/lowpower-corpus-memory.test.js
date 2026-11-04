@@ -4,11 +4,11 @@ import { getTtsPerformanceProfileConfig } from '../../src/lib/tts-performance-pr
 import {
   profileMemorySteps,
   readRuntimeMemoryUsage,
-} from '../../scripts/memory-usage-profile.mjs';
+} from '../../tooling/scripts/memory-usage-profile.mjs';
 import {
   createMemoryProfileArticleHtml,
   createReaderPipelineMemoryProfileSteps,
-} from '../../scripts/profile-memory-usage.mjs';
+} from '../../tooling/scripts/profile-memory-usage.mjs';
 
 describe('lowPower corpus memory budget', () => {
   it('keeps a 600-paragraph lowPower reader pipeline under the release RSS budget contract', async () => {

@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { getOmniVoicePlaybackSeed, getOmniVoicePlaybackNumStep, getOmniVoicePlaybackGenderCue, getOmniVoicePlaybackGuidanceScale, getOmniVoicePlaybackSpeed, getOmniVoicePlaybackPronunciationVariant, selectOmniVoiceSpeakers, toOmniVoiceCatalogEntry } from '../../scripts/lib/omnivoice-speaker-selection.mjs';
+import { getOmniVoicePlaybackSeed, getOmniVoicePlaybackNumStep, getOmniVoicePlaybackGenderCue, getOmniVoicePlaybackGuidanceScale, getOmniVoicePlaybackSpeed, getOmniVoicePlaybackPronunciationVariant, selectOmniVoiceSpeakers, toOmniVoiceCatalogEntry } from '../../tooling/scripts/lib/omnivoice-speaker-selection.mjs';
 
 const entry = (id, overall, embedding, reasons = []) => ({
   speaker: { id, hash: id }, reasons, result: { signal: { dnsmos: { overall } }, embedding },

@@ -7,8 +7,8 @@ import { createKokoroTokenizer } from '../../src/tts/kokoro/tokenizer.js';
 import { createKokoroDataLoader, loadBrowserKokoroBackend } from '../../src/tts/kokoro/model-loader.js';
 import { KOKORO_DATA } from '../../src/tts/kokoro/model-data.js';
 
-const tokenizerJson = JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer.json'));
-const tokenizerConfig = JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer_config.json'));
+const tokenizerJson = JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer.json'));
+const tokenizerConfig = JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer_config.json'));
 function make(options = {}) {
   const rows = new Float32Array(510 * 256);
   for (let i = 0; i < 510; i++) rows.fill(i, i * 256, (i + 1) * 256);

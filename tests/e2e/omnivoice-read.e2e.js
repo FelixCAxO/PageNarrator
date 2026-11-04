@@ -6,7 +6,7 @@ import { openRoutedReaderEngine, routeKokoroModelFiles, routeOmniVoiceModelFiles
 import { buildCorpusFlowReport } from './corpus-flow-invariants.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
 import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
-import { browserAdapterConfiguration, verifyBrowserAdapter } from '../../scripts/lib/browser-adapter.mjs';
+import { browserAdapterConfiguration, verifyBrowserAdapter } from '../../tooling/scripts/lib/browser-adapter.mjs';
 
 const SAMPLES = [
   {

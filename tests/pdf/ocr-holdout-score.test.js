@@ -1,5 +1,5 @@
 import{expect,it}from'vitest';
-import{ocrCharacterErrorRate,scoreOcrHoldout,textInOcrHoldoutRegion}from'../../scripts/lib/ocr-holdout-score.mjs';
+import{ocrCharacterErrorRate,scoreOcrHoldout,textInOcrHoldoutRegion}from'../../tooling/scripts/lib/ocr-holdout-score.mjs';
 
 it('uses the preregistered NFC/case/whitespace convention without removing punctuation',()=>{
   expect(ocrCharacterErrorRate('  Caf\u00e9,\nTEST! ','cafe\u0301, test!')).toEqual({errors:0,referenceCharacters:11,rate:0});

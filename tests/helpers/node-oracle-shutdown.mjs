@@ -1,5 +1,5 @@
-import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import oracle from '../../tooling/scripts/lib/node-onnx-oracle.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 const model = kokoroOperatorFixture('Relu', [{ name: 'x', type: 1, shape: [4] }], [{ name: 'y', type: 1, shape: [4] }]);
 const session = await oracle.InferenceSession.create(model, { executionProviders: ['cpu'], intraOpNumThreads: 1, interOpNumThreads: 1, graphOptimizationLevel: 'disabled' });

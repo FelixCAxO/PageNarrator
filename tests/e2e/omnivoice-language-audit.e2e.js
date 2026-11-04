@@ -7,8 +7,8 @@ import { launchExtensionContext, seedRealTtsFlowFlags } from './extension-fixtur
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
 import { OMNIVOICE_MODEL_BASE_URL } from '../../src/tts/omnivoice/loader.js';
-import { waveBytes, audioMeasures } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
-import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { waveBytes, audioMeasures } from '../../tooling/scripts/lib/kokoro-speech-acceptance.mjs';
+import { acquireMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 import { getOmniVoiceSpeakerReference } from '../../src/tts/omnivoice/speakers.js';
 import { renderOmniVoiceWhisper } from '../../src/tts/omnivoice/whisper.js';
 

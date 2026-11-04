@@ -5,7 +5,7 @@ import path from 'node:path';
 
 import { PROBE_WORKLOADS, loadPdfWorkloadBytes } from './tts-probe-workloads.js';
 
-import { sha256 } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { sha256 } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { attachToTarget, evaluateExpression, getTabIdByUrl, closeTargetBestEffort } from './tts-probe-cdp.js';
 import { waitFor, PROBE_DOCUMENT_TYPES, DIST_DIR } from './tts-probe-settings.js';
 import { hashProbeDocument } from './tts-probe-results.js';

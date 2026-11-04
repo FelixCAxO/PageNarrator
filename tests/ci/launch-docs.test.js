@@ -29,7 +29,7 @@ describe('free-product launch docs', () => {
   });
 
   it('retains software constraints and explicitly identifies the waivable physical requirement', () => {
-    const gates = JSON.parse(read('config/verification-gates.json'));
+    const gates = JSON.parse(read('tooling/config/verification-gates.json'));
     expect(gates.release).toContain('npm run probe:tts:lower-spec-pdf:no-build');
     expect(gates.release).toContainEqual({ command: 'npm run requirements:tts -- --fail-on-non-pass', gateId: 'physical-hardware' });
   });
@@ -65,17 +65,17 @@ describe('free-product launch docs', () => {
 
   it('ships the reviewed Short description as the Store summary', () => {
     // The dashboard shows the packaged manifest description as the summary; it has no field of its own.
-    const manifest = JSON.parse(read('manifest.json'));
+    const manifest = JSON.parse(read('extension/manifest.json'));
     const summary = read('docs/cws-listing.md').replace(/\r\n/g, '\n').match(/## Short description\n\n(.+)\n/)?.[1];
 
     expect(manifest.description).toBe('__MSG_extensionDescription__');
-    const english = JSON.parse(read(`_locales/${manifest.default_locale}/messages.json`));
+    const english = JSON.parse(read(`extension/public/_locales/${manifest.default_locale}/messages.json`));
     expect(english.extensionDescription.message).toBe(summary);
     expect(summary.length).toBeLessThanOrEqual(132);
   });
 
   it('justifies exactly the permissions the packaged manifest requests', () => {
-    const manifest = JSON.parse(read('manifest.json'));
+    const manifest = JSON.parse(read('extension/manifest.json'));
     const section = read('docs/cws-listing.md').replace(/\r\n/g, '\n').match(/### Permission justifications\n([\s\S]*?)\n#/)?.[1] || '';
     const justified = [...section.matchAll(/^- `([^`]+)`:/gm)].map(([, permission]) => permission);
 

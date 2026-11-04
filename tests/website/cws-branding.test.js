@@ -18,7 +18,7 @@ function getFullDescription() {
 
 describe('Chrome Web Store branding', () => {
   it('keeps Google marks out of the extension name and short description', () => {
-    const manifest = JSON.parse(readText('manifest.json'));
+    const manifest = JSON.parse(readText('extension/manifest.json'));
     expect(manifest.name).not.toMatch(/chrome|google/i);
     expect(manifest.short_name || '').not.toMatch(/chrome|google/i);
     expect(manifest.description).not.toMatch(/google/i);
@@ -41,7 +41,7 @@ describe('Chrome Web Store branding', () => {
   });
 
   it('keeps Google marks and sentiment-gated rating asks out of extension UI strings', () => {
-    const messages = Object.values(JSON.parse(readText('_locales/en/messages.json'))).map((entry) => entry.message);
+    const messages = Object.values(JSON.parse(readText('extension/public/_locales/en/messages.json'))).map((entry) => entry.message);
     const pages = readdirSync(join(root, 'src')).filter((name) => name.endsWith('.html'))
       .map((name) => readText(`src/${name}`).replace(/<(script|style)[\s\S]*?<\/\1>/g, '').replace(/<[^>]+>/g, ' '));
 

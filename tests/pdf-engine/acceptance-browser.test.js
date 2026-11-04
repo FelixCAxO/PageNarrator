@@ -5,7 +5,7 @@ import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'nod
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { createPdfAcceptanceBrowser } from '../../scripts/lib/pdf-acceptance-browser.mjs';
+import { createPdfAcceptanceBrowser } from '../../tooling/scripts/lib/pdf-acceptance-browser.mjs';
 
 const roots = [], sessions = [];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -14,7 +14,7 @@ const text = { items: [{ str: 'Original authored text', transform: [10, 0, 0, 10
 const inspection = { hasRasterImage: true, hasOutlinedText: false, unknownType3Glyphs: 2, decodingWarnings: [{ authored: true }] };
 async function fixture({ rejectLaunch = false } = {}) {
   const root = mkdtempSync(path.join(tmpdir(), 'pn-browser-backend-')); roots.push(root);
-  const files = ['src/pdf/pdf-engine.js', 'src/pdf/pdf.worker.js', 'native/pdf.wasm'];
+  const files = ['src/pdf/pdf-engine.js', 'src/pdf/pdf.worker.js', 'engines/native/pdf.wasm'];
   for (const file of [...files, 'browser.exe']) {
     mkdirSync(path.dirname(path.join(root, file)), { recursive: true }); writeFileSync(path.join(root, file), 'Original unit source placeholder.');
   }

@@ -1,8 +1,8 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { expect, it } from 'vitest';
 import { applyOmniVoiceRmsNormCorrection, prepareOmniVoiceGraph } from '../../src/tts/omnivoice/rmsnorm-correction.js';
-import { rmsNormFixture, rmsNormHalfBoundaryFixture, matmulFixture, float32MatmulReference } from '../../scripts/lib/onnx-debug-outputs.mjs';
-import { binary64ToHalf } from '../../scripts/lib/binary16-oracle.mjs';
+import { rmsNormFixture, rmsNormHalfBoundaryFixture, matmulFixture, float32MatmulReference } from '../../tooling/scripts/lib/onnx-debug-outputs.mjs';
+import { binary64ToHalf } from '../../tooling/scripts/lib/binary16-oracle.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
@@ -78,7 +78,7 @@ it.skipIf(!existsSync(model))('selects generated head rows and broadcasts groupe
 
 it('retains finite float32 RMS normalization for actual overflow-sized controls in the original C++ engine', async () => {
   const data = Float32Array.of(0, 0, 0, 0, 1, -2, 3, -4, 300, -300, 600, -600, 65504, -65504, 65504, -65504);
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const session = await WebGpuOnnxSession.create(rmsNormFixture(4), { engine });
   try {
     const result = await session.run({ x: { shape: [4, 4], data } }, ['variance', 'normalized']);

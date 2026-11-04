@@ -2,7 +2,7 @@
 
 The 100-type layout and column suite is in `tests/pdf/pdf-100-types-flow-benchmark.test.js`.
 
-Every test case creates binary PDF files (via `tests/helpers/pdf-test-generator.js`) or loads fixed fixtures from disk. The ordinary suite uses the isolated PDF.js development oracle with PageNarrator's extraction/streaming code. `node scripts/test-original-pdf-corpus.mjs` runs these unchanged assertions through the original facade selected by the extension, with source hashes and document-disposal records.
+Every test case creates binary PDF files (via `tests/helpers/pdf-test-generator.js`) or loads fixed fixtures from disk. The ordinary suite uses the isolated PDF.js development oracle with PageNarrator's extraction/streaming code. `node tooling/scripts/test-original-pdf-corpus.mjs` runs these unchanged assertions through the original facade selected by the extension, with source hashes and document-disposal records.
 
 Checks cover order, columns, tables, lists, soft wraps, metadata filtering, stream limits, and highlight mapping. These generated cases do not replace human naturalness ratings or independent-document review.
 
@@ -152,5 +152,5 @@ graph TD
 Run all 100 cases:
 
 ```powershell
-npx vitest run tests/pdf/pdf-100-types-flow-benchmark.test.js
+npm test -- tests/pdf/pdf-100-types-flow-benchmark.test.js
 ```

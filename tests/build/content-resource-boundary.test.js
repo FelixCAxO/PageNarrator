@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { emitOnDemandContentScriptLoader } from '../../build/runtime-assets.js';
+import { emitOnDemandContentScriptLoader } from '../../tooling/build/runtime-assets.js';
 
-const manifest = JSON.parse(readFileSync(new URL('../../manifest.json', import.meta.url), 'utf8'));
+const manifest = JSON.parse(readFileSync(new URL('../../extension/manifest.json', import.meta.url), 'utf8'));
 
 function chunk(fileName, options = {}) {
   return { type: 'chunk', fileName, imports: [], dynamicImports: [], ...options };

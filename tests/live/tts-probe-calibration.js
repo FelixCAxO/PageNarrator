@@ -1,6 +1,6 @@
 import { createServer } from 'node:http';
 import { setTimeout as delay } from 'node:timers/promises';
-import { computeJobCpuUsage } from '../../scripts/weak-hardware/windows-job.mjs';
+import { computeJobCpuUsage } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 
 const CALIBRATION_HTML = '<!doctype html><title>CPU calibration</title><p>calibration</p>';
 

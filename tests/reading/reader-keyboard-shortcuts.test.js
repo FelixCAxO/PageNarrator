@@ -75,7 +75,7 @@ describe('reader keyboard shortcuts', () => {
   });
 
   it('does not expose global playback commands outside the UI', () => {
-    const manifest = JSON.parse(readFileSync(new URL('../../manifest.json', import.meta.url), 'utf8'));
+    const manifest = JSON.parse(readFileSync(new URL('../../extension/manifest.json', import.meta.url), 'utf8'));
     expect(manifest.commands).toBeUndefined();
   });
 });

@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { binary64ToHalf } from '../../scripts/lib/binary16-oracle.mjs';
+import { binary64ToHalf } from '../../tooling/scripts/lib/binary16-oracle.mjs';
 import { halfToFloat, floatToHalf } from '../../src/engines/tensor-format.js';
 
 it('retains every binary16 value and handles normative finite/infinite boundaries', () => {

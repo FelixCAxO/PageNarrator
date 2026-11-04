@@ -3,7 +3,7 @@ import { mkdtemp, readFile, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, expect, it, vi } from 'vitest';
-import { downloadTestModels } from '../../scripts/download-test-models.mjs';
+import { downloadTestModels } from '../../tooling/scripts/download-test-models.mjs';
 
 const temporary = [];
 const bytes = Buffer.from('pinned model fixture');

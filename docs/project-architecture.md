@@ -38,8 +38,8 @@ Original C++ / WebAssembly and WebGPU / WGSL code handles inference, audio, OCR,
 
 Vite and CRXJS build `dist/`. Checked-in binaries and source manifests allow ordinary builds without a native compiler. Build and package checks verify executable hashes, local loading, retained-data notices, version agreement, and size limits. On-demand voice weights stay out of the package.
 
-Tests live in `tests/`. Browser and profile tests run separately. Commands are listed in `config/verification-gates.json`; the full release gate also needs private PDF references. Validation runs locally. Non-deployment GitHub Actions are prohibited.
+Tests live in `tests/`. Browser and profile tests run separately. Commands are listed in `tooling/config/verification-gates.json`; the full release gate also needs private PDF references. Validation runs locally. Non-deployment GitHub Actions are prohibited.
 
-`npm run package` produces the extension ZIP and matching source ZIP. Both exclude credentials, private documents, cached speech weights, and local reports. See [contributing](../CONTRIBUTING.md) and [verification status](release-readiness.md).
+`npm run package` produces the extension ZIP and matching source ZIP. Both exclude credentials, private documents, cached speech weights, and local reports. See [contributing](./CONTRIBUTING.md) and [verification status](release-readiness.md).
 
 The static site is in `website/public/`. Its separate support mailbox Worker is `website/workers/support-mailbox.js`.

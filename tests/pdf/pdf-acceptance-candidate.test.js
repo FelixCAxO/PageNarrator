@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, realpathSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { resolvePdfAcceptanceCandidate } from '../../scripts/run-pdf-acceptance.mjs';
+import { resolvePdfAcceptanceCandidate } from '../../tooling/scripts/run-pdf-acceptance.mjs';
 
 const directories = [];
 function directory() {

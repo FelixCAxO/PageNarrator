@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. Licensed under GPL-3.0-or-later.
 // Inference algorithm reference: Copyright 2026 Xiaomi Corp. (Han Zhu), Apache-2.0.
-// New browser implementation; see vendor/omnivoice/PROVENANCE.md.
+// New browser implementation; see engines/vendor/omnivoice/PROVENANCE.md.
 
 import { getOmniVoiceLanguage } from './languages.js';
 import * as browserInference from '../../engines/browser-inference.js';

@@ -26,7 +26,7 @@ import {
   summarizeWorkerThreads,
 } from '../live/tts-probe-observations.js';
 import { LIFECYCLE_BOUNDS, SOAK_BOUNDS, getTtsProbeProfiles } from '../live/live-tts-hardware-profiles.js';
-import { createLiveTtsProbeRunPlan, killProcessTree, runLiveTtsProbe } from '../../scripts/run-live-tts-probe.mjs';
+import { createLiveTtsProbeRunPlan, killProcessTree, runLiveTtsProbe } from '../../tooling/scripts/run-live-tts-probe.mjs';
 
 const producedAudio = { selectedBackendPlan: { device: 'webgpu', reason: 'webgpu-available' }, firstSynthesisMs: 400, audioDurationSeconds: 2, fallbacks: [] };
 

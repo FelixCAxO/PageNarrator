@@ -2,7 +2,7 @@ import { cpSync, existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, write
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { buildWebsite } from '../../scripts/build-website.mjs';
+import { buildWebsite } from '../../tooling/scripts/build-website.mjs';
 
 const directories = [];
 afterEach(() => {

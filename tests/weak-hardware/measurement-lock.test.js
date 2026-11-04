@@ -10,9 +10,9 @@ import {
   ensureMeasurementLock,
   readMeasurementLock,
   verifyInheritedMeasurementLock,
-} from '../../scripts/weak-hardware/measurement-lock.mjs';
+} from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 
-const MODULE_URL = pathToFileURL(path.resolve('scripts/weak-hardware/measurement-lock.mjs')).href;
+const MODULE_URL = pathToFileURL(path.resolve('tooling/scripts/weak-hardware/measurement-lock.mjs')).href;
 const roots = [];
 vi.mock('node:fs', async importOriginal => {
   const actual = await importOriginal();

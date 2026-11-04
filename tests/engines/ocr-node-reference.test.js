@@ -1,7 +1,7 @@
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { expect, it, vi } from 'vitest';
-import { createNodeOcrReference } from '../../scripts/lib/ocr-node-reference.mjs';
+import { createNodeOcrReference } from '../../tooling/scripts/lib/ocr-node-reference.mjs';
 
 function fixture() {
   const inputDispose = vi.fn(), outputDispose = vi.fn(), release = vi.fn();
@@ -46,6 +46,6 @@ it('releases a reference with an incompatible model interface before rejecting i
 });
 
 it.each(['--benchmark', '--recognizer', '--unwarp', '--reduction-accuracy', '--checkpoint-index=12'])('rejects unsupported Node comparator combination %s before starting a browser', flag => {
-  const result = spawnSync(process.execPath, ['scripts/probe-ocr-engine.mjs', '--node-reference', flag], { encoding: 'utf8', windowsHide: true });
+  const result = spawnSync(process.execPath, ['tooling/scripts/probe-ocr-engine.mjs', '--node-reference', flag], { encoding: 'utf8', windowsHide: true });
   expect(result.status).not.toBe(0); expect(result.stderr).toContain('Node reference supports full detector parity only');
 });

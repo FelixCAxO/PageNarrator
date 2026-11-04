@@ -1,5 +1,5 @@
 import{expect,it}from'vitest';
-import{scoreOcrHoldoutScan}from'../../scripts/lib/ocr-holdout-scan-scope.mjs';
+import{scoreOcrHoldoutScan}from'../../tooling/scripts/lib/ocr-holdout-scan-scope.mjs';
 
 const words=[{text:'Untranscribed',bbox:{x0:10,y0:10,x1:30,y1:20}},
   {text:'map-label',bbox:{x0:40,y0:10,x1:60,y1:20}},

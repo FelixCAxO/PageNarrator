@@ -6,7 +6,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { loadPdfLibraryBenchmarkGold } from '../helpers/pdf-library-benchmark-gold.js';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
-import { publicPdfLibraryManifest } from '../../scripts/lib/pdf-library-public-manifest.mjs';
+import { publicPdfLibraryManifest } from '../../tooling/scripts/lib/pdf-library-public-manifest.mjs';
 
 const folders = [];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');

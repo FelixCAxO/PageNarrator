@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { captureGate, inspectWav } from '../../scripts/benchmarks/measure.mjs';
+import { captureGate, inspectWav } from '../../tooling/scripts/benchmarks/measure.mjs';
 
 function wav(amplitude = 1000) {
   const b = Buffer.alloc(48);

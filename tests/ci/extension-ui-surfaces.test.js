@@ -6,7 +6,7 @@ const read = (path) => readFileSync(new URL(`../../${path}`, import.meta.url), '
 
 describe('toolbar-only extension UI', () => {
   it('registers the popup as the only player', () => {
-    const manifest = JSON.parse(read('manifest.json'));
+    const manifest = JSON.parse(read('extension/manifest.json'));
     const background = read('src/background.js');
     expect(manifest.action.default_popup).toBe('src/popup.html');
     expect(manifest.side_panel).toBeUndefined();

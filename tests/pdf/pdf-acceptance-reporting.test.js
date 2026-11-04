@@ -1,7 +1,7 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { scorePdfAcceptance, validateNaturalnessRatingPanel, validateNaturalnessReviews } from '../../scripts/pdf-acceptance-metrics.mjs';
+import { scorePdfAcceptance, validateNaturalnessRatingPanel, validateNaturalnessReviews } from '../../tooling/scripts/pdf-acceptance-metrics.mjs';
 
 const current = 'a'.repeat(64), historical = 'b'.repeat(64);
 const diagnostic = { reportIncompleteNaturalness: true };
@@ -24,7 +24,7 @@ function input() {
 function machineScores(result) {
   return Object.fromEntries(['readingOrder', 'narration', 'grounding', 'alignment', 'imageOnly'].map(key => [key, result[key]]));
 }
-const driver = readFileSync(new URL('../../scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
+const driver = readFileSync(new URL('../../tooling/scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
 // Execute only these existing pure metadata statements with authored objects, never runPdfAcceptance or any import in that file.
 function driverRatingMetadata(samples, ratings, reportIncompleteNaturalness) {
   const validation = driver.slice(driver.indexOf('export function validateNaturalnessRatings('), driver.indexOf('\nfunction countBenchmarkCategories'))

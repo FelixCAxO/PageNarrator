@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 import { describe, expect, it } from 'vitest';
-import { releaseExtensionAsset, releaseTestEnvironment, verifyReleaseZip } from '../../scripts/test-github-release.mjs';
+import { releaseExtensionAsset, releaseTestEnvironment, verifyReleaseZip } from '../../tooling/scripts/test-github-release.mjs';
 
 describe('GitHub release E2E input', () => {
   const bytes = Buffer.from('published extension ZIP');

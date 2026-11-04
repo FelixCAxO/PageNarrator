@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import oracle from '../../scripts/lib/node-onnx-oracle.mjs';
+import oracle from '../../tooling/scripts/lib/node-onnx-oracle.mjs';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
-import { kokoroOperatorFixture } from '../../scripts/lib/kokoro-operator-fixture.mjs';
+import { kokoroOperatorFixture } from '../../tooling/scripts/lib/kokoro-operator-fixture.mjs';
 
 const cases = [[1, 1, 2], [2, 3, 4]].flatMap(shape => [
   { shape, scale: 300, coordinateMode: 'half_pixel' },
@@ -18,7 +18,7 @@ it.each(cases)('retains float32 rank-three interpolation arithmetic for $shape /
     { name: 'scales', type: 1, shape: [3] }], [{ name: 'y', type: 1, shape: outputShape }],
   { mode: 'linear', coordinate_transformation_mode: coordinateMode });
   const reference = await oracle.InferenceSession.create(model, { executionProviders: ['cpu'], graphOptimizationLevel: 'disabled' });
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   try {
     const expected = (await reference.run({ x: new oracle.Tensor('float32', data, shape),
       scales: new oracle.Tensor('float32', Float32Array.of(1, 1, scale), [3]) })).y;

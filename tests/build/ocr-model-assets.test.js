@@ -2,10 +2,10 @@ import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { expect, it } from 'vitest';
 it('pins bundled OCR model bytes and records modifications and licensing', () => {
-  const models = JSON.parse(readFileSync('public/assets/ocr/models.json', 'utf8'));
+  const models = JSON.parse(readFileSync('extension/public/assets/ocr/models.json', 'utf8'));
   expect(models.map(m=>m.file)).toEqual(['uvdoc.onnx','tiny-det.onnx','small-rec.onnx','small-rec-alphabet.json']);
   for (const model of models) {
-    const bytes=readFileSync(`public/assets/ocr/${model.file}`);
+    const bytes=readFileSync(`extension/public/assets/ocr/${model.file}`);
     expect(bytes.length).toBe(model.bytes);
     expect(createHash('sha256').update(bytes).digest('hex')).toBe(model.sha256);
     expect(model.source.license).toBe('apache-2.0');

@@ -24,7 +24,7 @@ function sourceIndex(index, outputShape, inputShape) {
 }
 
 it.each(Object.keys(operations))('preserves scalar %s across channel runs, reverse operands, tails and short-axis fallback', async operation => {
-  const engine=await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine=await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   try {
     for(const [aShape,bShape,shape]of cases){
       const a=make(aShape,0),b=make(bShape,3),left=engine.upload(a,aShape),right=engine.upload(b,bShape),batch=engine.batch();
@@ -42,7 +42,7 @@ it.each(Object.keys(operations))('preserves scalar %s across channel runs, rever
 });
 
 it('keeps square-exponent validation and already-computed output order unchanged', async () => {
-  const engine=await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine=await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   try {
     const a=engine.upload(Float32Array.of(-0,2,3,4,5),[5]),b=engine.upload(Float32Array.of(2,2,3,2,2),[5]);
     const batch=engine.batch(),output=batch.binary('Pow',a,b);

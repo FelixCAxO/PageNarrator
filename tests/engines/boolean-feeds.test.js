@@ -67,7 +67,7 @@ it('copies safely when a supplied byte view overlaps the reusable conversion buf
 });
 
 it('replays mutable masks without changing old outputs, isolates sessions and clears storage on disposal', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const node = (opType, inputs, output, attributes = new Map()) => ({ opType, name: output, inputs, outputs: [output], attributes });
   const model = { graph: { initializers: [], inputs: [info, { ...info, name: 'other' }],
     outputs: [{ name: 'y', dataType: 9, dims: ['n'] }], nodes: [node('And', ['mask', 'other'], 'y')] }, functions: [], opsets: [{ version: 17 }] };

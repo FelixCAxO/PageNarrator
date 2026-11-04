@@ -7,7 +7,7 @@ import { openRoutedReaderEngine } from './kokoro-download-fixture.js';
 import { messageKey } from '../../src/lib/i18n.js';
 import { selectNativeOption } from './native-controls-fixture.js';
 
-const rollout = JSON.parse(await readFile('config/language-rollout.json', 'utf8'));
+const rollout = JSON.parse(await readFile('tooling/config/language-rollout.json', 'utf8'));
 const locales = rollout.languages.flatMap(language => language.locales);
 const selected = new Set((process.env.PN_E2E_UI_LOCALES || locales.join(',')).split(','));
 const root = path.resolve('artifacts/ui-translations/layout');
@@ -33,7 +33,7 @@ for (const locale of locales.filter(locale => selected.has(locale))) {
     test.skip(process.env.PN_E2E_UI_LOCALIZATION !== '1', 'Opt in to the full locale layout matrix.');
     test.setTimeout(90_000);
     await mkdir(root, { recursive: true });
-    const messages = JSON.parse(await readFile(`_locales/${locale}/messages.json`, 'utf8'));
+    const messages = JSON.parse(await readFile(`extension/public/_locales/${locale}/messages.json`, 'utf8'));
     const copy = source => messages[messageKey(source)].message;
     const { context, cleanup } = await launchExtensionContext({ testInfo, locale });
     const requests = [], layouts = [];

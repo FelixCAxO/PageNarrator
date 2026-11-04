@@ -4,7 +4,7 @@ import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 import { parseStandard14Widths, loadStandard14Widths } from '../../src/pdf/standard14-metrics.js';
 import { loadSimplePdfFont } from '../../src/pdf/fonts.js';
-import { retainedStandard14Entries, STANDARD14_DATA_FILES } from '../../scripts/lib/pdf-standard14-data.mjs';
+import { retainedStandard14Entries, STANDARD14_DATA_FILES } from '../../tooling/scripts/lib/pdf-standard14-data.mjs';
 
 vi.mock('../../src/pdf/font-metrics.js', () => ({ readTrueTypeMetrics: () => ({ isUnicode: true, glyphCount: 512,
   glyphId: code => code < 512 ? code : 0, widthByGlyph: () => 777.25, width: () => 777.25, ascent: .9, descent: -.2 }) }));

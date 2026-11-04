@@ -7,10 +7,10 @@ import { createKokoroTokenizer } from '../../src/tts/kokoro/tokenizer.js';
 import { Tensor } from '../../src/engines/browser-inference.js';
 
 it('aligns batch and streaming words to the actual original US/UK pronunciation and token IDs', async () => {
-  const tokenizer = createKokoroTokenizer(JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer.json')),
-    JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer_config.json')));
-  const phonemizer = await createEnglishPhonemizer({ wasmBinary: readFileSync('public/assets/phonemizer/english.wasm'),
-    pronunciationData: readFileSync('public/assets/phonemizer/pronunciations.bin') });
+  const tokenizer = createKokoroTokenizer(JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer.json')),
+    JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer_config.json')));
+  const phonemizer = await createEnglishPhonemizer({ wasmBinary: readFileSync('extension/public/assets/phonemizer/english.wasm'),
+    pronunciationData: readFileSync('extension/public/assets/phonemizer/pronunciations.bin') });
   const inputs = [];
   const session = { run: async feeds => {
     inputs.push(new BigInt64Array(feeds.input_ids.data));

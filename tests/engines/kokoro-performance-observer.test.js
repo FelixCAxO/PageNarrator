@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { expect, it, vi } from 'vitest';
 import { WebGpuCompute } from '../../src/engines/webgpu-compute.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
-import { observeKokoroEngine, kokoroPerformanceSnapshot } from '../../scripts/lib/kokoro-performance-worker.mjs';
+import { observeKokoroEngine, kokoroPerformanceSnapshot } from '../../tooling/scripts/lib/kokoro-performance-worker.mjs';
 
 it('observes the actual GPU buffer API, preserving size/usage/label, existing buffers and thrown limits', async () => {
   vi.stubGlobal('GPUBufferUsage', { STORAGE: 128 });
@@ -28,7 +28,7 @@ it('observes the actual GPU buffer API, preserving size/usage/label, existing bu
 });
 
 it('observes actual WASM aligned allocations and growth without changing arena ownership or cleanup', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const old = engine.allocate(17); observeKokoroEngine(engine);
   const block = engine.allocate(131073);
   expect(block.size).toBe(131088);

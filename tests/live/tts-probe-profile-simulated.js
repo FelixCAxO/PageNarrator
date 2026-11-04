@@ -1,4 +1,4 @@
-import { createProfileEvidence } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { createProfileEvidence } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 import { createSimulatedProfile, createRequirementCandidate, createIntegratedGpuDescriptor } from './tts-probe-profile-builders.js';
 
 export const DEFAULT_TTS_PROBE_PROFILE = Object.freeze({

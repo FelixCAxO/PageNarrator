@@ -33,12 +33,12 @@ Reference selection starts with the highest-scoring passing candidate, then pref
 Prepare all 1,280 normal/whisper samples and 40 Swedish restart/different-document replays:
 
 ```powershell
-node scripts/prepare-omnivoice-variations.mjs --include-whisper --include-replays --output=artifacts/omnivoice-fixed-voices/quality-native-v2
+node tooling/scripts/prepare-omnivoice-variations.mjs --include-whisper --include-replays --output=artifacts/omnivoice-fixed-voices/quality-native-v2
 $env:PN_E2E_LANGUAGE_AUDIT='1'
 $env:PN_E2E_LANGUAGE_AUDIT_REUSE_BACKING='1'
 $env:PN_E2E_LANGUAGE_AUDIT_DIR='artifacts/omnivoice-fixed-voices/quality-native-v2'
 $env:PN_E2E_EXTENSION_DIR='artifacts/omnivoice-fixed-voices/extension-native-v2'
-npx playwright test tests/e2e/omnivoice-language-audit.e2e.js --project=extension --workers=1
+npm run test:e2e:local -- tests/e2e/omnivoice-language-audit.e2e.js --project=extension --workers=1
 ```
 
 Every normal preset is synthesized by the packaged worker. With backing reuse, the remaining whisper samples use its exact saved float32 PCM and the production renderer, while female/male variation one in every language and all Swedish whispers exercise the packaged worker. Renderer comparisons retain byte equality and require maximum absolute float32 error ≤ 1e-6: Node and Chromium may round transcendental functions differently. Same-browser restart replays still require exact float32 equality. Capture provenance, renderer hash, source PCM and all failed attempts remain in the records. The hardware measurement lock serializes model capture and GPU recognition.

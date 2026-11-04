@@ -3,7 +3,7 @@ import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { launchExtensionContext, seedRealTtsFlowFlags } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
-import { ensureMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { ensureMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 import { estimateOmniVoiceFrames } from '../../src/tts/omnivoice/runtime.js';
 import catalog from '../../src/tts/omnivoice/speaker-data.js';
 import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';

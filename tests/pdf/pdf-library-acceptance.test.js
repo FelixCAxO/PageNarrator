@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it, vi } from 'vitest';
-import { scorePdfAcceptance } from '../../scripts/pdf-acceptance-metrics.mjs';
-import { releaseGateWaiver } from '../../scripts/lib/release-policy.mjs';
-import { bindPdfNaturalnessRatings, runPdfAcceptance } from '../../scripts/run-pdf-acceptance.mjs';
+import { scorePdfAcceptance } from '../../tooling/scripts/pdf-acceptance-metrics.mjs';
+import { releaseGateWaiver } from '../../tooling/scripts/lib/release-policy.mjs';
+import { bindPdfNaturalnessRatings, runPdfAcceptance } from '../../tooling/scripts/run-pdf-acceptance.mjs';
 import { PDF_LIBRARY_NATURALNESS_SAMPLE } from '../fixtures/pdf-library-naturalness-sample.js';
 
 const waiver = releaseGateWaiver('human-listening-reviews', '1.0.0');
@@ -35,7 +35,7 @@ it('qualifies bound human panels without a waiver and rejects stale, missing and
   expect(evaluate(records.slice(1)).naturalness.evidence.records[0].issues).toEqual(expect.arrayContaining([expect.objectContaining({ code: 'missing-rating' })]));
   expect(evaluate([...records, records[0]]).naturalness.evidence.records[0].issues).toEqual(expect.arrayContaining([expect.objectContaining({ code: 'ambiguous-rating' })]));
 });
-const driver = readFileSync(new URL('../../scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
+const driver = readFileSync(new URL('../../tooling/scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
 function contextualReader(iteratePdfSpeechChunks) {
   const start = driver.indexOf('async function getLibraryProductionPageText(');
   const end = driver.indexOf('\nexport function evaluateReadingOrder(', start);

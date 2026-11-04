@@ -8,7 +8,7 @@ import {
   isPassingVerdict,
   parseMatrixArgs,
   selectMatrixStages,
-} from '../../scripts/weak-hardware/run-matrix.mjs';
+} from '../../tooling/scripts/weak-hardware/run-matrix.mjs';
 import { getTtsProbeProfiles } from '../live/live-tts-hardware-profiles.js';
 import { getTtsProbeDocumentTypes } from '../live/live-tts-hardware-probe-documents.js';
 

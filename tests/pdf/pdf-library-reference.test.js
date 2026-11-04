@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { describe, expect, it } from 'vitest';
-import { rankLibraryPages, libraryReferencePageRequests, referenceCheckpoints, referenceFurniture } from '../../scripts/build-pdf-library-gold.mjs';
+import { rankLibraryPages, libraryReferencePageRequests, referenceCheckpoints, referenceFurniture } from '../../tooling/scripts/build-pdf-library-gold.mjs';
 
 const protocol = { minimumReferenceCharacters: 100, minimumAnchorCharacters: 24,
   minimumAnchorLetterCharacters: 12, maximumAnchorCharacters: 140, checkpoints: 5 };

@@ -8,7 +8,7 @@ import { tmpdir } from 'node:os';
 import {
   OCR_PRIVATE_FIXTURE_ENV, hasPrivateOcrFixtures, privateOcrFixturePath,
   readOcrSourceFile, readPinnedPrivateOcrFixture, readPrivateOcrFixture,
-} from '../../scripts/lib/ocr-private-fixtures.mjs';
+} from '../../tooling/scripts/lib/ocr-private-fixtures.mjs';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const roots = [];

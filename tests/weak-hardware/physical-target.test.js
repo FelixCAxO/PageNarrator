@@ -4,8 +4,8 @@ import {
   loadPhysicalTarget,
   readHostInventory,
   verifyPhysicalTargetAttestation,
-} from '../../scripts/weak-hardware/physical-target.mjs';
-import { createTtsRequirementsSummary } from '../../scripts/summarize-tts-requirements.mjs';
+} from '../../tooling/scripts/weak-hardware/physical-target.mjs';
+import { createTtsRequirementsSummary } from '../../tooling/scripts/summarize-tts-requirements.mjs';
 
 const LAPTOP = Object.freeze({
   hostname: 'OFFICE-LAPTOP-A',

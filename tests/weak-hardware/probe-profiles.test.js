@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { validateProfileEvidence } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { validateProfileEvidence } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 import { supportsKokoroCpuPool } from '../../src/tts/kokoro/cpu-pool.js';
 import {
   CPU_CONSTRAINED_TTS_PROBE_PROFILE_SET,

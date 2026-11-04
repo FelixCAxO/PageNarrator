@@ -4,7 +4,7 @@ import { execFileSync } from 'node:child_process';
 import { basename, join, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createHash } from 'node:crypto';
-import { packageRelease } from '../../scripts/package-release.mjs';
+import { packageRelease } from '../../tooling/scripts/package-release.mjs';
 
 vi.mock('node:fs', async original => {
   const fs = await original();
@@ -14,7 +14,7 @@ vi.mock('node:child_process', async original => {
   const child = await original();
   return { ...child, execFileSync: vi.fn(child.execFileSync) };
 });
-vi.mock('../../scripts/assert-release-package.mjs', async original => ({
+vi.mock('../../tooling/scripts/assert-release-package.mjs', async original => ({
   ...await original(), assertReleasePackage: vi.fn(async () => ({ metrics: {} })),
 }));
 
@@ -122,7 +122,7 @@ it.each(['default', 'explicit', 'alias'])('blocks test packages from canonical r
   const canonical = join(source, 'releases'); fs.mkdirSync(canonical);
   const directory = mode === 'alias' ? join(root, 'release-alias') : canonical;
   if (mode === 'alias') fs.symlinkSync(canonical, directory, 'junction');
-  const code = `import { packageRelease } from ${JSON.stringify(new URL('../../scripts/package-release.mjs', import.meta.url).href)};
+  const code = `import { packageRelease } from ${JSON.stringify(new URL('../../tooling/scripts/package-release.mjs', import.meta.url).href)};
     let failure; try { await packageRelease(process.argv[1], JSON.parse(process.argv[2])); } catch (error) { failure = error.message; }
     console.log(JSON.stringify({ failure }));`;
   const result = JSON.parse(child.execFileSync(process.execPath, ['--input-type=module', '-e', code, dist,

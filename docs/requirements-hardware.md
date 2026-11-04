@@ -17,7 +17,7 @@ Some PDF transparency and mask features also need float16 Canvas support. Unsupp
 
 ## What has been verified
 
-The current 1.0.3 Kokoro waveform comparisons pass CPU q8/fp32 and NVIDIA/Intel GPU fp32 on both production and original graphs. Each lane covers the same three cases twice, with exact shapes and unchanged numerical limits. These are bounded results on one host; physical hardware tiers and broad listening quality remain unverified. Earlier failed reports and version-specific decisions remain historical evidence in the [release policy](../config/release-policy.json) and [verification record](release-readiness.md).
+The current 1.0.3 Kokoro waveform comparisons pass CPU q8/fp32 and NVIDIA/Intel GPU fp32 on both production and original graphs. Each lane covers the same three cases twice, with exact shapes and unchanged numerical limits. These are bounded results on one host; physical hardware tiers and broad listening quality remain unverified. Earlier failed reports and version-specific decisions remain historical evidence in the [release policy](../tooling/config/release-policy.json) and [verification record](release-readiness.md).
 
 Development-host timings and simulated limits do not qualify other devices. The [benchmark record](benchmarks/README.md) keeps the measurements and their scope. Run real-model browser tests and `npm run requirements:tts` for diagnostics; see [hardware testing](weak-hardware-testing.md) for physical-tier acceptance.
 

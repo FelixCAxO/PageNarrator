@@ -2,7 +2,7 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { describe, expect, it } from 'vitest';
-import { copyOriginalPdfAssets } from '../../build/pdf-assets.js';
+import { copyOriginalPdfAssets } from '../../tooling/build/pdf-assets.js';
 
 describe('original PDF packaged assets', () => {
   it('ships only the original import-free parser and every pinned data file and notice', async () => {
@@ -16,7 +16,7 @@ describe('original PDF packaged assets', () => {
     expect(WebAssembly.Module.imports(parser)).toEqual([]);
     let expectedFiles = 1;
     for (const directory of ['pdf-data', 'pdf-cmaps']) {
-      const manifestBytes = readFileSync(`vendor/${directory}/manifest.json`);
+      const manifestBytes = readFileSync(`engines/vendor/${directory}/manifest.json`);
       expect(emitted.get(`assets/${directory}/manifest.json`)).toEqual(manifestBytes);
       const manifest = JSON.parse(manifestBytes);
       expectedFiles += manifest.files.length + 1;

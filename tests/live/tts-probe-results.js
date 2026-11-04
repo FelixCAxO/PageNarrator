@@ -8,10 +8,10 @@ import { summarizeTtsProbeRuns } from './live-tts-hardware-profiles.js';
 
 import { assessMeasurementValidity, assessRunEnvironment, classifyProbeOutcome, resolveExecutionBackend, pageBlockingFailures, summarizeAudioTap, summarizeMainThread, summarizeModelAcquisition, summarizeSectionReadyDeadlines, summarizeSectionTimeline, summarizeWorkerThreads } from './tts-probe-observations.js';
 
-import { RESULT_SCHEMA_VERSION, RUN_STATUS, SCHEDULING_MODES } from '../../scripts/weak-hardware/evidence-contract.mjs';
-import { computeGpuEngineUsage, computeJobCpuUsage } from '../../scripts/weak-hardware/windows-job.mjs';
+import { RESULT_SCHEMA_VERSION, RUN_STATUS, SCHEDULING_MODES } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
+import { computeGpuEngineUsage, computeJobCpuUsage } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 
-import { computeBusyFraction } from '../../scripts/weak-hardware/host-load.mjs';
+import { computeBusyFraction } from '../../tooling/scripts/weak-hardware/host-load.mjs';
 
 import { RUN_ID, SCHEDULING_MODE, getProbeSpeed, probeState } from './tts-probe-settings.js';
 import { describeProbeProfile } from './tts-probe-environment.js';

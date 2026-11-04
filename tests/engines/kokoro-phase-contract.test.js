@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
-import { phaseCorrectionFixture, debugKokoroPhaseCorrection, matmulFixture } from '../../scripts/lib/onnx-debug-outputs.mjs';
+import { phaseCorrectionFixture, debugKokoroPhaseCorrection, matmulFixture } from '../../tooling/scripts/lib/onnx-debug-outputs.mjs';
 import { decodeOnnxModel } from '../../src/engines/onnx-model.js';
 import { WebGpuOnnxSession } from '../../src/engines/webgpu-onnx-session.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
@@ -23,7 +23,7 @@ it('runs exact-zero phase correction in the real C++ session without epsilon or 
   const real = Float32Array.of(-1, -1, 1, 1, -1, -1, -1, -1, 1, 1, 0, 0, 0, 0, -0, -0);
   const imaginary = Float32Array.of(0, -0, 0, -0, 1e-7, -1e-7, 1, -1, 1, -1, 1, -1, 0, -0, 0, -0);
   const raw = Float32Array.from(real, (x, i) => exportedPhase(x, imaginary[i]));
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const session = await WebGpuOnnxSession.create(phaseCorrectionFixture(real.length), { engine });
   try {
     const feeds = { real: { shape: [real.length], data: real }, imaginary: { shape: [imaginary.length], data: imaginary }, raw: { shape: [raw.length], data: raw } };
@@ -43,7 +43,7 @@ it('runs exact-zero phase correction in the real C++ session without epsilon or 
 });
 
 it('retains the independent FFT DC residue from a real negative signal', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   try {
     const batch = engine.batch(), input = engine.upload(new Float32Array(40).fill(-1), [1, 40]);
     const window = engine.upload(Float32Array.from({ length: 20 }, (_, i) => .5 - .5 * Math.cos(2 * Math.PI * i / 20)), [20]);

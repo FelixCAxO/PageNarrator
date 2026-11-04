@@ -10,7 +10,7 @@ import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';
 import { createPdfPageModel } from '../../src/lib/pdf-page-model.js';
 import { item as pdfItem } from './pdf-page-model.fixtures.js';
 
-const driver = readFileSync(new URL('../../scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
+const driver = readFileSync(new URL('../../tooling/scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
 // Exercise the existing private driver functions with their real DOM/highlighting dependencies.
 // This follows the reporting-test convention without opening PDFs, importing the CLI or exporting test hooks.
 function driverHelpers(extractPdfTextFromData) {

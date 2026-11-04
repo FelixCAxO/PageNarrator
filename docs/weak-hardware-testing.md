@@ -2,11 +2,11 @@
 
 This harness checks backend choice, recovery, and resource limits on one Windows host. A constrained host is not a named older computer. Results apply only to observed conditions.
 
-For v1.0.0, physical hardware and human/listening reviews were waived on 2026-10-24. Kokoro duration/PCM differences remain failed/unqualified, accepted as a limitation on 2026-10-25. Other applicable software, numerical, OCR, and PDF checks remain required. Waivers do not establish performance or quality. See [policy](../config/release-policy.json) and [hardware recommendations](requirements-hardware.md). The maintainer explicitly extended those same disclosed exceptions to v1.0.1 on 2026-10-25. They do not apply to v1.0.2; unperformed reviews remain unverified and numerical failures remain failed/unqualified.
+For v1.0.0, physical hardware and human/listening reviews were waived on 2026-10-24. Kokoro duration/PCM differences remain failed/unqualified, accepted as a limitation on 2026-10-25. Other applicable software, numerical, OCR, and PDF checks remain required. Waivers do not establish performance or quality. See [policy](../tooling/config/release-policy.json) and [hardware recommendations](requirements-hardware.md). The maintainer explicitly extended those same disclosed exceptions to v1.0.1 on 2026-10-25. They do not apply to v1.0.2; unperformed reviews remain unverified and numerical failures remain failed/unqualified.
 
 ## Evidence categories
 
-Each profile's `evidence` descriptor separates reported capabilities, enforced constraints, physical hardware, injected faults, and limits. Categories can overlap; one never implies another. Definition: `scripts/weak-hardware/evidence-contract.mjs`.
+Each profile's `evidence` descriptor separates reported capabilities, enforced constraints, physical hardware, injected faults, and limits. Categories can overlap; one never implies another. Definition: `tooling/scripts/weak-hardware/evidence-contract.mjs`.
 
 | Category | Meaning | Source |
 | --- | --- | --- |
@@ -42,7 +42,7 @@ Speaking lanes fail above 750 ms of playback beyond audio duration (`playback.ma
 
 ## Enforced constraints
 
-`scripts/weak-hardware/windows-job-supervisor.cs` is compiled with PowerShell `Add-Type`. It starts Chrome suspended, assigns the process to a Job Object, then resumes it. `KILL_ON_JOB_CLOSE` and disabled breakaway contain descendants, including nested sandbox jobs. CDP uses WebSocket because pipes do not pass through this supervisor.
+`tooling/scripts/weak-hardware/windows-job-supervisor.cs` is compiled with PowerShell `Add-Type`. It starts Chrome suspended, assigns the process to a Job Object, then resumes it. `KILL_ON_JOB_CLOSE` and disabled breakaway contain descendants, including nested sandbox jobs. CDP uses WebSocket because pipes do not pass through this supervisor.
 
 `assessRunEnvironment()` checks browser job membership, affinity, active CPU/commit caps, peak commit within 1%, navigator overrides, fired fault counters, and the observed adapter. Exited processes may be ignored; other inspection failures leave the run unverified. Outside processes are recorded in `outsideDetails`. A contradiction means `invalid-environment`; missing observations mean `unverified`. Neither supports a pass.
 
@@ -118,4 +118,4 @@ npm run test:weak-hardware
 npm run measurement:lock -- status
 ```
 
-`scripts/weak-hardware/run-matrix.mjs` runs baseline, memory, faults, and lifecycle by default. Workloads, contention, and soak are opt-in. `--soak=<minutes>` permits exploratory runs, reported incomplete below 60 minutes. `--runs=<n>` raises samples. The matrix writes `tts-requirements-summary.{json,md}` and fails any failed, missing, blocked, incomplete, or invalid lane. `--require-pass` also needs physical tiers. The opt-in `weak-hardware` gate builds and runs this matrix; it is separate from the release gate.
+`tooling/scripts/weak-hardware/run-matrix.mjs` runs baseline, memory, faults, and lifecycle by default. Workloads, contention, and soak are opt-in. `--soak=<minutes>` permits exploratory runs, reported incomplete below 60 minutes. `--runs=<n>` raises samples. The matrix writes `tts-requirements-summary.{json,md}` and fails any failed, missing, blocked, incomplete, or invalid lane. `--require-pass` also needs physical tiers. The opt-in `weak-hardware` gate builds and runs this matrix; it is separate from the release gate.

@@ -8,24 +8,24 @@ import { describe, expect, it, vi } from 'vitest';
 import { JSDOM } from 'jsdom';
 import { localizeDocument, t, languageName, localizeLanguageOptions, messageKey } from '../../src/lib/i18n.js';
 import { OMNIVOICE_LANGUAGES } from '../../src/tts/omnivoice/languages.js';
-import { validateTranslatedCatalog } from '../../scripts/prepare-translations.mjs';
+import { validateTranslatedCatalog } from '../../tooling/scripts/prepare-translations.mjs';
 import { VOICE_ENGINE_HELP } from '../../src/lib/omnivoice-settings.js';
 
 const readJson = path => JSON.parse(readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8'));
-const source = readJson('_locales/en/messages.json');
-const rollout = readJson('config/language-rollout.json');
-const sources = readJson('config/ui-message-sources.json');
+const source = readJson('extension/public/_locales/en/messages.json');
+const rollout = readJson('tooling/config/language-rollout.json');
+const sources = readJson('tooling/config/ui-message-sources.json');
 const locales = rollout.languages.flatMap(language => language.locales);
 
 describe('packaged UI translations', () => {
   it('rebuilds every reviewed locale offline without drafting artifacts or a translation model', () => {
     const directory = mkdtempSync(join(tmpdir(), 'pagenarrator-reviewed-locales-'));
     try {
-      cpSync(new URL('../../config', import.meta.url), join(directory, 'config'), { recursive: true });
-      cpSync(new URL('../../_locales/en', import.meta.url), join(directory, '_locales/en'), { recursive: true });
-      execFileSync(process.execPath, [fileURLToPath(new URL('../../scripts/install-ui-translations.mjs', import.meta.url))], { cwd: directory });
+      cpSync(new URL('../../tooling/config', import.meta.url), join(directory, 'tooling/config'), { recursive: true });
+      cpSync(new URL('../../extension/public/_locales/en', import.meta.url), join(directory, 'extension/public/_locales/en'), { recursive: true });
+      execFileSync(process.execPath, [fileURLToPath(new URL('../../tooling/scripts/install-ui-translations.mjs', import.meta.url))], { cwd: directory });
       for (const locale of locales) {
-        expect(JSON.parse(readFileSync(join(directory, '_locales', locale, 'messages.json'), 'utf8'))).toEqual(readJson(`_locales/${locale}/messages.json`));
+        expect(JSON.parse(readFileSync(join(directory, 'extension/public/_locales', locale, 'messages.json'), 'utf8'))).toEqual(readJson(`extension/public/_locales/${locale}/messages.json`));
       }
     } finally {
       if (!directory.startsWith(join(tmpdir(), 'pagenarrator-reviewed-locales-'))) throw new Error('Unexpected test directory');
@@ -34,7 +34,7 @@ describe('packaged UI translations', () => {
   });
 
   it('keeps reviewed controls and recovery instructions from regressing to ambiguous draft wording', () => {
-    const text = (locale, english) => readJson(`_locales/${locale}/messages.json`)[messageKey(english)].message;
+    const text = (locale, english) => readJson(`extension/public/_locales/${locale}/messages.json`)[messageKey(english)].message;
     expect(text('sv', 'Sign in')).toBe('Logga in');
     expect(text('nl', 'min')).toBe('min');
     expect(text('ja', 'Free storage')).toBe('空き容量を確保');
@@ -47,7 +47,7 @@ describe('packaged UI translations', () => {
       tr: 'doğrulanmamıştır', th: 'ยังไม่ได้ตรวจสอบ', uk: 'не перевірені', vi: 'chưa được kiểm chứng', id: 'belum diverifikasi', es: 'no se han verificado',
       fr: 'n’ont pas été vérifiés', nl: 'niet op fysieke apparaten geverifieerd', ja: '検証されていません' };
     for (const locale of locales) {
-      const catalog = readJson(`_locales/${locale}/messages.json`);
+      const catalog = readJson(`extension/public/_locales/${locale}/messages.json`);
       const hardware = catalog[messageKey('Use Chromium 120 or newer. Kokoro has a slower CPU fallback. Physical hardware tiers are unverified.')].message;
       expect(hardware).toContain('120');
       expect(hardware).toContain('Kokoro');
@@ -57,7 +57,7 @@ describe('packaged UI translations', () => {
   });
 
   it.each(locales)('%s contains complete messages and intact substitutions', locale => {
-    const catalog = readJson(`_locales/${locale}/messages.json`);
+    const catalog = readJson(`extension/public/_locales/${locale}/messages.json`);
     expect(Object.keys(catalog).sort()).toEqual(Object.keys(source).sort());
     expect(validateTranslatedCatalog(source, catalog)).toEqual([]);
     for (const [key, entry] of Object.entries(catalog)) {

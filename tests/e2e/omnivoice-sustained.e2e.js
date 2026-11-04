@@ -5,7 +5,7 @@ import path from 'node:path';
 import { launchExtensionContext, openExtensionPage, seedHardwareProfile, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { installSilentOutputCapture } from './silent-output-capture.js';
-import { ensureMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { ensureMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 
 test('OmniVoice sustains real playback within a browser commit limit', async () => {
   test.skip(process.env.PN_E2E_SUSTAINED_OV !== '1', 'Explicit real-model memory-ceiling soak; physical output stays muted.');

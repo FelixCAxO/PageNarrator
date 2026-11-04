@@ -1,6 +1,6 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { createLiveTtsProbeRunPlan } from '../../scripts/run-live-tts-probe.mjs';
+import { createLiveTtsProbeRunPlan } from '../../tooling/scripts/run-live-tts-probe.mjs';
 import { LOWER_SPEC_TTS_PROBE_PROFILE_SET, getTtsProbeProfiles } from '../live/live-tts-hardware-profiles.js';
 
 const TEST_REVISION = { shortSha: '0123456789ab', dirty: true };
@@ -21,7 +21,7 @@ describe('live TTS probe runner', () => {
     expect(plan.args).toContain('run');
     expect(plan.args).toContain('tests/live/live-tts-hardware-probe.test.js');
     expect(plan.args).toContain('--config');
-    expect(plan.args).toContain('vitest.live.config.js');
+    expect(plan.args).toContain('tooling/vitest.live.config.js');
     expect(plan.args).toContain('--pool=forks');
     expect(plan.args).toContain('--maxWorkers=1');
     expect(plan.jobs).toHaveLength(1);

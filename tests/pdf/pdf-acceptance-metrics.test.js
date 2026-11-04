@@ -3,7 +3,7 @@ import {
   countNarrationErrors,
   matchesOrderedCheckpoints,
   scorePdfAcceptance,
-} from '../../scripts/pdf-acceptance-metrics.mjs';
+} from '../../tooling/scripts/pdf-acceptance-metrics.mjs';
 
 // Authored unit metadata only; these reviewer constants are never release evidence.
 const humanReviews = (hash, count = 2) => Array.from({ length: count }, (_, i) => ({

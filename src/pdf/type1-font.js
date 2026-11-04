@@ -1,7 +1,7 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 // Original bounded Type 1 data reader. No PostScript program is evaluated.
 import { PdfEngineError } from './native-reader.js';
-import glyphMappings from '../../vendor/pdf-glyphs/mappings.json' with { type: 'json' };
+import glyphMappings from '../../engines/vendor/pdf-glyphs/mappings.json' with { type: 'json' };
 
 const whitespace = c => [0, 9, 10, 12, 13, 32].includes(c);
 const bad = message => { throw new PdfEngineError(message, 'pdf_corrupt'); };

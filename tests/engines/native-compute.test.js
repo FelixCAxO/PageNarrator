@@ -4,7 +4,7 @@ import { NativeCompute } from '../../src/engines/native-compute.js';
 import { broadcastShape, matrixShape, tensorSize } from '../../src/engines/tensor-shape.js';
 
 let engine;
-beforeAll(async () => { engine = await NativeCompute.create(readFileSync(new URL('../../public/native/engine.wasm', import.meta.url))); });
+beforeAll(async () => { engine = await NativeCompute.create(readFileSync(new URL('../../extension/public/native/engine.wasm', import.meta.url))); });
 
 function referenceMatmul(a, b, m, n, k) {
   const out = new Float32Array(m * n);

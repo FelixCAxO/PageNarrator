@@ -1,1 +1,1 @@
-export { cpuOperator, cpuStft } from '../../scripts/lib/cpu-operator-oracle.mjs';
+export { cpuOperator, cpuStft } from '../../tooling/scripts/lib/cpu-operator-oracle.mjs';

@@ -145,9 +145,9 @@ it('never confuses buffered OCR chunks with the full book, including pause and f
 
 it('runs the standalone checker without loading a PDF or OCR engine', () => {
   const result = JSON.parse(execFileSync(process.execPath,
-    ['scripts/check-pdf-remaining.mjs', '8', '401'], { encoding: 'utf8' }));
+    ['tooling/scripts/check-pdf-remaining.mjs', '8', '401'], { encoding: 'utf8' }));
   expect(result.remainingPages).toBe(393);
-  expect(spawnSync(process.execPath, ['scripts/check-pdf-remaining.mjs', '0', '401']).status).toBe(1);
+  expect(spawnSync(process.execPath, ['tooling/scripts/check-pdf-remaining.mjs', '0', '401']).status).toBe(1);
 });
 
 it('broadcasts the active OCR page through the real state renderer to the popup', () => {

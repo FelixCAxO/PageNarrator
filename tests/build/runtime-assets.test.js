@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { copyPublicRuntimeAssets, rejectRetiredRuntimeModules } from "../../build/runtime-assets.js";
+import { copyPublicRuntimeAssets, rejectRetiredRuntimeModules } from "../../tooling/build/runtime-assets.js";
 
 describe('runtime asset build helpers', () => {
   it.each(['@huggingface/transformers', '@mozilla/readability', 'kokoro-js', 'onnxruntime-web', 'onnxruntime-web-omnivoice',
@@ -42,7 +42,7 @@ describe('runtime asset build helpers', () => {
         writeFileSync(join(publicDir, file), file);
       }
       const plugin = copyPublicRuntimeAssets();
-      expect(readFileSync(new URL('../../vite.config.js', import.meta.url), 'utf8')).toContain('copyPublicRuntimeAssets(),');
+      expect(readFileSync(new URL('../../tooling/vite.config.js', import.meta.url), 'utf8')).toContain('copyPublicRuntimeAssets(),');
       expect(plugin.config()).toEqual({ build: { copyPublicDir: false } });
       plugin.configResolved({ root, publicDir, build: { outDir: 'dist' } });
       plugin.writeBundle();

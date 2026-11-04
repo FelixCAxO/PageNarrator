@@ -44,7 +44,7 @@ Percentages are medians of paired ratios for the indicated diagnostic shapes, no
 
 ## Improve the reusable benchmark
 
-[inference-kernels.mjs](../../scripts/benchmarks/inference-kernels.mjs) now uses the interleaved method and runs original/original controls before each comparison. Existing numerical checks and resource cleanup remain required. Reports retain both raw intervals and control samples:
+[inference-kernels.mjs](../../tooling/scripts/benchmarks/inference-kernels.mjs) now uses the interleaved method and runs original/original controls before each comparison. Existing numerical checks and resource cleanup remain required. Reports retain both raw intervals and control samples:
 
 - Every interval must be finite and positive to yield a usable per-dispatch time. Invalid intervals retain their raw values and produce null averages.
 - Every timed row records `controlMedianRatio` and `timingControlPassed`. The row passes its noise screen only when all its intervals are valid and the control median is within 5% of equality.

@@ -9,7 +9,7 @@ import {
   auditUnpublishedPath,
   loadPageContracts,
   loadRedirectContracts,
-} from '../../scripts/smoke-production.mjs';
+} from '../../tooling/scripts/smoke-production.mjs';
 
 const publicDir = join(import.meta.dirname, '../../website/public');
 const pageContracts = loadPageContracts(publicDir);

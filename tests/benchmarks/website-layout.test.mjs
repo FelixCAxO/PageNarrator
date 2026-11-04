@@ -4,7 +4,7 @@ import { readFile } from 'node:fs/promises';
 import { extname, join, normalize } from 'node:path';
 import { after, before, test } from 'node:test';
 import { chromium } from '@playwright/test';
-import { ROOT, browserOptions } from '../../scripts/build-homepage-css.mjs';
+import { ROOT, browserOptions } from '../../tooling/scripts/build-homepage-css.mjs';
 
 // Rendered layout checks for the marketing site: real pages, real stylesheets (including the
 // generated homepage CSS), offline. Google Fonts is blocked, so headings use the fallback serif.

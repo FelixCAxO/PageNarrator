@@ -3,8 +3,8 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import sharp from 'sharp';
 import { expect, it } from 'vitest';
-import { SITE_BRAND_ICON, renderSiteBrandIcon } from '../../scripts/build-site-brand-icon.mjs';
-import { websiteHtmlFiles } from '../../scripts/smoke-production.mjs';
+import { SITE_BRAND_ICON, renderSiteBrandIcon } from '../../tooling/scripts/build-site-brand-icon.mjs';
+import { websiteHtmlFiles } from '../../tooling/scripts/smoke-production.mjs';
 
 const root = join(import.meta.dirname, '../..');
 const read = (path) => readFileSync(join(root, path));
@@ -50,7 +50,7 @@ it('reuses the site logo and extension favicon on every extension page', () => {
     const css = read(`src/${page}.css`).toString();
     const html = read(`src/${page}.html`).toString();
     expect(css, page).toContain(`url("../website/public${ICON_ASSET}")`);
-    expect(html, page).toContain('<link rel="icon" type="image/png" href="../icons/icon-32.png" />');
+    expect(html, page).toContain('<link rel="icon" type="image/png" href="/icons/icon-32.png" />');
   }
 });
 

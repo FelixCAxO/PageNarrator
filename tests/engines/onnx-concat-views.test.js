@@ -40,7 +40,7 @@ it('preserves the backend type-mismatch rejection even for an empty input', () =
   expect(c.run).toThrow('Original type error'); expect(c.batch.view).not.toHaveBeenCalled();
 });
 it('preserves named outputs, writable ScatterND results, cached updates and disposal on the CPU engine', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const node = (opType, inputs, output, attributes = new Map()) => ({ opType, inputs, outputs: [output], attributes });
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: [4] }, { name: 'e', dataType: 1, dims: [0] },
     { name: 'indices', dataType: 7, dims: [1, 1] }, { name: 'updates', dataType: 1, dims: [1] }],

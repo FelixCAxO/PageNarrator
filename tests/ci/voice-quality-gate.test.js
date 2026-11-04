@@ -1,11 +1,11 @@
 import { expect, it, vi } from 'vitest';
 import { resolve } from 'node:path';
-import { verifyVoiceQuality } from '../../scripts/verify-voice-quality.mjs';
-import { evaluateVoiceReceipt } from '../../scripts/voice-listening-reviews.mjs';
-import { verifyQualityBuild } from '../../scripts/lib/kokoro-quality-controls.mjs';
+import { verifyVoiceQuality } from '../../tooling/scripts/verify-voice-quality.mjs';
+import { evaluateVoiceReceipt } from '../../tooling/scripts/voice-listening-reviews.mjs';
+import { verifyQualityBuild } from '../../tooling/scripts/lib/kokoro-quality-controls.mjs';
 
-vi.mock('../../scripts/voice-listening-reviews.mjs', () => ({ evaluateVoiceReceipt: vi.fn() }));
-vi.mock('../../scripts/lib/kokoro-quality-controls.mjs', () => ({ verifyQualityBuild: vi.fn() }));
+vi.mock('../../tooling/scripts/voice-listening-reviews.mjs', () => ({ evaluateVoiceReceipt: vi.fn() }));
+vi.mock('../../tooling/scripts/lib/kokoro-quality-controls.mjs', () => ({ verifyQualityBuild: vi.fn() }));
 
 it('keeps missing independent reviews unqualified', async () => {
   expect(await verifyVoiceQuality({ receipt: '' })).toMatchObject({ status: 'not-qualified' });

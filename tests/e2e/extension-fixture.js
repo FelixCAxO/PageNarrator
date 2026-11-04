@@ -4,8 +4,8 @@ import { existsSync } from 'node:fs';
 import { cp, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { browserAdapterConfiguration } from '../../scripts/lib/browser-adapter.mjs';
-import { startJobSupervisor } from '../../scripts/weak-hardware/windows-job.mjs';
+import { browserAdapterConfiguration } from '../../tooling/scripts/lib/browser-adapter.mjs';
+import { startJobSupervisor } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 import { STORAGE_KEYS } from '../../src/lib/storage-keys.js';
 import {
   TEST_FLAG_STORAGE_KEYS,

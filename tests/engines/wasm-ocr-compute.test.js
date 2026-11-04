@@ -5,7 +5,7 @@ import { slicePlan, transposePlan } from '../../src/engines/index-shape.js';
 import { NativeCompute, UNARY_OPERATIONS } from '../../src/engines/native-compute.js';
 
 let engine;
-beforeEach(async () => { engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm')); });
+beforeEach(async () => { engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm')); });
 afterEach(async () => { await engine?.dispose(); });
 const upload = (data, shape) => engine.upload(Float32Array.from(data), shape);
 const near = (actual, expected, tolerance = 2e-5) => {
@@ -15,7 +15,7 @@ const near = (actual, expected, tolerance = 2e-5) => {
 
 it('compacts fragmented storage without invalidating views or captured command handles', async () => {
   await engine.dispose();
-  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'), { maxBytes: 262144 });
   const hole = upload(new Float32Array(8192), [8192]);
   const middle = upload(new Float32Array(8192), [8192]);
   const input = upload(new Float32Array(8192).fill(-3), [8192]);
@@ -38,7 +38,7 @@ it('compacts fragmented storage without invalidating views or captured command h
 
 it.each(['upload', 'uploadInt32', 'uploadBytes'])('copies arena-backed %s input before allocation can relocate it', async method => {
   await engine.dispose();
-  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'), { maxBytes: 262144 });
   const type = method === 'uploadInt32' ? Int32Array : Float32Array;
   const first = engine.tensor([8192]), source = engine.upload(type.from({ length: 16384 }, (_, i) => i - 1024), [16384], type === Int32Array ? 'int32' : 'float32');
   const second = engine.tensor([8192]), tail = engine.tensor([4096]);
@@ -55,7 +55,7 @@ it.each(['upload', 'uploadInt32', 'uploadBytes'])('copies arena-backed %s input 
 
 it('flushes recycled scratch under pressure while preserving the arena ceiling and disabling replay', async () => {
   await engine.dispose();
-  engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 262144 });
+  engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'), { maxBytes: 262144 });
   const input = upload(new Float32Array(8192).fill(-2), [8192]);
   const batch = engine.batch({ capture: true, allowSpill: true });
   const temporary = batch.unary('Relu', input); batch.recycle(temporary);
@@ -103,7 +103,7 @@ it('performs broadcast batch matrix multiplication', async () => {
 });
 
 it('preserves scalar activation semantics at SIMD boundaries, signed zero, subnormal ranges and nonfinite values', async () => {
-  const reference = await NativeCompute.create(readFileSync('public/native/engine.wasm'));
+  const reference = await NativeCompute.create(readFileSync('extension/public/native/engine.wasm'));
   const data = Float32Array.of(-Infinity, -100, -6, -2, -1, -0, 0, .2, .9, 1, 6, 80, 100, Infinity, NaN, 2.3, 9.9);
   const input = upload(data, [data.length]), batch = engine.batch(), outputs = [];
   for (const operation of Object.keys(UNARY_OPERATIONS)) outputs.push([operation, batch.unary(operation, input)]);
@@ -135,7 +135,7 @@ it.each(['int8', 'uint8', 'bool'])('retains exact one-byte %s storage through co
 
 it('validates boolean bytes and constructs derived compute classes in the same arena', async () => {
   class DerivedCompute extends WasmOcrCompute {}
-  const derived = await DerivedCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const derived = await DerivedCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   try { expect(derived).toBeInstanceOf(DerivedCompute); }
   finally { await derived.dispose(); }
   expect(() => engine.upload(Uint8Array.of(2), [1], 'bool')).toThrow();
@@ -245,7 +245,7 @@ it('normalizes channels, preserves softmax stability and selects first/last ties
 });
 
 it('bounds memory, refuses foreign/released tensors and fails unsupported square variants', async () => {
-  const small = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'), { maxBytes: 131072 });
+  const small = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'), { maxBytes: 131072 });
   try {
     expect(() => small.tensor([100000])).toThrow(/memory limit|arena limit/);
     const own = upload([1], [1]); expect(() => small.checkTensor(own)).toThrow(/another/);

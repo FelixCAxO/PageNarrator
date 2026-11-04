@@ -3,8 +3,8 @@ import { chromium } from '@playwright/test';
 import {
   createLiveExtensionPagesEvidence,
   createLiveTestRunPlan,
-} from '../../scripts/run-live-tests.mjs';
-import { createLiveTtsProbeRunPlan } from '../../scripts/run-live-tts-probe.mjs';
+} from '../../tooling/scripts/run-live-tests.mjs';
+import { createLiveTtsProbeRunPlan } from '../../tooling/scripts/run-live-tts-probe.mjs';
 
 describe('live extension page runner', () => {
   it('uses the live Vitest config so root test exclusions do not hide live tests', () => {
@@ -20,7 +20,7 @@ describe('live extension page runner', () => {
     expect(plan.args).toContain('tests/live/live-language-pages.test.js');
     expect(plan.args).toContain('tests/live/live-extension-pages.test.js');
     expect(plan.args).toContain('--config');
-    expect(plan.args).toContain('vitest.live.config.js');
+    expect(plan.args).toContain('tooling/vitest.live.config.js');
     expect(plan.env).toMatchObject({
       PATH: 'test-path',
       PAGENARRATOR_LIVETEST: '1',

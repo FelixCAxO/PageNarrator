@@ -5,7 +5,7 @@ import { WasmOcrCompute } from '../../src/engines/wasm-ocr-compute.js';
 import { WasmKokoroCompute } from '../../src/engines/kokoro-cpu-compute.js';
 
 async function setup(budget) {
-  const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: ['n'] }], outputs: [{ name: 'y', dataType: 1, dims: ['n'] }],
     nodes: [{ name: 'relu', opType: 'Relu', inputs: ['x'], outputs: ['y'], attributes: new Map() }] };
   const session = new WebGpuOnnxSession({ graph, opsets: [{ version: 17 }], functions: [] }, engine, false, budget, 2);
@@ -26,7 +26,7 @@ it('replays alternating shapes with changed feed values and evicts the least rec
 });
 
 it('replays integer feeds inside captured bounds and revalidates expanded ranges before arithmetic', async () => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 6, dims: [2] }], outputs: [{ name: 'y', dataType: 6, dims: [2] }],
     nodes: [{ name: 'double', opType: 'Add', inputs: ['x', 'x'], outputs: ['y'], attributes: new Map() }] };
   const session = new WebGpuOnnxSession({ graph, functions: [] }, engine, false, 4096, 2);
@@ -54,7 +54,7 @@ it('reuses graph planning across feed shapes while validating every requested ou
 });
 
 it('uploads aliased feeds once, preserves mutations and never reuses aliases for independent inputs', async () => {
-  const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   const graph = { initializers: [], inputs: ['x', 'z'].map(name => ({ name, dataType: 1, dims: ['n'] })), outputs: [{ name: 'y', dataType: 1, dims: ['n'] }],
     nodes: [{ name: 'sum', opType: 'Add', inputs: ['x', 'z'], outputs: ['y'], attributes: new Map() }] };
   const session = new WebGpuOnnxSession({ graph, opsets: [{ version: 17 }], functions: [] }, engine, false, 4096, 2);
@@ -86,7 +86,7 @@ it('drops host model payload references and still disposes its owned engine when
 });
 
 it('keeps cached metadata outputs independent from caller shape and data mutations', async () => {
-  const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: [2, 3] }], outputs: [{ name: 's', dataType: 7, dims: [2] }],
     nodes: [{ name: 'shape', opType: 'Shape', inputs: ['x'], outputs: ['s'], attributes: new Map() }] };
   const session = new WebGpuOnnxSession({ graph, functions: [] }, engine, false, 4096, 2);
@@ -103,7 +103,7 @@ it('keeps cached metadata outputs independent from caller shape and data mutatio
 });
 
 it('uploads large weights once and detaches small metadata from their backing payload', async () => {
-  const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   const payload = new Float32Array(2048).fill(2);
   const tensor = (name, offset, length) => ({ name, dims: [length], dataType: 1,
     rawData: new Uint8Array(payload.buffer, offset * 4, length * 4), typedData: new Map(), externalData: new Map(), dataLocation: 0 });
@@ -127,7 +127,7 @@ it('uploads large weights once and detaches small metadata from their backing pa
 });
 
 it.each([[2, Uint8Array, 9], [3, Int8Array, -9]])('releases type %i host weights while retaining small metadata and exact repeated inference', async (dataType, ArrayType, number) => {
-  const engine = await WasmKokoroCompute.create(readFileSync('public/native/kokoro-engine.wasm'));
+  const engine = await WasmKokoroCompute.create(readFileSync('extension/public/native/kokoro-engine.wasm'));
   const payload = new ArrayType(2048).fill(number);
   const tensor = (name, offset, length) => ({ name, dims: [length], dataType,
     rawData: new Uint8Array(payload.buffer, offset, length), typedData: new Map(), externalData: new Map(), dataLocation: 0 });
@@ -152,7 +152,7 @@ it.each([[2, Uint8Array, 9], [3, Int8Array, -9]])('releases type %i host weights
 });
 
 it('recycles unused named outputs before later operators allocate scratch storage', async () => {
-  const engine = await WasmOcrCompute.create(readFileSync('public/native/ocr-engine.wasm'));
+  const engine = await WasmOcrCompute.create(readFileSync('extension/public/native/ocr-engine.wasm'));
   const graph = { initializers: [], inputs: [{ name: 'x', dataType: 1, dims: [4] }], outputs: [{ name: 'y', dataType: 1, dims: [2] }], nodes: [
     { name: 'split', opType: 'Split', inputs: ['x'], outputs: ['kept', 'unused'], attributes: new Map([['axis', { type: 2, value: 0 }], ['split', { type: 7, value: [2, 2] }]]) },
     { name: 'relu', opType: 'Relu', inputs: ['kept'], outputs: ['y'], attributes: new Map() },

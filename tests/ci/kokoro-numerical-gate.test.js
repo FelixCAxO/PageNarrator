@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { expect, it, vi } from 'vitest';
-import { kokoroNumericalPlan, verifyKokoroNumerics } from '../../scripts/verify-kokoro-numerics.mjs';
+import { kokoroNumericalPlan, verifyKokoroNumerics } from '../../tooling/scripts/verify-kokoro-numerics.mjs';
 
 it('makes the full-model comparison part of release verification', () => {
-  const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
-  expect(gates.release).toContain('node scripts/verify-kokoro-numerics.mjs');
+  const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
+  expect(gates.release).toContain('node tooling/scripts/verify-kokoro-numerics.mjs');
 });
 
 it.each(['1.0.0', '1.0.1'])('preserves the %s acceptance as failed/unqualified rather than a pass or a waiver', version => {
@@ -74,6 +74,6 @@ it.each([undefined, { failureKind: 'execution' }])('blocks missing or unexpected
 });
 
 it('requires the independent voice study separately instead of treating math as speech quality', () => {
-  const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
-  expect(gates.release).toContainEqual({ command: 'node scripts/verify-voice-quality.mjs', gateId: 'human-listening-reviews' });
+  const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
+  expect(gates.release).toContainEqual({ command: 'node tooling/scripts/verify-voice-quality.mjs', gateId: 'human-listening-reviews' });
 });

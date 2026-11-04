@@ -170,18 +170,18 @@ describe('host page layout safety', () => {
     ]));
   });
 
-  it.each(['manifest.json', 'dist/manifest.json'])('%s declares no always-on content script', (relPath) => {
-    const manifest = relPath === 'manifest.json' ? readJson(relPath) : tryReadJson(relPath);
+  it.each(['extension/manifest.json', 'dist/manifest.json'])('%s declares no always-on content script', (relPath) => {
+    const manifest = relPath === 'extension/manifest.json' ? readJson(relPath) : tryReadJson(relPath);
     if (!manifest) return;
     expect(manifest.content_scripts).toBeUndefined();
   });
 
   it('prelaunch runs the host-layout guardrail before release builds', () => {
     const packageJson = readJson('package.json');
-    const gates = readJson('config/verification-gates.json');
+    const gates = readJson('tooling/config/verification-gates.json');
 
     expect(packageJson.scripts['test:host-layout']).toBe(
-      'vitest run tests/ci/host-page-layout-safety.test.js',
+      'vitest run --config tooling/vite.config.js tests/ci/host-page-layout-safety.test.js',
     );
     expect(packageJson.scripts.prelaunch).toBe('npm run launch:full && npm run smoke:production');
     expect(packageJson.scripts['launch:full']).toBe('npm run verify:release');

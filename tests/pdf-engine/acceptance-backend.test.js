@@ -1,6 +1,6 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
 import { expect, it, vi } from 'vitest';
-import { loadPdfAcceptanceBackend } from '../../scripts/lib/pdf-acceptance-backend.mjs';
+import { loadPdfAcceptanceBackend } from '../../tooling/scripts/lib/pdf-acceptance-backend.mjs';
 
 function authoredDependencies(original = true) {
   const task = { promise: Promise.resolve({ authored: true }), destroy: vi.fn() };
@@ -15,7 +15,7 @@ function authoredDependencies(original = true) {
 it('defaults to the original facade and preserves the actual task and input bytes', async () => {
   const dependencies = authoredDependencies(), input = new Uint8Array([3, 1, 4]);
   const { engine, identity } = await loadPdfAcceptanceBackend(undefined, dependencies);
-  expect(dependencies.loadModule).toHaveBeenCalledExactlyOnceWith('../../src/pdf/pdf-engine.js');
+  expect(dependencies.loadModule).toHaveBeenCalledExactlyOnceWith('../../../src/pdf/pdf-engine.js');
   const task = engine.getDocument({ data: input, password: 'authored', disableWorker: false, wasm: 'override', loadAsset: 'override' });
   expect(task).toBe(dependencies.task);
   const settings = dependencies.getDocument.mock.calls[0][0];

@@ -6,7 +6,7 @@ import { extname, resolve, sep } from 'node:path';
 
 test.skip(process.env.PN_E2E_WEBSITE_LOCALIZATION !== '1', 'Opt in to the localized website layout matrix.');
 test.use({ launchOptions: { args: ['--mute-audio'] } });
-const scope = JSON.parse(await readFile('config/language-rollout.json', 'utf8'));
+const scope = JSON.parse(await readFile('tooling/config/language-rollout.json', 'utf8'));
 const variants = scope.languages.flatMap(language => language.locales).map(locale => ({
   locale, tag: locale.replace('_', '-'), path: locale === 'en' ? '/' : `/${locale.replace('_', '-').toLowerCase()}/`,
 }));

@@ -9,7 +9,7 @@ import { chromium } from '@playwright/test';
 import {
   ROOT, SOURCE_CSS, browserOptions, buildHomepageCss, homepageAsset,
   makeHomepageCss, matchingSelectorsInDocument, sha256,
-} from '../../scripts/build-homepage-css.mjs';
+} from '../../tooling/scripts/build-homepage-css.mjs';
 
 const postcss = createRequire(import.meta.url)('postcss');
 const publicDir = join(ROOT, 'website/public');

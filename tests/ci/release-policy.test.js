@@ -2,10 +2,10 @@ import { readFileSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it, vi } from 'vitest';
-import { RELEASE_POLICY, releaseAcceptedLimitation, releaseGateWaiver } from '../../scripts/lib/release-policy.mjs';
-import { runGateCommands, verificationSteps } from '../../scripts/run-verification-gate.mjs';
+import { RELEASE_POLICY, releaseAcceptedLimitation, releaseGateWaiver } from '../../tooling/scripts/lib/release-policy.mjs';
+import { runGateCommands, verificationSteps } from '../../tooling/scripts/run-verification-gate.mjs';
 
-const gates = JSON.parse(readFileSync(new URL('../../config/verification-gates.json', import.meta.url), 'utf8'));
+const gates = JSON.parse(readFileSync(new URL('../../tooling/config/verification-gates.json', import.meta.url), 'utf8'));
 
 describe('explicit v1.0.0 release policy', () => {
   it('records maintainer authorization and never turns waived evidence into a pass', () => {
@@ -48,7 +48,7 @@ describe('explicit v1.0.0 release policy', () => {
     const steps = verificationSteps('release', gates.release, '1.0.0');
     const run = vi.fn(() => ({ status: 0 })), recordWaivers = vi.fn(), log = vi.fn();
     expect(runGateCommands(steps, { gateName: 'release', version: '1.0.0', run, recordWaivers, log })).toBe(0);
-    expect(steps.filter(step => step.waiver).map(step => step.command)).toEqual(['node scripts/verify-voice-quality.mjs', 'npm run requirements:tts -- --fail-on-non-pass']);
+    expect(steps.filter(step => step.waiver).map(step => step.command)).toEqual(['node tooling/scripts/verify-voice-quality.mjs', 'npm run requirements:tts -- --fail-on-non-pass']);
     const executed = run.mock.calls.map(call => call[0]);
     expect(executed).toEqual(steps.filter(step => !step.waiver).map(step => step.command));
     expect(executed).toEqual(expect.arrayContaining(['npm test', 'npm run test:e2e:local',
@@ -56,7 +56,7 @@ describe('explicit v1.0.0 release policy', () => {
       'npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model',
       'npm run probe:tts:lower-spec:no-build', 'npm run probe:tts:lower-spec-pdf:no-build']));
     expect(gates.release).not.toContain('npm run test:pdf-acceptance');
-    expect(gates.release.indexOf('node scripts/verify-kokoro-numerics.mjs')).toBe(gates.release.indexOf('npm run test:pdf-corpus') + 1);
+    expect(gates.release.indexOf('node tooling/scripts/verify-kokoro-numerics.mjs')).toBe(gates.release.indexOf('npm run test:pdf-corpus') + 1);
     expect(gates.fast).not.toContain('npm run test:pdf-acceptance');
     expect(recordWaivers).toHaveBeenCalledWith('release', '1.0.0', [
       expect.objectContaining({ gateId: 'human-listening-reviews', status: 'waived', verification: 'not-performed' }),
@@ -81,7 +81,7 @@ describe('explicit v1.0.0 release policy', () => {
   });
 
   it('labels the actual release CLI plan as waived while preserving runnable commands', () => {
-    const result = spawnSync(process.execPath, [fileURLToPath(new URL('../../scripts/run-verification-gate.mjs', import.meta.url)), 'release', '--list'], {
+    const result = spawnSync(process.execPath, [fileURLToPath(new URL('../../tooling/scripts/run-verification-gate.mjs', import.meta.url)), 'release', '--list'], {
       cwd: fileURLToPath(new URL('../..', import.meta.url)), encoding: 'utf8',
     });
     expect(result.status, result.stderr).toBe(0);

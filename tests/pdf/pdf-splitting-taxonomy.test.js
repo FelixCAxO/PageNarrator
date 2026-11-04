@@ -18,7 +18,7 @@ import {
 import { chunkText, splitSpeechSentences } from '../../src/lib/speech-chunks.js';
 import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';
 import { getDomWordIndexForSpeechWord } from '../../src/lib/reading-model.js';
-import { matchesOrderedCheckpoints, countNarrationErrors } from '../../scripts/pdf-acceptance-metrics.mjs';
+import { matchesOrderedCheckpoints, countNarrationErrors } from '../../tooling/scripts/pdf-acceptance-metrics.mjs';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../fixtures/pdf-acceptance-manifest.js';
 
 const ROOT_DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');

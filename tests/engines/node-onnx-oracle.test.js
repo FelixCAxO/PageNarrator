@@ -11,7 +11,7 @@ it.each([undefined, '0'])('suppresses telemetry before loading the native runtim
     expect(process.env.ORT_DISABLE_TELEMETRY).toBe('1');
     return native;
   });
-  const { default: oracle } = await import('../../scripts/lib/node-onnx-oracle.mjs');
+  const { default: oracle } = await import('../../tooling/scripts/lib/node-onnx-oracle.mjs');
   expect(oracle.InferenceSession).toBe(native.InferenceSession);
   expect(oracle.Tensor).toBe(native.Tensor); expect(oracle.env).toBe(native.env);
 });

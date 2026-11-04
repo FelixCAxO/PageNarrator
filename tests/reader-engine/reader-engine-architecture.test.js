@@ -52,12 +52,12 @@ describe('readerEngine architecture boundaries', () => {
       ['src/lib/reader-engine-voice-runtime-controller.js', 300],
       ['src/lib/page-highlighter.js', 1800],
     ];
-    const compositionGuard = readFileSync(new URL('../../scripts/check-reader-engine-composition.mjs', import.meta.url), 'utf8');
+    const compositionGuard = readFileSync(new URL('../../tooling/scripts/check-reader-engine-composition.mjs', import.meta.url), 'utf8');
 
     for (const [path, max] of budgets) {
       expect(readRepoFile(path).split(/\r?\n/).length, path).toBeLessThanOrEqual(max);
       expect(compositionGuard, `${path} should have the same ${max}-line budget in check-reader-engine-composition.mjs`)
-        .toContain(`{ path: '../${path}', max: ${max} }`);
+        .toContain(`{ path: '../../${path}', max: ${max} }`);
     }
   });
 
@@ -224,16 +224,16 @@ describe('readerEngine architecture boundaries', () => {
 
   it('keeps readerEngine composition modules and CI guard wired', () => {
     const packageJson = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'));
-    const gates = JSON.parse(readRepoFile('config/verification-gates.json'));
+    const gates = JSON.parse(readRepoFile('tooling/config/verification-gates.json'));
     const app = readReaderEngineApp();
 
     expect(existsSync(new URL('../../src/lib/reader-engine-dom.js', import.meta.url))).toBe(true);
     expect(existsSync(new URL('../../src/lib/reader-engine-state.js', import.meta.url))).toBe(true);
-    expect(existsSync(new URL('../../scripts/check-reader-engine-composition.mjs', import.meta.url))).toBe(true);
+    expect(existsSync(new URL('../../tooling/scripts/check-reader-engine-composition.mjs', import.meta.url))).toBe(true);
     expect(app).toContain("import { getReaderEngineElements } from '../../lib/reader-engine-dom.js'");
     expect(app).toContain("import { createReaderEngineInitialState } from '../../lib/reader-engine-state.js'");
     expect(packageJson.scripts['check:reader-engine-composition']).toBe(
-      'node scripts/check-reader-engine-composition.mjs'
+      'node tooling/scripts/check-reader-engine-composition.mjs'
     );
     expect(packageJson.scripts['launch:full']).toBe('npm run verify:release');
     expect(gates.release).toContain('npm run check:reader-engine-composition');

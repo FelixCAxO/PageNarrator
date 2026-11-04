@@ -9,7 +9,7 @@ it('generates measured step overrides, preserves reference fallback, and detects
   const prefix = path.join(os.tmpdir(), 'pn-omnivoice-index-');
   const directory = mkdtempSync(prefix);
   try {
-    for (const file of ['scripts/write-omnivoice-preset-seeds.mjs', 'scripts/lib/omnivoice-speaker-selection.mjs', 'src/tts/omnivoice/languages.js']) {
+    for (const file of ['tooling/scripts/write-omnivoice-preset-seeds.mjs', 'tooling/scripts/lib/omnivoice-speaker-selection.mjs', 'src/tts/omnivoice/languages.js']) {
       const destination = path.join(directory, file);
       mkdirSync(path.dirname(destination), { recursive: true });
       copyFileSync(file, destination);
@@ -29,8 +29,8 @@ it('generates measured step overrides, preserves reference fallback, and detects
     const catalogFile = path.join(directory, 'src/tts/omnivoice/speaker-data.js');
     writeFileSync(catalogFile, `export default ${JSON.stringify({ speakers })};\n`);
     const run = args => execFileSync(process.execPath, args, { cwd: directory, windowsHide: true, encoding: 'utf8', stdio: 'pipe' });
-    run(['scripts/write-omnivoice-preset-seeds.mjs']);
-    run(['scripts/write-omnivoice-preset-seeds.mjs', '--check']);
+    run(['tooling/scripts/write-omnivoice-preset-seeds.mjs']);
+    run(['tooling/scripts/write-omnivoice-preset-seeds.mjs', '--check']);
     const actual = JSON.parse(run(['--input-type=module', '-e', `
       import assert from 'node:assert/strict';
       import {getOmniVoicePresetSeed as seed,getOmniVoicePresetNumStep as steps,hasOmniVoicePresetGenderCue as cue,getOmniVoicePresetGuidanceScale as guidance,getOmniVoicePresetSpeed as speed,getOmniVoicePresetPronunciationVariant as pronunciation} from './src/tts/omnivoice/preset-seeds.js';
@@ -42,7 +42,7 @@ it('generates measured step overrides, preserves reference fallback, and detects
     `]));
     expect(actual).toEqual([48, 32, 24, 64, 49, false, false, true, 3, 2, 1, .85, 1, 1.15, 'yue-nei5', null, null]);
     writeFileSync(catalogFile, readFileSync(catalogFile, 'utf8').replace('"playbackNumStep":48', '"playbackNumStep":32'));
-    expect(() => run(['scripts/write-omnivoice-preset-seeds.mjs', '--check'])).toThrow();
+    expect(() => run(['tooling/scripts/write-omnivoice-preset-seeds.mjs', '--check'])).toThrow();
   } finally {
     if (!path.resolve(directory).startsWith(path.resolve(prefix))) throw new Error('Temporary preset fixture escaped its directory.');
     rmSync(directory, { recursive: true, force: true });

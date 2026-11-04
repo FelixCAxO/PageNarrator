@@ -7,9 +7,9 @@ import { assertKokoroParallelModule, KOKORO_PARALLEL_ABI, kokoroCpuRowRanges } f
 let module, engine;
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 beforeAll(async () => {
-  const bytes = readFileSync('public/native/kokoro-parallel.wasm'), metadata = JSON.parse(readFileSync('public/native/kokoro-parallel.json', 'utf8'));
+  const bytes = readFileSync('extension/public/native/kokoro-parallel.wasm'), metadata = JSON.parse(readFileSync('extension/public/native/kokoro-parallel.json', 'utf8'));
   expect(hash(bytes)).toBe(metadata.wasmSha256);
-  expect(metadata.originalWasmSha256).toBe(hash(readFileSync('public/native/kokoro-engine.wasm')));
+  expect(metadata.originalWasmSha256).toBe(hash(readFileSync('extension/public/native/kokoro-engine.wasm')));
   expect(metadata.maximumMemoryBytes).toBe(536870912); expect(metadata.parallelAbi).toBe(KOKORO_PARALLEL_ABI);
   module = await WebAssembly.compile(bytes); assertKokoroParallelModule(module);
   expect(WebAssembly.Module.imports(module)).toEqual([{ module: 'env', name: 'memory', kind: 'memory' }]);

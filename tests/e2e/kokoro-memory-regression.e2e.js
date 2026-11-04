@@ -5,7 +5,7 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { launchExtensionContext, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeKokoroModelFiles } from './kokoro-download-fixture.js';
-import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
+import { acquireMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
 
 test('shared runtime changes preserve exact Kokoro playback WAVs', async () => {
   test.skip(process.env.PN_E2E_MEMORY_PARITY !== '1', 'Explicit packaged baseline/candidate regression.');

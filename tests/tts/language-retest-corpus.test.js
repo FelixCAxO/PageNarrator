@@ -1,10 +1,10 @@
 import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
-import { buildRetestCorpus } from '../../scripts/prepare-language-retest.mjs';
+import { buildRetestCorpus } from '../../tooling/scripts/prepare-language-retest.mjs';
 import { getOmniVoiceLanguage } from '../../src/tts/omnivoice/languages.js';
-import { summarizeLanguageSamples } from '../../scripts/report-language-retest.mjs';
+import { summarizeLanguageSamples } from '../../tooling/scripts/report-language-retest.mjs';
 
-const rollout = JSON.parse(readFileSync(new URL('../../config/language-rollout.json', import.meta.url), 'utf8'));
+const rollout = JSON.parse(readFileSync(new URL('../../tooling/config/language-rollout.json', import.meta.url), 'utf8'));
 
 describe('requested language retest', () => {
   it('covers both requested lists and all four previously flagged languages', () => {

@@ -6,8 +6,8 @@ import path from 'node:path';
 import { launchExtensionContext, openExtensionPage, seedHardwareProfile, startReadFromToolbarPopup } from './extension-fixture.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
 import { openRoutedReaderEngine, routeKokoroModelFiles, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
-import { acquireMeasurementLock } from '../../scripts/weak-hardware/measurement-lock.mjs';
-import { processMemorySampler, gpuSampler } from '../../scripts/benchmarks/engine-resources.mjs';
+import { acquireMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
+import { processMemorySampler, gpuSampler } from '../../tooling/scripts/benchmarks/engine-resources.mjs';
 import { installSilentOutputCapture } from './silent-output-capture.js';
 
 for (const initial of ['kokoro', 'omnivoice']) test(`real audio stays continuous through ${initial} and both engine switches`, async () => {
@@ -69,7 +69,7 @@ for (const initial of ['kokoro', 'omnivoice']) test(`real audio stays continuous
     };
     monitor('python', ['-u', '-c', processMemorySampler, String(resources.rootPid), pids], resources.ram);
     monitor('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'gpu-sampler.ps1'),
-      '-Source', path.resolve('scripts/weak-hardware/windows-job-supervisor.cs'), '-Pids', pids, '-StopFile', stopFile], resources.gpu);
+      '-Source', path.resolve('tooling/scripts/weak-hardware/windows-job-supervisor.cs'), '-Pids', pids, '-StopFile', stopFile], resources.gpu);
     const log = async () => (await worker.evaluate(() => chrome.runtime.sendMessage({ type: 'getFlowLog' }))).log;
     // Physical output is muted. These traces verify scheduling, not acoustic loopback gaps.
     const article = await context.newPage(); await article.goto(`http://127.0.0.1:${server.address().port}/`);

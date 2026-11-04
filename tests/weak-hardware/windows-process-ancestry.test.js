@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { execFileSync } from 'node:child_process';
-import { JOB_SUPERVISOR_SOURCE } from '../../scripts/weak-hardware/windows-job.mjs';
+import { JOB_SUPERVISOR_SOURCE } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
 
 it.skipIf(process.platform !== 'win32')('compiles the supervisor and rejects impossible parent-PID reuse without dropping unknown times', () => {
   const sourcePath = JOB_SUPERVISOR_SOURCE.replaceAll("'", "''");

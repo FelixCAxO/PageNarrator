@@ -6,9 +6,9 @@ import { getTtsProbeDocumentTypes } from './live-tts-hardware-probe-documents.js
 
 import { PROBE_WORKLOADS } from './tts-probe-workloads.js';
 
-import { SCHEDULING_MODES } from '../../scripts/weak-hardware/evidence-contract.mjs';
+import { SCHEDULING_MODES } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
 
-import { createRunId } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { createRunId } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 
 export const RUN_TTS_PROBE = process.env.PAGENARRATOR_TTS_PROBE === '1';
 

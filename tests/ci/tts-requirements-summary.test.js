@@ -9,11 +9,11 @@ import {
   parseSummarizerArgs,
   renderTtsRequirementsMarkdown,
   writeTtsRequirementsSummary,
-} from '../../scripts/summarize-tts-requirements.mjs';
+} from '../../tooling/scripts/summarize-tts-requirements.mjs';
 import { selectVoiceModelBackend } from '../../src/lib/gpu-calibration.js';
 import { getTtsProbeProfiles } from '../live/live-tts-hardware-profiles.js';
-import { assessMeasurementValidity, MEASUREMENT_CONTRACT_VERSION } from '../../scripts/weak-hardware/evidence-contract.mjs';
-import { hashDirectory } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { assessMeasurementValidity, MEASUREMENT_CONTRACT_VERSION } from '../../tooling/scripts/weak-hardware/evidence-contract.mjs';
+import { hashDirectory } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { KOKORO_DATA } from '../../src/tts/kokoro/model-data.js';
 
 const tempRoots = [];
@@ -306,7 +306,7 @@ describe('TTS requirements summary artifact', () => {
     const input = join(root, 'probe.json'), output = join(root, 'summary.json');
     const payload = makeAttemptFile({ profileName: 'physical_low_end', physicalTarget: true, metrics: FAST_METRICS });
     writeFileSync(input, JSON.stringify(payload));
-    const args = [fileURLToPath(new URL('../../scripts/summarize-tts-requirements.mjs', import.meta.url)),
+    const args = [fileURLToPath(new URL('../../tooling/scripts/summarize-tts-requirements.mjs', import.meta.url)),
       input, '--json', output, '--md', join(root, 'summary.md')];
     const run = (...flags) => spawnSync(process.execPath, [...args, ...flags], { cwd: root, encoding: 'utf8' });
     expect(run().status).toBe(0);

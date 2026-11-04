@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { compareAudio, compareTranscripts, wordErrorRate, waveBytes } from '../../scripts/lib/kokoro-speech-acceptance.mjs';
+import { compareAudio, compareTranscripts, wordErrorRate, waveBytes } from '../../tooling/scripts/lib/kokoro-speech-acceptance.mjs';
 const gates = { minimumRms: .001, maximumDurationRelativeDifference: .1, maximumDurationAbsoluteDifferenceSeconds: .1,
   maximumWordErrorRate: .25, maximumWordErrorRateIncrease: .05, requireExpectedFinalThreeWords: true, pcmAbsoluteTolerance: .0003, pcmRelativeTolerance: .003 };
 describe('fixed speech acceptance boundaries', () => {

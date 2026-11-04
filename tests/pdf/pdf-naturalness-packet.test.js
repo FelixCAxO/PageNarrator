@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { describe, expect, it, vi } from 'vitest';
 
-const driver = readFileSync(new URL('../../scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
+const driver = readFileSync(new URL('../../tooling/scripts/run-pdf-acceptance.mjs', import.meta.url), 'utf8');
 const root = path.resolve('unit-naturalness-root');
 // Evaluate only the real writer/generator function bodies with authored dependencies.
 // No target runner imports, PDFs, models, filesystem writes or human ratings occur.

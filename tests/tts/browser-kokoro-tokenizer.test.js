@@ -4,8 +4,8 @@ import { KOKORO_PHONEMES } from '../../src/tts/kokoro/phoneme-vocabulary.js';
 import { createKokoroTokenizer } from '../../src/tts/kokoro/tokenizer.js';
 
 // Model data schema, no imported tokenizer implementation.
-const model = JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer.json'));
-const config = JSON.parse(readFileSync('vendor/pronunciation/kokoro-tokenizer_config.json'));
+const model = JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer.json'));
+const config = JSON.parse(readFileSync('engines/vendor/pronunciation/kokoro-tokenizer_config.json'));
 
 it('maps exact phoneme character IDs with both boundaries and no downloaded regex execution', () => {
   const tokenizer = createKokoroTokenizer(model, config);
@@ -24,7 +24,7 @@ it('preserves the final boundary under explicit truncation and refuses implicit 
   expect(() => createKokoroTokenizer({ ...model, normalizer: { ...model.normalizer, pattern: { Regex: '.*' } } }, config)).toThrow('Unsupported');
 });
 it('checks the pinned vocabulary data rather than assuming contiguous token IDs', () => {
-  const sources = JSON.parse(readFileSync('vendor/pronunciation/sources.json'));
+  const sources = JSON.parse(readFileSync('engines/vendor/pronunciation/sources.json'));
   expect(sources.sources.map(source => source.id)).toEqual(['cmudict', 'ipa-dict']);
   expect(KOKORO_PHONEMES.ɡ).toBe(92); expect(Object.values(KOKORO_PHONEMES)).not.toContain(49);
 });

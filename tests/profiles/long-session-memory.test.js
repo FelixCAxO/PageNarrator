@@ -19,7 +19,7 @@ function createLongPdfChunks(count = 1000) {
 
 describe('long-session memory profile', () => {
   it('keeps repeated long PDF queue renders inside the retained heap budget', async () => {
-    expect(typeof globalThis.gc, 'profiles lane must run with --expose-gc (vitest.profiles.config.js)').toBe('function');
+    expect(typeof globalThis.gc, 'profiles lane must run with --expose-gc (tooling/vitest.profiles.config.js)').toBe('function');
 
     globalThis.gc();
     const baseline = process.memoryUsage().heapUsed;

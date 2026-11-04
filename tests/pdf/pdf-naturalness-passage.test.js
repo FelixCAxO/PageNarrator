@@ -3,7 +3,7 @@ import {
   evaluateReadingOrder,
   selectPdfNaturalnessPassage,
   validateNaturalnessRatings,
-} from '../../scripts/run-pdf-acceptance.mjs';
+} from '../../tooling/scripts/run-pdf-acceptance.mjs';
 
 // Authored unit metadata only; these reviewer constants are never release evidence.
 const humanReviews = (hash, count = 2) => Array.from({ length: count }, (_, i) => ({

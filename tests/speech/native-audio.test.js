@@ -10,7 +10,7 @@ import {
 } from '../../src/lib/speech-audio.js';
 
 beforeAll(async () => {
-  const instance = await initializeNativeKernels(readFileSync(new URL('../../public/native/kernels.wasm', import.meta.url)));
+  const instance = await initializeNativeKernels(readFileSync(new URL('../../extension/public/native/kernels.wasm', import.meta.url)));
   expect(instance?.exports.pcm_process).toBeTypeOf('function');
 });
 

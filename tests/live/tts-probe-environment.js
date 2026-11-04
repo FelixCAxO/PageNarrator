@@ -5,10 +5,10 @@ import { PROBE_HARNESS_ADAPTER_OPTION } from './tts-probe-page-hooks.js';
 
 import { MODEL_ID, MODEL_REVISION } from '../../src/lib/voice-model.js';
 
-import { isJobSupervisorSupported, startJobSupervisor } from '../../scripts/weak-hardware/windows-job.mjs';
-import { PHYSICAL_TARGET_ENV, loadPhysicalTarget, readHostInventory } from '../../scripts/weak-hardware/physical-target.mjs';
+import { isJobSupervisorSupported, startJobSupervisor } from '../../tooling/scripts/weak-hardware/windows-job.mjs';
+import { PHYSICAL_TARGET_ENV, loadPhysicalTarget, readHostInventory } from '../../tooling/scripts/weak-hardware/physical-target.mjs';
 
-import { hashDirectory, resolveRevision, resolveRunOutputDir } from '../../scripts/weak-hardware/run-provenance.mjs';
+import { hashDirectory, resolveRevision, resolveRunOutputDir } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
 import { evaluateExpression } from './tts-probe-cdp.js';
 import { ROOT_DIR, DIST_DIR, RUN_ID, sanitizePathPart, PROBE_PROFILE_SELECTION, SCHEDULING_MODE, PROBE_DOCUMENT_TYPES, PREPARED_EXTENSION_MODIFICATIONS, NATIVE_BACKGROUNDING } from './tts-probe-settings.js';
 
