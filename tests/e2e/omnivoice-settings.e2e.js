@@ -79,9 +79,10 @@ test('every OmniVoice control reaches real synthesis and survives reopening', as
     for (const item of cases) {
       const language = item.language || 'en';
       const settings = Object.fromEntries(Object.keys(base).map(key => [key, item[key] ?? base[key]]));
+      const rank = getOmniVoiceVariationOrder(language, settings.gender).indexOf(settings.variation) + 1;
       await selectNativeOption(popup.locator('#popup-language'), language);
       await selectNativeOption(popup.locator('#popup-omnivoice-gender'), settings.gender);
-      for (const key of ['variation']) await setNativeRange(popup.locator(`#popup-omnivoice-${key}`), settings[key]);
+      await setNativeRange(popup.locator('#popup-omnivoice-variation'), rank);
       await popup.locator('#popup-omnivoice-whisper').setChecked(settings.whisper);
       await setNativeRange(popup.locator('#popup-speed'), item.playbackRate || 1);
       await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings)))
@@ -89,7 +90,7 @@ test('every OmniVoice control reaches real synthesis and survives reopening', as
       expect(await worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice))).toEqual(settings);
       await popup.reload();
       await expect(popup.locator('#popup-omnivoice-gender')).toHaveValue(settings.gender);
-      for (const key of ['variation']) await expect(popup.locator(`#popup-omnivoice-${key}`)).toHaveValue(String(settings[key]));
+      await expect(popup.locator('#popup-omnivoice-variation')).toHaveValue(String(rank));
       await expect(popup.locator('#popup-omnivoice-whisper')).toBeChecked({ checked: settings.whisper });
       await popup.locator('#popup-settings summary').click();
       const start = await engine.evaluate(() => ({ jobs: __settingAudio.jobs.length, wavs: __settingAudio.wavs.length, plays: __settingAudio.plays.length }));
@@ -192,8 +193,9 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     await popup.locator('#popup-settings summary').click();
     await expect(popup.locator('#popup-omnivoice-settings')).toContainText('Changes apply at the next section.');
     await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
+    const variation = getOmniVoiceVariationOrder('en', 'female')[3];
     const worker = context.serviceWorkers()[0];
-    await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice.variation))).toBe(getOmniVoiceVariationOrder('en', 'female')[3]);
+    await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice.variation))).toBe(variation);
     await expect.poll(async () => {
       const { readerEngineState: state = {} } = await worker.evaluate(() => chrome.storage.session.get('readerEngineState'));
       if (state.state === 'error') throw new Error(JSON.stringify(state));
@@ -205,9 +207,9 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     expect(actual.plays.length).toBeGreaterThanOrEqual(3);
     expect(actual.plays[0].instruct).toBe('female');
     expect(actual.plays[0].seed).toBe(getOmniVoicePresetSeed('en', 'female', 1));
-    expect(actual.plays.slice(1).every(job => job.seed === getOmniVoicePresetSeed('en', 'female', getOmniVoiceVariationOrder('en', 'female')[3]) && job.instruct === 'female')).toBe(true);
+    expect(actual.plays.slice(1).every(job => job.seed === getOmniVoicePresetSeed('en', 'female', variation) && job.instruct === 'female')).toBe(true);
     expect(actual.plays.every(job => job.numStep === 24)).toBe(true);
-    expect(actual.plays[1].speaker.referenceId).toBe('en-female-4');
+    expect(actual.plays[1].speaker.referenceId).toBe(`en-female-${variation}`);
     expect(actual.plays.slice(1).every(job => job.speaker.referenceHash === actual.plays[1].speaker.anchorHash)).toBe(true);
   } finally {
     await cleanup(); server.closeAllConnections();

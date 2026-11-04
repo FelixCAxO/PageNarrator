@@ -60,6 +60,6 @@ Physical 8 GiB RAM/VRAM PCs, weaker dedicated GPUs, device audio, energy and bro
 
 ## Evidence
 
-- [Verified summary](../../artifacts/vector-matmul-20261101/summary.json), [tile-map proof](../../artifacts/vector-matmul-20261101/tile-mapping-proof.json), [raw whole-request pairs](../../artifacts/vector-matmul-20261101/long-speech-resources.json), [current feature inventory](../../artifacts/vector-matmul-20261101/gpu-capabilities.json).
-- [NVIDIA vectors](../../artifacts/vector-matmul-20261101/micro-nvidia.json), [Intel vectors](../../artifacts/vector-matmul-20261101/micro-intel.json), [NVIDIA groups](../../artifacts/vector-matmul-20261101/group-micro-nvidia.json), [Intel groups](../../artifacts/vector-matmul-20261101/group-micro-intel.json).
-- [NVIDIA guarded](../../artifacts/vector-matmul-20261101/guarded-micro-nvidia.json), [Intel guarded](../../artifacts/vector-matmul-20261101/guarded-micro-intel.json), [preserved application verification](../../artifacts/norm-transpose-20261101/verification.json).
+- Verified summary (`artifacts/vector-matmul-20261101/summary.json`), tile-map proof (`artifacts/vector-matmul-20261101/tile-mapping-proof.json`), raw whole-request pairs (`artifacts/vector-matmul-20261101/long-speech-resources.json`), current feature inventory (`artifacts/vector-matmul-20261101/gpu-capabilities.json`).
+- NVIDIA vectors (`artifacts/vector-matmul-20261101/micro-nvidia.json`), Intel vectors (`artifacts/vector-matmul-20261101/micro-intel.json`), NVIDIA groups (`artifacts/vector-matmul-20261101/group-micro-nvidia.json`), Intel groups (`artifacts/vector-matmul-20261101/group-micro-intel.json`).
+- NVIDIA guarded (`artifacts/vector-matmul-20261101/guarded-micro-nvidia.json`), Intel guarded (`artifacts/vector-matmul-20261101/guarded-micro-intel.json`), preserved application verification (`artifacts/norm-transpose-20261101/verification.json`).

@@ -81,7 +81,7 @@ The change is a GPU-stage improvement with small end-to-end latency gains. It do
 
 ## Evidence
 
-- [Verified summary](../../artifacts/rms-register-sum-20261101/summary.json), [verification](../../artifacts/rms-register-sum-20261101/verification.json), [source proof](../../artifacts/rms-register-sum-20261101/source-proof.json), [whole production-tree proof](../../artifacts/rms-register-sum-20261101/production-bundle-proof.json).
-- [NVIDIA native stages](../../artifacts/rms-register-sum-20261101/micro-nvidia-v2.json), [Intel native stages](../../artifacts/rms-register-sum-20261101/micro-intel-v2.json), [finite-square proof](../../artifacts/rms-register-sum-20261101/square-proof.json).
-- [Initial cost runs](../../artifacts/rms-register-sum-20261101/long-speech-resources.json), [confirmation runs](../../artifacts/rms-register-sum-20261101/long-speech-confirm.json), [all cost runs](../../artifacts/rms-register-sum-20261101/long-speech-combined.json), [packaged speech](../../artifacts/rms-register-sum-20261101/voice-parity/results.json).
-- [Playback accounting](../../artifacts/rms-register-sum-20261101/sustained/playback-accounting.json), [rendered waveform analysis](../../artifacts/rms-register-sum-20261101/sustained/acoustic-analysis.json).
+- Verified summary (`artifacts/rms-register-sum-20261101/summary.json`), verification (`artifacts/rms-register-sum-20261101/verification.json`), source proof (`artifacts/rms-register-sum-20261101/source-proof.json`), whole production-tree proof (`artifacts/rms-register-sum-20261101/production-bundle-proof.json`).
+- NVIDIA native stages (`artifacts/rms-register-sum-20261101/micro-nvidia-v2.json`), Intel native stages (`artifacts/rms-register-sum-20261101/micro-intel-v2.json`), finite-square proof (`artifacts/rms-register-sum-20261101/square-proof.json`).
+- Initial cost runs (`artifacts/rms-register-sum-20261101/long-speech-resources.json`), confirmation runs (`artifacts/rms-register-sum-20261101/long-speech-confirm.json`), all cost runs (`artifacts/rms-register-sum-20261101/long-speech-combined.json`), packaged speech (`artifacts/rms-register-sum-20261101/voice-parity/results.json`).
+- Playback accounting (`artifacts/rms-register-sum-20261101/sustained/playback-accounting.json`), rendered waveform analysis (`artifacts/rms-register-sum-20261101/sustained/acoustic-analysis.json`).

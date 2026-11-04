@@ -4,21 +4,21 @@
   "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
   "version": "1.0.3",
   "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
-  "capturedAt": "2026-11-02T08:57:32.519Z",
+  "capturedAt": "2026-11-04T08:38:30.661Z",
   "nodeVersion": "v26.12.1",
   "inputPackage": {
-    "fileCount": 351,
-    "bytes": 79250895,
-    "sha256": "21e00fdbc085119d924dd04a7d46ad31b43b9a981cfc063f1c7771bb336a5a03"
+    "fileCount": 353,
+    "bytes": 79384049,
+    "sha256": "dc2d3394bffa578b254abe97dce0e291c1851a1ebb600fbd9a7f70fc54201023"
   },
   "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
   "sourceSha256": {
     "src/popup.html": "646e0bc9cd0aa18c19348ec7ed4320c60bd383e786a3e620508006e658e332b5",
     "src/popup.css": "ba31bc9c9a976735bbba81be1037f95ec45f530ae2b7ff1d4f9af4d6e8c52e21",
-    "src/popup.js": "b0546e5aa13946f6408ecb05acd991c1b78a591a8903cbcabbe7ce0caf3221b2",
+    "src/popup.js": "ea9b6aaf227aa06e1642bb2f617ce79c19e437b1993151f17481c7adcff23ce3",
     "src/pdf-viewer.html": "7432363b1a41f6eeca741fe31a8d07879a1566071c33203bf2534a9ae94f8fcf",
     "src/pdf-viewer.css": "8819053897a09f10bb17fdaee52400184a59c37dc9e4a7e4a616b64968645480",
-    "src/pdf-viewer.js": "bdaee215bc4a4cd4b3f3ea8c983ebefa52330aff54326a61e2288eef3c4c347d",
+    "src/pdf-viewer.js": "2a35fe36eb4e2baec5a0f5ef4f4270ef70702fb60d9692094d567cceb27e69e0",
     "website/public/cws-demo.html": "c684671986eb2a0e58b2505f7756428d8ed0df7796f3fd0eb14509a99168ffcd",
     "scripts/capture-current-product-media.mjs": "2a23e1d4174cb0ef19aecefe80c36fe27eaf4c09ff5cbf441d1867addf2f79cc"
   },
@@ -29,7 +29,7 @@
     {
       "name": "screenshot-01-toolbar-player-idle.png",
       "sha256": "0f959b958c3c16b767b48cd32968921f8ac1629cd5d28faf9b2739330a7ee89b",
-      "rawCaptureSha256": "14cc3e7905f7df5a143bf3660b39ac23a427cafbf72c36fce926457f3fdb2abc",
+      "rawCaptureSha256": "5378f46353ce7ef8c1786304deaada292250130a7c60a95bcf9d7bd979b4743a",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -47,7 +47,7 @@
     {
       "name": "screenshot-02-toolbar-player-reading.png",
       "sha256": "d20fdadea2b8995286feee4167ec9f66b551de53de70cf50dfda788f4eea3ada",
-      "rawCaptureSha256": "6bcc421af2314e77dcc76bb7fe93d38b866daf342226008ef5c51131e71988ce",
+      "rawCaptureSha256": "d476d051e0766267c7c8bd668e04765c7efd5a5aa278695556fc90aa40b9650d",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -67,7 +67,7 @@
     {
       "name": "screenshot-03-toolbar-player-settings.png",
       "sha256": "7bd407532e5c0daca88db705ee172f19df925c2cf64cc4f8e5e7e4250d54a4ed",
-      "rawCaptureSha256": "ebfbb4fa661e7d34bf02d38e1a63728a42bfe4d1a5e58159efcee7f6c5473568",
+      "rawCaptureSha256": "6598b9fb84cebe301f3d43f96e071a89279947afc8c1672803ad01104b6467a8",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Paused",
@@ -88,7 +88,7 @@
     {
       "name": "screenshot-04-toolbar-player-pdf.png",
       "sha256": "cff9b05009e8eb51cc6ef930705f5866c91410d9240816a34a51bc283bff5393",
-      "rawCaptureSha256": "108b9c3659935edd469643dd0daa1396263980cf3c46e31608ae5734263c1de1",
+      "rawCaptureSha256": "e67ff911f89583d7435ddf4a406d54c85327100a060fa59c1a0f6c1bfb7df7ae",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -108,7 +108,7 @@
     {
       "name": "screenshot-05-omnivoice-controls.png",
       "sha256": "ae5ce00496987f59bdd3b43bf0b2f4259226b0d05a3cdbb7b0e9df2a58006fae",
-      "rawCaptureSha256": "4d27a951e2a93194e75d82b4fd5a9d39456e8d2bdb95ac63ba64992f3e113625",
+      "rawCaptureSha256": "2337b9baae435a7aecd72be2fbbdb4fd72fff839b0fc1a768b8d6c313ee26aee",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",

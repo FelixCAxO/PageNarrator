@@ -2,6 +2,7 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPopupApp } from '../../src/popup.js';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { MESSAGE_TYPES, READER_ACTION_TYPES } from '../../src/lib/message-types.js';
 
 const htmlContent = readFileSync(new URL('../../src/popup.html', import.meta.url), 'utf8');
@@ -158,7 +159,7 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     const variation = document.getElementById('popup-omnivoice-variation');
     variation.value = '4';
     variation.dispatchEvent(new dom.window.Event('input'));
-    await vi.waitFor(() => expect(storageData.playbackSettings.omniVoice.variation).toBe(4));
+    await vi.waitFor(() => expect(storageData.playbackSettings.omniVoice.variation).toBe(getOmniVoiceVariationOrder('sv', 'female')[3]));
     expect(document.getElementById('popup-omnivoice-variation-out').textContent).toBe('4 / 10');
     expect(storageData.playbackSettings.voice).toBe('am_michael');
     expect(storageData.playbackSettings.voicesByLanguage).toEqual({ en: 'am_michael' });
@@ -182,7 +183,8 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(whisper.checked).toBe(true);
     expect(whisper.disabled).toBe(false);
     expect(harness.document.getElementById('popup-language').value).toBe(language);
-    expect(harness.document.getElementById('popup-omnivoice-variation').value).toBe('4');
+    expect(harness.document.getElementById('popup-omnivoice-variation').value)
+      .toBe(String(getOmniVoiceVariationOrder(language, 'male').indexOf(4) + 1));
     harness.dom.window.close();
   });
 
