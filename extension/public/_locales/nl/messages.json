@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "PDF laden…"
   },
+  "ui_d8ec62a0": {
+    "message": "Oorspronkelijke link openen"
+  },
   "ui_abc76c7c": {
     "message": "PDF opnieuw openen…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Actie vereist"
   },
-  "ui_4d1cf041": {
-    "message": "Amerikaans Engels, vrouwelijk"
-  },
-  "ui_faf95838": {
-    "message": "Amerikaans Engels, mannelijk"
-  },
-  "ui_f3768d40": {
-    "message": "Brits Engels, vrouwelijk"
-  },
-  "ui_4139054c": {
-    "message": "Kies een Engelse Kokoro-stem. Kokoro ondersteunt geen andere talen."
-  },
   "ui_c0c171d2": {
     "message": "Deze actie kon niet worden voltooid."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Sommige grafische elementen konden niet worden weergegeven. De tekst kan nog steeds worden voorgelezen."
   },
   "ui_58de2772": {
     "message": "Normaal"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "De tekst verschijnt zodra het voorlezen begint."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ u $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Pagina voorlezen"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator kon niet worden gestart."
   },
+  "ui_4d1cf041": {
+    "message": "Amerikaans Engels, vrouwelijk"
+  },
+  "ui_faf95838": {
+    "message": "Amerikaans Engels, mannelijk"
+  },
+  "ui_f3768d40": {
+    "message": "Brits Engels, vrouwelijk"
+  },
+  "ui_4139054c": {
+    "message": "Kies een Engelse Kokoro-stem. Kokoro ondersteunt geen andere talen."
+  },
   "ui_87d977c4": {
     "message": "PageNarrator-speler"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Privacygegevens"
+  },
+  "ui_e59ac0eb": {
+    "message": "Vanaf het begin lezen"
   },
   "ui_1eb4158c": {
     "message": "Geavanceerde instellingen"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Experimenteel. 32 taalvermeldingen; de kwaliteit varieert. Vereist WebGPU met fp16 en ongeveer 1,35 GB aan downloads. Kies een stem, variant of fluisterstem."
   },
+  "ui_35a4186c": {
+    "message": "Waarschuwing: fluisteren kan in deze taal woorden overslaan. Vergelijk het voorlezen met de tekst."
+  },
   "ui_ab4a698f": {
     "message": "Pagina openen"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Andere PDF proberen"
   },
+  "ui_dc60ae88": {
+    "message": "Open de oorspronkelijke link in Chrome en meld je aan als daarom wordt gevraagd. Probeer opnieuw voor te lezen zodra de pdf zichtbaar is. Word je nog steeds omgeleid, download dan de pdf en open de lokale kopie."
+  },
   "ui_b8183083": {
     "message": "De PDF kon niet worden gedownload. Controleer de link en je verbinding."
   },
   "ui_ce24479d": {
     "message": "Deze PDF kon niet worden geopend."
-  },
-  "ui_e59ac0eb": {
-    "message": "Vanaf het begin lezen"
-  },
-  "ui_35a4186c": {
-    "message": "Waarschuwing: fluisteren kan in deze taal woorden overslaan. Vergelijk het voorlezen met de tekst."
   }
 }

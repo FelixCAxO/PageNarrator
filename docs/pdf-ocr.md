@@ -28,3 +28,9 @@ Automatic reading can skip compact symbolic numeric matrices. Nearby prose remai
 `extension/public/assets/ocr/models.json` records sources, licenses, and SHA-256 hashes. `tooling/scripts/build-ocr-recognizer.mjs` rebuilds the graph from its pinned source. Private test documents and browser profiles stay out of packages.
 
 Run `npm run test:pdf` and the packaged `tests/e2e/pdf-ocr.e2e.js` journeys. `tests/pdf/native-ocr.test.js` checks native preprocessing. Browser tests cover recognition, order, word geometry, selection, zoom, and rerendering. They do not qualify unseen documents, pronunciation, or physical hardware.
+
+## Fixture provenance
+
+`tests/fixtures/ocr/` contains GPL-3.0-or-later authored controls and owned UI captures. `tooling/scripts/generate-original-ocr-fixtures.mjs` and `tooling/scripts/generate-ocr-stacked-control.mjs` derive expected text and geometry from authored inputs before inference. The `source-word-*` captures have companion geometry and mask records. Model candidate manifests record hashes and licenses.
+
+Private regression inputs stay outside Git and the packages. Set `PN_OCR_PRIVATE_FIXTURE_DIR` only when running those pinned checks. Missing or changed inputs fail. Authored controls cover their own layouts.

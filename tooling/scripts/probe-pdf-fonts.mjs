@@ -6,11 +6,11 @@ import { NativePdfReader } from '../../src/pdf/native-reader.js';
 import { decodePdfStream } from '../../src/pdf/streams.js';
 import { PDF_ACCEPTANCE_BENCHMARK } from '../../tests/fixtures/pdf-acceptance-manifest.js';
 const source = process.env.PN_PDF_FIXTURE_DIR;
-if (!source) throw new Error('Set PN_PDF_FIXTURE_DIR to the frozen corpus directory.');
 const wasm = await readFile(new URL('../../engines/native/pdf.wasm', import.meta.url));
 for (const id of process.argv.slice(2)) {
   const entry = PDF_ACCEPTANCE_BENCHMARK.find(e => e.id === id); if (!entry) throw new Error(`Unknown corpus id ${id}.`);
-  const bytes = new Uint8Array(await readFile(entry.source.startsWith('tests/') ? new URL(`../${entry.source}`, import.meta.url) : path.join(source, `${id}.pdf`)));
+  if (!entry.source.startsWith('tests/') && !source) throw new Error('Set PN_PDF_FIXTURE_DIR to the frozen corpus directory.');
+  const bytes = new Uint8Array(await readFile(entry.source.startsWith('tests/') ? new URL(`../../${entry.source}`, import.meta.url) : path.join(source, `${id}.pdf`)));
   const reader = await NativePdfReader.create(bytes, { wasm }), visited = new Set(), fonts = [], states = [], groups = [], images = [];
   try {
     let page = reader.field(reader.field(reader.trailer, 'Root'), 'Pages'), resources;

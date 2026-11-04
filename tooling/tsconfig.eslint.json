@@ -13,7 +13,6 @@
     "../tests/**/*.mjs",
     "vite.config.js",
     "eslint.config.js",
-    "../engines/vendor/phonemizer/index.js",
     "vitest.live.config.js",
     "vitest.profiles.config.js",
     "playwright.config.js",

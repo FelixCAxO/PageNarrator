@@ -11,17 +11,6 @@ const MAX_QUEUE_SEARCH_CACHE_ENTRIES = 100;
 const wordCountSummaryCache = new WeakMap();
 const queueSearchCache = new WeakMap();
 
-export function formatSetupDuration(seconds) {
-  const safeSeconds = Math.max(1, Math.round(seconds));
-  if (safeSeconds < 60) return `${safeSeconds}s`;
-  const minutes = Math.floor(safeSeconds / 60);
-  const remainingSeconds = safeSeconds % 60;
-  if (minutes < 60) return remainingSeconds ? t("$1m $2s", [minutes, remainingSeconds]) : `${minutes}m`;
-  const hours = Math.floor(minutes / 60);
-  const remainingMinutes = minutes % 60;
-  return remainingMinutes ? t("$1h $2m", [hours, remainingMinutes]) : `${hours}h`;
-}
-
 export function getPanelView(reading = {}) {
   const state = reading.state || 'idle';
   const pdfProgress = reading.source === 'pdf' && !reading.totalReadableWordCount

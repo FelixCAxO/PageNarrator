@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Loading PDF..."
   },
+  "ui_d8ec62a0": {
+    "message": "Open original link"
+  },
   "ui_abc76c7c": {
     "message": "Reopening PDF..."
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Needs attention"
   },
-  "ui_4d1cf041": {
-    "message": "American female"
-  },
-  "ui_faf95838": {
-    "message": "American male"
-  },
-  "ui_f3768d40": {
-    "message": "British female"
-  },
-  "ui_4139054c": {
-    "message": "Choose an English Kokoro voice. Other languages are not supported."
-  },
   "ui_c0c171d2": {
     "message": "Could not complete this action."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Some artwork could not be shown. Text reading is still available."
   },
   "ui_58de2772": {
     "message": "Normal"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Text appears when reading starts."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$m $arg2$s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$h $arg2$m",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Read this page aloud"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator failed to initialize."
   },
+  "ui_4d1cf041": {
+    "message": "American female"
+  },
+  "ui_faf95838": {
+    "message": "American male"
+  },
+  "ui_f3768d40": {
+    "message": "British female"
+  },
+  "ui_4139054c": {
+    "message": "Choose an English Kokoro voice. Other languages are not supported."
+  },
   "ui_87d977c4": {
     "message": "PageNarrator player"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Privacy details"
+  },
+  "ui_e59ac0eb": {
+    "message": "Read from start"
   },
   "ui_1eb4158c": {
     "message": "Advanced settings"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Experimental. 32 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper."
   },
+  "ui_35a4186c": {
+    "message": "Warning: Whisper can omit words in this language. Check the reading against the text."
+  },
   "ui_ab4a698f": {
     "message": "Open from the page"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Try another PDF"
   },
+  "ui_dc60ae88": {
+    "message": "Open the original link in Chrome and sign in if prompted. Once the PDF is visible, try reading again. If it still redirects, download the PDF and open the local copy."
+  },
   "ui_b8183083": {
     "message": "Could not download the PDF. Check the link and your connection."
   },
   "ui_ce24479d": {
     "message": "Could not open this PDF."
-  },
-  "ui_e59ac0eb": {
-    "message": "Read from start"
-  },
-  "ui_35a4186c": {
-    "message": "Warning: Whisper can omit words in this language. Check the reading against the text."
   }
 }

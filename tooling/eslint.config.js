@@ -9,7 +9,7 @@ export default [
       '.chrome-for-testing/**', '.chrome-preview/**', '.claude/**', '.agents/**',
       '.codex/**', '.superpowers/**', '.cache/**', '**/.wrangler/**', 'artifacts/**',
       'dist*/**', 'node_modules/**', 'releases/**', 'tmp/**', 'test-results/**',
-      'voice-packs/**', 'engines/vendor/phonemizer/espeak.mjs', 'website/public/**',
+      'voice-packs/**', 'website/public/**',
     ],
   },
   {

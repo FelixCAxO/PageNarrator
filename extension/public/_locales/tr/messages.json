@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "PDF yükleniyor…"
   },
+  "ui_d8ec62a0": {
+    "message": "Orijinal bağlantıyı aç"
+  },
   "ui_abc76c7c": {
     "message": "PDF yeniden açılıyor…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "İşlem gerekiyor"
   },
-  "ui_4d1cf041": {
-    "message": "Amerikan İngilizcesi, kadın"
-  },
-  "ui_faf95838": {
-    "message": "Amerikan İngilizcesi, erkek"
-  },
-  "ui_f3768d40": {
-    "message": "Britanya İngilizcesi, kadın"
-  },
-  "ui_4139054c": {
-    "message": "İngilizce bir Kokoro sesi seçin. Kokoro diğer dilleri desteklemez."
-  },
   "ui_c0c171d2": {
     "message": "Bu işlem tamamlanamadı."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Bazı grafikler gösterilemedi. Metin yine de sesli okunabilir."
   },
   "ui_58de2772": {
     "message": "Normal"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Okuma başladığında metin görünür."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ dk $arg2$ sn",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ sa $arg2$ dk",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Sayfayı sesli oku"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator başlatılamadı."
   },
+  "ui_4d1cf041": {
+    "message": "Amerikan İngilizcesi, kadın"
+  },
+  "ui_faf95838": {
+    "message": "Amerikan İngilizcesi, erkek"
+  },
+  "ui_f3768d40": {
+    "message": "Britanya İngilizcesi, kadın"
+  },
+  "ui_4139054c": {
+    "message": "İngilizce bir Kokoro sesi seçin. Kokoro diğer dilleri desteklemez."
+  },
   "ui_87d977c4": {
     "message": "PageNarrator oynatıcı"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Gizlilik ayrıntıları"
+  },
+  "ui_e59ac0eb": {
+    "message": "Baştan oku"
   },
   "ui_1eb4158c": {
     "message": "Gelişmiş ayarlar"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Deneysel. 32 dil kaydı; kalite değişir. fp16 destekli WebGPU ve yaklaşık 1,35 GB indirme gerektirir. Ses, varyasyon veya fısıltı seçin."
   },
+  "ui_35a4186c": {
+    "message": "Uyarı: Fısıltı bu dilde sözcükleri atlayabilir. Okumayı metinle karşılaştırın."
+  },
   "ui_ab4a698f": {
     "message": "Sayfayı aç"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Başka bir PDF dene"
   },
+  "ui_dc60ae88": {
+    "message": "Orijinal bağlantıyı Chrome’da açın ve istenirse oturum açın. PDF göründüğünde okumayı yeniden deneyin. Yönlendirme devam ederse PDF’yi indirin ve yerel kopyayı açın."
+  },
   "ui_b8183083": {
     "message": "PDF indirilemedi. Bağlantıyı ve internet bağlantınızı kontrol edin."
   },
   "ui_ce24479d": {
     "message": "Bu PDF açılamadı."
-  },
-  "ui_e59ac0eb": {
-    "message": "Baştan oku"
-  },
-  "ui_35a4186c": {
-    "message": "Uyarı: Fısıltı bu dilde sözcükleri atlayabilir. Okumayı metinle karşılaştırın."
   }
 }

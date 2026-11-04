@@ -1,8 +1,4 @@
 // @ts-check
-export * from './pdf-url-parsing.js';
-export * from './pdf-viewer-detection.js';
-export * from './pdf-stream-chunking.js';
-
 import { chunkText } from './speech-chunks.js';
 import { TUNING_CONFIG } from './tuning-config.js';
 import { createLogger } from './logger.js';
@@ -72,10 +68,6 @@ function isChromiumPdfViewerParsedUrl(parsed) {
   return parsed?.protocol === 'chrome-extension:'
     && parsed.hostname === CHROMIUM_PDF_VIEWER_EXTENSION_ID
     && parsed.pathname.endsWith('/index.html');
-}
-
-export function isChromiumPdfViewerUrl(value = '') {
-  return isChromiumPdfViewerParsedUrl(parseUrl(value));
 }
 
 function isPageNarratorPdfViewerParsedUrl(parsed) {

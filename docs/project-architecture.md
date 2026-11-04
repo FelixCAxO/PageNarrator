@@ -15,6 +15,8 @@ See [verification status](release-readiness.md) for current hardware, listening,
 
 ## Main flow
 
+See the [reading model](reading-model.md) for extraction, scrolling, and resume behavior.
+
 1. The toolbar popup sends an action through `src/lib/reader-engine-host.js`.
 2. The service worker starts the offscreen reader. Speech keeps running when the popup closes.
 3. An on-demand content script extracts text and draws reversible highlights. PDFs use the extension's viewer, parser, renderer, and English OCR.

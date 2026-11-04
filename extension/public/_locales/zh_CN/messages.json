@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "正在加载 PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "打开原始链接"
+  },
   "ui_abc76c7c": {
     "message": "正在重新打开 PDF…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "需要处理"
   },
-  "ui_4d1cf041": {
-    "message": "美式英语，女声"
-  },
-  "ui_faf95838": {
-    "message": "美式英语，男声"
-  },
-  "ui_f3768d40": {
-    "message": "英式英语，女声"
-  },
-  "ui_4139054c": {
-    "message": "请选择 Kokoro 的英语语音。Kokoro 不支持其他语言。"
-  },
   "ui_c0c171d2": {
     "message": "无法完成此操作。"
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "部分图形无法显示，但仍可朗读文本。"
   },
   "ui_58de2772": {
     "message": "正常"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "开始朗读时将显示文本。"
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ 分 $arg2$ 秒",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ 小时 $arg2$ 分钟",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "朗读页面"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator 初始化失败。"
   },
+  "ui_4d1cf041": {
+    "message": "美式英语，女声"
+  },
+  "ui_faf95838": {
+    "message": "美式英语，男声"
+  },
+  "ui_f3768d40": {
+    "message": "英式英语，女声"
+  },
+  "ui_4139054c": {
+    "message": "请选择 Kokoro 的英语语音。Kokoro 不支持其他语言。"
+  },
   "ui_87d977c4": {
     "message": "PageNarrator 播放器"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "隐私详情"
+  },
+  "ui_e59ac0eb": {
+    "message": "从头开始朗读"
   },
   "ui_1eb4158c": {
     "message": "高级设置"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "实验性功能。包含 32 个语言条目，质量各异。需要支持 fp16 的 WebGPU，并下载约 1.35 GB 文件。可选择语音、变体或耳语。"
   },
+  "ui_35a4186c": {
+    "message": "警告：此语言的耳语可能会漏词。请对照原文检查朗读内容。"
+  },
   "ui_ab4a698f": {
     "message": "打开页面"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "尝试其他 PDF"
   },
+  "ui_dc60ae88": {
+    "message": "在 Chrome 中打开原始链接，并在提示时登录。PDF 显示后，重新尝试朗读。如果仍被重定向，请下载 PDF 并打开本地副本。"
+  },
   "ui_b8183083": {
     "message": "无法下载 PDF。请检查链接和网络连接。"
   },
   "ui_ce24479d": {
     "message": "无法打开此 PDF。"
-  },
-  "ui_e59ac0eb": {
-    "message": "从头开始朗读"
-  },
-  "ui_35a4186c": {
-    "message": "警告：此语言的耳语可能会漏词。请对照原文检查朗读内容。"
   }
 }

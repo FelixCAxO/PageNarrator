@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Đang tải PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "Mở liên kết gốc"
+  },
   "ui_abc76c7c": {
     "message": "Đang mở lại PDF…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Cần xử lý"
   },
-  "ui_4d1cf041": {
-    "message": "Tiếng Anh Mỹ, nữ"
-  },
-  "ui_faf95838": {
-    "message": "Tiếng Anh Mỹ, nam"
-  },
-  "ui_f3768d40": {
-    "message": "Tiếng Anh Anh, nữ"
-  },
-  "ui_4139054c": {
-    "message": "Chọn giọng Kokoro tiếng Anh. Kokoro không hỗ trợ ngôn ngữ khác."
-  },
   "ui_c0c171d2": {
     "message": "Không hoàn tất được thao tác này."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Không thể hiển thị một số đồ họa. Vẫn có thể đọc to văn bản."
   },
   "ui_58de2772": {
     "message": "Bình thường"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Văn bản sẽ hiển thị khi bắt đầu đọc."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ phút $arg2$ giây",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ giờ $arg2$ phút",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Đọc trang"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "Không khởi động được PageNarrator."
   },
+  "ui_4d1cf041": {
+    "message": "Tiếng Anh Mỹ, nữ"
+  },
+  "ui_faf95838": {
+    "message": "Tiếng Anh Mỹ, nam"
+  },
+  "ui_f3768d40": {
+    "message": "Tiếng Anh Anh, nữ"
+  },
+  "ui_4139054c": {
+    "message": "Chọn giọng Kokoro tiếng Anh. Kokoro không hỗ trợ ngôn ngữ khác."
+  },
   "ui_87d977c4": {
     "message": "Trình phát PageNarrator"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Chi tiết về quyền riêng tư"
+  },
+  "ui_e59ac0eb": {
+    "message": "Đọc từ đầu"
   },
   "ui_1eb4158c": {
     "message": "Cài đặt nâng cao"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Thử nghiệm. Có 32 mục ngôn ngữ với chất lượng khác nhau. Cần WebGPU hỗ trợ fp16 và tải xuống khoảng 1,35 GB. Chọn giọng, biến thể hoặc thì thầm."
   },
+  "ui_35a4186c": {
+    "message": "Cảnh báo: Chế độ thì thầm có thể bỏ sót từ trong ngôn ngữ này. Hãy đối chiếu phần đọc với văn bản."
+  },
   "ui_ab4a698f": {
     "message": "Mở trang"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Thử PDF khác"
   },
+  "ui_dc60ae88": {
+    "message": "Mở liên kết gốc trong Chrome và đăng nhập nếu được yêu cầu. Khi PDF hiển thị, hãy thử đọc lại. Nếu vẫn bị chuyển hướng, hãy tải PDF xuống và mở bản sao trên thiết bị."
+  },
   "ui_b8183083": {
     "message": "Không tải được PDF. Kiểm tra liên kết và kết nối mạng."
   },
   "ui_ce24479d": {
     "message": "Không mở được PDF này."
-  },
-  "ui_e59ac0eb": {
-    "message": "Đọc từ đầu"
-  },
-  "ui_35a4186c": {
-    "message": "Cảnh báo: Chế độ thì thầm có thể bỏ sót từ trong ngôn ngữ này. Hãy đối chiếu phần đọc với văn bản."
   }
 }

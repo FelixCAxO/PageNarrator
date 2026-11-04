@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Läser in PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "Öppna originallänken"
+  },
   "ui_abc76c7c": {
     "message": "Öppnar PDF igen…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Behöver åtgärdas"
   },
-  "ui_4d1cf041": {
-    "message": "Amerikansk engelska, kvinnoröst"
-  },
-  "ui_faf95838": {
-    "message": "Amerikansk engelska, mansröst"
-  },
-  "ui_f3768d40": {
-    "message": "Brittisk engelska, kvinnoröst"
-  },
-  "ui_4139054c": {
-    "message": "Välj en engelsk Kokoro-röst. Kokoro stöder inga andra språk."
-  },
   "ui_c0c171d2": {
     "message": "Åtgärden kunde inte slutföras."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Viss grafik kunde inte visas. Texten kan fortfarande läsas upp."
   },
   "ui_58de2772": {
     "message": "Normal"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Texten visas när uppläsningen börjar."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ h $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Läs upp sidan"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator kunde inte startas."
   },
+  "ui_4d1cf041": {
+    "message": "Amerikansk engelska, kvinnoröst"
+  },
+  "ui_faf95838": {
+    "message": "Amerikansk engelska, mansröst"
+  },
+  "ui_f3768d40": {
+    "message": "Brittisk engelska, kvinnoröst"
+  },
+  "ui_4139054c": {
+    "message": "Välj en engelsk Kokoro-röst. Kokoro stöder inga andra språk."
+  },
   "ui_87d977c4": {
     "message": "PageNarrator-spelare"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Integritetsinformation"
+  },
+  "ui_e59ac0eb": {
+    "message": "Läs från början"
   },
   "ui_1eb4158c": {
     "message": "Avancerade inställningar"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Experimentell. 32 språkposter med varierande kvalitet. Kräver WebGPU med fp16 och cirka 1,35 GB hämtningar. Välj röst, variant eller viskning."
   },
+  "ui_35a4186c": {
+    "message": "Varning: Viskning kan utelämna ord på det här språket. Kontrollera uppläsningen mot texten."
+  },
   "ui_ab4a698f": {
     "message": "Öppna sidan"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Prova en annan PDF"
   },
+  "ui_dc60ae88": {
+    "message": "Öppna originallänken i Chrome och logga in om du blir ombedd. Försök läsa igen när PDF-filen visas. Om du fortfarande omdirigeras, ladda ner PDF-filen och öppna den lokala kopian."
+  },
   "ui_b8183083": {
     "message": "PDF-filen kunde inte hämtas. Kontrollera länken och din anslutning."
   },
   "ui_ce24479d": {
     "message": "Den här PDF-filen kunde inte öppnas."
-  },
-  "ui_e59ac0eb": {
-    "message": "Läs från början"
-  },
-  "ui_35a4186c": {
-    "message": "Varning: Viskning kan utelämna ord på det här språket. Kontrollera uppläsningen mot texten."
   }
 }

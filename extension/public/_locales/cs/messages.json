@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Načítání PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "Otevřít původní odkaz"
+  },
   "ui_abc76c7c": {
     "message": "Opětovné otevírání PDF…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Vyžaduje pozornost"
   },
-  "ui_4d1cf041": {
-    "message": "Americká angličtina, ženský"
-  },
-  "ui_faf95838": {
-    "message": "Americká angličtina, mužský"
-  },
-  "ui_f3768d40": {
-    "message": "Britská angličtina, ženský"
-  },
-  "ui_4139054c": {
-    "message": "Vyberte anglický hlas Kokoro. Kokoro nepodporuje jiné jazyky."
-  },
   "ui_c0c171d2": {
     "message": "Tuto akci se nepodařilo dokončit."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Některé grafické prvky se nepodařilo zobrazit. Text lze nadále předčítat."
   },
   "ui_58de2772": {
     "message": "Normální"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Text se zobrazí při zahájení čtení."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ h $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Přečíst stránku"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarrator se nepodařilo spustit."
   },
+  "ui_4d1cf041": {
+    "message": "Americká angličtina, ženský"
+  },
+  "ui_faf95838": {
+    "message": "Americká angličtina, mužský"
+  },
+  "ui_f3768d40": {
+    "message": "Britská angličtina, ženský"
+  },
+  "ui_4139054c": {
+    "message": "Vyberte anglický hlas Kokoro. Kokoro nepodporuje jiné jazyky."
+  },
   "ui_87d977c4": {
     "message": "Přehrávač PageNarrator"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Podrobnosti o soukromí"
+  },
+  "ui_e59ac0eb": {
+    "message": "Číst od začátku"
   },
   "ui_1eb4158c": {
     "message": "Pokročilá nastavení"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Experimentální. 32 jazykových položek; kvalita se liší. Vyžaduje WebGPU s fp16 a stažení asi 1,35 GB. Vyberte hlas, variantu nebo šepot."
   },
+  "ui_35a4186c": {
+    "message": "Upozornění: Šeptání může v tomto jazyce vynechávat slova. Porovnejte čtení s textem."
+  },
   "ui_ab4a698f": {
     "message": "Otevřít stránku"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Zkusit jiné PDF"
   },
+  "ui_dc60ae88": {
+    "message": "Otevřete původní odkaz v Chromu a v případě výzvy se přihlaste. Jakmile se PDF zobrazí, zkuste předčítání znovu. Pokud přesměrování pokračuje, stáhněte PDF a otevřete místní kopii."
+  },
   "ui_b8183083": {
     "message": "PDF se nepodařilo stáhnout. Zkontrolujte odkaz a připojení."
   },
   "ui_ce24479d": {
     "message": "Toto PDF se nepodařilo otevřít."
-  },
-  "ui_e59ac0eb": {
-    "message": "Číst od začátku"
-  },
-  "ui_35a4186c": {
-    "message": "Upozornění: Šeptání může v tomto jazyce vynechávat slova. Porovnejte čtení s textem."
   }
 }

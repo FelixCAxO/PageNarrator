@@ -165,7 +165,7 @@ export async function createCpuOcrBrowser({ candidate = false, beam = false, sou
             await globalThis.pnCpuOcr.dispose();
             if(backend==='cpu')Object.defineProperty(navigator, 'gpu', { configurable: true, value: undefined });
             const bitmap = await createImageBitmap(await (await fetch(imagePath)).blob());
-            const renders = [], results = [], verificationResults = [], diagnostics = [], NativeWorker = globalThis.Worker;
+            const renders = [], results = [], verificationResults = [], NativeWorker = globalThis.Worker;
             const {createOcrWorkerResultCapture,ocrPageResultLines}=await import(new URL('/src/ocr-worker-result-capture.js',location.href).href);
             const activeWorkers=new Set(),workerRequests=[],workerSnapshots=[];
             const observer=observe?await import(new URL('/src/ocr-audit-observer.js',location.href).href):null;
@@ -178,7 +178,6 @@ export async function createCpuOcrBrowser({ candidate = false, beam = false, sou
                 super.onmessage = event => {
                   this.resultCapture.receive(event.data);
                   if(event.data?.ocrAudit)workerSnapshots.push(event.data.ocrAudit);
-                  if (event.data?.type === 'ocr-geometry-diagnostic') diagnostics.push(event.data);
                   listener(event);
                 };
               }
@@ -198,7 +197,7 @@ export async function createCpuOcrBrowser({ candidate = false, beam = false, sou
                   return { promise: Promise.resolve() };
                 } };
               const started = performance.now(), items = await reader.recognizePage(source);
-              output={ width: bitmap.width, height: bitmap.height, elapsedMs: performance.now() - started, renders, diagnostics,
+              output={ width: bitmap.width, height: bitmap.height, elapsedMs: performance.now() - started, renders,
                 initial: ocrPageResultLines(results[0]), retry: ocrPageResultLines(results[1]), verificationResults, items,
                 text: items.map(item => item.str).join(' ') };
               return output;

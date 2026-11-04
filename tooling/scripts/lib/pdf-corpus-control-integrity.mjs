@@ -24,8 +24,8 @@ const PIN_FILES = [
   'tooling/scripts/probe-pdf-engine.mjs', 'tooling/scripts/pdf-acceptance-metrics.mjs',
   'tooling/scripts/lib/pdf-corpus-control-integrity.mjs',
   'src/lib/highlight-search.js', 'src/lib/logger.js', 'src/lib/numeric-matrix.js',
-  'src/lib/pdf-extraction.js', 'src/lib/pdf-page-model.js', 'src/lib/pdf-stream-chunking.js',
-  'src/lib/pdf-url-parsing.js', 'src/lib/pdf-vertical-model.js', 'src/lib/pdf-viewer-detection.js',
+  'src/lib/pdf-extraction.js', 'src/lib/pdf-page-model.js',
+  'src/lib/pdf-vertical-model.js',
   'src/lib/speech-chunks.js', 'src/lib/speech-tokenization.js', 'src/lib/storage-keys.js',
   'src/lib/tuning-config.js',
 ];

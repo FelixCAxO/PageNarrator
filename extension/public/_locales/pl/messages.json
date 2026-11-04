@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Wczytywanie PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "Otwórz oryginalny link"
+  },
   "ui_abc76c7c": {
     "message": "Ponowne otwieranie PDF…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Wymagana uwaga"
   },
-  "ui_4d1cf041": {
-    "message": "Angielski amerykański, żeński"
-  },
-  "ui_faf95838": {
-    "message": "Angielski amerykański, męski"
-  },
-  "ui_f3768d40": {
-    "message": "Angielski brytyjski, żeński"
-  },
-  "ui_4139054c": {
-    "message": "Wybierz angielski głos Kokoro. Kokoro nie obsługuje innych języków."
-  },
   "ui_c0c171d2": {
     "message": "Nie udało się wykonać tej czynności."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Nie udało się wyświetlić niektórych elementów graficznych. Nadal można odsłuchać tekst."
   },
   "ui_58de2772": {
     "message": "Normalnie"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Tekst pojawi się po rozpoczęciu czytania."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ godz. $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Czytaj stronę"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "Nie udało się uruchomić PageNarrator."
   },
+  "ui_4d1cf041": {
+    "message": "Angielski amerykański, żeński"
+  },
+  "ui_faf95838": {
+    "message": "Angielski amerykański, męski"
+  },
+  "ui_f3768d40": {
+    "message": "Angielski brytyjski, żeński"
+  },
+  "ui_4139054c": {
+    "message": "Wybierz angielski głos Kokoro. Kokoro nie obsługuje innych języków."
+  },
   "ui_87d977c4": {
     "message": "Odtwarzacz PageNarrator"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Szczegóły prywatności"
+  },
+  "ui_e59ac0eb": {
+    "message": "Czytaj od początku"
   },
   "ui_1eb4158c": {
     "message": "Ustawienia zaawansowane"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Eksperymentalny. 32 pozycji językowych; jakość jest różna. Wymaga WebGPU z fp16 i pobrania około 1,35 GB. Wybierz głos, wariant lub szept."
   },
+  "ui_35a4186c": {
+    "message": "Uwaga: Szept w tym języku może pomijać słowa. Porównaj odczyt z tekstem."
+  },
   "ui_ab4a698f": {
     "message": "Otwórz stronę"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Spróbuj innego pliku PDF"
   },
+  "ui_dc60ae88": {
+    "message": "Otwórz oryginalny link w Chrome i zaloguj się, jeśli pojawi się taka prośba. Gdy PDF będzie widoczny, ponów próbę odczytu. Jeśli nadal następuje przekierowanie, pobierz PDF i otwórz lokalną kopię."
+  },
   "ui_b8183083": {
     "message": "Nie udało się pobrać pliku PDF. Sprawdź link i połączenie z internetem."
   },
   "ui_ce24479d": {
     "message": "Nie udało się otworzyć tego pliku PDF."
-  },
-  "ui_e59ac0eb": {
-    "message": "Czytaj od początku"
-  },
-  "ui_35a4186c": {
-    "message": "Uwaga: Szept w tym języku może pomijać słowa. Porównaj odczyt z tekstem."
   }
 }

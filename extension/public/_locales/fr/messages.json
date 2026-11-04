@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Chargement du PDF…"
   },
+  "ui_d8ec62a0": {
+    "message": "Ouvrir le lien d’origine"
+  },
   "ui_abc76c7c": {
     "message": "Réouverture du PDF…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Action requise"
   },
-  "ui_4d1cf041": {
-    "message": "Anglais américain, féminine"
-  },
-  "ui_faf95838": {
-    "message": "Anglais américain, masculine"
-  },
-  "ui_f3768d40": {
-    "message": "Anglais britannique, féminine"
-  },
-  "ui_4139054c": {
-    "message": "Choisissez une voix Kokoro en anglais. Kokoro ne prend pas en charge les autres langues."
-  },
   "ui_c0c171d2": {
     "message": "Impossible d’effectuer cette action."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Certains éléments graphiques n’ont pas pu être affichés. Le texte peut toujours être lu à voix haute."
   },
   "ui_58de2772": {
     "message": "Normale"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Le texte s’affichera au début de la lecture."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ h $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Lire la page"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "Impossible de démarrer PageNarrator."
   },
+  "ui_4d1cf041": {
+    "message": "Anglais américain, féminine"
+  },
+  "ui_faf95838": {
+    "message": "Anglais américain, masculine"
+  },
+  "ui_f3768d40": {
+    "message": "Anglais britannique, féminine"
+  },
+  "ui_4139054c": {
+    "message": "Choisissez une voix Kokoro en anglais. Kokoro ne prend pas en charge les autres langues."
+  },
   "ui_87d977c4": {
     "message": "Lecteur PageNarrator"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Détails sur la confidentialité"
+  },
+  "ui_e59ac0eb": {
+    "message": "Lire depuis le début"
   },
   "ui_1eb4158c": {
     "message": "Réglages avancés"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Expérimental. 32 entrées de langues, de qualité variable. Nécessite WebGPU avec fp16 et environ 1,35 GB de téléchargements. Choisissez une voix, une variante ou le chuchotement."
   },
+  "ui_35a4186c": {
+    "message": "Attention : le chuchotement peut omettre des mots dans cette langue. Comparez la lecture au texte."
+  },
   "ui_ab4a698f": {
     "message": "Ouvrir la page"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Essayer un autre PDF"
   },
+  "ui_dc60ae88": {
+    "message": "Ouvrez le lien d’origine dans Chrome et connectez-vous si nécessaire. Une fois le PDF affiché, relancez la lecture. Si la redirection persiste, téléchargez le PDF et ouvrez la copie locale."
+  },
   "ui_b8183083": {
     "message": "Impossible de télécharger le PDF. Vérifiez le lien et votre connexion."
   },
   "ui_ce24479d": {
     "message": "Impossible d’ouvrir ce PDF."
-  },
-  "ui_e59ac0eb": {
-    "message": "Lire depuis le début"
-  },
-  "ui_35a4186c": {
-    "message": "Attention : le chuchotement peut omettre des mots dans cette langue. Comparez la lecture au texte."
   }
 }

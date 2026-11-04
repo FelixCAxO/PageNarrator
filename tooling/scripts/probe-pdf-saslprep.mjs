@@ -12,7 +12,7 @@ const normalizationBytes = await readFile(path.join(source, 'NormalizationTest-3
 if (sha(normalizationBytes) !== 'c4513869bb7098d19838be4a1fd5d760843c5804bfe03bd6bbb20623ceb6e57d') throw new Error('Official Unicode3.2 conformance data differs from the frozen source.');
 const oracleBytes = await readFile(new URL('../../tests/pdf-engine/fixtures/saslprep-python.json', import.meta.url)), oracle = JSON.parse(oracleBytes);
 const pins = ['src/pdf/saslprep.js', 'engines/vendor/pdf-unicode/saslprep.json', 'engines/vendor/pdf-unicode/manifest.json', 'tests/pdf-engine/fixtures/saslprep-python.json'];
-async function pin() { return await Promise.all(pins.map(async file => ({ path: file, sha256: sha(await readFile(new URL(`../${file}`, import.meta.url))) }))); }
+async function pin() { return await Promise.all(pins.map(async file => ({ path: file, sha256: sha(await readFile(new URL(`../../${file}`, import.meta.url))) }))); }
 const before = await pin(), started = performance.now(), failures = []; let officialCases = 0, assertions = 0;
 const scalarString = value => String.fromCodePoint(...value.trim().split(' ').filter(Boolean).map(code => parseInt(code, 16)));
 for (const line of normalizationBytes.toString('utf8').split(/\r?\n/)) {

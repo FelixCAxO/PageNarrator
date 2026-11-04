@@ -90,6 +90,9 @@
   "ui_ffb67f19": {
     "message": "Ladataan PDF:ää…"
   },
+  "ui_d8ec62a0": {
+    "message": "Avaa alkuperäinen linkki"
+  },
   "ui_abc76c7c": {
     "message": "Avataan PDF uudelleen…"
   },
@@ -213,18 +216,6 @@
   "ui_5d640b9c": {
     "message": "Vaatii huomiota"
   },
-  "ui_4d1cf041": {
-    "message": "Amerikanenglanti, naisääni"
-  },
-  "ui_faf95838": {
-    "message": "Amerikanenglanti, miesääni"
-  },
-  "ui_f3768d40": {
-    "message": "Brittienglanti, naisääni"
-  },
-  "ui_4139054c": {
-    "message": "Valitse englanninkielinen Kokoro-ääni. Kokoro ei tue muita kieliä."
-  },
   "ui_c0c171d2": {
     "message": "Toimintoa ei voitu suorittaa loppuun."
   },
@@ -251,6 +242,9 @@
         "content": "$1"
       }
     }
+  },
+  "ui_6589cf1b": {
+    "message": "Osaa grafiikasta ei voitu näyttää. Tekstin voi edelleen kuunnella."
   },
   "ui_58de2772": {
     "message": "Normaali"
@@ -313,28 +307,6 @@
   },
   "ui_8bdfb3a1": {
     "message": "Teksti tulee näkyviin lukemisen alkaessa."
-  },
-  "ui_cb023e12": {
-    "message": "$arg1$ min $arg2$ s",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
-  },
-  "ui_1d64555b": {
-    "message": "$arg1$ h $arg2$ min",
-    "placeholders": {
-      "arg1": {
-        "content": "$1"
-      },
-      "arg2": {
-        "content": "$2"
-      }
-    }
   },
   "ui_d3f69559": {
     "message": "Lue sivu ääneen"
@@ -859,6 +831,18 @@
   "ui_1b842ad5": {
     "message": "PageNarratoria ei voitu käynnistää."
   },
+  "ui_4d1cf041": {
+    "message": "Amerikanenglanti, naisääni"
+  },
+  "ui_faf95838": {
+    "message": "Amerikanenglanti, miesääni"
+  },
+  "ui_f3768d40": {
+    "message": "Brittienglanti, naisääni"
+  },
+  "ui_4139054c": {
+    "message": "Valitse englanninkielinen Kokoro-ääni. Kokoro ei tue muita kieliä."
+  },
   "ui_87d977c4": {
     "message": "PageNarrator-soitin"
   },
@@ -933,6 +917,9 @@
   },
   "ui_3452d125": {
     "message": "Tietosuojatiedot"
+  },
+  "ui_e59ac0eb": {
+    "message": "Lue alusta"
   },
   "ui_1eb4158c": {
     "message": "Lisäasetukset"
@@ -1177,6 +1164,9 @@
   "ui_6b68e4c5": {
     "message": "Kokeellinen. 32 kielimerkintää; laatu vaihtelee. Vaatii WebGPU:n, fp16-tuen ja noin 1,35 GB latauksia. Valitse ääni, muunnelma tai kuiskaus."
   },
+  "ui_35a4186c": {
+    "message": "Varoitus: Kuiskaus voi jättää sanoja pois tällä kielellä. Vertaa luentaa tekstiin."
+  },
   "ui_ab4a698f": {
     "message": "Avaa sivu"
   },
@@ -1294,16 +1284,13 @@
   "ui_5679bf2f": {
     "message": "Kokeile toista PDF:ää"
   },
+  "ui_dc60ae88": {
+    "message": "Avaa alkuperäinen linkki Chromessa ja kirjaudu sisään, jos sitä pyydetään. Kun PDF näkyy, yritä käynnistää luku uudelleen. Jos uudelleenohjaus jatkuu, lataa PDF ja avaa paikallinen kopio."
+  },
   "ui_b8183083": {
     "message": "PDF:n lataaminen epäonnistui. Tarkista linkki ja verkkoyhteys."
   },
   "ui_ce24479d": {
     "message": "Tätä PDF:ää ei voitu avata."
-  },
-  "ui_e59ac0eb": {
-    "message": "Lue alusta"
-  },
-  "ui_35a4186c": {
-    "message": "Varoitus: Kuiskaus voi jättää sanoja pois tällä kielellä. Vertaa luentaa tekstiin."
   }
 }

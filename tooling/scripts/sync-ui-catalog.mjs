@@ -4,7 +4,7 @@ import ts from 'typescript';
 import { JSDOM } from 'jsdom';
 import { messageKey } from '../../src/lib/i18n.js';
 import { ERROR_REGISTRY } from '../../src/lib/error-registry.js';
-import { VOICE_ENGINE_HELP } from '../../src/lib/omnivoice-settings.js';
+import { OMNIVOICE_WHISPER_WARNING, VOICE_ENGINE_HELP } from '../../src/lib/omnivoice-settings.js';
 
 const previous = JSON.parse(await readFile('extension/public/_locales/en/messages.json', 'utf8'));
 const catalog = Object.fromEntries(Object.entries(previous).filter(([key]) => !key.startsWith('ui_')));
@@ -44,7 +44,7 @@ for (const file of ['src/popup.html', 'src/reader-engine.html', 'src/pdf-viewer.
     }
   }
 }
-for (const value of Object.values(VOICE_ENGINE_HELP)) add(value, 'src/lib/omnivoice-settings.js');
+for (const value of [...Object.values(VOICE_ENGINE_HELP), OMNIVOICE_WHISPER_WARNING]) add(value, 'src/lib/omnivoice-settings.js');
 for (const record of Object.values(ERROR_REGISTRY)) {
   for (const [field, value] of Object.entries(record)) if (field !== 'code') add(value, `src/lib/error-registry.js:${record.code}.${field}`);
 }
