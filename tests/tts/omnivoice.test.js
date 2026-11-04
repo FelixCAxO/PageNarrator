@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { createOmniVoiceTts } from '../../src/tts/omnivoice/tts.js';
-import { createOmniVoiceRequest, normalizeOmniVoiceSettings, hasOmniVoiceWhisperWordLossRisk } from '../../src/lib/omnivoice-settings.js';
+import { createOmniVoiceRequest, normalizeOmniVoiceSettings, getOmniVoiceVariationOrder, DEFAULT_OMNIVOICE_SETTINGS, hasOmniVoiceWhisperWordLossRisk } from '../../src/lib/omnivoice-settings.js';
 import { normalizePlaybackSettings, savePlaybackSettings } from '../../src/lib/playback-settings.js';
 import { OMNIVOICE_LANGUAGES, getOmniVoiceLanguage, getOmniVoiceLanguageOptions } from '../../src/tts/omnivoice/languages.js';
 import { getLanguageOption, normalizeLanguageCode } from '../../src/lib/language-voice-options.js';
@@ -22,9 +22,23 @@ describe('OmniVoice integration', () => {
     expect(getOmniVoiceLanguageOptions('sol')).toEqual([...options, getOmniVoiceLanguage('sol')]);
   });
 
+  it('ranks each shipped language and voice group without changing preset IDs', () => {
+    for (const { code } of getOmniVoiceLanguageOptions()) {
+      for (const gender of ['female', 'male']) {
+        const order = getOmniVoiceVariationOrder(code, gender);
+        expect([...order].sort((a, b) => a - b)).toEqual([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+        expect(normalizeOmniVoiceSettings({ gender }, code).variation).toBe(order[0]);
+        for (const variation of order) {
+          expect(createOmniVoiceRequest('Test', { detectCode: code, omniVoice: { gender, variation } }).speakerId).toBe(`${gender}-${variation}`);
+        }
+      }
+    }
+    expect(getOmniVoiceVariationOrder('sv-SE', 'female')[0]).toBe(7);
+  });
+
   it('ignores saved speaking pace and bounds voice variations without changing synthesis speed', () => {
     for (const variation of [0, 11, 1.5, Infinity, '4', null]) {
-      expect(normalizeOmniVoiceSettings({ variation, tempo: 0.5 }).variation).toBe(1);
+      expect(normalizeOmniVoiceSettings({ variation, tempo: 0.5 }).variation).toBe(DEFAULT_OMNIVOICE_SETTINGS.variation);
     }
     for (let variation = 1; variation <= 10; variation += 1) {
       const selected = { ...voice, omniVoice: { ...voice.omniVoice, variation, tempo: 1.5 } };
@@ -32,7 +46,7 @@ describe('OmniVoice integration', () => {
     }
   });
   it('keeps Kokoro as the default and repairs invalid voice attributes', () => {
-    expect(normalizePlaybackSettings()).toMatchObject({ ttsEngine: 'kokoro', omniVoice: { gender: 'female', variation: 1, whisper: false } });
+    expect(normalizePlaybackSettings()).toMatchObject({ ttsEngine: 'kokoro', omniVoice: DEFAULT_OMNIVOICE_SETTINGS });
     expect(normalizeOmniVoiceSettings({ gender: 'other', pitch: NaN, age: 7, variation: Infinity, whisper: 'false' })).toEqual(normalizeOmniVoiceSettings());
     expect(createOmniVoiceRequest(' Hej! ', voice)).toEqual({ text: 'Hej!', lang: 'sv', instruct: 'male', speed: 1, speakerId:'male-1', seed: playbackSeed, numStep: 24, whisper:true });
     expect(createOmniVoiceRequest('你好！', { ...voice, detectCode: 'zh' }).instruct).toBe(hasOmniVoicePresetGenderCue('zh', 'male', 1) ? '男' : '');

@@ -1,4 +1,4 @@
-import { DEFAULT_OMNIVOICE_SETTINGS } from '../../src/lib/omnivoice-settings.js';
+import { DEFAULT_OMNIVOICE_SETTINGS, getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { STORAGE_KEYS } from '../../src/lib/storage-keys.js';
@@ -46,7 +46,7 @@ describe('settings store', () => {
     const adapter = createReaderEngineStorageAdapter({ storage });
     await expect(adapter.getPlaybackSettings()).resolves.toEqual({
       ttsEngine: 'kokoro',
-      omniVoice: DEFAULT_OMNIVOICE_SETTINGS,
+      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS, variation: getOmniVoiceVariationOrder('sv', 'female')[0] },
       language: 'sv',
       voice: 'piper-sv-se-nst-medium',
       voicesByLanguage: { sv: 'piper-sv-se-nst-medium' },

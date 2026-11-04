@@ -5,6 +5,7 @@ import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags, startR
 import { openRoutedReaderEngine, routeKokoroModelFiles, routeOmniVoiceModelFiles, seedKokoroModelCache } from './kokoro-download-fixture.js';
 import { buildCorpusFlowReport } from './corpus-flow-invariants.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { browserAdapterConfiguration, verifyBrowserAdapter } from '../../scripts/lib/browser-adapter.mjs';
 
 const SAMPLES = [
@@ -152,7 +153,7 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
     await popup.locator('#popup-omnivoice-whisper').check();
     const worker = context.serviceWorkers()[0];
     await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then((s) => s.playbackSettings)))
-      .toMatchObject({ ttsEngine: 'omnivoice', omniVoice: { gender: 'male', variation: 7, whisper: true }, voice: 'af_heart' });
+      .toMatchObject({ ttsEngine: 'omnivoice', omniVoice: { gender: 'male', variation: getOmniVoiceVariationOrder('sv', 'male')[6], whisper: true }, voice: 'af_heart' });
     const submitsBefore = await engine.evaluate(() => globalThis.__omniGpuSubmissions);
     for (const sample of SAMPLES) {
       await selectNativeOption(popup.locator('#popup-language'), sample.code);
@@ -166,7 +167,7 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
         await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
         await popup.locator('#popup-omnivoice-whisper').uncheck();
         await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(s => s.playbackSettings)))
-          .toMatchObject({ language: sample.code, omniVoice: { gender: 'female', variation: 4, whisper: false } });
+          .toMatchObject({ language: sample.code, omniVoice: { gender: 'female', variation: getOmniVoiceVariationOrder(sample.code, 'female')[3], whisper: false } });
         await article.goto(`${origin}/${sample.code}`);
         await startAndVerify(context, article, `omnivoice-${sample.code}-variation`);
         await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'male');

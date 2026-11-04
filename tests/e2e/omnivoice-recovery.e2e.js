@@ -3,6 +3,7 @@ import { createServer } from 'node:http';
 import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine } from './kokoro-download-fixture.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 
 test('recovers a worker crash and switches Swedish voice settings through the packaged reader', async ({}, testInfo) => {
   const server = createServer((_request, response) => {
@@ -52,7 +53,7 @@ test('recovers a worker crash and switches Swedish voice settings through the pa
     if (!await controls.locator('#popup-settings').evaluate(node => node.open)) await controls.locator('#popup-settings summary').click();
     await selectNativeOption(controls.locator('#popup-omnivoice-gender'), 'male');
     await setNativeRange(controls.locator('#popup-omnivoice-variation'), 4);
-    await expect.poll(() => engine.evaluate(() => __recovery.jobs.some(job => job.speakerId === 'male-4'))).toBe(true);
+    await expect.poll(() => engine.evaluate(variation => __recovery.jobs.some(job => job.speakerId === `male-${variation}`), getOmniVoiceVariationOrder('sv', 'male')[3])).toBe(true);
     await expect.poll(async () => (await worker.evaluate(() => chrome.storage.session.get('readerEngineState'))).readerEngineState?.state,
       { timeout: 30_000 }).toBe('finished');
     const report = await engine.evaluate(() => __recovery);

@@ -29,7 +29,7 @@ import {
   getTtsPerformanceProfileConfig,
 } from './tts-performance-profile.js';
 import { DEFAULT_RUNTIME_POLICY } from '../tts/runtime/default-runtime-policy.js';
-import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './omnivoice-settings.js';
+import { normalizeOmniVoiceSettings, getOmniVoiceVariationOrder, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './omnivoice-settings.js';
 import { getOmniVoiceLanguageOptions, getOmniVoiceLanguage } from '../tts/omnivoice/languages.js';
 import {
   saveIdleReleaseDiagnostic,
@@ -155,10 +155,14 @@ export function createReaderEngineVoiceSettingsController({
     }
     els.language.addEventListener('change', async () => {
       setSelectedLanguageCode(normalizeLanguageCode(els.language.value));
-      await saveVoiceSelection({
-        language: getSelectedLanguageCode(),
-        storage: readerEngineStorage.rawStorage,
-      }).catch(suppressReaderEngineError);
+      if (els.ttsEngine?.value === 'omnivoice') {
+        savePlaybackSettingsSoon({ language: getSelectedLanguageCode(), omniVoice: getOmniVoiceSettings() });
+      } else {
+        await saveVoiceSelection({
+          language: getSelectedLanguageCode(),
+          storage: readerEngineStorage.rawStorage,
+        }).catch(suppressReaderEngineError);
+      }
       await populateVoices();
       onVoiceSelectionChanged();
     });
@@ -470,15 +474,19 @@ export function createReaderEngineVoiceSettingsController({
   }
 
   function getOmniVoiceSettings() {
-    return normalizeOmniVoiceSettings({ gender: els.omniVoiceGender?.value,
-      variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked }, getSelectedLanguageCode());
+    const language = getSelectedLanguageCode();
+    const gender = els.omniVoiceGender?.value;
+    const order = getOmniVoiceVariationOrder(language, gender);
+    return normalizeOmniVoiceSettings({ gender,
+      variation: order[Number(els.omniVoiceVariation?.value) - 1], whisper: els.omniVoiceWhisper?.checked }, language);
   }
 
   function renderOmniVoiceSettings(settings = {}) {
     const config = normalizeOmniVoiceSettings(settings, getSelectedLanguageCode());
+    const rank = getOmniVoiceVariationOrder(getSelectedLanguageCode(), config.gender).indexOf(config.variation) + 1;
     if (els.omniVoiceGender) els.omniVoiceGender.value = config.gender;
-    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(config.variation);
-    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${config.variation} / 10`;
+    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(rank);
+    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${rank} / 10`;
     if (els.omniVoiceWhisper) {
       els.omniVoiceWhisper.checked = config.whisper;
       els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(getSelectedLanguageCode());

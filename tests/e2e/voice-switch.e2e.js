@@ -1,6 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { launchExtensionContext, openExtensionPage } from './extension-fixture.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 
 test('voice model is easy to reach and switching preserves both sets of controls', async ({}, testInfo) => {
   const { context, cleanup } = await launchExtensionContext({ testInfo });
@@ -27,6 +28,8 @@ test('voice model is easy to reach and switching preserves both sets of controls
     await expect(popup.locator('#popup-voice-model-help')).toContainText('1.35 GB');
     await selectNativeOption(popup.locator('#popup-language'), 'sv');
     await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
+    await expect.poll(() => popup.evaluate(() => chrome.storage.local.get('playbackSettings')
+      .then(value => value.playbackSettings.omniVoice.variation))).toBe(getOmniVoiceVariationOrder('sv', 'female')[3]);
     await popup.locator('#popup-omnivoice-whisper').check();
     await expect(popup.locator('#popup-omnivoice-pitch')).toHaveCount(0);
     await expect(popup.locator('#popup-omnivoice-age')).toHaveCount(0);

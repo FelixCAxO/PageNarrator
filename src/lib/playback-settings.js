@@ -100,10 +100,11 @@ export async function savePlaybackSettings(settings, { storage = globalThis.chro
     );
     const settingsObject = /** @type {Record<string, unknown>} */ (isPlainObject(settings) ? settings : {});
     const hasSetting = (name) => Object.prototype.hasOwnProperty.call(settingsObject, name);
+    const language = normalizeLanguageSetting(hasSetting('language') ? settingsObject.language : raw.language);
     const next = {
       ttsEngine: normalizeTtsEngine(hasSetting('ttsEngine') ? settingsObject.ttsEngine : raw.ttsEngine),
-      omniVoice: normalizeOmniVoiceSettings(hasSetting('omniVoice') ? settingsObject.omniVoice : raw.omniVoice),
-      language: normalizeLanguageSetting(hasSetting('language') ? settingsObject.language : raw.language),
+      omniVoice: normalizeOmniVoiceSettings(hasSetting('omniVoice') ? settingsObject.omniVoice : raw.omniVoice, language),
+      language,
       voice: normalizeVoiceSetting(hasSetting('voice') ? settingsObject.voice : raw.voice),
       speed: hasSetting('speed')
         ? clampPlaybackSpeed(settingsObject.speed)

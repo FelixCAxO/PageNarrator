@@ -1,4 +1,4 @@
-import { DEFAULT_OMNIVOICE_SETTINGS } from '../../src/lib/omnivoice-settings.js';
+import { DEFAULT_OMNIVOICE_SETTINGS, getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { describe, expect, it } from 'vitest';
 import {
   clampPlaybackSpeed,
@@ -132,7 +132,7 @@ describe('playback settings storage', () => {
 
     await expect(getPlaybackSettings({ storage })).resolves.toEqual({
       ttsEngine: 'kokoro',
-      omniVoice: DEFAULT_OMNIVOICE_SETTINGS,
+      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS, variation: getOmniVoiceVariationOrder('sv', 'female')[0] },
       language: 'sv',
       voice: 'piper-de-de-mls-medium',
       speed: 1.75,

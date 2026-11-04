@@ -27,7 +27,7 @@ import { getPopupRecoveryMessage } from './lib/ui-error-messages.js';
 import { DEFAULT_TITLE as ENGINE_PLACEHOLDER_TITLE, getSetupView } from './lib/reader-engine-view.js';
 import { installTrustedUiEventBoundary } from './lib/trusted-ui-events.js';
 import { isTrustedExtensionPage } from './lib/extension-message-security.js';
-import { normalizeOmniVoiceSettings, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './lib/omnivoice-settings.js';
+import { normalizeOmniVoiceSettings, getOmniVoiceVariationOrder, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './lib/omnivoice-settings.js';
 import { getOmniVoiceLanguageOptions } from './tts/omnivoice/languages.js';
 
 const logger = createLogger('popup');
@@ -81,18 +81,24 @@ export function createPopupApp({
   const getSpeed = () => clampPlaybackSpeed(els.speed?.value);
   const getPause = () => clampSectionPauseSeconds(els.sectionPause?.value);
   const isOmniVoice = () => els.ttsEngine?.value === 'omnivoice';
-  const getOmniVoiceSettings = () => normalizeOmniVoiceSettings({ gender: els.omniVoiceGender?.value,
-    variation: Number(els.omniVoiceVariation?.value), whisper: els.omniVoiceWhisper?.checked }, els.language?.value);
+  function getOmniVoiceSettings() {
+    const language = els.language?.value;
+    const gender = els.omniVoiceGender?.value;
+    const order = getOmniVoiceVariationOrder(language, gender);
+    return normalizeOmniVoiceSettings({ gender,
+      variation: order[Number(els.omniVoiceVariation?.value) - 1], whisper: els.omniVoiceWhisper?.checked }, language);
+  }
 
   function renderOmniVoiceSettings(value) {
     const settings = normalizeOmniVoiceSettings(value, els.language?.value);
+    const rank = getOmniVoiceVariationOrder(els.language?.value, settings.gender).indexOf(settings.variation) + 1;
     if (els.omniVoiceGender) els.omniVoiceGender.value = settings.gender;
-    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(settings.variation);
+    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(rank);
     if (els.omniVoiceWhisper) {
       els.omniVoiceWhisper.checked = settings.whisper;
       els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(els.language?.value);
     }
-    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${settings.variation} / 10`;
+    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${rank} / 10`;
   }
 
   function showError(error) {

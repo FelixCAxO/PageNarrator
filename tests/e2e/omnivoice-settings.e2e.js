@@ -5,6 +5,7 @@ import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { getOmniVoicePresetSeed } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const base = { gender: 'female', variation: 1, whisper: false };
@@ -192,7 +193,7 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     await expect(popup.locator('#popup-omnivoice-settings')).toContainText('Changes apply at the next section.');
     await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
     const worker = context.serviceWorkers()[0];
-    await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice.variation))).toBe(4);
+    await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(result => result.playbackSettings.omniVoice.variation))).toBe(getOmniVoiceVariationOrder('en', 'female')[3]);
     await expect.poll(async () => {
       const { readerEngineState: state = {} } = await worker.evaluate(() => chrome.storage.session.get('readerEngineState'));
       if (state.state === 'error') throw new Error(JSON.stringify(state));
@@ -204,7 +205,7 @@ test('OmniVoice replaces preloaded speech when voice settings change during narr
     expect(actual.plays.length).toBeGreaterThanOrEqual(3);
     expect(actual.plays[0].instruct).toBe('female');
     expect(actual.plays[0].seed).toBe(getOmniVoicePresetSeed('en', 'female', 1));
-    expect(actual.plays.slice(1).every(job => job.seed === getOmniVoicePresetSeed('en', 'female', 4) && job.instruct === 'female')).toBe(true);
+    expect(actual.plays.slice(1).every(job => job.seed === getOmniVoicePresetSeed('en', 'female', getOmniVoiceVariationOrder('en', 'female')[3]) && job.instruct === 'female')).toBe(true);
     expect(actual.plays.every(job => job.numStep === 24)).toBe(true);
     expect(actual.plays[1].speaker.referenceId).toBe('en-female-4');
     expect(actual.plays.slice(1).every(job => job.speaker.referenceHash === actual.plays[1].speaker.anchorHash)).toBe(true);

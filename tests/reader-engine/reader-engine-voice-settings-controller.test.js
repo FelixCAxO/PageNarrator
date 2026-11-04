@@ -1,4 +1,5 @@
 import { JSDOM } from 'jsdom';
+import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createReaderEngineVoiceSettingsController } from '../../src/lib/reader-engine-voice-settings-controller.js';
@@ -59,7 +60,7 @@ describe('reader engine voice settings', () => {
     await controller.restoreVoiceSelection({ id: 'am_michael', engine: 'kokoro', lang: 'en-US' });
     expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ ttsEngine: 'kokoro', language: 'en', voice: 'am_michael' });
     expect(controller.resolveSelectedVoice().id).toBe('am_michael');
-    expect(els.omniVoiceVariation.value).toBe('8');
+    expect(els.omniVoiceVariation.value).toBe(String(getOmniVoiceVariationOrder('en', 'male').indexOf(8) + 1));
 
     // Kokoro failed to load while OmniVoice kept reading.
     await controller.restoreVoiceSelection({ id: 'omnivoice:sv', engine: 'omnivoice', detectCode: 'sv', omniVoice });
@@ -102,12 +103,12 @@ describe('reader engine voice settings', () => {
     els.omniVoiceVariation.value = '4';
     els.omniVoiceVariation.dispatchEvent(new dom.window.Event('input'));
     expect(els.omniVoiceVariationOut.textContent).toBe('4 / 10');
-    expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ omniVoice: { gender: 'female', variation: 4, whisper: false } });
+    expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ omniVoice: { gender: 'female', variation: getOmniVoiceVariationOrder('en', 'female')[3], whisper: false } });
     expect(controller.resolveSelectedVoice().id).not.toBe(firstVoiceId);
     const saved = { ttsEngine: 'omnivoice', omniVoice: { gender: 'male', variation: 8, whisper: true } };
     controller.renderVoiceEngineSetting(saved);
     expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
-    expect(els.omniVoiceVariation.value).toBe('8');
+    expect(els.omniVoiceVariation.value).toBe(String(getOmniVoiceVariationOrder('en', 'male').indexOf(8) + 1));
     controller.renderVoiceEngineSetting({ ttsEngine: 'kokoro' });
     await controller.populateVoices();
     expect(controller.resolveSelectedVoice().id).toBe('am_michael');
