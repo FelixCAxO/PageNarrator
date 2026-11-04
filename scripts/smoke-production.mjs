@@ -10,9 +10,9 @@ const htmlParser = new DOMParser();
 const publicDir = fileURLToPath(new URL('../website/public/', import.meta.url));
 const requiredText = {
   '/': ['Read webpages and PDFs aloud.', 'No account or usage quota', 'Hugging Face'],
-  '/chrome-extension': ['Install v1.0.2', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation'],
+  '/chrome-extension': ['Install v1.0.3', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation'],
   '/support': ['source installation steps', 'Update without losing your place'],
-  '/changelog': ['Version 1.0.2', 'Fixed voices in 32 languages', 'Cantonese and Thai can omit words'],
+  '/changelog': ['Version 1.0.3', 'Open signed-in PDFs', 'higher-ranked OmniVoice variations'],
   '/privacy': ['Chrome Web Store User Data Policy', 'Limited Use requirements', 'Built-in voice downloads', 'Online documents'],
   '/terms': ['GPL-3.0-or-later', 'MIT License', 'Apache License 2.0', 'These Terms do not restrict rights granted by those licenses'],
 };
@@ -56,10 +56,10 @@ export function loadPageContracts(directory = publicDir) {
         indexable,
         requiredText: requiredText[path] || [],
         requiredLinks: /\/(?:chrome-extension|changelog|support)$/u.test(path)
-          ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip',
-            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-source.zip',
-            'https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2',
-            ...(path.endsWith('/changelog') ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'] : [])] : [],
+          ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3',
+            ...(path.endsWith('/changelog') ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'] : [])] : [],
         forbiddenText: path === '/changelog' ? [] : ['Piper', 'browser voice', 'system voice'],
       };
       return contract;

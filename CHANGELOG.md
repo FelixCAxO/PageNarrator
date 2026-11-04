@@ -1,7 +1,10 @@
 # Changelog
 
-## 1.0.3 (2026-11-03, local release candidate)
+## 1.0.3 (2026-11-04)
 
+- Open direct PDF links with the existing browser session and return sign-in redirects to Chrome.
+- Rank OmniVoice variations by measured acoustic quality while preserving saved voices.
+- Reduce clicks between speech segments and preserve loud syllables that would otherwise clip.
 - Keep narration advancing when a background tab or minimized window delays page highlighting.
 - Update the Node/npm, build, test, lint, browser and comparison-library toolchains to current compatible releases.
 - Rebuild the native speech, OCR, PDF and phonemizer engines with Zig 0.17.0.
@@ -27,7 +30,7 @@
 - Keep the retired private PDF benchmark optional while retaining required PDF corpus/browser checks and all historical results.
 - Refresh hardware guidance with the bounded numerical passes and tested development toolchain.
 
-Prepared locally at the maintainer's instruction with the same disclosed limitations as 1.0.2. Independent voice/PDF reviews remain pending, physical hardware tiers are unqualified, and historical waveform mismatches remain failed diagnostics. The local 180-section OmniVoice read had a maximum 3.5 ms playback handoff and 3.8% warmed resident-memory growth before cleanup; this is one-host evidence, not broad performance qualification. A finite reserve can still drain if synthesis stays slower than playback. See [verification status](docs/release-readiness.md). This local preparation authorizes no publication or deployment and changes no acceptance threshold or failed result.
+Published with the results in the [verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md). Independent listening reviews and physical hardware qualification remain open.
 
 ## 1.0.2 (2026-10-27)
 

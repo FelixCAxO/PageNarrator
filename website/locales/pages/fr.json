@@ -221,7 +221,6 @@
   "These Terms are governed by the laws of Sweden, without regard to conflict-of-law rules. Send questions to <a href=\"mailto:support@pagenarrator.com\">support@pagenarrator.com</a>. See also the <a href=\"/privacy\">Privacy Policy</a>.": "Les présentes conditions sont régies par le droit suédois, sans application des règles de conflit de lois. Adressez vos questions à <a href='mailto:support@pagenarrator.com'>support@pagenarrator.com</a>. Consultez aussi la <a href='/privacy'>politique de confidentialité</a>.",
   "PageNarrator Terms of Use": "Conditions d’utilisation de PageNarrator",
   "Terms for using the free PageNarrator browser extension, including acceptable use, availability, and liability.": "Conditions d’utilisation de l’extension gratuite PageNarrator, notamment utilisation autorisée, disponibilité et responsabilité.",
-  "Download v1.0.2": "Télécharger v1.0.2",
   "Download the ZIP and extract it.": "Téléchargez le fichier ZIP et extrayez-le.",
   "Choose <strong>Load unpacked</strong> and select the extracted folder.": "Choisissez <strong>Charger l’extension non empaquetée</strong> et sélectionnez le dossier extrait.",
   "Stop playback. Replace the files in the original extension folder with the extracted ZIP contents, click <strong>Reload</strong>, and refresh reading tabs. Keep the same folder path to preserve settings and saved positions.": "Arrêtez la lecture. Remplacez les fichiers du dossier d’origine de l’extension par le contenu du ZIP extrait, cliquez sur <strong>Recharger</strong> et actualisez les onglets de lecture. Conservez le même chemin de dossier pour préserver les réglages et les positions de lecture.",
@@ -229,10 +228,13 @@
   "Improved PDF row order, wrapped cells, and Swedish characters.": "Amélioration de l’ordre des lignes PDF, des cellules sur plusieurs lignes et des caractères suédois.",
   "Experimental whisper uses the selected voice. Cantonese and Thai can omit words.": "Le chuchotement expérimental utilise la voix choisie. En cantonais et en thaï, des mots peuvent être omis.",
   "Speech arithmetic fixes. Listening quality and hardware performance remain unverified.": "Corrections des calculs de synthèse vocale. La qualité d’écoute et les performances matérielles restent non vérifiées.",
-  "Install v1.0.2": "Installer v1.0.2",
-  "Download v1.0.2 from GitHub. The Chrome Web Store listing is not available yet.": "Téléchargez v1.0.2 depuis GitHub. La fiche du Chrome Web Store n’est pas encore disponible.",
   "Version 1.0.2": "Version 1.0.2",
-  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'>Compte rendu des vérifications</a>.",
   "Follow the <a href=\"/chrome-extension#build\">source installation steps</a>. Local PDFs need <strong>Allow access to file URLs</strong> in the extension's details.": "Suivez les <a href='/chrome-extension#build'>étapes d’installation depuis le code source</a>. Pour les PDF locaux, activez <strong>Autoriser l’accès aux URL de fichier</strong> dans les détails de l’extension.",
-  "Get the source": "Obtenir le code source"
+  "Get the source": "Obtenir le code source",
+  "Download v1.0.3": "Télécharger v1.0.3",
+  "Install v1.0.3": "Installer v1.0.3",
+  "Download v1.0.3 from GitHub. The Chrome Web Store listing is not available yet.": "Téléchargez v1.0.3 depuis GitHub. La fiche du Chrome Web Store n’est pas encore disponible.",
+  "Version 1.0.3": "Version 1.0.3",
+  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'>Compte rendu des vérifications</a>.",
+  "Open signed-in PDFs, find higher-ranked OmniVoice variations first, and hear fewer clicks between speech segments.": "Ouvrez les PDF après connexion, retrouvez en premier les variantes OmniVoice les mieux classées et entendez moins de clics entre les segments de parole."
 }

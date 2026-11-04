@@ -221,7 +221,6 @@
   "These Terms are governed by the laws of Sweden, without regard to conflict-of-law rules. Send questions to <a href=\"mailto:support@pagenarrator.com\">support@pagenarrator.com</a>. See also the <a href=\"/privacy\">Privacy Policy</a>.": "Bu Koşullar, kanunlar ihtilafı kuralları dikkate alınmaksızın İsveç hukukuna tabidir. Sorularınızı <a href='mailto:support@pagenarrator.com'>support@pagenarrator.com</a> adresine gönderin. Ayrıca <a href='/privacy'>Gizlilik Politikası'na</a> bakın.",
   "PageNarrator Terms of Use": "PageNarrator Kullanım Koşulları",
   "Terms for using the free PageNarrator browser extension, including acceptable use, availability, and liability.": "Ücretsiz PageNarrator tarayıcı uzantısının kabul edilebilir kullanım, kullanılabilirlik ve sorumluluk dahil kullanım koşulları.",
-  "Download v1.0.2": "v1.0.2 sürümünü indir",
   "Download the ZIP and extract it.": "ZIP dosyasını indirin ve ayıklayın.",
   "Choose <strong>Load unpacked</strong> and select the extracted folder.": "<strong>Paketlenmemiş öğe yükle</strong> seçeneğini seçin ve ayıklanan klasörü belirtin.",
   "Stop playback. Replace the files in the original extension folder with the extracted ZIP contents, click <strong>Reload</strong>, and refresh reading tabs. Keep the same folder path to preserve settings and saved positions.": "Oynatmayı durdurun. Uzantının ilk kurulduğu klasördeki dosyaları ayıklanan ZIP içeriğiyle değiştirin, <strong>Yeniden yükle</strong> düğmesine tıklayın ve okuma sekmelerini yenileyin. Ayarları ve okuma konumlarını korumak için klasör yolunu değiştirmeyin.",
@@ -229,10 +228,13 @@
   "Improved PDF row order, wrapped cells, and Swedish characters.": "PDF satır sırası, çok satırlı tablo hücreleri ve İsveççe karakterler iyileştirildi.",
   "Experimental whisper uses the selected voice. Cantonese and Thai can omit words.": "Deneysel fısıltı seçilen sesi kullanır. Kantonca ve Taycada sözcükler atlanabilir.",
   "Speech arithmetic fixes. Listening quality and hardware performance remain unverified.": "Konuşma sentezi hesaplamaları düzeltildi. Dinleme kalitesi ve donanım performansı henüz doğrulanmadı.",
-  "Install v1.0.2": "v1.0.2'i yükleyin",
-  "Download v1.0.2 from GitHub. The Chrome Web Store listing is not available yet.": "GitHub'dan v1.0.2'i indirin. Chrome Web Mağazası sayfası henüz kullanıma açık değil.",
   "Version 1.0.2": "Sürüm 1.0.2",
-  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'>Doğrulama kaydı</a>.",
   "Follow the <a href=\"/chrome-extension#build\">source installation steps</a>. Local PDFs need <strong>Allow access to file URLs</strong> in the extension's details.": "<a href='/chrome-extension#build'>Kaynak koddan yükleme adımlarını</a> izleyin. Yerel PDF'ler için uzantının ayrıntılarında <strong>Dosya URL'lerine erişime izin ver</strong> seçeneği gerekir.",
-  "Get the source": "Kaynak kodu edinin"
+  "Get the source": "Kaynak kodu edinin",
+  "Download v1.0.3": "v1.0.3 sürümünü indir",
+  "Install v1.0.3": "v1.0.3'i yükleyin",
+  "Download v1.0.3 from GitHub. The Chrome Web Store listing is not available yet.": "GitHub'dan v1.0.3'i indirin. Chrome Web Mağazası sayfası henüz kullanıma açık değil.",
+  "Version 1.0.3": "Sürüm 1.0.3",
+  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'>Doğrulama kaydı</a>.",
+  "Open signed-in PDFs, find higher-ranked OmniVoice variations first, and hear fewer clicks between speech segments.": "Oturum açtıktan sonra PDF’leri açın, daha yüksek puanlı OmniVoice seçeneklerini önce görün ve konuşma bölümleri arasında daha az tık sesi duyun."
 }

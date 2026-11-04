@@ -221,7 +221,6 @@
   "These Terms are governed by the laws of Sweden, without regard to conflict-of-law rules. Send questions to <a href=\"mailto:support@pagenarrator.com\">support@pagenarrator.com</a>. See also the <a href=\"/privacy\">Privacy Policy</a>.": "Villkoren omfattas av svensk lag utan tillämpning av lagvalsregler. Skicka frågor till <a href='mailto:support@pagenarrator.com'>support@pagenarrator.com</a>. Se även <a href='/privacy'>integritetspolicyn</a>.",
   "PageNarrator Terms of Use": "PageNarrators användarvillkor",
   "Terms for using the free PageNarrator browser extension, including acceptable use, availability, and liability.": "Villkor för användning av det kostnadsfria webbläsartillägget PageNarrator, inklusive tillåten användning, tillgänglighet och ansvar.",
-  "Download v1.0.2": "Hämta v1.0.2",
   "Download the ZIP and extract it.": "Hämta ZIP-filen och packa upp den.",
   "Choose <strong>Load unpacked</strong> and select the extracted folder.": "Välj <strong>Läs in opaketerat</strong> och välj den uppackade mappen.",
   "Stop playback. Replace the files in the original extension folder with the extracted ZIP contents, click <strong>Reload</strong>, and refresh reading tabs. Keep the same folder path to preserve settings and saved positions.": "Stoppa uppspelningen. Ersätt filerna i tilläggets ursprungliga mapp med innehållet från den uppackade ZIP-filen, klicka på <strong>Läs in igen</strong> och uppdatera läsflikarna. Behåll samma sökväg till mappen för att bevara inställningar och läspositioner.",
@@ -229,10 +228,13 @@
   "Improved PDF row order, wrapped cells, and Swedish characters.": "Förbättrad radordning i PDF-filer, radbrutna tabellceller och svenska tecken.",
   "Experimental whisper uses the selected voice. Cantonese and Thai can omit words.": "Experimentell viskning använder den valda rösten. På kantonesiska och thailändska kan ord utelämnas.",
   "Speech arithmetic fixes. Listening quality and hardware performance remain unverified.": "Rättade beräkningar i talsyntesen. Lyssningskvalitet och hårdvaruprestanda är fortfarande inte verifierade.",
-  "Install v1.0.2": "Installera v1.0.2",
-  "Download v1.0.2 from GitHub. The Chrome Web Store listing is not available yet.": "Hämta v1.0.2 från GitHub. Tillägget är ännu inte tillgängligt i Chrome Web Store.",
   "Version 1.0.2": "Version 1.0.2",
-  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'>Verifieringsunderlag</a>.",
   "Follow the <a href=\"/chrome-extension#build\">source installation steps</a>. Local PDFs need <strong>Allow access to file URLs</strong> in the extension's details.": "Följ <a href='/chrome-extension#build'>installationsanvisningarna för källkoden</a>. För lokala PDF-filer behövs <strong>Tillåt åtkomst till filadresser</strong> i tilläggets information.",
-  "Get the source": "Hämta källkoden"
+  "Get the source": "Hämta källkoden",
+  "Download v1.0.3": "Hämta v1.0.3",
+  "Install v1.0.3": "Installera v1.0.3",
+  "Download v1.0.3 from GitHub. The Chrome Web Store listing is not available yet.": "Hämta v1.0.3 från GitHub. Tillägget är ännu inte tillgängligt i Chrome Web Store.",
+  "Version 1.0.3": "Version 1.0.3",
+  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'>Verifieringsunderlag</a>.",
+  "Open signed-in PDFs, find higher-ranked OmniVoice variations first, and hear fewer clicks between speech segments.": "Öppna PDF-filer efter inloggning, hitta högre rankade OmniVoice-varianter först och hör färre knäppar mellan talsegmenten."
 }

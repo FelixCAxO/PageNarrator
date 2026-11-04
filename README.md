@@ -2,7 +2,7 @@
 
 Free, open-source text-to-speech (TTS) extension for Chrome and desktop Chromium browsers. Read webpages, selected text, and PDFs aloud with on-device AI voices.
 
-[Download v1.0.2](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
+[Download v1.0.3](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
 
 - **Private and offline:** narration stays on your device. Cached voices work offline after setup.
 - **Free without quotas:** no account, subscription, or usage quota.
@@ -44,7 +44,7 @@ npm ci
 npm run build
 ```
 
-Load `dist/` as an unpacked extension. See [contributing and tests](CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2).
+Load `dist/` as an unpacked extension. See [contributing and tests](CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3).
 
 Original code: [GPL-3.0-or-later](LICENSE); combined distribution: GPLv3. Keep [third-party notices](public/legal/THIRD_PARTY_NOTICES.txt) and distribute the matching source ZIP with the extension. [License details](docs/third-party-voice-licenses.md).
 

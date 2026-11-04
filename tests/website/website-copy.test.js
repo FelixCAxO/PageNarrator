@@ -31,11 +31,11 @@ describe('website copy', () => {
     for (const name of ['chrome-extension.html', 'support.html']) {
       expect(bodyText(name), name).not.toMatch(/repository is currently private|repository access is required|(?:already have|with) repository access|preview access/i);
     }
-    for (const name of ['pagenarrator-1.0.2.zip', 'pagenarrator-1.0.2-source.zip']) {
-      expect(document.querySelector(`a[href="https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/${name}"]`)).toBeTruthy();
+    for (const name of ['pagenarrator-1.0.3.zip', 'pagenarrator-1.0.3-source.zip']) {
+      expect(document.querySelector(`a[href="https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/${name}"]`)).toBeTruthy();
     }
-    expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.2"]')).toBeTruthy();
-    expect(text).toContain('Install v1.0.2');
+    expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3"]')).toBeTruthy();
+    expect(text).toContain('Install v1.0.3');
     expect(text).not.toContain('Previous release downloads are no longer available');
     expect(text).toContain('original extension folder');
     expect(text).toContain('same folder path');
@@ -71,10 +71,11 @@ describe('website copy', () => {
     const entries = [...documents.get('changelog.html').querySelectorAll('section')]
       .map((section) => section.textContent)
       .filter((text) => /^Version /.test(text));
-    expect(entries).toHaveLength(3);
-    expect(entries[0]).toMatch(/^Version 1\.0\.2/);
-    expect(entries[1]).toMatch(/^Version 1\.0\.1/);
-    expect(entries[2]).toMatch(/^Version 1\.0\.0/);
+    expect(entries).toHaveLength(4);
+    expect(entries[0]).toMatch(/^Version 1\.0\.3/);
+    expect(entries[1]).toMatch(/^Version 1\.0\.2/);
+    expect(entries[2]).toMatch(/^Version 1\.0\.1/);
+    expect(entries[3]).toMatch(/^Version 1\.0\.0/);
     expect(entries[0]).not.toMatch(/custom voice|endpoint|imported model/i);
   });
 

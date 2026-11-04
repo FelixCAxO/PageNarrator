@@ -221,7 +221,6 @@
   "These Terms are governed by the laws of Sweden, without regard to conflict-of-law rules. Send questions to <a href=\"mailto:support@pagenarrator.com\">support@pagenarrator.com</a>. See also the <a href=\"/privacy\">Privacy Policy</a>.": "Op deze voorwaarden is Zweeds recht van toepassing, zonder toepassing van regels over wetsconflicten. Stuur vragen naar <a href='mailto:support@pagenarrator.com'>support@pagenarrator.com</a>. Zie ook het <a href='/privacy'>privacybeleid</a>.",
   "PageNarrator Terms of Use": "Gebruiksvoorwaarden van PageNarrator",
   "Terms for using the free PageNarrator browser extension, including acceptable use, availability, and liability.": "Voorwaarden voor de gratis PageNarrator-browserextensie, waaronder toegestaan gebruik, beschikbaarheid en aansprakelijkheid.",
-  "Download v1.0.2": "v1.0.2 downloaden",
   "Download the ZIP and extract it.": "Download het ZIP-bestand en pak het uit.",
   "Choose <strong>Load unpacked</strong> and select the extracted folder.": "Kies <strong>Uitgepakte extensie laden</strong> en selecteer de uitgepakte map.",
   "Stop playback. Replace the files in the original extension folder with the extracted ZIP contents, click <strong>Reload</strong>, and refresh reading tabs. Keep the same folder path to preserve settings and saved positions.": "Stop het afspelen. Vervang de bestanden in de oorspronkelijke extensiemap door de uitgepakte ZIP-inhoud, klik op <strong>Opnieuw laden</strong> en vernieuw de leestabbladen. Behoud hetzelfde mappad om instellingen en leesposities te bewaren.",
@@ -229,10 +228,13 @@
   "Improved PDF row order, wrapped cells, and Swedish characters.": "Verbeterde PDF-rijvolgorde, tabelcellen met tekstterugloop en Zweedse tekens.",
   "Experimental whisper uses the selected voice. Cantonese and Thai can omit words.": "Experimenteel fluisteren gebruikt de geselecteerde stem. In het Kantonees en Thai kunnen woorden ontbreken.",
   "Speech arithmetic fixes. Listening quality and hardware performance remain unverified.": "Correcties in de berekeningen voor spraaksynthese. Luisterkwaliteit en hardwareprestaties zijn nog niet geverifieerd.",
-  "Install v1.0.2": "v1.0.2 installeren",
-  "Download v1.0.2 from GitHub. The Chrome Web Store listing is not available yet.": "Download v1.0.2 van GitHub. De vermelding in de Chrome Web Store is nog niet beschikbaar.",
   "Version 1.0.2": "Versie 1.0.2",
-  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.2/pagenarrator-1.0.2-verification.md'>Verificatieverslag</a>.",
   "Follow the <a href=\"/chrome-extension#build\">source installation steps</a>. Local PDFs need <strong>Allow access to file URLs</strong> in the extension's details.": "Volg de <a href='/chrome-extension#build'>installatiestappen vanuit de broncode</a>. Lokale PDF’s hebben <strong>Toegang tot bestands-URL’s toestaan</strong> nodig bij de extensiedetails.",
-  "Get the source": "De broncode ophalen"
+  "Get the source": "De broncode ophalen",
+  "Download v1.0.3": "v1.0.3 downloaden",
+  "Install v1.0.3": "v1.0.3 installeren",
+  "Download v1.0.3 from GitHub. The Chrome Web Store listing is not available yet.": "Download v1.0.3 van GitHub. De vermelding in de Chrome Web Store is nog niet beschikbaar.",
+  "Version 1.0.3": "Versie 1.0.3",
+  "<a href=\"https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md\">Verification record</a>.": "<a href='https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'>Verificatieverslag</a>.",
+  "Open signed-in PDFs, find higher-ranked OmniVoice variations first, and hear fewer clicks between speech segments.": "Open pdf’s na het inloggen, vind hoger beoordeelde OmniVoice-varianten als eerste en hoor minder tikken tussen spraaksegmenten."
 }
