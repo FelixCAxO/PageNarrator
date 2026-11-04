@@ -4,7 +4,7 @@ Free, open-source text-to-speech (TTS) extension for Chrome and desktop Chromium
 
 [Download v1.0.3](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
 
-- **Private and offline:** narration stays on your device. Cached voices work offline after setup.
+- **Private and offline:** narration stays on your device. Cached voices work offline until the cache is cleared or evicted.
 - **Free without quotas:** no account, subscription, or usage quota.
 - **Read along and resume:** synchronized word highlights, transcript navigation, saved positions, and 0.5×–3× speed. Playback continues when you close the popup.
 - **PDFs, including scans:** read online and local PDFs. Scans use local English OCR; accuracy depends on scan quality and layout.
@@ -31,7 +31,7 @@ Kokoro supports WebGPU and a slower CPU fallback. OmniVoice requires WebGPU with
 
 ## Privacy
 
-Missing voice files download from Hugging Face; hosts receive your IP address and requested file paths, not narration text. Offline use needs the same cached voice and processing mode; clearing storage may require another download. Online PDFs are fetched from their host. Resume data stays local. PageNarrator does not request always-on website access. [Privacy policy](https://pagenarrator.com/privacy) · [Security](docs/SECURITY.md).
+Voice downloads send Hugging Face your IP address and file requests. Narration and resume data stay local. Online PDFs load from their host. PageNarrator does not request always-on website access. [Privacy policy](https://pagenarrator.com/privacy) · [Security](docs/SECURITY.md).
 
 ## Repository map
 

@@ -1,24 +1,6 @@
 # Reader benchmark protocol v1
 
-The scoring rules were frozen before execution. Record the candidate commit, package and model hashes, and environment. Run locally and keep every attempt under ignored `artifacts/`. This protocol does not claim a completed comparison.
-
-## Source inspection
-
-Resolve each module in the tested commit. Historical line numbers are references, not current locations.
-
-| Stage | Owning source / signature | Tests |
-|---|---|---|
-| Packaging | `tooling/vite.config.js`, default manifest; `tooling/scripts/package-release.mjs`, `packageRelease` | `tests/build/` |
-| User action, selection, permissions | `src/popup.js`, `getActiveTab`, `warmContentScriptAccess`, `startRead` | `tests/e2e/extension-fixture.js` (reference only; its seeded/permission-modified modes are excluded) |
-| HTML extraction/order | `src/lib/core/article-extraction.js`, `chooseArticleExtraction`; selection `306-420`; normalization `513-529` | `tests/reading/` |
-| PDF extraction/order | `src/lib/pdf-extraction.js`; delegates layout to `src/lib/pdf-page-model.js` and segmentation to `src/lib/pdf-stream-chunking.js` | `tests/pdf/`, `tests/reader-engine/pdf-streaming-resume-recovery.test.js` |
-| Read orchestration | `src/lib/reader-engine-read-loop.js`, `readPage`; extraction at 212, backend selection at 248, cursor at 325 | `tests/reader-engine/reader-engine-read-loop.test.js` |
-| Voice changes, buffering/play | `src/lib/reader-engine-read-loop.js`; `src/lib/reader-engine-audio-playback.js`, `playAudio`; browser speech at 568-728 | `tests/reader-engine/reader-engine-dynamic-voice-change.test.js`, `reader-engine-audio-playback.test.js` |
-| Highlight | `src/lib/reader-engine-page-highlight-controller.js`; read loop 554-588 | `tests/reading/` |
-| Position persistence | `src/lib/reader-engine-session-context-controller.js`, `loadSavedResumePosition`, `saveResumeChunk`; matching in `src/lib/resume-position.js` | `tests/reader-engine/reader-engine-session-context-controller.test.js`, `tests/reading/resume-position.test.js` |
-| Pause, resume, stop, seek | `src/lib/reader-engine-read-controls-controller.js` | `tests/reader-engine/reader-engine-read-controls-controller.test.js` |
-
-Source inspection found no payment entitlement or reading quota in `src/`. Model licenses and storage-quota errors are separate. This alone does not prove unlimited use.
+Freeze the scoring rules before testing. Record the candidate commit, package and model hashes, and environment. Keep every attempt under ignored `artifacts/`.
 
 Use a fresh profile with visible setup and settings. Do not seed storage, use test hooks, force entitlements, or edit the manifest. Test defaults first; record other free local settings separately. Hash the built package tree and model files.
 

@@ -133,13 +133,8 @@ describe('documentation integrity & synchronization', () => {
   it('maintains consistent release version across package.json, manifest, and docs', () => {
     expect(packageJson.version).toBe(manifestJson.version);
 
-    const architecture = readFileSync(join(ROOT_DIR, 'docs', 'project-architecture.md'), 'utf8');
-    const multilingual = readFileSync(join(ROOT_DIR, 'docs', 'multilingual-tts.md'), 'utf8');
-    const licenses = readFileSync(join(ROOT_DIR, 'docs', 'third-party-voice-licenses.md'), 'utf8');
-
-    expect(multilingual).toContain(`PageNarrator ${packageJson.version}`);
-    expect(licenses).toContain(`PageNarrator ${packageJson.version}`);
-    expect(architecture).toContain('Chrome extension');
+    const changelog = readFileSync(join(ROOT_DIR, 'docs', 'CHANGELOG.md'), 'utf8');
+    expect(/^## (\d+\.\d+\.\d+)\b/m.exec(changelog)?.[1]).toBe(packageJson.version);
   });
 
   it('keeps project-architecture.md synced with all major architectural modules', () => {

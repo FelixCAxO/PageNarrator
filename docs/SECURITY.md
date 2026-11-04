@@ -1,8 +1,6 @@
 # Security
 
-Report vulnerabilities privately to **support@pagenarrator.com**. Include the version, steps to reproduce, and impact. Leave out private documents and credentials. No response time is promised.
-
-Supported releases start at 1.0.0. Earlier private builds are retired.
+Report vulnerabilities privately to **support@pagenarrator.com**. Include the version, steps to reproduce, and impact. Leave out private documents and credentials.
 
 ## Data and access
 

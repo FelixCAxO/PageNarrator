@@ -11,9 +11,7 @@ The product problem is keeping speech, the original page, and reading position t
 - **Download model data when needed.** Revision and SHA-256 pins verify every cached or downloaded file. The extension stays smaller, at the cost of first-use downloads and separate CPU/GPU caches.
 - **Bound document work.** PDF parsing, images, fonts, and compositing have resource budgets. Unsupported documents fail with an error rather than expanding work without a limit. Compatibility is narrower than a general-purpose PDF editor.
 
-A recorded production CPU experiment reduced warm synthesis from 19.53 to 13.49 seconds for Heart and 19.21 to 12.62 seconds for Emma using four workers. Its raw audio and inputs matched the serial baseline exactly, with a shared arena below 483 MB. This is a scoped development-host result, excluding model and browser memory. See the [benchmark record](benchmarks/README.md#scoped-diagnostic-measurements).
-
-Physical hardware tiers and broad listening quality remain unverified. Kokoro duration/audio-reference comparisons remain failed/unqualified under the documented v1.0.0 decision. Those limits, experimental OmniVoice languages, and PDF/OCR coverage define the remaining work. See [verification status](release-readiness.md).
+See [verification status](release-readiness.md) for current hardware, listening, and PDF coverage.
 
 ## Main flow
 
@@ -38,7 +36,7 @@ Original C++ / WebAssembly and WebGPU / WGSL code handles inference, audio, OCR,
 
 Vite and CRXJS build `dist/`. Checked-in binaries and source manifests allow ordinary builds without a native compiler. Build and package checks verify executable hashes, local loading, retained-data notices, version agreement, and size limits. On-demand voice weights stay out of the package.
 
-Tests live in `tests/`. Browser and profile tests run separately. Commands are listed in `tooling/config/verification-gates.json`; the full release gate also needs private PDF references. Validation runs locally. Non-deployment GitHub Actions are prohibited.
+Tests live in `tests/`. Browser and profile tests run separately. Run the gates locally. See [verification status](release-readiness.md) for the current release checks.
 
 `npm run package` produces the extension ZIP and matching source ZIP. Both exclude credentials, private documents, cached speech weights, and local reports. See [contributing](./CONTRIBUTING.md) and [verification status](release-readiness.md).
 

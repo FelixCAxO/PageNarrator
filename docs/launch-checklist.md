@@ -1,8 +1,6 @@
 # Release checklist
 
-The latest published release is 1.0.2, authorized by the maintainer on 2026-10-27 with the remaining limitations disclosed in its public verification report. The repository was recreated with one initial commit; retired earlier release assets were removed. New releases, deployments, Store submissions, and visibility changes need the maintainer's instruction. Do not enable non-deployment GitHub Actions.
-
-On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching local extension/source ZIPs with the same disclosed limitations as 1.0.2. This local preparation changes no gate results or thresholds and includes no push, publication, deployment or Store submission. Record current bounded numerical passes alongside historical failures, pending human reviews, unqualified hardware and limited OmniVoice timing coverage in the accompanying verification report.
+Use this checklist for a new release. See [verification status](release-readiness.md) for the latest published build.
 
 ## Public source repository
 
@@ -14,10 +12,10 @@ On 2026-10-30 the maintainer authorized committing 1.0.3 and preparing matching 
 
 ## Release
 
-1. Run `npm run test:models` and `npm run verify:release` from the repository root. Independent listening and physical-hardware evidence remain required for an unwaived full qualification. The retired private PDF benchmark is no longer a prerequisite.
-2. Record v1.0.0's waived physical hardware and human/listening reviews (2026-10-24) and accepted Kokoro duration/PCM limitation (2026-10-25). These are not passes. Keep failed/unqualified diagnostics and unchanged thresholds. All other applicable automatic checks remain required; the explicit v1.0.1 extension was authorized on 2026-10-25 and neither version grants exceptions to v1.0.2. See [policy](../tooling/config/release-policy.json) and [verification status](release-readiness.md).
-3. Keep `npm run test:pdf-corpus` and packaged PDF reading/OCR checks required. `npm run test:pdf-acceptance` remains an optional historical private-library check; the older arXiv lane is `npm run test:pdf-acceptance:historical`. Preserve their fixtures, references, thresholds and original results, including revision 05's 97/100. A retired or unperformed benchmark is never reported as passing; see [PDF acceptance](pdf-corpus.md#fixed-pdf-acceptance-benchmark).
-4. Build from a clean reviewed commit. Source packaging rejects tracked edits and stages an exact `git archive` export of HEAD. Both archives and the extracted build are prepared before replacing final files; replacement failures restore the previous set. If restoration itself fails, the error names the retained backup directory. Test packaging without preflight requires an explicit output directory outside canonical `releases/`. Untracked and ignored files never enter the source ZIP. A distributed source ZIP can be rebuilt only with its declared files unchanged under `SOURCE-MANIFEST.json`.
+1. Run `npm run test:models` and `npm run verify:release` from the repository root. Independent listening and physical-hardware evidence remain required for an unwaived full qualification.
+2. Check the [release policy](../tooling/config/release-policy.json) for the candidate version. Record waivers separately from passes.
+3. Run the PDF corpus and packaged reading and OCR checks. See [PDF verification](pdf-corpus.md).
+4. Package a clean, reviewed commit. The source ZIP uses committed files only. Packaging restores the previous artifacts if replacement fails.
 5. Distribute `releases/pagenarrator-<version>.zip` and `releases/pagenarrator-<version>-source.zip` together. Fixed entry times make identical contents reproduce the ZIP hash. Compare the upload's SHA-256 with the tested file.
 6. Attach a public verification report to the same release. Record the exact source commit and archive hashes, tool/browser versions, commands and results, documented skips, waived checks, and accepted failures. Publish only an allowlist of summary fields: exclude private document names/text, absolute paths, browser profiles, credentials, and raw diagnostics. Link the report from the release notes and verification guide. A partial public rerun must stay separate from the historical full-gate record.
 
@@ -69,18 +67,11 @@ Use both ZIPs from the worktree's `source/releases/`. To rebuild a distributed s
 - Keep the scoped URL rewrite `0795bb621e1343c6be34d2baa6492787` for host `pagenarrator.com` and exactly `/cws-demo` or `/cws-demo.html`, rewriting only the origin path to `/pagenarrator-removed-capture-fixture`. This prevents retained Pages asset aliases from serving an old local capture; both public URLs must return HTTP 404. Query strings and reader-facing routes are unchanged.
 - Keep the independent support mailbox Worker healthy. Follow `docs/support-mailbox.md` and verify the Gmail reply composer opens with `PageNarrator Support <support@pagenarrator.com>` in From.
 
-<details>
-<summary>Recorded Pages setup and rollback target</summary>
-
-Project `pagenarrator-site` uses repository `FelixCAxO/PageNarrator` (ID `1422933371`), branch `main`. On 2026-10-26 its Git build settings were corrected to repository root, command `npm run build:website`, and filtered output `artifacts/website`. Production builds remain on, previews/PR comments off. Before merging the repository layout change, update production build watch rules to include `website/*`, `tooling/scripts/build-website*.mjs`, `tooling/scripts/build-homepage-css.mjs`, `tooling/scripts/build-localized-website.mjs`, `tooling/scripts/smoke-production.mjs`, `tooling/config/language-rollout.json`, and the root package metadata. Verify these settings before publishing; never restore the earlier raw `website/public` upload.
-
-Retired project `pagenarrator` points to deleted repository `1224875446` with automatic builds disabled. Retain its last successful deployment for rollback. Domain rollback needs both custom-domain associations and CNAME targets restored to `pagenarrator.pages.dev`. The September 26, 2026 smoke record checked 16 pages, 20 redirects, and 22 resources.
-
-</details>
+Cloudflare Pages project `pagenarrator-site` builds `main` from the repository root. Use `npm run build:website` and output `artifacts/website`. Watch `website/*`, the root package files, `tooling/scripts/build-website*.mjs`, `tooling/scripts/build-homepage-css.mjs`, `tooling/scripts/build-localized-website.mjs`, `tooling/scripts/smoke-production.mjs`, and `tooling/config/language-rollout.json`.
 
 ## Store
 
-- Upload the tested versioned ZIP only when authorized. Version 1.0.0 starts public history; earlier private releases are retired.
+- Upload the tested versioned ZIP after approval.
 - Use `docs/cws-listing.md`. Its short description must match the manifest `description` used as the Store summary.
 - Delete every old rejected screenshot and promo tile from the Chrome Web Store dashboard. Upload only:
   - `docs/cws-listing/screenshot-01-toolbar-player-idle.png`

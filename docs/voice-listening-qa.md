@@ -1,8 +1,6 @@
 # Voice listening checks
 
-For v1.0.0, physical hardware and human/listening reviews were waived on 2026-10-24. Record them as waived, never passed. Kokoro duration/PCM reference comparisons remain failed/unqualified; that limitation was accepted on 2026-10-25. All other applicable automatic checks remain required. Version-specific decisions never carry automatically to later versions. See the [release policy](../tooling/config/release-policy.json). The maintainer explicitly extended those same disclosed exceptions to v1.0.1 on 2026-10-25. They do not apply to v1.0.2; unperformed reviews remain unverified and numerical failures remain failed/unqualified.
-
-Use this procedure for changes to Kokoro runtime files, voice styles, or voice selection. It remains strict for unwaived releases.
+Use this procedure for changes to Kokoro runtime files, voice styles, or voice selection. Check the [release policy](../tooling/config/release-policy.json) for version-specific waivers.
 
 ## Record each run
 
@@ -10,8 +8,6 @@ Use this procedure for changes to Kokoro runtime files, voice styles, or voice s
 - Check that voice changes are audible and punctuation/citation cleanup preserves highlight alignment.
 - Save the version, source/model/style hashes, voice ID, browser, actual backend, hardware, exact prepared input, synthesis speed, playback rate, and result under `artifacts/voice-listening/`.
 - Assess experimental OmniVoice separately by language.
-
-Approved samples cover recorded English/Swedish OmniVoice clips, long Heart/Emma CPU/GPU clips, and three UK “Wednesday” Emma clips on CPU, Intel, and NVIDIA. They do not qualify every voice or language or pass the blind study below. The consumed v5 final corpus retains its transcript failures and two functional GPU failures. Later repairs are development regressions.
 
 ## Shared quality gate
 
@@ -31,8 +27,6 @@ Numeric, graph, precision, runtime, or weight changes still need automated held-
 No formal listener study has passed. Keep validation selection separate from final ratings and retain rejected runs. A resource improvement must improve its stated metric without a measured regression in memory, CPU cost, startup, or playback gaps. Synthesis RTF × playback rate must stay below 1, with variability reported. Energy and first-audible latency need separate measurements.
 
 ## Bound review packets
-
-On 2026-10-26 the maintainer selected correct math and verified speech quality as the qualification target. [The protocol](../tooling/config/voice-quality-protocol.json) preserves the four dimensions, 20 independent listeners per voice/backend, strict −0.25 lower-bound margin and zero unresolved content errors. Historical PCM comparisons keep their original bounds and failed/unqualified results as diagnostics. No human requirement is waived for v1.0.2.
 
 Freeze current source/model/reference inputs with `node tooling/scripts/probe-kokoro-quality.mjs --freeze artifacts/voice-listening/freeze.json`. This builds an isolated candidate, checks the package and binds its complete directory hash; capture and review reject a stale packaged worker. The source registry loads the built worker client, coordinator and helper modules from that isolated package. Shared `dist/` rebuilds cannot replace the audio's frozen runtime. Capture **all ten voices** and all eight test categories on each backend with `--manifest artifacts/voice-listening/freeze.json --partition test --voices all --backend wasm --output artifacts/voice-listening/cpu`, then the equivalent `webgpu` lane. WebGPU requires the observed `PN_GPU_ADAPTER_LUID` and `PN_GPU_VENDOR`. These frozen texts have already been evaluated: label the study **frozen-corpus regression**, never a new unseen holdout. Validation remains separate; preserve rejected clips and reports.
 

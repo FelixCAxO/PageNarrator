@@ -15,7 +15,7 @@ All executable code and English OCR files ship in the package. Voice data downlo
 
 ## Dashboard test instructions (500-character field)
 
-Leave username and password blank: the built-in reading features require no account. Paste only the following text into Additional instructions / Ytterligare anvisningar. It is 454 characters, within the dashboard's 500-character limit.
+Leave username and password blank. Paste this text into **Additional instructions** (Ytterligare anvisningar).
 
 ```text
 No account required. Open an accessible English article and the PageNarrator toolbar. With internet access, choose Prepare voice; wait for download and preparation, then click Read page. Test pause/resume, highlighting and playback after closing the popup. CPU/WASM works but is slower than WebGPU. For online PDFs, allow the requested origin; local PDFs require Allow access to file URLs. Scans use English OCR. The same cached voice/mode works offline.

@@ -6,6 +6,7 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { expect } from '@playwright/test';
+import packageJson from '../../../package.json' with { type: 'json' };
 import { launchExtensionContext, seedHardwareProfile, startReadFromToolbarPopup } from '../../../tests/e2e/extension-fixture.js';
 import { openRoutedReaderEngine, routeKokoroModelFiles, routeOmniVoiceModelFiles } from '../../../tests/e2e/kokoro-download-fixture.js';
 import { computeGpuEngineUsage } from '../weak-hardware/windows-job.mjs';
@@ -13,7 +14,7 @@ import { acquireMeasurementLock } from '../weak-hardware/measurement-lock.mjs';
 
 // Real packaged-extension playback; controller/model fixture server memory is excluded.
 const output = path.resolve(process.env.PN_RESOURCE_OUTPUT || 'artifacts/engine-resources');
-const extensionDir = path.resolve(process.env.PN_RESOURCE_EXTENSION_DIR || 'releases/pagenarrator-1.0.0');
+const extensionDir = path.resolve(process.env.PN_RESOURCE_EXTENSION_DIR || path.join('releases', 'pagenarrator-' + packageJson.version));
 const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
 const paragraphs = [
   'The morning sun warmed the garden as we opened the door and stepped outside.',

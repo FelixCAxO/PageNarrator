@@ -12,12 +12,10 @@ PageNarrator uses original JavaScript, WebGPU / WGSL, and C++20 / WebAssembly co
 | Kokoro | `src/tts/kokoro/` owns loading, tokens, normalization, streaming, and English phonemization. CPU uses q8; GPU uses fp32. Pinned US/UK dictionaries and bounded spelling rules are approximate. The four-worker CPU path requires cross-origin isolation; other hosts use serial inference. |
 | OmniVoice | Original byte-pair tokenizer, graph executor, and WebGPU/fp16 decoder. Each diffusion step recomputes the full bidirectional sequence. Limit: 2,048 combined text/audio positions. Separate cached model data; no CPU fallback. See [provenance](../engines/vendor/omnivoice/PROVENANCE.md). |
 | OCR | Shared GPU detector/recognizer/UVDoc graphs, with original WASM detector/recognizer fallback. A separate English LSTM source-crop verifier checks uncertain lines. Recognition text and source-pixel word bounds stay separate. |
-| PDF | `src/pdf/` and `native/pdf*.cpp` provide bounded parsing, fonts, encryption, static display lists, JPEG2000/JBIG2/fax/color handling, and sampled shading. Browser Canvas/font/image APIs paint output. ToUnicode and ActualText remain authoritative. No editing or document scripts. |
+| PDF | `src/pdf/` and `engines/native/pdf*.cpp` provide bounded parsing, fonts, encryption, static display lists, JPEG2000/JBIG2/fax/color handling, and sampled shading. Browser Canvas/font/image APIs paint output. ToUnicode and ActualText remain authoritative. No editing or document scripts. |
 | Articles | DOM traversal without cloning, prose scoring, hidden-content/furniture removal, and source anchors for highlights. |
 
 OCR keeps four shared attempts with legacy slash priority and at most four deferred crop descriptions. Letter edits need matching counts, order, immediate literal neighbors, and source clearance; technical identifiers are excluded. Spacing preserves letters. Punctuation needs independent matching text and source ink, including right-edge pixels. Running the same weights on CPU is not independent verification.
-
-The seven pinned speech/OCR graphs use 73 operator types. Build and package checks reject retired runtimes, unknown WASM, remote executables, and files outside the verified graph. Comparison packages remain development-only. Vite preload helpers and retained data keep their own notices.
 
 Node comparison tools load ONNX Runtime through `tooling/scripts/lib/node-onnx-oracle.mjs`. It sets `ORT_DISABLE_TELEMETRY=1` before the native import: ONNX Runtime 1.31.1's Windows telemetry uploader can otherwise wait during DLL destruction after worker threads have stopped. Disabling events after initialization leaves that uploader alive. The loader preserves the original runtime exports and inference settings; shutdown verification requires natural process exit. See the [native initialization guard](https://github.com/microsoft/onnxruntime/blob/v1.31.1/onnxruntime/core/platform/telemetry_1ds.cc) and [environment opt-out](https://github.com/microsoft/onnxruntime/blob/v1.31.1/onnxruntime/core/platform/telemetry_environment.h).
 
@@ -33,17 +31,11 @@ Run `npm run probe:pdf-document -- "path/to/book.pdf"` before relying on a new d
 
 ## Verification status
 
-The current CPU q8/fp32 and GPU fp32 Kokoro reference comparisons pass the existing corpus on both graph versions. GPU checks cover the NVIDIA and Intel adapters on the measured host. Physical hardware tiers and broad listening quality remain unverified. Fresh evidence and the dated historical limitations are recorded in [verification status](release-readiness.md).
-
-Historical diagnostics are retained locally; the [benchmark record](benchmarks/README.md) describes the retained methodology. Their scope does not expand with a later wording or implementation change.
+See [verification status](release-readiness.md) for the published results. Release verification requires operator checks and [source-bound listening evidence](voice-listening-qa.md).
 
 ## Numerical policy and preserved failures
 
 Only verified immutable model bytes enter persistent cache. Pinned runtime corrections create separate derived graphs and record both hashes. Kokoro's `kokoro-exact-zero-phase-v2` handles its bounded spectral-origin case; it is not full IEEE/Torch signed-zero parity. OmniVoice's guarded RMSNorm correction restores the reference float32 chains without changing learned weights or public inputs/outputs.
-
-On 2026-10-26 the maintainer selected **correct math and verified speech quality** as the qualification target. Independent operator checks are mandatory. The production/unmodified CPU/GPU waveform comparisons retain their original thresholds; the current kernel repair passes the tested corpus on both GPU adapters. Historical failures remain failed records, and unexpected execution failures still block verification. These numerical results grant no human-review waiver. The decision and listening rules are pinned in [the voice-quality protocol](../tooling/config/voice-quality-protocol.json).
-
-The reference-only sensitivity experiment found that changing STFT arithmetic by less than 0.000001 produced about 19% relative waveform RMSE, even with all other operations on the same independent runtime. The corrected native STFT agreed with independent Torch double-precision FFT on the same float32-windowed signal within 0.000000001. These are bounded diagnostics, not a listening score or proof about every input. Full speech qualification separately requires the complete, source-bound [blind listening study](voice-listening-qa.md); missing human evidence remains unqualified. See the [historical release policy](../tooling/config/release-policy.json), [recorded results](release-readiness.md), and [retained-model provenance](third-party-voice-licenses.md).
 
 ## PDF resource limits
 
@@ -73,11 +65,9 @@ Run `npm test -- tests/engines`, `node tooling/scripts/build-native-engine.mjs -
 
 - `node tooling/scripts/inspect-models.mjs model.onnx [...] --output=artifacts/engines/model-inventory.json` records hashes and tensor/operator/external-data contracts.
 - `node tooling/scripts/download-browser-models.mjs --tokenizer` and `node tooling/scripts/probe-tokenizer-engine.mjs` compare exact multilingual tokens from the browser candidate with the isolated Node Transformers 4.3.2 development oracle. Use `--decoder` / `--speech` to obtain the pinned audio/speech data; `node tooling/scripts/probe-audio-decoder.mjs --speech` compares actual speech codes and waveforms.
-- `npx cross-env PN_E2E_OMNIVOICE=1 playwright test tests/e2e/omnivoice-read.e2e.js --project=extension --workers=1` exercises full installed playback and offline restart. `PN_KOKORO_FIXTURE_DIR` points to the parent fixture cache when it is outside the checkout.
+- `npx cross-env PN_E2E_OMNIVOICE=1 playwright test --config tooling/playwright.config.js tests/e2e/omnivoice-read.e2e.js --project=extension --workers=1` exercises full installed playback and offline restart. `PN_KOKORO_FIXTURE_DIR` points to the parent fixture cache when it is outside the checkout.
 - `node tooling/scripts/probe-ocr-engine.mjs` compares detector tensors; add `--recognizer`, `--unwarp` or `--large`. Unsupported work fails at its original error. Benchmark/profile flags are local diagnostics.
 - Set `PN_OCR_PRIVATE_FIXTURE_DIR` to the preserved historical fixture directory, run `python tooling/scripts/download-engine-fixture.py`, then `node tooling/scripts/probe-ocr-pipeline.mjs` to compare development-image text and geometry. Historical document fixtures and the hash-checked DocUNet photograph are not redistributed in the source or runtime packages. Missing private inputs do not count as quality passes.
-
-Record model/source/input pins, browser, physical adapter, cold/warm state, actual output and complete cleanup. Run hardware measurements serially. Current timings overlap unrelated host activity and do not establish representative GPU/CPU tiers, browser-wide memory or a general speedup.
 
 ## Speech work and resource reuse
 

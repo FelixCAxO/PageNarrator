@@ -16,7 +16,7 @@ The player shows the title, status, progress, and words left. Use Back (previous
 
 Open **Transcript** to follow the text. Open **Reading queue** to search, choose a section, or enter its number and press Go. Both appear after text loads.
 
-There are no global playback shortcuts in v1.0.0. Use Tab and Enter to reach the popup controls.
+Use Tab and Enter to reach the popup controls.
 
 ## Settings
 
@@ -48,7 +48,7 @@ Keeping the same entry and path preserves the extension identity, settings, and 
 
 ## PDFs and recovery
 
-The PDF viewer supports page navigation, zoom from 50% to 300%, rotation, fit, selection, and reading. Local files need **Allow access to file URLs** in Chrome's extension details. English scans use local OCR; check the recognized text against the page.
+The PDF viewer supports page navigation, zoom from 50% to 300%, rotation, fit, selection, and reading. Local files need **Allow access to file URLs** in Chrome's extension details. English scans use local OCR. Check the recognized text against the page. For a PDF behind sign-in, open the original link in Chrome, sign in there, then retry the PDF.
 
 If **Read selected** finds no text, select a passage and retry. Chrome settings pages and other protected pages cannot be read. Grant website access only when prompted for a document you chose. For failed voice setup, check the connection and retry. See [support](https://pagenarrator.com/support).
 

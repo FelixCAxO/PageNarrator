@@ -8,7 +8,7 @@ Stop and tab-close recovery must clear audio, preloads, highlights, and pauses w
 - `npm run verify:integration`: packaged browser journeys.
 - `npm run verify:release`: full local gate, including `test:live` and constrained `probe:tts` lanes.
 
-Run `npm run test:models` before browser tests. Full release verification also needs private PDF references.
+Run `npm run test:models` before browser tests. The release gate uses the current PDF corpus and packaged PDF checks.
 
 Unit discovery stays in `tests/` with four workers. Profiles, browser tests, and native benchmarks have separate commands. Keep historical snapshots and generated reports out of discovery.
 

@@ -54,7 +54,6 @@
     "probe:weak-hardware:no-build": "node tooling/scripts/weak-hardware/run-matrix.mjs",
     "test:weak-hardware": "vitest run --config tooling/vite.config.js tests/weak-hardware",
     "measurement:lock": "node tooling/scripts/weak-hardware/measurement-lock.mjs",
-    "beta:scorecard": "node tooling/scripts/summarize-closed-beta.mjs",
     "probe:tts:deep": "npm run build && cross-env PAGENARRATOR_TTS_PROBE_PROFILE=deep-flow node tooling/scripts/run-live-tts-probe.mjs",
     "smoke:production": "node tooling/scripts/smoke-production.mjs",
     "audit:runtime": "npm audit --omit=dev --audit-level=high",

@@ -214,10 +214,6 @@ describe('language page readiness', () => {
     expect(LAUNCH_LANGUAGE_FIXTURES.map(({ code }) => code)).toEqual(LAUNCH_LANGUAGE_CODES);
   });
 
-  it('keeps readiness fixtures scoped to currently supported languages', () => {
-    expect(LAUNCH_LANGUAGE_FIXTURES.map(({ code }) => code)).toEqual(LAUNCH_LANGUAGE_CODES);
-  });
-
   it.each(LANGUAGE_PAGE_CASES)('reads, outlines, and marks every spoken word for $label page $pageNumber', ({ code, html, pageNumber, title }) => {
     const availability = getVoicesForDetectedLanguage(code, INSTALLED_DOWNLOADABLE_VOICE_IDS);
     const playableVoices = [...availability.installed, ...availability.bundled, ...availability.downloadable];

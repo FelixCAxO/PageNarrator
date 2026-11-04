@@ -36,11 +36,11 @@ Reading starts at the visible turn, or an earlier turn with at least 30% of the 
 
 ChatGPT's `data-testid="conversation-turn-N"` and Claude's `aria-posinset` / `aria-setsize` expose turn numbers. Missing turns trigger a scroll and a wait of up to 2.5 seconds; unavailable turns are skipped. The stream loads later turns until the declared end or no further scrolling is possible. Restart scrolls to turn 1. Gemini has no numbers, so restart loads older history until it stops growing.
 
-Markup was checked on 2026-09-24: ChatGPT share pages used numbered `section` turns; Claude used `user-message` / `assistant-message` in `role="article"` rows; Gemini used `user-query` / `model-response` in an `infinite-scroller`. Each had hidden labels and an inner scroller. The ChatGPT check read all 22 turns, including previously missed turns 7–17. Claude/Gemini fixtures in `tests/reading/chat-transcript-extraction.test.js` mirror those observations. Changed markup falls back to generic viewport reading.
+Changed markup falls back to generic viewport reading. Run the chat transcript regression suite after changing turn detection.
 
 ## PDFs
 
-The [dynamic reading order audit](pdf-reading-order-audit.md) documents the 98% target, individually identified table/prose patterns, real PDF parser checks, and the limits of synthetic accuracy claims.
+See [reading-order diagnostics](pdf-corpus.md#reading-order-diagnostics) for pattern tests and their coverage.
 
 The PDF viewer owns rendering, selection, navigation, and highlights. Playback stays in the toolbar. The engine requests metadata and bounded text batches from the viewer. Progress uses page counts instead of scanning the whole book. Image-only pages use local English OCR; unreadable pages return an extraction error.
 
@@ -50,7 +50,7 @@ Read page uses the page with the largest visible share. IntersectionObserver upd
 
 - Resume applies when the saved position belongs to that page. Scrolling from saved page 3 to page 9 starts page 9. A chunk index from another starting page is never reused. With page 1 visible, a saved position elsewhere in the PDF can still resume.
 - After completion, Play uses a newly selected page. If the viewer still shows the ending page, it restarts at page 1. Finished webpage reads restart at the top.
-- Chrome's built-in PDF viewer exposes no readable page or `postMessage` API; scrolling does not update its URL, and only its empty embedder frame is scriptable (checked in Chromium 148). Starting there opens PageNarrator's viewer at `#page=N` or page 1. Scroll in that viewer and press Read page to start elsewhere.
+- Chrome's built-in PDF viewer exposes no readable page or `postMessage` API; scrolling does not update its URL, and only its empty embedder frame is scriptable. Starting there opens PageNarrator's viewer at `#page=N` or page 1. Scroll in that viewer and press Read page to start elsewhere.
 
 ## Playback state
 

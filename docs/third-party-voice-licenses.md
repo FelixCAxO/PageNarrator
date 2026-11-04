@@ -1,7 +1,5 @@
 # Voice licenses
 
-Catalog license review: 2026-08-26. Runtime and retained-data documentation updated: 2026-11-02.
-
 PageNarrator 1.0.3 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
 
 ## Experimental OmniVoice
@@ -21,7 +19,7 @@ These voices are upstream grade C+ or higher and have no per-voice CC BY entry i
 
 ## Excluded voices
 
-All other Kokoro voice IDs remain excluded from the v1.0.0 selector because they are below the current quality floor, ungraded, non-English, or carry separate per-voice attribution requirements. Adding one requires a fresh source, license, and listening review.
+All other Kokoro voice IDs remain excluded from the selector because they are below the current quality floor, ungraded, non-English, or carry separate per-voice attribution requirements. Adding one requires a fresh source, license, and listening review.
 
 The public selected manifest must match `src/tts/voices/voice-registry.js`. The release ZIP includes `legal/Apache-2.0.txt`, `legal/GPL-3.0.txt`, and `legal/THIRD_PARTY_NOTICES.txt`, and `tests/voice/voice-license-readiness.test.js` enforces the Kokoro voice allowlist and attribution for recorded OmniVoice references.
 
@@ -33,6 +31,4 @@ The original normalizer, contextual pronunciation decisions and bounded spelling
 
 PageNarrator's own code is GPL-3.0-or-later. CMUdict retains its permissive copyright notice. The UK `ipa-dict` records retain their GPL-3.0 license; they are not relicensed to GPL-3.0-or-later or Apache-2.0. This GPL version boundary also applies when conveying the combined distribution. Kokoro model weights, tokenizer vocabulary and voice styles retain Apache-2.0 and their original acknowledgements. Keep these individual notices with redistributed data.
 
-Only immutable, size- and SHA-256-verified model/style bytes enter the persistent cache. The guarded `kokoro-exact-zero-phase-v2` correction creates a separate ephemeral graph with unchanged weights and records both hashes. It applies the [upstream negative-real/exact-zero-imaginary correction](https://github.com/hexgrad/kokoro/blob/93abff8795bfb00f78a14fa5d551198f445067ab/kokoro/custom_stft.py#L135-L139) and PageNarrator's canonical positive-zero phase at a coincident spectral origin. This prevents `atan(0/0)` contamination, preserves every nonzero path and is not full IEEE/Torch signed-zero parity. [Numerical policy and evidence](browser-engine.md#numerical-policy-and-preserved-failures) records derived hashes and the separate, still-failed strict unmodified-model PCM comparison.
-
-Approved Heart/Emma clips and worker/cache checks cover only those frozen cases. Broad pronunciation quality and physical low-end throughput remain unverified. Version 1.0.0 is released; see [verification status](release-readiness.md) for accepted limits and waived reviews.
+Only immutable, size- and SHA-256-verified model/style bytes enter the persistent cache. The guarded `kokoro-exact-zero-phase-v2` correction creates a separate ephemeral graph with unchanged weights and records both hashes. It applies the [upstream negative-real/exact-zero-imaginary correction](https://github.com/hexgrad/kokoro/blob/93abff8795bfb00f78a14fa5d551198f445067ab/kokoro/custom_stft.py#L135-L139) and PageNarrator's canonical positive-zero phase at a coincident spectral origin. This prevents `atan(0/0)` contamination, preserves every nonzero path and is not full IEEE/Torch signed-zero parity. [Numerical policy and evidence](browser-engine.md#numerical-policy-and-preserved-failures) explains the runtime corrections. See [verification status](release-readiness.md) for results.
