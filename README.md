@@ -2,6 +2,10 @@
 
 Free, open-source text-to-speech (TTS) extension for Chrome and desktop Chromium browsers. Read webpages, selected text, and PDFs aloud with on-device AI voices.
 
+> **Hardware recommendations:** on-device AI speech benefits from a dedicated GPU with **8 GB+ VRAM** (NVIDIA RTX 20 series or newer, or a recent AMD Radeon with WebGPU support) and **8 GB+ system RAM**. For CPU-only Kokoro, aim for a **modern 6-core CPU or better** and **8 GB+ system RAM**; expect longer startup times and likely pauses between speech segments while audio is generated. OmniVoice requires a GPU with WebGPU and fp16 support.
+>
+> These are suggested starting points; minimum specs and smooth playback at these specs have not been verified. See [hardware recommendations](docs/requirements-hardware.md).
+
 [Download v1.0.3](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
 
 - **Private and offline:** narration stays on your device. Cached voices work offline until the cache is cleared or evicted.
