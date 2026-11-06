@@ -28,14 +28,16 @@ function floatBits(value) { return new Uint32Array(Float32Array.of(value).buffer
 export class WebGpuCompute {
   static async create({ gpu = globalThis.navigator?.gpu, device = null, float16 = false } = {}) {
     const ownsDevice = !device;
+    let adapterInfo = device?.adapterInfo;
     if (!device) {
       const adapter = await gpu?.requestAdapter();
       if (!adapter) throw new Error('WebGPU is unavailable.');
       if (float16 && !adapter.features.has('shader-f16')) throw new Error('This model requires WebGPU shader-f16 support.');
       device = await adapter.requestDevice({ requiredFeatures: float16 ? ['shader-f16'] : [] });
+      adapterInfo = device.adapterInfo ?? adapter.info;
     }
     if (float16 && !device.features.has('shader-f16')) throw new Error('The shared WebGPU device does not support this fp16 model.');
-    const engine = new WebGpuCompute(device, ownsDevice);
+    const engine = new WebGpuCompute(device, ownsDevice, adapterInfo);
     try {
       [engine.matmulPipeline, engine.elementwisePipeline] = await Promise.all([
         engine.pipeline(MATMUL_SHADER, 'PageNarrator tiled MatMul'),
@@ -48,9 +50,11 @@ export class WebGpuCompute {
     }
   }
 
-  constructor(device, ownsDevice) {
+  constructor(device, ownsDevice, adapterInfo = device.adapterInfo) {
     this.device = device;
     this.ownsDevice = ownsDevice;
+    // K32 improves the measured Blackwell grids but regresses the Intel baseline.
+    this.preferPackedMatmulK32 = adapterInfo?.vendor === 'nvidia' && adapterInfo?.architecture === 'blackwell';
     this.buffers = new Set();
     this.tensors = new Set();
     this.owners = new Map();
@@ -114,7 +118,7 @@ export class WebGpuCompute {
       this.half.rmsNormTranspose128 = await this.pipeline(halfRmsNormShader(128, true), 'PageNarrator half RMSNorm head transpose');
       this.half.packedMatmulWide = await this.pipeline(PACKED_HALF_MATMUL_WIDE_SHADER, 'PageNarrator packed half MatMul wide');
       this.half.packedMatmul32 = await this.pipeline(PACKED_HALF_MATMUL_32_SHADER, 'PageNarrator packed half MatMul 32');
-      this.half.packedMatmulK32 = await this.pipeline(PACKED_HALF_MATMUL_K32_SHADER, 'PageNarrator packed half MatMul K32');
+      if (this.preferPackedMatmulK32) this.half.packedMatmulK32 = await this.pipeline(PACKED_HALF_MATMUL_K32_SHADER, 'PageNarrator packed half MatMul K32');
       this.half.siluGate = await this.pipeline(HALF_SILU_GATE_SHADER, 'PageNarrator half SiLU gate');
       this.half.packedMatmul = await this.pipeline(PACKED_HALF_MATMUL_SHADER, 'PageNarrator packed half MatMul');
       this.half.scaledMaskedSoftmax = await this.pipeline(HALF_SCALED_MASKED_SOFTMAX_SHADER, 'PageNarrator half scaled masked softmax');
@@ -749,8 +753,8 @@ class ComputeBatch {
     const rows = a.shape.at(-2), inner = a.shape.at(-1), columns = b.shape.at(-1), batches = tensorSize(plan.batch);
     const even = inner % 2 === 0 && columns % 2 === 0;
     const halfPipeline = even ? this.engine.half?.packedMatmul : this.engine.half?.matmul;
-    // More inner reuse helps smaller grids; larger output tiles need enough parallel work.
-    const k32 = a.dataType === 'float16' && even && inner >= 256 && columns >= 128
+    // More inner reuse helps qualified smaller grids; larger output tiles need enough parallel work.
+    const k32 = this.engine.preferPackedMatmulK32 && a.dataType === 'float16' && even && inner >= 256 && columns >= 128
       && Math.ceil(rows / 16) * Math.ceil(columns / 16) * batches <= 512 && this.engine.half?.packedMatmulK32;
     const wide = !k32 && a.dataType === 'float16' && even && rows >= 128 && inner >= 1024 && columns >= 2048
       && this.engine.half?.packedMatmulWide;

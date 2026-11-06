@@ -6,6 +6,7 @@
 - Recover readable PDF text when unsupported visual effects, annotation artwork, or canvas/font painting fails; show a selectable text view when needed and retain OCR detection for outlined text.
 - Prioritize the requested PDF page over speculative neighbors, stop obsolete prefetch, and preserve navigation and narration highlights through zoom and background repaints.
 - Reduce Kokoro CPU work and OmniVoice GPU projection work while preserving the tested speech output. Performance measurements cover the recorded host and requests; other hardware remains unqualified.
+- Preserve integrated-GPU performance by using the existing small-grid projection kernel outside the measured NVIDIA Blackwell path.
 - Require real packaged OmniVoice reading, settings, and continuity journeys during release verification, and reject source packaging when required new files are still untracked.
 - Localize the PDF sign-in instructions, original-link action, and artwork warning.
 - Remove unused files and tools, and simplify contributor documentation.
