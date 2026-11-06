@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.4 (Unreleased)
+## 1.0.4 (2026-11-06)
 
 - Keep PDF narration working with unfamiliar unembedded font names by substituting bundled fonts while preserving character mappings and PDF spacing.
 - Recover readable PDF text when unsupported visual effects, annotation artwork, or canvas/font painting fails; show a selectable text view when needed and retain OCR detection for outlined text.
@@ -10,6 +10,8 @@
 - Require real packaged OmniVoice reading, settings, and continuity journeys during release verification, and reject source packaging when required new files are still untracked.
 - Localize the PDF sign-in instructions, original-link action, and artwork warning.
 - Remove unused files and tools, and simplify contributor documentation.
+
+Published with independent listening and physical hardware qualification still open. Lower-spec timing measurements remain unqualified because host activity invalidated the samples. The full release gate has not passed, and no V1.0.4 qualification waiver is recorded. See the [verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-verification.md).
 
 
 ## 1.0.3 (2026-11-04)
