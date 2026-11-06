@@ -4,6 +4,27 @@ import { installViewerDom, installChromeRuntime, loadViewer, cleanupViewerDom } 
 const deferred = () => { let resolve; const promise = new Promise(done => { resolve = done; }); return { promise, resolve }; };
 afterEach(cleanupViewerDom);
 
+it('isolates saved pages between viewer fixtures and preserves the host session storage', async () => {
+  const descriptor = Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage');
+  let hostPage = 'original';
+  const hostStorage = { getItem: () => hostPage, setItem: (_key, value) => { hostPage = value; } };
+  Object.defineProperty(globalThis, 'sessionStorage', { configurable: true, value: hostStorage });
+  try {
+    await installViewerDom();
+    sessionStorage.setItem('pagenarrator-pdf-last-page:book.pdf', '10');
+    expect(sessionStorage.getItem('pagenarrator-pdf-last-page:book.pdf')).toBe('10');
+    await cleanupViewerDom();
+    expect(globalThis.sessionStorage).toBe(hostStorage);
+    await installViewerDom();
+    expect(sessionStorage.getItem('pagenarrator-pdf-last-page:book.pdf')).toBeNull();
+    expect(hostPage).toBe('original');
+  } finally {
+    await cleanupViewerDom();
+    if (descriptor) Object.defineProperty(globalThis, 'sessionStorage', descriptor);
+    else delete globalThis.sessionStorage;
+  }
+});
+
 async function exerciseBoundary(blockImport) {
   const dom = await installViewerDom(), originalDocument = dom.window.document;
   installChromeRuntime();

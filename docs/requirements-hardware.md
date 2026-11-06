@@ -1,8 +1,10 @@
 # Hardware
 
-**Recommended: a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.**
+**Suggested GPU setup: a dedicated GPU with 8 GB+ VRAM (NVIDIA RTX 20 series or newer, or a recent AMD Radeon with WebGPU support) and 8 GB+ system RAM.**
 
-Use desktop Chromium 120 or newer. These are recommendations, not verified minimums. Performance depends on the voice, processing mode, and document.
+For CPU-only Kokoro, aim for a **modern 6-core CPU or better and 8 GB+ system RAM**. Expect longer startup times and likely pauses between speech segments while audio is generated, especially on slower hardware.
+
+Use desktop Chromium 120 or newer. These are suggested starting points, not verified minimums or guarantees of smooth playback. Performance depends on the voice, processing mode, and document. GPU compatibility also depends on the browser, operating system, and driver; OmniVoice specifically requires WebGPU with fp16 support, which is an [optional WebGPU feature](https://developer.chrome.com/blog/new-in-webgpu-120#support_for_16-bit_floating-point_values_in_wgsl).
 
 ## Choose a voice engine
 

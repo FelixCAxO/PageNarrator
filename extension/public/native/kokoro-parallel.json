@@ -22,12 +22,12 @@
   ],
   "sourceSha256": {
     "native/kokoro-parallel.cpp": "c89bab166b0984672873cd6ef6ae9ea6ff61282bc2e57d626fdf4b0b59cbbe95",
-    "native/kokoro-engine.cpp": "e0770510b24e98096a07dede72b4e6f3fd5f8887a83ef7c0708dc5469ab36fd7",
+    "native/kokoro-engine.cpp": "9322c74eb337ed40740c8e1df1cd01698a3939afbca0b7e0ff111c1633467ef7",
     "native/ocr-engine.cpp": "0da5a4c9e019ead17fb6ca81344c15701987ede7ed3d48a56262288657c6db5a",
     "native/engine.cpp": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616"
   },
-  "originalWasmSha256": "fa248f51ca43089c8308e5a432fe0a50d87f56cf4e1e1e5ab114863edef4dc3e",
-  "wasmSha256": "df5166a465d33145af859f34793698372fc774b1beffb8bcde1bafae8479737e",
+  "originalWasmSha256": "e3503ab6131f842091ee726dcbc58822872ce564139528efeac1e4ed160b033d",
+  "wasmSha256": "57e13e6de7cdf98892e251fbb232a6fc72094dd870e086e08f9c2857a094d866",
   "imports": [
     {
       "module": "env",

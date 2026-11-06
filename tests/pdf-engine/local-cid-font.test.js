@@ -70,10 +70,12 @@ describe('strict local unembedded GBK CID font substitution', () => {
     expect(commands[1].glyphs[1].x).toBeCloseTo(1, 9);
     expect(actual.items).toHaveLength(1); expect(actual.items[0].width).toBeCloseTo(40.875, 9);
   });
-  it.each(['UnknownCJK', 'AAAAAA+SimSun', 'SongtiSC', '#E5#AE#8B#E4#BD#93'])('does not infer other names or arbitrary encodings: %s', async name => {
-    await expect(payload(data({ name }))).rejects.toMatchObject({ code: 'pdf_unsupported' });
+  it.each(['UnknownCJK', 'AAAAAA+SimSun', 'SongtiSC', '#E5#AE#8B#E4#BD#93'])('uses canonical Unicode with generic visuals for unfamiliar names: %s', async name => {
+    const actual = await payload(data({ name }));
+    expect(actual.items[0].str).toBe('中文'); expect(actual.inspection.unmappedGlyphs).toBe(0);
+    expect(actual.fonts[0].requiresLocalFace).toBeUndefined();
   });
-  it.each([{ childName: 'Other' }, { descriptorName: 'Other' }, { childSubtype: 'CIDFontType0' }, { flags: '4' }, { flags: '32' }, { encoding: '/GBK-EUC-V' }, { encoding: '/Identity-H' }, { encoding: '<< /CMapName /GBK-EUC-H >>' }, { registry: '(Other)' }, { ordering: '(Japan1)' }, { supplement: '3' }, { mapping: '/CIDToGIDMap /Identity' }, { unicode: 'begincmap endcmap' }])('keeps unsupported font mappings closed: %j', async settings => {
+  it.each([{ childName: 'Other' }, { descriptorName: 'Other' }, { childSubtype: 'CIDFontType0' }, { flags: '4' }, { flags: '32' }, { encoding: '/GBK-EUC-V' }, { encoding: '/Identity-H' }, { encoding: '<< /CMapName /GBK-EUC-H >>' }, { registry: '(Other)' }, { ordering: '(Japan1)' }, { supplement: '3' }, { mapping: '/CIDToGIDMap /Identity' }])('keeps unsupported font mappings closed: %j', async settings => {
     await expect(payload(data(settings))).rejects.toMatchObject({ code: 'pdf_unsupported' });
   });
   it.each([{ registry: '/Adobe' }, { metrics: '/DW /invalid' }, { metrics: '/W [-1 [1000]]' }, { metrics: '/W [4559 [/invalid]]' }, { descriptorMetrics: '/Ascent /invalid /Descent -141' }, { descriptorMetrics: '/Ascent 859' }])('rejects malformed required metrics/collection: %j', async settings => {

@@ -1,6 +1,6 @@
 {
   "name": "pagenarrator",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "private": true,
   "description": "Free, open-source text-to-speech extension for Chrome and Chromium. Read webpages and PDFs aloud with on-device AI voices. No account or usage quota.",
   "license": "GPL-3.0-or-later",
@@ -40,6 +40,7 @@
     "test:e2e:local": "playwright test --config tooling/playwright.config.js",
     "test:models": "node tooling/scripts/download-test-models.mjs",
     "test:e2e:real-model": "cross-env PN_E2E_REAL_MODEL=1 playwright test --config tooling/playwright.config.js --project=real-model",
+    "test:e2e:omnivoice": "node tooling/scripts/run-omnivoice-release-tests.mjs",
     "test:live": "npm run build && npm run test:live:no-build",
     "test:live:no-build": "node tooling/scripts/run-live-tests.mjs",
     "probe:tts": "npm run build && npm run probe:tts:no-build",

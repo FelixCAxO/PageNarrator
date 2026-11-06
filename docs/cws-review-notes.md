@@ -1,6 +1,8 @@
 # Chrome Web Store review
 
-**Recommended: a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.**
+**Suggested GPU setup: a dedicated GPU with 8 GB+ VRAM (NVIDIA RTX 20 series or newer, or a recent AMD Radeon with WebGPU support) and 8 GB+ system RAM.**
+
+For CPU-only Kokoro, aim for a modern 6-core CPU or better and 8 GB+ system RAM. Expect longer startup times and possible pauses between sections. These are suggested starting points, not verified minimums or guarantees of smooth playback.
 
 Use the submitted extension ZIP. No account, activation, or special build is needed.
 

@@ -9,6 +9,17 @@ npm run requirements:tts
 
 The matrix runs baseline, memory, faults, and lifecycle checks. Add `--workloads`, `--contention`, or `--soak` after `--` to opt in. Use `--stages=memory --runs=2` to repeat the memory lane. A soak shorter than 60 minutes stays exploratory. See `tooling/scripts/weak-hardware/run-matrix.mjs` for lane definitions.
 
+For a packaged OmniVoice read lasting at least one hour, build the candidate and verify its pinned speech fixtures first. Run this separately from other synthesis or scored browser measurements:
+
+```powershell
+$env:PN_E2E_SUSTAINED_OV = '1'
+$env:PN_SUSTAINED_MINUTES = '60'
+$env:PN_SUSTAINED_OUTPUT = 'artifacts/omnivoice-sustained-60min'
+npm run test:e2e:local -- tests/e2e/omnivoice-sustained.e2e.js --project=extension --workers=1
+```
+
+Use a new output directory for each attempt. Bind a GPU explicitly with `PN_GPU_VENDOR` and `PN_GPU_ADAPTER_LUID` when needed. The harness runs muted within a browser commit ceiling, streams audio evidence to disk, waits for a completed section covering the requested duration, and records transitions, speaker identity, package hashes, cleanup, and warmed memory observations. A one-minute run is useful for checking the harness but remains exploratory. This test does not establish physical low-spec support, output-device latency, pronunciation, or independent listening quality; its memory drift is descriptive rather than a leak verdict.
+
 ## Evidence
 
 | Run | What it establishes |

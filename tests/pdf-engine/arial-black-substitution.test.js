@@ -31,7 +31,12 @@ describe('exact declared Arial Black substitution', () => {
       expect(actual.items[0].str).toBe(text); expect(command.glyphs[0].systemText).toBe('V'); expect(actual.items[0].width).toBeCloseTo(34.44, 9);
     }
   });
-  it.each([{ flags: 0 }, { flags: 36 }, { flags: 96 }, { angle: '' }, { angle: '-1' }, { angle: '1' }, { angle: '/invalid' }, { descriptorName: 'Arial' }, { name: 'ArialBlackCustom' }, { name: 'AAAAAA+ArialBlack' }, { name: 'Arial-Black' }, { encoding: '/MacRomanEncoding' }, { encoding: '<< /BaseEncoding /WinAnsiEncoding /Differences [86 /W] >>' }, { widths: '' }])('rejects unsupported family, style, encoding and metric claims: %j', async changes => {
+  it.each(['ArialBlackCustom', 'AAAAAA+ArialBlack', 'Arial-Black'])('uses generic visuals and PDF advances for the unfamiliar alias %s', async name => {
+    const actual = await payload(data({ name }));
+    expect(actual.items[0].str).toBe('Vw'); expect(actual.items[0].width).toBeCloseTo(34.44);
+    expect(actual.fonts[0].localFaces).toBeUndefined();
+  });
+  it.each([{ flags: 0 }, { flags: 36 }, { flags: 96 }, { angle: '' }, { angle: '-1' }, { angle: '1' }, { angle: '/invalid' }, { descriptorName: 'Arial' }, { encoding: '/MacRomanEncoding' }, { encoding: '<< /BaseEncoding /WinAnsiEncoding /Differences [86 /W] >>' }, { widths: '' }])('rejects unsupported style, encoding and metric claims for the exact substitute: %j', async changes => {
     await expect(payload(data(changes))).rejects.toMatchObject({ code: 'pdf_unsupported' });
   });
   it('keeps malformed widths distinct from unsupported used-code spans', async () => {

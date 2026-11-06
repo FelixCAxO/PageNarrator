@@ -23,16 +23,6 @@ function strictIncludeCovers(includePattern, repoPath) {
 }
 
 describe('repository guardrails', () => {
-  it('merges legacy meta-test files into this guardrails suite', () => {
-    for (const legacyFile of [
-      'tests/ci/tooling-hygiene.test.js',
-      'tests/ci/typecheck-coverage.test.js',
-      'tests/ci/ci-playwright-config.test.js',
-    ]) {
-      expect(existsSync(join(ROOT_DIR, legacyFile)), legacyFile).toBe(false);
-    }
-  });
-
   it('uses one Node preview entry point with a shell wrapper', () => {
     const packageJson = readJson('package.json');
     const shellWrapper = readRepoFile('tooling/scripts/preview.sh');

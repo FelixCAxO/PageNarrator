@@ -5,6 +5,18 @@ export const trustedSender = { id: 'test', url: 'chrome-extension://test/src/rea
 
 let activeViewerFixture = null;
 
+function createViewerSessionStorage() {
+  const values = new Map();
+  return {
+    get length() { return values.size; },
+    key(index) { return [...values.keys()][index] ?? null; },
+    getItem(key) { return values.get(String(key)) ?? null; },
+    setItem(key, value) { values.set(String(key), String(value)); },
+    removeItem(key) { values.delete(String(key)); },
+    clear() { values.clear(); },
+  };
+}
+
 // Retain the owner until import and initial render settle; a timeout cannot replace its globals.
 export async function loadViewer(importViewer = () => import('../../src/pdf-viewer.js')) {
   const fixture = activeViewerFixture;
@@ -41,6 +53,8 @@ export async function cleanupViewerDom() {
     delete globalThis.location;
     delete globalThis.document;
     delete globalThis.window;
+    if (fixture.sessionStorageDescriptor) Object.defineProperty(globalThis, 'sessionStorage', fixture.sessionStorageDescriptor);
+    else delete globalThis.sessionStorage;
     if (activeViewerFixture === fixture) activeViewerFixture = null;
     if (failure) throw failure;
   })();
@@ -71,7 +85,10 @@ export async function installViewerDom() {
     url: 'chrome-extension://test/src/pdf-viewer.html?src=https%3A%2F%2Fexample.test%2Fbook.pdf',
   });
 
-  activeViewerFixture = { dom, loading: null, listeners: null, closing: false, cleanup: null };
+  activeViewerFixture = { dom, loading: null, listeners: null, closing: false, cleanup: null,
+    sessionStorageDescriptor: Object.getOwnPropertyDescriptor(globalThis, 'sessionStorage') };
+  // Node 26 supplies host sessionStorage; each simulated tab must own its pages.
+  Object.defineProperty(globalThis, 'sessionStorage', { configurable: true, value: createViewerSessionStorage() });
   globalThis.window = dom.window;
   globalThis.document = dom.window.document;
   globalThis.location = dom.window.location;

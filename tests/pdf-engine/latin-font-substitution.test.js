@@ -9,6 +9,8 @@ import { simplePdf, stream, loadAsset, options } from './fixtures.js';
 const cases = [
   ['TrebuchetMS', 'LiberationSans-Regular.ttf', 'Trebuchet MS'], ['Verdana', 'LiberationSans-Regular.ttf', 'Verdana'],
   ['Verdana,Italic', 'LiberationSans-Italic.ttf', 'Verdana Italic'], ['Verdana,Bold', 'LiberationSans-Bold.ttf', 'Verdana Bold'],
+  ['Verdana-Italic', 'LiberationSans-Italic.ttf', 'Verdana Italic'], ['Verdana-Bold', 'LiberationSans-Bold.ttf', 'Verdana Bold'],
+  ['Verdana,BoldItalic', 'LiberationSans-BoldItalic.ttf', 'Verdana Bold Italic'], ['Verdana-BoldItalic', 'LiberationSans-BoldItalic.ttf', 'Verdana Bold Italic'],
   ['CourierNew', 'FoxitFixed.pfb', 'Courier New'], ['CourierNew,Bold', 'FoxitFixedBold.pfb', 'Courier New Bold'],
 ];
 async function payload(data) {
@@ -38,7 +40,7 @@ describe('bounded known unembedded Latin font substitution', () => {
     expect(actual.fonts[0].localFaces).toContain(local); expect(pdfLocalFontNames(name)).toContain(local);
   });
 
-  it.each(['Verdana', 'CourierNew'])('keeps ToUnicode semantics separate from %s source paint', async name => {
+  it.each(['Verdana', 'Verdana-Bold', 'CourierNew'])('keeps ToUnicode semantics separate from %s source paint', async name => {
     const actual = await payload(document(name, { unicode: 'begincmap 1 beginbfchar <41> <0058> endbfchar endcmap' }));
     expect(actual.items[0].str).toBe('XB'); expect(actual.items[0].width).toBeCloseTo(19.5, 8);
     const asset = cases.find(row => row[0] === name)[1];
@@ -58,17 +60,21 @@ describe('bounded known unembedded Latin font substitution', () => {
   it.each(['', '/MacRomanEncoding', '/CustomEncoding', '<< /Differences [65 /A] >>'])('keeps undeclared or unsupported encodings closed: %s', async encoding => {
     await expect(payload(document('Verdana', { encoding }))).rejects.toMatchObject({ code: 'pdf_unsupported' });
   });
-  it('does not use fallback aliases for custom glyph remapping or unknown font families', async () => {
+  it('keeps strict known-family substitution for custom remapping and uses a generic font for unknown families', async () => {
     await expect(payload(document('Verdana', { encoding: '<< /BaseEncoding /WinAnsiEncoding /Differences [65 /B] >>' }))).rejects.toMatchObject({ code: 'pdf_unsupported' });
-    for (const name of ['CustomVerdana', 'AAAAAA+Verdana', 'UnknownLatin', '宋体']) await expect(payload(document(name))).rejects.toMatchObject({ code: 'pdf_unsupported' });
+    for (const name of ['CustomVerdana', 'AAAAAA+Verdana', 'UnknownLatin', '宋体']) {
+      const actual = await payload(document(name));
+      expect(actual.items[0].str).toBe('AB'); expect(actual.items[0].width).toBeCloseTo(19.5);
+      expect(actual.fonts[0].localFaces).toBeUndefined();
+    }
   });
   it('requires complete finite explicit widths and rejects used codes outside that declaration', async () => {
     await expect(payload(document('Verdana', { metrics: '' }))).rejects.toMatchObject({ code: 'pdf_unsupported' });
     for (const metrics of ['/FirstChar 65 /LastChar 66 /Widths [321]', '/FirstChar 65 /LastChar 66 /Widths [321 /invalid]']) await expect(payload(document('Verdana', { metrics }))).rejects.toMatchObject({ code: 'pdf_corrupt' });
     await expect(payload(document('Verdana', { content: '(C)' }))).rejects.toMatchObject({ code: 'pdf_unsupported', message: expect.stringContaining('declared PDF width') });
   });
-  it('never replaces an embedded program even when it uses one of these known family names', async () => {
-    const embedded = await loadAsset('standard_fonts/LiberationSans-Italic.ttf'), actual = await payload(document('Verdana', { embedded }));
+  it.each(['Verdana', 'Verdana-Bold'])('never replaces an embedded program even when it uses the known family name %s', async name => {
+    const embedded = await loadAsset('standard_fonts/LiberationSans-Italic.ttf'), actual = await payload(document(name, { embedded }));
     expect(actual.fonts[0].localFaces).toBeUndefined(); expect(actual.inspection.decodingWarnings.some(warning => warning.filter === 'FontSubstitution')).toBe(false);
     expect(actual.commands.find(c => c.op === 'text').glyphs[0].renderText).toBe(String.fromCodePoint(privateGlyphCode(readTrueTypeMetrics(embedded).glyphId(65))));
   });

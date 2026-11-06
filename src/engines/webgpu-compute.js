@@ -2,7 +2,7 @@
 import { BINARY_OPERATIONS, UNARY_OPERATIONS } from './native-compute.js';
 import { broadcastShape, broadcastStrides, tensorSize } from './tensor-shape.js';
 import { axisIndex, batchedMatmulPlan, contiguousStrides } from './index-shape.js';
-import { ELEMENTWISE_SHADER, MATMUL_SHADER, PACKED_HALF_MATMUL_SHADER } from './webgpu-shaders.js';
+import { ELEMENTWISE_SHADER, MATMUL_SHADER, PACKED_HALF_MATMUL_SHADER, PACKED_HALF_MATMUL_K32_SHADER, PACKED_HALF_MATMUL_WIDE_SHADER, PACKED_HALF_MATMUL_32_SHADER } from './webgpu-shaders.js';
 import { HALF_SILU_GATE_SHADER, halfRmsNormShader } from './webgpu-audio-shaders.js';
 import { concatPlan, convolutionPlan, poolingPlan, reductionPlan, resizePlan } from './cnn-shape.js';
 import { CONCAT_SHADER, CONV_DIRECT_SHADER, CONV_TILED_SHADER, POOL_SHADER, REDUCE_MEAN_SHADER, RESIZE_SHADER } from './webgpu-cnn-shaders.js';
@@ -112,6 +112,9 @@ export class WebGpuCompute {
         [name, await this.pipeline(halfStorageShader(code), `PageNarrator half ${name}`)])));
       for (const width of [128, 1024]) this.half[`rmsNorm${width}`] = await this.pipeline(halfRmsNormShader(width), `PageNarrator half RMSNorm ${width}`);
       this.half.rmsNormTranspose128 = await this.pipeline(halfRmsNormShader(128, true), 'PageNarrator half RMSNorm head transpose');
+      this.half.packedMatmulWide = await this.pipeline(PACKED_HALF_MATMUL_WIDE_SHADER, 'PageNarrator packed half MatMul wide');
+      this.half.packedMatmul32 = await this.pipeline(PACKED_HALF_MATMUL_32_SHADER, 'PageNarrator packed half MatMul 32');
+      this.half.packedMatmulK32 = await this.pipeline(PACKED_HALF_MATMUL_K32_SHADER, 'PageNarrator packed half MatMul K32');
       this.half.siluGate = await this.pipeline(HALF_SILU_GATE_SHADER, 'PageNarrator half SiLU gate');
       this.half.packedMatmul = await this.pipeline(PACKED_HALF_MATMUL_SHADER, 'PageNarrator packed half MatMul');
       this.half.scaledMaskedSoftmax = await this.pipeline(HALF_SCALED_MASKED_SOFTMAX_SHADER, 'PageNarrator half scaled masked softmax');
@@ -459,7 +462,7 @@ class ComputeBatch {
     const limit = this.engine.device.limits.maxComputeWorkgroupsPerDimension;
     if (!pipeline) throw new Error('Prepare the required GPU pipelines before encoding inference.');
     if ([x, y, z].some(n => !Number.isSafeInteger(n) || n < 0 || n > limit)) throw new RangeError('Compute dispatch exceeds the WebGPU workgroup limit.');
-    const usage = pipeline === this.engine.half?.packedMatmul ? GPUBufferUsage.UNIFORM : GPUBufferUsage.STORAGE;
+    const usage = pipeline === this.engine.half?.packedMatmul || pipeline === this.engine.half?.packedMatmulK32 || pipeline === this.engine.half?.packedMatmulWide || pipeline === this.engine.half?.packedMatmul32 ? GPUBufferUsage.UNIFORM : GPUBufferUsage.STORAGE;
     const cfg = this.engine.buffer(parameters.byteLength, usage | GPUBufferUsage.COPY_DST, 'PageNarrator dispatch parameters');
     this.parameters.push(cfg);
     this.engine.device.queue.writeBuffer(cfg, 0, parameters);
@@ -743,9 +746,18 @@ class ComputeBatch {
     const parameters = new Uint32Array(32);
     parameters.set([a.shape.at(-2), b.shape.at(-1), a.shape.at(-1), plan.batch.length]);
     parameters.set(plan.batch, 8); parameters.set(plan.aStrides, 16); parameters.set(plan.bStrides, 24);
-    const halfPipeline = a.shape.at(-1) % 2 === 0 && b.shape.at(-1) % 2 === 0 ? this.engine.half?.packedMatmul : this.engine.half?.matmul;
-    this.dispatchTensors(a.dataType === 'float16' ? halfPipeline : this.numericPipelines?.matmul??this.engine.matmulPipeline, [a, b, output], parameters,
-      Math.ceil(b.shape.at(-1) / 16), Math.ceil(a.shape.at(-2) / 16), tensorSize(plan.batch));
+    const rows = a.shape.at(-2), inner = a.shape.at(-1), columns = b.shape.at(-1), batches = tensorSize(plan.batch);
+    const even = inner % 2 === 0 && columns % 2 === 0;
+    const halfPipeline = even ? this.engine.half?.packedMatmul : this.engine.half?.matmul;
+    // More inner reuse helps smaller grids; larger output tiles need enough parallel work.
+    const k32 = a.dataType === 'float16' && even && inner >= 256 && columns >= 128
+      && Math.ceil(rows / 16) * Math.ceil(columns / 16) * batches <= 512 && this.engine.half?.packedMatmulK32;
+    const wide = !k32 && a.dataType === 'float16' && even && rows >= 128 && inner >= 1024 && columns >= 2048
+      && this.engine.half?.packedMatmulWide;
+    const square = wide && rows >= 192 && columns >= 3072 && this.engine.half?.packedMatmul32;
+    const pipeline = k32 || square || wide || (a.dataType === 'float16' ? halfPipeline : this.numericPipelines?.matmul??this.engine.matmulPipeline);
+    this.dispatchTensors(pipeline, [a, b, output], parameters,
+      Math.ceil(columns / (wide ? 32 : 16)), Math.ceil(rows / (square ? 32 : 16)), batches);
     return output;
   }
 

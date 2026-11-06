@@ -30,7 +30,12 @@ describe('exact known comma-style Times italic substitution', () => {
     const cff = parseCffFont(await loadAsset('standard_fonts/FoxitSerifItalic.pfb'));
     expect(actual.commands.find(command => command.op === 'text').glyphs[0].renderText).toBe(String.fromCodePoint(privateGlyphCode(cff.byName.get('A'))));
   });
-  it.each([{ flags: 34 }, { flags: 100 }, { angle: '' }, { angle: '0' }, { angle: '11' }, { angle: '/invalid' }, { descriptorName: 'Other' }, { name: 'Other,Italic' }, { name: 'AAAAAA+TimesNewRoman,Italic' }, { encoding: '/MacRomanEncoding' }, { widths: '' }])('does not broaden the exact style/encoding/metric admission: %j', async changes => {
+  it.each(['Other,Italic', 'AAAAAA+TimesNewRoman,Italic'])('keeps narration and PDF widths with generic visuals for %s', async name => {
+    const actual = await payload(data({ name }));
+    expect(actual.items[0].str).toBe('AB'); expect(actual.items[0].width).toBeCloseTo(18.88);
+    expect(actual.fonts[0].localFaces).toBeUndefined();
+  });
+  it.each([{ flags: 34 }, { flags: 100 }, { angle: '' }, { angle: '0' }, { angle: '11' }, { angle: '/invalid' }, { descriptorName: 'Other' }, { encoding: '/MacRomanEncoding' }, { widths: '' }])('does not broaden the exact style/encoding/metric admission: %j', async changes => {
     await expect(payload(data(changes))).rejects.toMatchObject({ code: 'pdf_unsupported' });
   });
   it('retains malformed width rejection and used-code span checks', async () => {

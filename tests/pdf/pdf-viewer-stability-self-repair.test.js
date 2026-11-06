@@ -102,7 +102,81 @@ describe('PDF viewer stability & self-repairing resilience', () => {
       expect(pageEl.querySelector('.textLayer .pdf-page-warning')).toBeNull(); expect(annotate).toHaveBeenCalledOnce();
       renderer.destroy(); dom.window.close();
     });
-    it.each(['pdf_unsupported', 'pdf_corrupt', 'pdf_limit'])('does not repeatedly retry a permanent page failure: %s', async code => {
+    it.each(['pdf_unsupported', 'pdf_render', 'pdf_limit', undefined])('shows selectable text and preserves highlighting when canvas painting fails: %s', async code => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage;
+      pdf.getPage = async number => {
+        const page = await originalGetPage(number);
+        page.render = vi.fn(() => ({ promise: Promise.reject(Object.assign(new Error('Cannot paint this artwork'), { code })) })); return page;
+      };
+      const annotate = vi.fn(), renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,
+        pdfjs: { TextLayer: class { async render() { throw new Error('Plain text must not need PDF fonts'); } } }, getPageScale: () => 1, annotateTextLayer: annotate });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-readable-text').textContent.trim()).toBe('Content for page 1');
+      expect(pageEl.querySelector('[data-pagenarrator-pdf-source-index="0"]').textContent).toBe('Content for page 1');
+      expect(pageEl.querySelector('canvas')).toBeNull();
+      expect(pageEl.querySelector('.pdf-page-warning').textContent).toContain('Text reading is still available');
+      expect(annotate).toHaveBeenCalledOnce();
+      expect(pdf.pages.get(1).render).toHaveBeenCalledTimes(code ? 1 : 3);
+      renderer.destroy(); dom.window.close();
+    });
+    it('uses readable text when the engine recovered a page without artwork', async () => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage;
+      pdf.getPage = async number => {
+        const page = await originalGetPage(number), getText = page.getTextContent;
+        page.getTextContent = async () => ({ ...await getText(), textOnly: true, artworkWarnings: [{ kind: 'page' }] }); return page;
+      };
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,
+        pdfjs: { TextLayer: class { async render() { throw new Error('Recovered text must not depend on font rendering'); } } }, getPageScale: () => 1 });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-readable-text').textContent.trim()).toBe('Content for page 1');
+      expect(pdf.pages.get(1).render).not.toHaveBeenCalled();
+      renderer.destroy(); dom.window.close();
+    });
+    it('shows fallback text in reading order while keeping original source indices', async () => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage;
+      pdf.getPage = async number => {
+        const page = await originalGetPage(number);
+        page.getTextContent = async () => ({ textOnly: true, items: [
+          { str: 'Last paragraph.', transform: [12, 0, 0, 12, 72, 500], width: 150, height: 12 },
+          { str: 'First paragraph.', transform: [12, 0, 0, 12, 72, 600], width: 150, height: 12 },
+        ] }); return page;
+      };
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window, pdfjs: {}, getPageScale: () => 1 });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-readable-text').textContent.trim()).toBe('First paragraph. Last paragraph.');
+      expect([...pageEl.querySelectorAll('[data-pagenarrator-pdf-source-index]')].map(span => span.dataset.pagenarratorPdfSourceIndex)).toEqual(['1', '0']);
+      renderer.destroy(); dom.window.close();
+    });
+    it('uses text instead of allocating an oversized backing canvas', async () => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage;
+      pdf.getPage = async number => { const page = await originalGetPage(number); page.getViewport = () => ({ width: 17000, height: 800, scale: 1 }); return page; };
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window, pdfjs: {}, getPageScale: () => 1 });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-readable-text').textContent.trim()).toBe('Content for page 1');
+      expect(pdf.pages.get(1).render).not.toHaveBeenCalled(); expect(pageEl.querySelector('canvas')).toBeNull();
+      renderer.destroy(); dom.window.close();
+    });
+    it('falls back when selectable PDF font rendering fails', async () => {
+      const dom = createDom(), pdf = createFakePdf(1);
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,
+        pdfjs: { TextLayer: class { async render() { throw Object.assign(new Error('Font cannot be loaded'), { name: 'NetworkError' }); } } }, getPageScale: () => 1 });
+      const pageEl = createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 });
+      await renderer.ensurePageRendered(pdf, pageEl, 1);
+      expect(pageEl.querySelector('.pdf-readable-text').textContent.trim()).toBe('Content for page 1');
+      renderer.destroy(); dom.window.close();
+    });
+    it.each([{ items: [] }, { items: [{ str: 'Unmapped text' }], unmappedGlyphs: 1 }, { items: [{ str: 'Unknown glyph' }], unknownType3Glyphs: 1 }])('does not replace unreadable pages with fabricated text: %j', async textContent => {
+      const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage, error = Object.assign(new Error('Unsupported paint'), { code: 'pdf_unsupported' });
+      pdf.getPage = async number => { const page = await originalGetPage(number); page.render = () => ({ promise: Promise.reject(error) }); page.getTextContent = async () => textContent; return page; };
+      const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window, pdfjs: {}, getPageScale: () => 1 });
+      await expect(renderer.ensurePageRendered(pdf, createPdfPagePlaceholder(dom.window.document, 1, { width: 600, height: 800 }), 1)).rejects.toBe(error);
+      renderer.destroy(); dom.window.close();
+    });
+    it.each(['pdf_corrupt'])('does not repeatedly retry a permanent page failure: %s', async code => {
       const dom = createDom(), pdf = createFakePdf(1), originalGetPage = pdf.getPage, error = Object.assign(new Error('Permanent failure'), { code });
       pdf.getPage = async number => { const page = await originalGetPage(number); page.render = vi.fn(() => ({ promise: Promise.reject(error) })); return page; };
       const renderer = createVirtualPdfPageRenderer({ documentRef: dom.window.document, windowRef: dom.window,

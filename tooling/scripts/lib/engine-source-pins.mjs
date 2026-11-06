@@ -9,3 +9,11 @@ export async function engineSourcePins(root, extra = []) {
   return Object.fromEntries(await Promise.all(files.map(async file => [file,
     createHash('sha256').update(await readFile(resolve(root, file))).digest('hex')])));
 }
+
+/** Hash the effective engine modules served to each arm, including A/A overlays. */
+export function engineVariantPins(baselineSources, candidatePins, { control = false } = {}) {
+  return Object.fromEntries([...baselineSources].map(([name, source]) => {
+    const baseline = createHash('sha256').update(source).digest('hex');
+    return [name, { baseline, candidate: control ? baseline : candidatePins[name.slice(1)] }];
+  }));
+}

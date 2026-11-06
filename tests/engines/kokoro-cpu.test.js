@@ -112,8 +112,11 @@ it.each([1e-9, 1e-7, 2 ** -146])('retains a small %g recurrent candidate through
 
 it.each([
   [[2, 3, 5], [2, 1, 1], [1, 3, 1]], [[1, 3], [2, 1], []], [[2, 3], [], [3]], [[], [], []],
+  [[2, 3, 16], [2, 1, 1], [1, 3, 1]], [[2, 3, 17], [2, 1, 1], [1, 3, 1]],
+  [[2, 3, 7], [2, 1, 1], [1, 3, 1]], [[1, 16], [3, 1], []],
 ])('fuses Snake storage while preserving every unfused float32 stage and broadcast axis: %j', async (inputShape, alphaShape, scaleShape) => {
-  const x = Float32Array.from({ length: size(inputShape) }, (_, i) => [0, -0, -2.25, .125, 2.7, -100][i % 6]);
+  const edges = [0, -0, -2.25, .125, 2.7, -100, 1e-40, -1e-40, 25965, 25966, 1e6, -1e6];
+  const x = Float32Array.from({ length: size(inputShape) }, (_, i) => edges[i % edges.length]);
   const a = values(alphaShape, 3, 1.7), s = values(scaleShape, 2, .375), batch = engine.batch();
   const inputs = [upload(x, inputShape), upload(a, alphaShape), upload(s, scaleShape)], fused = batch.snake(...inputs);
   const product = batch.binary('Mul', inputs[0], inputs[1]), wave = batch.unary('Sin', product), squared = batch.binary('Mul', wave, wave);

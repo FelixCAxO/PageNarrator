@@ -50,6 +50,8 @@ Keeping the same entry and path preserves the extension identity, settings, and 
 
 The PDF viewer supports page navigation, zoom from 50% to 300%, rotation, fit, selection, and reading. Local files need **Allow access to file URLs** in Chrome's extension details. English scans use local OCR. Check the recognized text against the page. For a PDF behind sign-in, open the original link in Chrome, sign in there, then retry the PDF.
 
+When unsupported fonts or artwork prevent normal painting, the viewer can recover a selectable text view and keep narration available. A warning identifies the visual limitation. Check the original document when its layout or artwork matters.
+
 If **Read selected** finds no text, select a passage and retry. Chrome settings pages and other protected pages cannot be read. Grant website access only when prompted for a document you chose. For failed voice setup, check the connection and retry. See [support](https://pagenarrator.com/support).
 
 ## Host-page layout contract

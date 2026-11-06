@@ -8,7 +8,9 @@ The dashboard has no summary field: it shows the packaged `manifest.json` descri
 
 ## Full description
 
-**Recommended: a dedicated NVIDIA RTX 30 series GPU or newer, with 8 GB+ VRAM and 8 GB+ system RAM.**
+**Suggested GPU setup: a dedicated GPU with 8 GB+ VRAM (NVIDIA RTX 20 series or newer, or a recent AMD Radeon with WebGPU support) and 8 GB+ system RAM.**
+
+For CPU-only Kokoro, aim for a modern 6-core CPU or better and 8 GB+ system RAM. Expect longer startup times and possible pauses between sections. These are suggested starting points, not verified minimums or guarantees of smooth playback.
 
 PageNarrator is a free reader for Google Chrome™. Read webpages, selected text, and PDFs aloud on your device. No account or usage quota.
 

@@ -5,6 +5,7 @@ import { decodeCmapBytes, cmapResourceBytes } from './cmap-data.js';
 import { readCidWidths } from './cff-pdf-font.js';
 import { readTrueTypeMetrics } from './font-metrics.js';
 import { pdfSystemGlyph } from './system-fonts.js';
+import { loadFallbackCidFont } from './fallback-cid-font.js';
 
 const names = new Set(['SimSun', '\u00cb\u00ce\u00cc\u00e5']); // Exact GBK bytes for 宋体, not a generic PDF-name decoder.
 const localFaces = Object.freeze(['SimSun', '宋体']);
@@ -15,7 +16,7 @@ const field = (reader, id, key) => { const value = reader.field(id, key); return
 /** Named unembedded GBK font substitution; CIDs retain PDF metrics, never host glyph indices. */
 export async function loadLocalCidFont(reader, id, descendant, descriptor, loadAsset, { retainOutlines = false } = {}) {
   const base = reader.name(field(reader, id, 'BaseFont'));
-  if (!names.has(base)) unsupported('This unembedded PDF CID font needs a supported font program.');
+  if (!names.has(base)) return loadFallbackCidFont(reader, id, descendant, descriptor, loadAsset, { retainOutlines });
   if (retainOutlines) unsupported('This local PDF CID substitute has no original glyph outline support.');
   if (!descriptor || reader.name(field(reader, descendant, 'Subtype')) !== 'CIDFontType2'
     || reader.name(field(reader, descendant, 'BaseFont')) !== base || reader.name(field(reader, descriptor, 'FontName')) !== base) unsupported('This local PDF CID font needs consistent supported font names.');

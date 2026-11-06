@@ -69,6 +69,22 @@ static float packet_trig(float value,bool cosine=false) {
   const float s=(((-.0001959234114083703f*z+.008332687365561685f)*z-.16666662039822983f)*z)*x+x;
   const float y=q&1?(cosine?s:c):(cosine?c:s);const bool negative=cosine?((q+1)&2):(__builtin_signbit(value)!=bool(q&2));return negative?-y:y;
 }
+static bool packet_sine_four(f32x4 value,f32x4& out) {
+  const f32x4 absolute=__builtin_elementwise_abs(value);
+  // The scalar packet path owns large-argument reduction and nonfinite values.
+  for(u32 lane=0;lane<4;++lane)if(!(absolute[lane]<25966.0f))return false;
+  const f32x4 quadrant=(absolute*.636619746685028076171875f+12582912.0f)-12582912.0f;
+  f32x4 x=absolute;
+  const float split[]={-1.5703125f,-.000483989715576171875f,1.62865035235881805419921875e-7f,5.5644315544167710641e-11f};
+  for(float c:split)x=quadrant*c+x;
+  const i32x4 q=__builtin_convertvector(quadrant,i32x4),zero={},one={1,1,1,1},two={2,2,2,2};
+  const f32x4 z=x*x,c=(((2.4372266125283204e-5f*z-.001388652017340064f)*z+.04166661947965622f)*z-.5f)*z+1.0f;
+  const f32x4 s=(((-.0001959234114083703f*z+.008332687365561685f)*z-.16666662039822983f)*z)*x+x;
+  const f32x4 y=((q&one)!=zero)?c:s;
+  i32x4 bits;__builtin_memcpy(&bits,&value,16);
+  const i32x4 negative=((bits>>31)!=zero)!=((q&two)!=zero);
+  out=negative?-y:y;return true;
+}
 extern "C" int pn_kokoro_unary(const float* input,float* out,const u32* p) {
   for(u32 i=0;i<p[0];++i){const float x=input[i];float y=x;
     switch(p[1]){
@@ -166,7 +182,16 @@ extern "C" void pn_kokoro_snake(const float* input,const float* alpha,const floa
   const u32 rank=p[1],width=rank?p[8+rank-1]:1,xstep=rank?p[16+rank-1]:0,astep=rank?p[24+rank-1]:0,sstep=rank?p[32+rank-1]:0;
   for(u32 start=0;start<p[0];start+=width){
     const u32 x=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+16)),a=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+24)),s=mapped(start,rank,p+8,reinterpret_cast<const int*>(p+32));
-    for(u32 i=0;i<width;++i){
+    u32 i=0;
+    if(xstep==1&&astep==0&&sstep==0){const float av=alpha[a],sv=scale[s];
+      for(;i+4<=width&&start+i+4<=p[0]/4*4;i+=4){f32x4 value,wave;__builtin_memcpy(&value,input+x+i,16);
+        const f32x4 product=value*f32x4{av,av,av,av};
+        if(!packet_sine_four(product,wave))for(u32 lane=0;lane<4;++lane)wave[lane]=packet_trig(product[lane]);
+        const f32x4 square=wave*wave,scaled=square*f32x4{sv,sv,sv,sv},result=value+scaled;
+        __builtin_memcpy(out+start+i,&result,16);
+      }
+    }
+    for(;i<width;++i){
       // Preserve every float32 stage; only repeated outer-axis indexing is removed.
       const float value=input[x+i*xstep],product=value*alpha[a+i*astep],wave=start+i<p[0]/4*4?packet_trig(product):static_cast<float>(sine(static_cast<double>(product)));
       const float square=wave*wave,scaled=square*scale[s+i*sstep];out[start+i]=value+scaled;
@@ -386,30 +411,42 @@ extern "C" int pn_kokoro_dynamic_lstm(const float* input,const unsigned char* w,
     for(u32 step=0;step<steps;++step){const u32 t=d==1||p[5]?steps-step-1:step;float hs;int hz;
       if(quantization(out_h+d*batch*hidden,batch*hidden,hs,hz))return 1;
       for(u32 b=0;b<batch;++b){const u32 state=(d*batch+b)*hidden;unsigned char qh[256];float next_h[256],next_c[256];
-        for(u32 i=0;i<hidden;++i)qh[i]=static_cast<unsigned char>(quantize_value(out_h[state+i],hs,hz));
+        int xsum=0,hsum=0;
+        for(u32 i=0;i<features;++i)xsum+=static_cast<int>(qx[(t*batch+b)*features+i])-xz;
+        for(u32 i=0;i<hidden;++i){qh[i]=static_cast<unsigned char>(quantize_value(out_h[state+i],hs,hz));hsum+=static_cast<int>(qh[i])-hz;}
         u32 unit=0;
-        // Four adjacent gates share quantized activations and contiguous weights in SIMD registers.
-        for(;unit+4<=hidden;unit+=4){f32x4 gate_values[4];
-          for(u32 gate=0;gate<4;++gate){const u32 col=gate*hidden+unit,wi=p[8]?d*gates+col:d,ri=p[9]?d*gates+col:d;
-            i32x4 zw,zr;f32x4 sw,sr;
-            for(u32 lane=0;lane<4;++lane){const u32 windex=wi+(p[8]?lane:0),rindex=ri+(p[9]?lane:0);
-              if(!(ws[windex]>0.0f)||!(rs[rindex]>0.0f)||!__builtin_isfinite(ws[windex])||!__builtin_isfinite(rs[rindex]))return 1;
-              zw[lane]=quantized(wz,windex,p[6]);zr[lane]=quantized(rz,rindex,p[7]);sw[lane]=ws[windex];sr[lane]=rs[rindex];
+        // Two SIMD packs share each activation load; the four-column remainder uses the same math.
+        const auto project=[&]<u32 Packs>(u32 start)->int{f32x4 gate_values[4][Packs];
+          for(u32 gate=0;gate<4;++gate){i32x4 zw[Packs],zr[Packs],wx[Packs]={},rh[Packs]={};f32x4 sw[Packs],sr[Packs];
+            for(u32 pack=0;pack<Packs;++pack){const u32 col=gate*hidden+start+pack*4,wi=p[8]?d*gates+col:d,ri=p[9]?d*gates+col:d;
+              for(u32 lane=0;lane<4;++lane){const u32 windex=wi+(p[8]?lane:0),rindex=ri+(p[9]?lane:0);
+                if(!(ws[windex]>0.0f)||!(rs[rindex]>0.0f)||!__builtin_isfinite(ws[windex])||!__builtin_isfinite(rs[rindex]))return 1;
+                zw[pack][lane]=quantized(wz,windex,p[6]);zr[pack][lane]=quantized(rz,rindex,p[7]);sw[pack][lane]=ws[windex];sr[pack][lane]=rs[rindex];
+              }
             }
-            i32x4 wx={0,0,0,0},rh={0,0,0,0};
-            for(u32 i=0;i<features;++i){const int q=static_cast<int>(qx[(t*batch+b)*features+i])-xz;wx+=i32x4{q,q,q,q}*(quantized_four(w,(d*features+i)*gates+col,p[6])-zw);}
-            for(u32 i=0;i<hidden;++i){const int q=static_cast<int>(qh[i])-hz;rh+=i32x4{q,q,q,q}*(quantized_four(r,(d*hidden+i)*gates+col,p[7])-zr);}
-            f32x4 wb,rb;__builtin_memcpy(&wb,bias+d*8*hidden+col,16);__builtin_memcpy(&rb,bias+d*8*hidden+gates+col,16);
-            gate_values[gate]=(__builtin_convertvector(wx,f32x4)*(f32x4{xs,xs,xs,xs}*sw)+__builtin_convertvector(rh,f32x4)*(f32x4{hs,hs,hs,hs}*sr))+(wb+rb);
+            // sum(q*(w-z)) = sum(q*w) - z*sum(q), exactly within the admitted int32 bound.
+            for(u32 i=0;i<features;++i){const int q=static_cast<int>(qx[(t*batch+b)*features+i])-xz;
+              for(u32 pack=0;pack<Packs;++pack)wx[pack]+=i32x4{q,q,q,q}*quantized_four(w,(d*features+i)*gates+gate*hidden+start+pack*4,p[6]);}
+            for(u32 i=0;i<hidden;++i){const int q=static_cast<int>(qh[i])-hz;
+              for(u32 pack=0;pack<Packs;++pack)rh[pack]+=i32x4{q,q,q,q}*quantized_four(r,(d*hidden+i)*gates+gate*hidden+start+pack*4,p[7]);}
+            for(u32 pack=0;pack<Packs;++pack){const u32 col=gate*hidden+start+pack*4;
+              wx[pack]-=i32x4{xsum,xsum,xsum,xsum}*zw[pack];rh[pack]-=i32x4{hsum,hsum,hsum,hsum}*zr[pack];
+              f32x4 wb,rb;__builtin_memcpy(&wb,bias+d*8*hidden+col,16);__builtin_memcpy(&rb,bias+d*8*hidden+gates+col,16);
+              gate_values[gate][pack]=(__builtin_convertvector(wx[pack],f32x4)*(f32x4{xs,xs,xs,xs}*sw[pack])+__builtin_convertvector(rh[pack],f32x4)*(f32x4{hs,hs,hs,hs}*sr[pack]))+(wb+rb);
+            }
           }
-          for(u32 lane=0;lane<4;++lane){const u32 at=unit+lane;next_c[at]=logistic(gate_values[2][lane])*out_c[state+at]+logistic(gate_values[0][lane])*hyperbolic(gate_values[3][lane]);next_h[at]=logistic(gate_values[1][lane])*hyperbolic(next_c[at]);out[((t*directions+d)*batch+b)*hidden+at]=next_h[at];}
-        }
+          for(u32 pack=0;pack<Packs;++pack)for(u32 lane=0;lane<4;++lane){const u32 at=start+pack*4+lane;next_c[at]=logistic(gate_values[2][pack][lane])*out_c[state+at]+logistic(gate_values[0][pack][lane])*hyperbolic(gate_values[3][pack][lane]);next_h[at]=logistic(gate_values[1][pack][lane])*hyperbolic(next_c[at]);out[((t*directions+d)*batch+b)*hidden+at]=next_h[at];}
+          return 0;
+        };
+        for(;unit+8<=hidden;unit+=8)if(project.template operator()<2>(unit))return 1;
+        for(;unit+4<=hidden;unit+=4)if(project.template operator()<1>(unit))return 1;
         for(;unit<hidden;++unit){float gate_values[4];
           for(u32 gate=0;gate<4;++gate){const u32 col=gate*hidden+unit,wi=p[8]?d*gates+col:d,ri=p[9]?d*gates+col:d;
             if(!(ws[wi]>0.0f)||!(rs[ri]>0.0f)||!__builtin_isfinite(ws[wi])||!__builtin_isfinite(rs[ri]))return 1;
             const int zw=quantized(wz,wi,p[6]),zr=quantized(rz,ri,p[7]);int wx=0,rh=0;
-            for(u32 i=0;i<features;++i)wx+=(static_cast<int>(qx[(t*batch+b)*features+i])-xz)*(quantized(w,(d*features+i)*gates+col,p[6])-zw);
-            for(u32 i=0;i<hidden;++i)rh+=(static_cast<int>(qh[i])-hz)*(quantized(r,(d*hidden+i)*gates+col,p[7])-zr);
+            for(u32 i=0;i<features;++i)wx+=(static_cast<int>(qx[(t*batch+b)*features+i])-xz)*quantized(w,(d*features+i)*gates+col,p[6]);
+            for(u32 i=0;i<hidden;++i)rh+=(static_cast<int>(qh[i])-hz)*quantized(r,(d*hidden+i)*gates+col,p[7]);
+            wx-=xsum*zw;rh-=hsum*zr;
             gate_values[gate]=(static_cast<float>(wx)*(xs*ws[wi])+static_cast<float>(rh)*(hs*rs[ri]))+(bias[d*8*hidden+col]+bias[d*8*hidden+gates+col]);
           }
           next_c[unit]=logistic(gate_values[2])*out_c[state+unit]+logistic(gate_values[0])*hyperbolic(gate_values[3]);next_h[unit]=logistic(gate_values[1])*hyperbolic(next_c[unit]);out[((t*directions+d)*batch+b)*hidden+unit]=next_h[unit];

@@ -115,7 +115,7 @@ export function createSourceArchive(sourceRoot, binary, candidateId = process.en
       candidateId = commit;
       const paths = git(['ls-tree', '--name-only', commit]).split('\n').filter(name => SOURCE_PATHS.includes(name));
       if (!paths.length) throw new Error('No committed source paths.');
-      if (git(['status', '--porcelain', '--untracked-files=no', '--', ...paths])) {
+      if (git(['status', '--porcelain', '--untracked-files=all', '--', ...SOURCE_PATHS])) {
         throw new Error('Commit source changes before release packaging.');
       }
       const archive = join(staging, 'source.tar');

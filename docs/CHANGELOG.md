@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.4 (Unreleased)
+
+- Keep PDF narration working with unfamiliar unembedded font names by substituting bundled fonts while preserving character mappings and PDF spacing.
+- Recover readable PDF text when unsupported visual effects, annotation artwork, or canvas/font painting fails; show a selectable text view when needed and retain OCR detection for outlined text.
+- Prioritize the requested PDF page over speculative neighbors, stop obsolete prefetch, and preserve navigation and narration highlights through zoom and background repaints.
+- Reduce Kokoro CPU work and OmniVoice GPU projection work while preserving the tested speech output. Performance measurements cover the recorded host and requests; other hardware remains unqualified.
+- Require real packaged OmniVoice reading, settings, and continuity journeys during release verification, and reject source packaging when required new files are still untracked.
+- Localize the PDF sign-in instructions, original-link action, and artwork warning.
+- Remove unused files and tools, and simplify contributor documentation.
+
+
 ## 1.0.3 (2026-11-04)
 
 - Open PDF links with the browser session and hand sign-in redirects back to Chrome.

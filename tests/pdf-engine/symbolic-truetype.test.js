@@ -107,11 +107,13 @@ describe('embedded symbolic TrueType built-in encodings', () => {
     await expect(payload(document(font))).rejects.toMatchObject({ code: 'pdf_unsupported', message: expect.stringContaining('symbolic TrueType cmap range') });
   });
 
-  it('reports a missing CID font program accurately while keeping it unsupported', async () => {
+  it('keeps canonical Unicode readable when a CID font program is missing', async () => {
     const data = simplePdf('BT /F1 20 Tf <8140> Tj ET', {
       font: '/Type /Font /Subtype /Type0 /BaseFont /MissingCjk /Encoding /GBK-EUC-H /DescendantFonts [6 0 R]',
       extra: ['<< /Type /Font /Subtype /CIDFontType2 /BaseFont /MissingCjk /CIDSystemInfo << /Registry (Adobe) /Ordering (GB1) /Supplement 2 >> /FontDescriptor 7 0 R >>', '<< /Type /FontDescriptor /Flags 5 >>'],
     });
-    await expect(payload(data)).rejects.toMatchObject({ code: 'pdf_unsupported', message: 'This unembedded PDF CID font needs a supported font program.' });
+    const actual = await payload(data);
+    expect(actual.items[0].str).toBe('丂'); expect(actual.inspection.unmappedGlyphs).toBe(0);
+    expect(actual.inspection.decodingWarnings).toContainEqual({ filter: 'FontSubstitution', sourceFont: 'MissingCjk', replacement: 'LiberationSans-Regular.ttf' });
   });
 });

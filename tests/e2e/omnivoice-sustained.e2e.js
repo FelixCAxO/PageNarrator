@@ -6,16 +6,22 @@ import { launchExtensionContext, openExtensionPage, seedHardwareProfile, startRe
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
 import { installSilentOutputCapture } from './silent-output-capture.js';
 import { ensureMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
+import { hashDirectory } from '../../tooling/scripts/weak-hardware/run-provenance.mjs';
+import { browserAdapterConfiguration, verifyBrowserAdapter } from '../../tooling/scripts/lib/browser-adapter.mjs';
+import { resolveSustainedPlaybackConfig, scoreSustainedPlayback, summarizeSustainedMemory } from '../../tooling/scripts/weak-hardware/sustained-playback.mjs';
+import { installSustainedEvidence } from './fixtures/sustained-omnivoice.js';
 
 test('OmniVoice sustains real playback within a browser commit limit', async () => {
   test.skip(process.env.PN_E2E_SUSTAINED_OV !== '1', 'Explicit real-model memory-ceiling soak; physical output stays muted.');
-  const minutes = Number(process.env.PN_SUSTAINED_MINUTES || 5);
-  expect(Number.isInteger(minutes) && minutes >= 1 && minutes <= 10).toBe(true);
-  test.setTimeout((minutes + 3) * 60_000);
+  const config = resolveSustainedPlaybackConfig(process.env);
+  const { minutes, commitGiB, browserCommitBytes } = config;
+  test.setTimeout(config.timeoutMs);
   const root = path.resolve(process.env.PN_SUSTAINED_OUTPUT || 'artifacts/omnivoice-sustained');
-  const commitGiB = Number(process.env.PN_SUSTAINED_COMMIT_GIB || 6), browserCommitBytes = commitGiB * 1024 ** 3;
-  expect(Number.isSafeInteger(browserCommitBytes) && commitGiB >= 2 && commitGiB <= 8).toBe(true);
   await mkdir(root, { recursive: true });
+  const extensionPath = path.resolve(process.env.PN_SUSTAINED_EXTENSION_DIR || process.env.PN_E2E_EXTENSION_DIR || 'dist');
+  const packageHash = await hashDirectory(extensionPath);
+  await writeFile(path.join(root, 'plan.json'), JSON.stringify({ ...config, extensionPath, packageHash,
+    adapterConfiguration: browserAdapterConfiguration(), node: process.version, started: new Date().toISOString() }, null, 2), { flag: 'wx' });
   const lock = await ensureMeasurementLock({ owner: { purpose: `Muted ${minutes}-minute OmniVoice read within a browser memory ceiling` } });
   const passages = [
     'The morning sun warmed the garden as we opened the door and stepped outside. We followed the quiet path toward the trees, stopped beside the old stone wall, and listened to the water flowing slowly beneath the wooden bridge.',
@@ -29,38 +35,35 @@ test('OmniVoice sustains real playback within a browser commit limit', async () 
   ];
   const server = createServer((_, response) => {
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    response.end(`<html lang="en"><title>A long walking journal</title><article>${Array.from({ length: 60 }, (_, i) => `<p>On day ${i + 1} of our journey, we wrote the following account. ${passages[i % passages.length]}</p>`).join('')}</article></html>`);
+    response.end(`<html lang="en"><title>A long walking journal</title><article>${Array.from({ length: config.paragraphs }, (_, i) => `<p>On day ${i + 1} of our journey, we wrote the following account. ${passages[i % passages.length]}</p>`).join('')}</article></html>`);
   });
-  let launched, timer, capture;
+  let launched, timer, capture, engine, worker, evidence, captureFinished = false;
   const accounting = [], errors = [];
   const covered = query => query.browserProcesses.length > 0 && query.browserProcesses.every(p => p.inJob === true || p.listedInJob && p.openError === 87);
   try {
     await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
-    launched = await launchExtensionContext({ extensionDir: process.env.PN_SUSTAINED_EXTENSION_DIR || 'dist',
+    launched = await launchExtensionContext({ extensionDir: extensionPath,
       hostPermissions: ['http://127.0.0.1/*'], browserCommitBytes });
     const { context, jobSupervisor, extensionDir } = launched;
     console.log(`Browser memory ceiling: ${commitGiB} GiB.`);
     await routeOmniVoiceModelFiles(context);
     capture = await installSilentOutputCapture(context, extensionDir, { outputPath: path.join(root, 'output.wav') });
-    await context.addInitScript(() => {
-      const blobs = new Map(), played = new Set(); globalThis.__outputClips = [];
-      const create = URL.createObjectURL.bind(URL), play = HTMLMediaElement.prototype.play;
-      URL.createObjectURL = blob => { const url = create(blob); if (blob.type === 'audio/wav') blobs.set(url, blob); return url; };
-      HTMLMediaElement.prototype.play = function (...args) {
-        const url = this.currentSrc || this.src;
-        if (blobs.has(url) && !played.has(url)) {
-          played.add(url); globalThis.__outputClips.push({ bytes: blobs.get(url).arrayBuffer(), rate: this.playbackRate, at: Date.now() });
-        }
-        return play.apply(this, args);
-      };
-    });
+    evidence = await installSustainedEvidence(context, root);
     await seedHardwareProfile(context, { name: 'sustained-with-commit-limit', navigator: {}, playbackSettings: {
       ttsEngine: 'omnivoice', language: 'en', voice: 'af_heart', speed: 1, sectionPauseSeconds: 0, ttsPerformanceProfile: 'quality',
       omniVoice: { gender: 'female', variation: 1, whisper: false },
     } }, { enableProbe: true, recordFlow: true });
-    const engine = await openRoutedReaderEngine(context), worker = context.serviceWorkers()[0];
+    engine = await openRoutedReaderEngine(context); worker = context.serviceWorkers()[0];
     console.log('Reader engine ready.');
     const timeOrigin = await engine.evaluate(() => performance.timeOrigin);
+    const adapter = await engine.evaluate(async () => {
+      const gpu = await navigator.gpu.requestAdapter();
+      return { vendor: gpu?.info?.vendor, architecture: gpu?.info?.architecture, description: gpu?.info?.description,
+        features: [...(gpu?.features || [])] };
+    });
+    verifyBrowserAdapter(adapter, browserAdapterConfiguration());
+    expect(adapter.features).toContain('shader-f16');
+    await writeFile(path.join(root, 'adapter.json'), JSON.stringify(adapter, null, 2));
     await engine.evaluate(() => __silentCaptureReady);
     // Preserve startup inventory separately; transient renderers may exit during its WMI scan.
     await writeFile(path.join(root, 'startup-inventory.json'), JSON.stringify(await jobSupervisor.query(), null, 2));
@@ -71,57 +74,72 @@ test('OmniVoice sustains real playback within a browser commit limit', async () 
     console.log('Memory accounting ready.');
     timer = setInterval(() => { void sample(); }, 5_000);
     const log = async () => (await worker.evaluate(() => chrome.runtime.sendMessage({ type: 'getFlowLog' }))).log;
+    // Poll compact progress; retain the full word/source log in the reader until final export.
+    const progress = () => engine.evaluate(() => {
+      const events = globalThis.__pnFlowLog || [], starts = events.filter(e => e.kind === 'chunk_play'), ends = events.filter(e => e.kind === 'chunk_end');
+      return { completedSections: ends.length, completedSeconds: ends.length && starts.length ? ends.at(-1).t - starts[0].t : 0,
+        failed: events.some(e => /synthesis_failed|browser_voice_fallback/.test(e.kind)), clipError: globalThis.__sustained.clipError };
+    });
     const article = await context.newPage(); await article.goto(`http://127.0.0.1:${server.address().port}/`);
-    await startReadFromToolbarPopup(context, article);
+    await startReadFromToolbarPopup(context, article, { fromStart: true });
     console.log('Toolbar read requested.');
     await expect.poll(async () => (await log()).filter(e => e.kind === 'chunk_play').length, { timeout: 120_000 }).toBeGreaterThan(0);
     const started = Date.now();
     console.log('First real audio chunk playing.');
     for (let minute = 1; minute <= minutes; minute++) {
       await expect.poll(async () => {
-        const events = await log();
-        expect(events.some(e => /synthesis_failed|browser_voice_fallback/.test(e.kind))).toBe(false);
+        const observed = await progress();
+        expect(observed.failed).toBe(false);
+        expect(observed.clipError).toBeNull();
         return Date.now() - started;
       }, { timeout: 65_000, intervals: [1000] }).toBeGreaterThanOrEqual(minute * 60_000);
-      const events = await log();
-      console.log(`Sustained ${minute} minute(s): ${events.filter(e => e.kind === 'chunk_end').length} completed chunks.`);
+      console.log(`Sustained ${minute} minute(s): ${(await progress()).completedSections} completed chunks.`);
     }
+    // End on a real section boundary rather than assuming the current section is at most 20 s long.
+    // Keep this final boundary wait bounded separately from the required playback window.
+    await expect.poll(async () => {
+      const observed = await progress();
+      expect(observed.failed).toBe(false);
+      expect(observed.clipError).toBeNull();
+      return observed.completedSeconds;
+    }, { timeout: 120_000, intervals: [1000] }).toBeGreaterThanOrEqual(minutes * 60);
     const diagnostics = await worker.evaluate(() => chrome.runtime.sendMessage({ type: 'getFlowLog' }));
-    const starts = diagnostics.log.filter(e => e.kind === 'chunk_play'), ends = diagnostics.log.filter(e => e.kind === 'chunk_end');
-    expect(ends.length).toBeGreaterThan(5);
-    expect(ends.at(-1).t - starts[0].t).toBeGreaterThanOrEqual(minutes * 60 - 20);
-    expect(ends.map(e => e.chunkIndex)).toEqual(Array.from({ length: ends.length }, (_, i) => i + ends[0].chunkIndex));
-    const gaps = ends.flatMap(end => {
-      const next = starts.find(start => start.chunkIndex === end.chunkIndex + 1);
-      if (!next) return [];
-      const decoded = diagnostics.log.find(e => e.kind === 'audio_preload_decode_latency' && e.chunkIndex === next.chunkIndex && e.t <= end.t);
-      return [{ chunkIndex: next.chunkIndex, milliseconds: 1000 * (next.t - end.t), ready: Boolean(decoded) }];
-    });
+    const playback = scoreSustainedPlayback(diagnostics.log, config);
     await sample();
+    clearInterval(timer);
     await writeFile(path.join(root, 'playback-accounting.json'), JSON.stringify({ browserCommitBytes, requestedMinutes: minutes, elapsedMs: Date.now() - started,
-      accounting, errors, gaps, browserVersion: context.browser().version(), scope: 'Windows browser-job commit ceiling on development hardware; not an 8 GiB physical-machine qualification.' }, null, 2));
-    const clips = await engine.evaluate(() => __outputClips.map(({ bytes: _bytes, ...clip }) => clip));
-    await writeFile(path.join(root, 'flow.json'), JSON.stringify({ diagnostics, clips, timeOrigin }, null, 2));
-    // Numeric CDP arrays and trace copies can exceed the memory ceiling; export one encoded clip at a time.
-    for (let index = 0; index < clips.length; index++) {
-      const base64 = await engine.evaluate(async index => {
-        const bytes = new Uint8Array(await __outputClips[index].bytes);
-        let binary = '';
-        for (let offset = 0; offset < bytes.length; offset += 16384) binary += String.fromCharCode(...bytes.subarray(offset, offset + 16384));
-        return btoa(binary);
-      }, index);
-      await writeFile(path.join(root, `clip-${index}.wav`), Buffer.from(base64, 'base64'));
-    }
+      accounting, errors, playback, memory: summarizeSustainedMemory(accounting, started),
+      browserVersion: context.browser().version(), scope: 'Windows browser-job commit ceiling on development hardware; not an 8 GiB physical-machine qualification.' }, null, 2));
+    // Stop closes the reader AudioContext, so flush the live render thread first.
     await capture.finish(engine);
-    expect(gaps.every(gap => gap.ready && gap.milliseconds >= 0 && gap.milliseconds <= 100)).toBe(true);
+    captureFinished = true;
+    const controls = await openExtensionPage(context, 'popup'); await controls.locator('#popup-stop').click();
+    await expect(controls.locator('#popup-status')).toHaveText('Ready to read', { timeout: 30_000 });
+    const speech = await evidence.finish(engine);
+    await writeFile(path.join(root, 'flow.json'), JSON.stringify({ diagnostics, speech, clips: evidence.clips, timeOrigin, packageHash }, null, 2));
+    expect(playback.reasons).toEqual([]);
+    expect(speech.clipError).toBeNull();
+    expect(evidence.clips.length).toBeGreaterThanOrEqual(playback.completedSections);
+    const completedJobs = speech.jobs.filter(job => job.frames > 0);
+    expect(completedJobs.length).toBeGreaterThanOrEqual(playback.completedSections);
+    expect(completedJobs.every(job => job.lang === 'en' && job.speakerId === 'female-1'
+      && job.speaker?.id === 'female-1' && job.speaker?.referenceHash === completedJobs[0].speaker.anchorHash)).toBe(true);
+    expect(speech.runtime?.main?.gpuWeightBytes).toBeGreaterThan(0);
+    expect(speech.runtime?.decoder?.gpuWeightBytes).toBeGreaterThan(0);
     expect(accounting.every(query => Number(query.limits.jobMemoryLimitBytes) === browserCommitBytes)).toBe(true);
     expect(accounting.every(query => Number(query.limits.peakJobMemoryUsedBytes) <= browserCommitBytes)).toBe(true);
     expect(accounting.every(covered)).toBe(true);
     expect(errors).toEqual([]);
-    const controls = await openExtensionPage(context, 'popup'); await controls.locator('#popup-stop').click();
-    await expect(controls.locator('#popup-status')).toHaveText('Ready to read', { timeout: 30_000 });
+    await writeFile(path.join(root, 'result.json'), JSON.stringify({ passed: true, playback, packageHash, durationScope: config.durationScope,
+      stopped: true, memory: summarizeSustainedMemory(accounting, started) }, null, 2), { flag: 'wx' });
   } finally {
     clearInterval(timer);
+    // Preserve partial evidence when a mid-run assertion fails; no failed attempt gets a pass receipt.
+    try {
+      if (worker) await writeFile(path.join(root, 'flow-final.json'), JSON.stringify(await worker.evaluate(() => chrome.runtime.sendMessage({ type: 'getFlowLog' })), null, 2));
+      if (engine && evidence) await writeFile(path.join(root, 'speech-final.json'), JSON.stringify(await evidence.finish(engine), null, 2));
+      if (engine && capture && !captureFinished) await capture.finish(engine);
+    } catch (error) { errors.push(`Final evidence incomplete: ${String(error)}`); }
     await writeFile(path.join(root, 'accounting-final.json'), JSON.stringify({ accounting, errors }, null, 2));
     try { await capture?.close(); }
     finally {

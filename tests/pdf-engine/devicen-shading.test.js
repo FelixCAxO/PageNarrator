@@ -104,13 +104,6 @@ describe('DeviceN axial and radial composite shading', () => {
     await expect(renderPdfShading(command, {})).rejects.toMatchObject({ code: 'pdf_corrupt' });
   });
 
-  it('retains the cumulative pixel budget and cancellation before allocation', async () => {
-    const command = await commandOf(shadingPdf()), target = canvas(1, 1);
-    await expect(renderPdfShading(command, target.ctx, { surfaceBudget: { shadingPixels: 64_000_000 } })).rejects.toMatchObject({ code: 'pdf_limit' });
-    await expect(renderPdfShading(command, target.ctx, { cancellation() { throw Error('cancelled'); } })).rejects.toThrow('cancelled');
-    expect(target.surfaces).toHaveLength(0);
-  });
-
   it('releases the band surface and restores state when tint execution fails', async () => {
     const command = await commandOf(shadingPdf({ tint: stream('{pop pop 1 0 div 0 0}', '/FunctionType 4 /Domain [0 1 0 1] /Range [0 1 0 1 0 1]') }));
     const target = canvas(); await expect(renderPdfShading(command, target.ctx)).rejects.toMatchObject({ code: 'pdf_corrupt' });

@@ -28,11 +28,13 @@ const TILING_OPERATORS = new Set(['q', 'Q', 'cm', 'w', 'J', 'j', 'M', 'd', 'm', 
 const CONTRIBUTION_OPERATORS = new Set(['q', 'Q', 'cm', 'm', 'l', 'c', 'v', 'y', 're', 'h', 'W', 'W*', 'f', 'F', 'f*', 'n',
   'g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN', 'gs', 'ri', 'i']);
 const ICC4_CONTRIBUTION_OPERATORS = new Set([...CONTRIBUTION_OPERATORS, 'Do']);
+// Keep path geometry/paint for the outlined-text OCR heuristic and raster source.
+const VISUAL_OPERATORS = new Set(['w', 'J', 'j', 'M', 'd', 'sh', 'ri', 'i']);
 const color = values => `rgb(${values.map(n => Math.round(Math.max(0, Math.min(1, n)) * 255)).join(',')})`;
 const unsupported = message => { throw new PdfEngineError(message); };
 const corrupt = message => { throw new PdfEngineError(message, 'pdf_corrupt'); };
 
-export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset, view = [0, 0, 612, 792], fontPrefix = '', { recoverUnsupportedArtwork = false } = {}) {
+export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset, view = [0, 0, 612, 792], fontPrefix = '', { recoverUnsupportedArtwork = false, textOnly = false } = {}) {
   const commands = [], items = [], fonts = new Map(), fontCache = new Map(), imageCache = new Map(), activeForms = new Set();
   const artworkWarnings = new Map(); let firstArtworkError = null;
   async function artwork(kind, read, allowRecovery = true) {
@@ -155,6 +157,11 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
     return fontAt(id);
   }
   function number(id) { const n = reader.number(id, NaN); if (!Number.isFinite(n)) corrupt('Expected numeric PDF operand.'); return n; }
+  function reducedColor(s, fill, name, values) {
+    const rgb = name === 'DeviceRGB' ? values : name === 'DeviceCMYK' ? values.slice(0, 3).map(value => (1 - Math.max(0, Math.min(1, value))) * (1 - Math.max(0, Math.min(1, values[3])))) : [values[0], values[0], values[0]];
+    const value = color(rgb); s[fill ? 'fill' : 'stroke'] = value;
+    commands.push({ op: 'color', fill, value });
+  }
   function lineStyle(name, value, s) {
     if (name === 'w' && value < 0 || ['J', 'j'].includes(name) && (!Number.isInteger(value) || value < 0 || value > 2) || name === 'M' && value < 1) corrupt('Invalid PDF line style.');
     s[{ w: 'lineWidth', J: 'lineCap', j: 'lineJoin', M: 'miterLimit' }[name]] = value;
@@ -213,7 +220,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
   async function show(bytes, s, resource, depth, textClips) {
     if (!s.inText || !s.font) corrupt('PDF text has no active font or text object.');
     if ((textBytes += bytes.length) > 500000) throw new PdfEngineError('PDF text glyph budget exceeded.', 'pdf_limit');
-    const outlinedText = ![0, 3].includes(s.textMode), clipText = s.textMode >= 4, paintMode = s.textMode & 3, needsOutlines = outlinedText && s.fontSize !== 0 && s.hScale !== 0;
+    const outlinedText = !textOnly && ![0, 3].includes(s.textMode), clipText = !textOnly && s.textMode >= 4, paintMode = textOnly && s.textMode !== 3 ? 0 : s.textMode & 3, needsOutlines = outlinedText && s.fontSize !== 0 && s.hScale !== 0;
     if (needsOutlines && !s.font.glyphOutline && s.font.canProvideOutlines) s.font = await fontAt(s.font.sourceFontId, true);
     const glyphs = s.font.decode(bytes), matrix = multiply(s.ctm, s.matrix), textTransform = multiply(matrix, [s.fontSize * s.hScale, 0, 0, s.fontSize, 0, s.rise]);
     textCharacters += glyphs.reduce((sum, glyph) => sum + glyph.text.length, 0); if (textCharacters > 2_000_000) throw new PdfEngineError('PDF Unicode text budget exceeded.', 'pdf_limit');
@@ -238,7 +245,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
     for (const glyph of glyphs) {
       const retainedOutline = outlinedText && !glyph.type3 ? admitTextOutline(s.font.glyphOutline(glyph.code, glyph), textOutlineBudget) : null;
       const x = vertical ? -glyph.vmetric.vx / 1000 : advance / (s.fontSize * s.hScale), y = vertical ? advance / s.fontSize - glyph.vmetric.vy / 1000 : 0;
-      if (glyph.type3 && s.textMode !== 3) {
+      if (glyph.type3 && s.textMode !== 3 && !textOnly) {
         const stream = reader.node(glyph.type3.stream).id; if (activeForms.has(stream)) corrupt('Cyclic Type3 glyph.'); activeForms.add(stream);
         const ctm = multiply(multiply(textTransform, [1, 0, 0, 1, x, 0]), glyph.type3.matrix), before = items.length;
         commands.push({ op: 'save' }, { op: 'setPdfTransform', args: ctm });
@@ -377,6 +384,23 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       reader.check(); chargeOperation();
       const token = reader.node(id); if (token.kind !== 'operator') { operands.push(id); if (operands.length > 10000) throw new PdfEngineError('PDF operand limit exceeded.', 'pdf_limit'); continue; }
       const op = reader.text(token);
+      if (textOnly && VISUAL_OPERATORS.has(op)) { operands = []; continue; }
+      if (textOnly && ['g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN'].includes(op)) {
+        const fill = op === op.toLowerCase(), key = fill ? 'reducedFillSpace' : 'reducedStrokeSpace';
+        if (op === 'cs' || op === 'CS') {
+          if (operands.length !== 1 || !reader.name(operands[0])) corrupt('Invalid PDF color-space operands.');
+          const name = reader.name(operands[0]);
+          s[key] = { name, components: { DeviceGray: 1, DeviceRGB: 3, DeviceCMYK: 4 }[name] || 0 };
+          reducedColor(s, fill, 'DeviceGray', [0]);
+        } else {
+          const name = ['g', 'G'].includes(op) ? 'DeviceGray' : ['rg', 'RG'].includes(op) ? 'DeviceRGB' : ['k', 'K'].includes(op) ? 'DeviceCMYK' : s[key]?.name || 'DeviceGray';
+          const count = { DeviceGray: 1, DeviceRGB: 3, DeviceCMYK: 4 }[name];
+          // Unknown profiles/patterns use plain black; device colors preserve OCR contrast.
+          reducedColor(s, fill, count ? name : 'DeviceGray', count ? numeric(count) : [0]);
+          if (['g', 'G', 'rg', 'RG', 'k', 'K'].includes(op)) s[key] = { name, components: count };
+        }
+        operands = []; continue;
+      }
       const beforeTextPaintState = s.inText && textPainted && ['g', 'G', 'rg', 'RG', 'k', 'K', 'cs', 'CS', 'sc', 'SC', 'scn', 'SCN', 'gs', 'q', 'Q', 'Tr'].includes(op) ? textPaintState(s) : null;
       if (s.patternArtwork && !TILING_OPERATORS.has(op)) unsupported(`PDF tiling cell operator ${op} is not implemented.`);
       if (s.contributionScope && !CONTRIBUTION_OPERATORS.has(op)) unsupported('This PDF backdrop-independent contribution program is not implemented.');
@@ -462,6 +486,11 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       } else if (op === 'gs') {
         if (operands.length !== 1) corrupt('Invalid PDF graphics-state operands.');
         const states = reader.field(resource, 'ExtGState'), target = states && reader.field(states, reader.name(operands[0])); if (!target) corrupt('Missing PDF ExtGState.');
+        if (textOnly) {
+          const font = reader.field(target, 'Font');
+          if (font) { const array = reader.array(font); if (array.length !== 2) corrupt('Invalid ExtGState font.'); s.font = await fontAt(array[0]); s.fontSize = number(array[1]); }
+          operands = []; continue;
+        }
         const mask = reader.field(target, 'SMask');
         if (s.contributionScope && (mask && reader.node(mask).kind !== 'null' && reader.name(mask) !== 'None'
           || reader.field(target, 'Font'))) unsupported('This PDF backdrop-independent contribution program is not implemented.');
@@ -521,11 +550,27 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
         if (op === 'd1') s.type3Uncolored = true;
       } else if (op === 'BI') {
         if (operands.length !== 1 || reader.node(operands[0]).kind !== 'stream' || reader.node(operands[0]).inlineDataOffset === undefined) corrupt('Invalid inline image operands.');
-        await image(operands[0], s, resource);
+        if (textOnly) hasRasterImage = hasRenderableNonText = true;
+        else await image(operands[0], s, resource);
       } else if (op === 'Do') {
         if (operands.length !== 1) corrupt('Invalid PDF XObject operands.');
         const xobjects = reader.field(resource, 'XObject'), target = xobjects && reader.field(xobjects, reader.name(operands[0])); if (!target) corrupt('Missing PDF XObject.');
         const subtype = reader.name(reader.field(target, 'Subtype'));
+        if (textOnly) {
+          if (subtype === 'Image') hasRasterImage = hasRenderableNonText = true;
+          else if (subtype === 'Form') {
+            const resolved = reader.node(target).id; if (activeForms.has(resolved)) corrupt('Cyclic PDF Form XObject.'); activeForms.add(resolved);
+            const matrixId = reader.field(target, 'Matrix'), matrix = matrixId && reader.node(matrixId).kind !== 'null' ? reader.array(matrixId).map(number) : IDENTITY;
+            const boxId = reader.field(target, 'BBox'), box = boxId && reader.array(boxId).map(number);
+            if (matrix.length !== 6 || !box || box.length !== 4) corrupt('Invalid PDF Form bounds or transform.');
+            commands.push({ op: 'save' }, { op: 'transform', args: matrix }, { op: 'path', kind: 're', args: [box[0], box[1], box[2] - box[0], box[3] - box[1]] }, { op: 'paint', kind: 'n', clip: 'nonzero' });
+            try { await contents(target, reader.field(target, 'Resources') || resource,
+              { ...s, ctm: multiply(s.ctm, matrix), inText: false, matrix: [...IDENTITY], lineMatrix: [...IDENTITY] }, depth + 1); }
+            finally { activeForms.delete(resolved); }
+            commands.push({ op: 'restore' });
+          } else unsupported(`PDF XObject ${subtype} is not implemented yet.`);
+          operands = []; continue;
+        }
         if (s.patternArtwork && subtype !== 'Image') unsupported('PDF tiling cell Form artwork is not implemented.');
         if (subtype === 'Image') await image(target, s, resource);
         else if (subtype === 'Form') {
@@ -647,7 +692,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
   }
   try {
   const pageGroupEntry = reader.field(pageId, 'Group'), pageGroup = pageGroupEntry && reader.node(pageGroupEntry).kind !== 'null' ? pageGroupEntry : 0; let pageContext = null, pageGray = null;
-  if (pageGroup) {
+  if (pageGroup && !textOnly) {
     groupIsolation(pageGroup, 'page'); // Direct page output is isolated regardless of I (ISO32000-1 Table147).
     pageContext = await groupBlendContext(pageGroup, resourcesId, state());
     if (pageContext.nativeIcc4) unsupported('Native ICC4 PageGroups are not implemented.');
@@ -678,7 +723,7 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       }
       if (reader.node(normal).kind !== 'stream') corrupt('Invalid PDF annotation appearance stream.');
       const appearanceGroup = reader.field(normal, 'Group');
-      if (appearanceGroup && reader.node(appearanceGroup).kind !== 'null') unsupported('PDF annotation transparency groups are not implemented yet.');
+      if (!textOnly && appearanceGroup && reader.node(appearanceGroup).kind !== 'null') unsupported('PDF annotation transparency groups are not implemented yet.');
       const boxId = reader.field(normal, 'BBox'), box = boxId && reader.array(boxId).map(number);
       const matrixId = reader.field(normal, 'Matrix'), matrix = matrixId ? reader.array(matrixId).map(number) : IDENTITY;
       if (!box || box.length !== 4 || matrix.length !== 6) corrupt('Invalid PDF annotation appearance bounds.');
@@ -692,7 +737,8 @@ export async function buildPdfDisplayList(reader, pageId, resourcesId, loadAsset
       const initial = pageState(pageContext?.nativeCmyk ? await resolvePdfColorSpace(reader, appearanceResources, 'DeviceGray', loadAsset, 0, blendProfiles) : null);
       commands.push({ op: 'save' }, ...initialColors(initial), { op: 'transform', args: transform }, { op: 'path', kind: 're', args: [box[0], box[1], box[2] - box[0], box[3] - box[1]] }, { op: 'paint', kind: 'n', clip: 'nonzero' });
       await contents(normal, appearanceResources, { ...initial, ctm: transform }); commands.push({ op: 'restore' });
-    } else if (reader.name(reader.field(id, 'Subtype')) === 'Link') {
+    } else if (textOnly) continue;
+    else if (reader.name(reader.field(id, 'Subtype')) === 'Link') {
       const bsEntry = reader.field(id, 'BS'), bs = bsEntry && reader.node(bsEntry).kind !== 'null' ? bsEntry : 0;
       // BS supersedes Border (ISO 32000-1 Table164).
       const borderId = !bs && reader.field(id, 'Border'), border = borderId && reader.node(borderId).kind !== 'null' ? reader.array(borderId) : [];

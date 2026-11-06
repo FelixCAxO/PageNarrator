@@ -110,7 +110,9 @@ let pdfToolbarState = createPdfToolbarState({ currentPage: getInitialPdfStartPag
 let toolbarBound = false;
 let visiblePageUpdateScheduled = false;
 let layoutRefreshPromise = Promise.resolve();
+let layoutRefreshRequestId = 0;
 let activePdfHighlightRequest = null;
+let activePdfHighlightTextLayer = null;
 let activePdfWordIndex = null;
 let lastNarratedPageNumber = 0;
 const pdfChunkStreams = new Map();
@@ -120,7 +122,7 @@ const visiblePageIntersections = new Map();
 let pdfRenderer = createPdfRenderer(pdfMemoryProfile);
 let pageObserver = createPageObserver();
 let pdfViewerTornDown = false;
-let renderWindowPromise = Promise.resolve();
+let renderWindowRequestId = 0;
 let layoutRefreshAnchorPageNumber = 0;
 let pdfViewerInstanceToken = createPdfViewerInstanceToken();
 
@@ -160,6 +162,7 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
   ensureHighlightedPageRendered,
   setActiveHighlight(request) {
     activePdfHighlightRequest = request;
+    activePdfHighlightTextLayer = pageElements.get(getAnchorPageNumber(request.anchorId))?.querySelector('.textLayer') || null;
     activePdfWordIndex = null;
     const pageNumber = getAnchorPageNumber(request.anchorId);
     if (pageNumber) lastNarratedPageNumber = pageNumber;
@@ -178,6 +181,7 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
   },
   clearActiveHighlight() {
     activePdfHighlightRequest = null;
+    activePdfHighlightTextLayer = null;
     activePdfWordIndex = null;
   },
   syncProtectedPdfHighlightPages,
@@ -445,6 +449,7 @@ function teardownPdfViewerResources() {
 
   closeAllPdfChunkStreams();
   activePdfHighlightRequest = null;
+  activePdfHighlightTextLayer = null;
   activePdfWordIndex = null;
   lastPdfSelection = null;
   lastSelectionStartPosition = null;
@@ -748,13 +753,18 @@ function scheduleVisiblePageUpdate() {
 
 function scheduleLayoutRefresh({ anchorPageNumber = pdfToolbarState.currentPage } = {}) {
   if (!pdfDocument) return;
+  const requestId = ++layoutRefreshRequestId;
   const normalizedAnchorPageNumber = normalizePdfPageNumber(anchorPageNumber);
   layoutRefreshAnchorPageNumber = normalizedAnchorPageNumber;
   const run = async () => {
+    if (requestId !== layoutRefreshRequestId || pdfViewerTornDown) return;
+    // A jump can supersede the anchor while an earlier refresh is settling.
+    const currentAnchorPageNumber = pdfToolbarState.currentPage;
+    layoutRefreshAnchorPageNumber = currentAnchorPageNumber;
     try {
-      await refreshPdfLayout(normalizedAnchorPageNumber);
+      await refreshPdfLayout(currentAnchorPageNumber);
     } finally {
-      if (layoutRefreshAnchorPageNumber === normalizedAnchorPageNumber) {
+      if (requestId === layoutRefreshRequestId) {
         layoutRefreshAnchorPageNumber = 0;
       }
     }
@@ -767,6 +777,8 @@ function scheduleLayoutRefresh({ anchorPageNumber = pdfToolbarState.currentPage 
 async function refreshPdfLayout(anchorPageNumber = pdfToolbarState.currentPage) {
   refreshEstimatedPdfPlaceholderLayout();
   await reconcilePdfRenderWindow(anchorPageNumber, { force: true });
+  // A page jump during the paint owns the viewport now.
+  if (pdfViewerTornDown || pdfToolbarState.currentPage !== anchorPageNumber) return;
   restorePdfLayoutAnchor(anchorPageNumber);
   restoreActivePdfHighlight();
 }
@@ -780,6 +792,7 @@ function restorePdfLayoutAnchor(pageNumber) {
   renderPdfToolbar();
   updateLocationPageHash(anchorPageNumber);
   requestAnimationFrame(() => {
+    if (pdfViewerTornDown || pdfToolbarState.currentPage !== anchorPageNumber) return;
     pageElements.get(anchorPageNumber)?.scrollIntoView?.({ block: 'start' });
   });
 }
@@ -793,6 +806,9 @@ function restoreActivePdfHighlight() {
     preserveWordPlan: true,
     ...(activePdfHighlightRequest.pdfSelection ? { pdfSelection: true } : {}),
   });
+  if (result?.ok) {
+    activePdfHighlightTextLayer = pageElements.get(getAnchorPageNumber(activePdfHighlightRequest.anchorId))?.querySelector('.textLayer') || null;
+  }
   if (result?.ok && activePdfWordIndex !== null) {
     highlighter.highlightWord(activePdfWordIndex, pdfMemoryProfile.pdfWordTrailLength);
   }
@@ -806,6 +822,12 @@ function syncProtectedPdfHighlightPages() {
 function reconcilePdfRenderWindow(centerPage, { force = false } = {}) {
   if (!pdfDocument || pdfViewerTornDown) return Promise.resolve();
 
+  const requestId = ++renderWindowRequestId;
+  const pdf = pdfDocument;
+  const renderer = pdfRenderer;
+  const requestedPage = normalizePdfPageNumber(centerPage) || 1;
+  const isCurrent = () => requestId === renderWindowRequestId
+    && pdfDocument === pdf && pdfRenderer === renderer && !pdfViewerTornDown;
   const windowPageNumbers = getPdfRenderWindowPageNumbers(centerPage, {
     pageCount: pdfToolbarState.pageCount || pdfDocument.numPages,
     preloadBehind: pdfMemoryProfile.preloadBehind,
@@ -814,37 +836,45 @@ function reconcilePdfRenderWindow(centerPage, { force = false } = {}) {
   const protectedPageNumber = getAnchorPageNumber(activePdfHighlightRequest?.anchorId);
   const retainedPageNumbers = new Set(windowPageNumbers);
   if (protectedPageNumber) retainedPageNumbers.add(protectedPageNumber);
-  const targetPageNumbers = [...retainedPageNumbers].sort((a, b) => a - b);
+  const backgroundPageNumbers = [...retainedPageNumbers]
+    .filter(pageNumber => pageNumber !== requestedPage)
+    .sort((a, b) => Math.abs(a - requestedPage) - Math.abs(b - requestedPage) || b - a);
 
-  const run = async () => {
-    if (!pdfDocument || pdfViewerTornDown) return;
-
-    for (const pageNumber of pdfRenderer.getRenderedPageNumbers()) {
-      if (force || !retainedPageNumbers.has(pageNumber)) {
-        if (force) {
-          pdfRenderer.unloadPage(pageNumber, { force: true });
-        } else {
-          pdfRenderer.unloadPage(pageNumber);
-        }
-      }
+  // Cancel obsolete paints immediately. A new foreground request must not wait
+  // for an old window's speculative neighbors to finish on a slow device.
+  for (const pageNumber of renderer.getRenderedPageNumbers()) {
+    if (force || !retainedPageNumbers.has(pageNumber)) {
+      if (force) renderer.unloadPage(pageNumber, { force: true });
+      else renderer.unloadPage(pageNumber);
     }
+  }
 
-    for (const pageNumber of targetPageNumbers) {
-      if (!pdfDocument || pdfViewerTornDown) return;
-      const pageEl = pageElements.get(pageNumber);
-      if (!pageEl) continue;
-      await pdfRenderer.ensurePageRendered(pdfDocument, pageEl, pageNumber);
-    }
-
-    for (const pageNumber of pdfRenderer.getRenderedPageNumbers()) {
-      if (!retainedPageNumbers.has(pageNumber)) {
-        pdfRenderer.unloadPage(pageNumber);
-      }
+  const renderPage = async pageNumber => {
+    if (!isCurrent()) return;
+    const pageEl = pageElements.get(pageNumber);
+    if (!pageEl) return;
+    await renderer.ensurePageRendered(pdf, pageEl, pageNumber);
+    // A protected narration page may finish after the visible page's layout
+    // refresh. Reattach its passage/word ranges to the replacement text layer.
+    if (isCurrent() && getAnchorPageNumber(activePdfHighlightRequest?.anchorId) === pageNumber
+      && pageEl.querySelector('.textLayer') !== activePdfHighlightTextLayer) {
+      restoreActivePdfHighlight();
     }
   };
+  const reportError = error => {
+    if (isCurrent()) pdfViewerLogger.error('PDF render window failed.', error);
+  };
 
-  renderWindowPromise = renderWindowPromise.then(run, run).catch((error) => pdfViewerLogger.error('PDF render window failed.', error));
-  return renderWindowPromise;
+  // Readiness and layout anchoring depend only on the requested page. Keep
+  // prefetch serial and bounded, but stop it as soon as navigation supersedes it.
+  const foreground = renderPage(requestedPage).catch(reportError);
+  void foreground.then(async () => {
+    for (const pageNumber of backgroundPageNumbers) {
+      if (!isCurrent()) return;
+      await renderPage(pageNumber).catch(reportError);
+    }
+  }).catch(reportError);
+  return foreground;
 }
 
 function updateLocationPageHash(pageNumber) {

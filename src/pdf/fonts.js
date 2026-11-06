@@ -16,6 +16,7 @@ import { retainType1Outlines } from './text-stroke.js';
 import { createTrueTypeGlyphReader, simpleTrueTypeOutlineGlyph, TRUE_TYPE_OUTLINE_CACHE_BYTES } from './ttf-outline.js';
 import { readToUnicodeValues } from './cmap-lexer.js';
 import { loadLocalCidFont } from './local-cid-font.js';
+import { loadFallbackCidFont } from './fallback-cid-font.js';
 
 export function utf16be(bytes) {
   if (bytes.length % 2) throw new PdfEngineError('Odd-length ToUnicode value.', 'pdf_corrupt');
@@ -105,6 +106,8 @@ Object.assign(type1Assets, { TimesNewRomanPSMT: 'FoxitSerif.pfb', 'TimesNewRoman
 const latinSubstitutes = {
   TrebuchetMS: 'LiberationSans-Regular.ttf', Verdana: 'LiberationSans-Regular.ttf',
   'Verdana,Italic': 'LiberationSans-Italic.ttf', 'Verdana,Bold': 'LiberationSans-Bold.ttf',
+  'Verdana-Italic': 'LiberationSans-Italic.ttf', 'Verdana-Bold': 'LiberationSans-Bold.ttf',
+  'Verdana,BoldItalic': 'LiberationSans-BoldItalic.ttf', 'Verdana-BoldItalic': 'LiberationSans-BoldItalic.ttf',
   CourierNew: 'FoxitFixed.pfb', 'CourierNew,Bold': 'FoxitFixedBold.pfb',
   'TimesNewRoman,Italic': 'FoxitSerifItalic.pfb',
   ArialBlack: 'LiberationSans-Bold.ttf',
@@ -241,7 +244,11 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
     const descendants = reader.field(id, 'DescendantFonts'), list = descendants && reader.array(descendants);
     if (!list || list.length !== 1) throw new PdfEngineError('Invalid PDF descendant font.', 'pdf_corrupt');
     const child = list[0], descriptor = fontDescriptor(reader, child), program = embeddedFontProgram(reader, descriptor, reader.name(reader.field(child, 'Subtype')));
-    if (!program.key) return loadLocalCidFont(reader, id, child, descriptor, loadAsset, { retainOutlines });
+    if (!program.key) {
+      const unicode = reader.field(id, 'ToUnicode');
+      if (unicode && reader.node(unicode).kind !== 'null') return loadFallbackCidFont(reader, id, child, descriptor, loadAsset, { retainOutlines });
+      return loadLocalCidFont(reader, id, child, descriptor, loadAsset, { retainOutlines });
+    }
     if (program.key === 'FontFile2') return loadCidTrueTypeFont(reader, id, child, program.id, loadAsset, { retainOutlines });
     if (program.key !== 'FontFile3' || program.format !== 'CIDFontType0C') throw new PdfEngineError('This PDF CID font container is not implemented yet.');
     return loadCffPdfFont(reader, id, (await decodePdfStream(reader, program.id)).bytes, { descendant: child, descriptor, loadAsset, retainOutlines });
@@ -249,13 +256,19 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
   if (!['Type1', 'TrueType'].includes(subtype)) throw new PdfEngineError(`PDF font ${subtype} is not implemented yet.`);
   const encoding = reader.field(id, 'Encoding');
   const descriptor = fontDescriptor(reader, id), program = embeddedFontProgram(reader, descriptor, subtype), type1File = program.key === 'FontFile' ? program.id : null;
-  const substitution = !program.key && Object.hasOwn(latinSubstitutes, base) ? admitLatinSubstitute(reader, id, descriptor, encoding, base) : null;
+  const fallback = !program.key && !Object.hasOwn(standardAssets, base) && !Object.hasOwn(type1Assets, base);
+  const flags = descriptor ? reader.number(reader.field(descriptor, 'Flags'), 0) : 0;
+  const italic = flags & 64 || descriptor && reader.number(reader.field(descriptor, 'ItalicAngle'), 0) < 0 || /italic|oblique/i.test(base ?? '');
+  const bold = flags & 262144 || descriptor && reader.number(reader.field(descriptor, 'FontWeight'), 0) >= 700 || /bold|black|heavy/i.test(base ?? '');
+  const fallbackAsset = `LiberationSans-${bold ? italic ? 'BoldItalic' : 'Bold' : italic ? 'Italic' : 'Regular'}.ttf`;
+  const substitution = fallback ? { base, first: 0, last: 255, asset: fallbackAsset }
+    : !program.key && Object.hasOwn(latinSubstitutes, base) ? admitLatinSubstitute(reader, id, descriptor, encoding, base) : null;
   const cffFile = program.key === 'FontFile3' ? program.id : null;
   if (cffFile) {
     if (program.format !== 'Type1C') throw new PdfEngineError('This embedded FontFile3 container is not implemented yet.');
     return loadCffPdfFont(reader, id, (await decodePdfStream(reader, cffFile)).bytes, { descriptor, loadAsset, retainOutlines });
   }
-  if (subtype === 'Type1' && (type1File || type1Assets[base]) || type1Assets[base] && program.key !== 'FontFile2') {
+  if (subtype === 'Type1' && (type1File || Object.hasOwn(type1Assets, base)) || Object.hasOwn(type1Assets, base) && program.key !== 'FontFile2') {
     const font = await loadType1(reader, id, descriptor, type1File, encoding, loadAsset, retainOutlines);
     if (!program.key) font.localFaces = pdfLocalFontNames(base); return retainLatinSubstitution(reader, font, substitution);
   }
@@ -264,7 +277,8 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
   const baseEncoding = encodingDictionary ? reader.field(encoding, 'BaseEncoding') : encoding;
   if (baseEncoding && reader.node(baseEncoding).kind !== 'name') throw new PdfEngineError('Invalid TrueType base encoding.', 'pdf_corrupt');
   const encodingName = baseEncoding ? reader.name(baseEncoding) : 'StandardEncoding', differences = new Map();
-  if (!['WinAnsiEncoding', 'StandardEncoding', 'MacRomanEncoding'].includes(encodingName)) throw new PdfEngineError(`PDF encoding ${encodingName} is not implemented yet.`);
+  const knownEncoding = ['WinAnsiEncoding', 'StandardEncoding', 'MacRomanEncoding'].includes(encodingName);
+  if (!knownEncoding && !fallback) throw new PdfEngineError(`PDF encoding ${encodingName} is not implemented yet.`);
   if (encodingDictionary) {
     const values = reader.field(encoding, 'Differences'); let at = null;
     if (values) for (const value of reader.array(values)) {
@@ -278,20 +292,20 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
   let bytes;
   if (embedded) bytes = (await decodePdfStream(reader, embedded)).bytes;
   else {
-    const file = standardAssets[base]; if (!file) throw new PdfEngineError(`Standard font ${base} is not implemented yet.`);
+    const file = fallback ? fallbackAsset : standardAssets[base];
     bytes = await loadAsset(`standard_fonts/${file}`);
   }
   const metrics = readTrueTypeMetrics(bytes), unicodeId = reader.field(id, 'ToUnicode');
   const unicode = unicodeId ? await readToUnicode(reader, unicodeId) : null;
-  const flags = descriptor ? reader.number(reader.field(descriptor, 'Flags'), 0) : 0;
   const symbolicGlyphs = embedded && !encoding && Number.isInteger(flags) && flags >= 0 && (flags & 4) && !(flags & 32)
     && [1, 3].includes(metrics.platform) && metrics.encoding === 0 ? symbolicTrueTypeGlyphs(metrics) : null;
   const first = reader.number(reader.field(id, 'FirstChar'), 0), widthsId = reader.field(id, 'Widths');
   const widths = widthsId ? reader.array(widthsId).map(n => reader.number(n, NaN)) : null;
   if (!Number.isInteger(first) || first < 0 || widths?.some(n => !Number.isFinite(n))) throw new PdfEngineError('Invalid PDF font width table.', 'pdf_corrupt');
-  const canonicalWidths = !embedded && !widths ? await loadStandard14Widths(standardAssets[base], loadAsset) : null;
+  const canonicalWidths = !embedded && !fallback && !widths ? await loadStandard14Widths(standardAssets[base], loadAsset) : null;
   const canonicalBytes = canonicalWidths ? [...canonicalWidths.keys()].reduce((sum, name) => sum + 64 + 2 * name.length, 0) : 0;
-  const encodedGlyphName = code => differences.get(code) ?? pdfLatinGlyphName(encodingName, code);
+  const unknownEncoding = fallback && (!knownEncoding || !baseEncoding && flags & 4);
+  const encodedGlyphName = code => differences.get(code) ?? (unknownEncoding ? '.notdef' : pdfLatinGlyphName(encodingName, code));
   const encodedText = code => pdfLatinGlyphText(encodingName, code, encodedGlyphName(code));
   const encodedGlyphText = code => glyphNameText(encodedGlyphName(code));
   const glyphs = new Map(), unresolvedGlyphs = new Map();
@@ -304,11 +318,11 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
       const text = unicode?.get(code.toString(16).padStart(2, '0')) ?? (symbolicGlyphs ? '' : encodedText(code)) ?? '';
       // ISO 32000-1 9.6.6.4: select the painted glyph through the encoding's
       // glyph name and the font cmap. ToUnicode describes semantic text only.
-      const glyphText = encodedGlyphText(code), single = glyphText && [...glyphText].length === 1;
+      const glyphText = encodedGlyphText(code) || (fallback ? unicode?.get(code.toString(16).padStart(2, '0')) : ''), single = glyphText && [...glyphText].length === 1;
       const source = metrics.isUnicode ? single ? glyphText.codePointAt(0) : 0
         : metrics.platform === 1 && (encodingName === 'WinAnsiEncoding' || encodingDictionary) ? macintosh.get(glyphText) ?? (differences.has(code) ? null : code) : code;
-      const gid = symbolicGlyphs ? symbolicGlyphs[code] : encodedGlyphName(code) === '.notdef' ? 0 : metrics.glyphId(source) || (metrics.platform === 3 && metrics.encoding === 0 ? metrics.glyphId(0xf000 + code) : 0);
-      if (differences.has(code) && encodedGlyphName(code) !== '.notdef' && (!single || !gid)) unresolvedGlyphs.set(code, encodedGlyphName(code));
+      const gid = symbolicGlyphs ? symbolicGlyphs[code] : encodedGlyphName(code) === '.notdef' && !fallback ? 0 : metrics.glyphId(source) || (metrics.platform === 3 && metrics.encoding === 0 ? metrics.glyphId(0xf000 + code) : 0);
+      if (!fallback && differences.has(code) && encodedGlyphName(code) !== '.notdef' && (!single || !gid)) unresolvedGlyphs.set(code, encodedGlyphName(code));
       glyphs.set(code, gid); if (!unresolvedGlyphs.has(code) && [...text].length === 1 && (!aliases.has(text.codePointAt(0)) || unicode?.has(code.toString(16).padStart(2, '0')))) aliases.set(text.codePointAt(0), gid);
     }
     bytes = remapTrueTypeCmap(bytes, metrics.glyphCount, aliases);
@@ -316,6 +330,7 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
   const readOutline = retainOutlines ? createTrueTypeGlyphReader(reader, bytes, metrics) : null;
   const outlineFields = readOutline ? { glyphOutline(code, glyph) {
     reader.check(); const gid = simpleTrueTypeOutlineGlyph(code, glyph, glyphs, metrics);
+    if (fallback && gid === 0) throw new PdfEngineError('Substitute PDF font has no outline for the mapped character.');
     return gid === null ? { outline: [], fontMatrix: [1 / metrics.units, 0, 0, 1 / metrics.units, 0, 0] } : readOutline(gid);
   } } : {};
   let warnedSymbolicText = false;
@@ -324,14 +339,17 @@ export async function loadSimplePdfFont(reader, id, loadAsset, { retainOutlines 
       const result = [];
       for (const code of source) {
         if (unresolvedGlyphs.has(code)) throw new PdfEngineError(`TrueType glyph name ${unresolvedGlyphs.get(code)} is not supported by its cmap.`);
-        if (!symbolicGlyphs && encodingName === 'StandardEncoding' && code > 126 && !unicode && !differences.has(code)) throw new PdfEngineError('Non-ASCII StandardEncoding is not implemented yet.');
-        const explicit = unicodeText(unicode, code.toString(16).padStart(2, '0')), unmapped = symbolicGlyphs && explicit === undefined;
-        const text = explicit ?? (symbolicGlyphs ? String.fromCodePoint(0xe000 + code) : encodedText(code)) ?? '';
+        if (!fallback && !symbolicGlyphs && encodingName === 'StandardEncoding' && code > 126 && !unicode && !differences.has(code)) throw new PdfEngineError('Non-ASCII StandardEncoding is not implemented yet.');
+        const explicit = unicodeText(unicode, code.toString(16).padStart(2, '0'));
+        const unmapped = explicit === undefined && (symbolicGlyphs || fallback && !encodedText(code));
+        const text = explicit ?? (unmapped ? String.fromCodePoint(0xe000 + code) : encodedText(code)) ?? '';
         if (unmapped && !warnedSymbolicText) { (reader.codecWarnings ||= []).push({ filter: 'TrueType', unmappedSymbolicText: true }); warnedSymbolicText = true; }
         const sourceText = encodedGlyphText(code), gid = glyphs.get(code);
         if (gid >= metrics.glyphCount) throw new PdfEngineError('Simple font cmap references an absent glyph.', 'pdf_corrupt');
         const width = widths && code >= first && code - first < widths.length ? widths[code - first]
-          : canonicalWidths?.get(encodedGlyphName(code)) ?? (gid !== undefined ? metrics.widthByGlyph(gid) : metrics.width((text || sourceText)?.codePointAt(0) ?? 0));
+          : canonicalWidths?.get(encodedGlyphName(code)) ?? (fallback && descriptor && reader.field(descriptor, 'MissingWidth') ? reader.number(reader.field(descriptor, 'MissingWidth'), NaN)
+            : gid !== undefined ? metrics.widthByGlyph(gid) : metrics.width((text || sourceText)?.codePointAt(0) ?? 0));
+        if (!Number.isFinite(width)) throw new PdfEngineError('Invalid PDF missing-glyph width.', 'pdf_corrupt');
         result.push({ code, text, width, ...(unmapped ? { unmapped: true } : {}), ...(!embedded && gid ? { systemText: pdfSystemGlyph(sourceText) } : {}),
           ...(gid !== undefined ? { renderText: String.fromCodePoint(privateGlyphCode(gid)) } : text === '' && sourceText ? { renderText: sourceText } : {}) });
       }

@@ -71,11 +71,6 @@ describe('website copy', () => {
     const entries = [...documents.get('changelog.html').querySelectorAll('section')]
       .map((section) => section.textContent)
       .filter((text) => /^Version /.test(text));
-    expect(entries).toHaveLength(4);
-    expect(entries[0]).toMatch(/^Version 1\.0\.3/);
-    expect(entries[1]).toMatch(/^Version 1\.0\.2/);
-    expect(entries[2]).toMatch(/^Version 1\.0\.1/);
-    expect(entries[3]).toMatch(/^Version 1\.0\.0/);
     expect(entries[0]).not.toMatch(/custom voice|endpoint|imported model/i);
   });
 

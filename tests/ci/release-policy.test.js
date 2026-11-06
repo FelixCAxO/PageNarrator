@@ -123,3 +123,17 @@ it('records the local 1.0.3 preparation without granting public release waivers 
     expect(releaseAcceptedLimitation('kokoro-duration-pcm-reference-parity', version)).toBeNull();
   }
 });
+
+it('stops release verification when the required packaged OmniVoice journeys fail', () => {
+  const executed = [];
+  const status = runGateCommands(verificationSteps('release', gates.release, '1.0.4'), {
+    gateName: 'release', version: '1.0.4', log: vi.fn(),
+    run(command) {
+      executed.push(command);
+      return { status: command === 'npm run test:e2e:omnivoice' ? 9 : 0 };
+    },
+  });
+  expect(status).toBe(9);
+  expect(executed.at(-1)).toBe('npm run test:e2e:omnivoice');
+  expect(executed).not.toContain('npm run test:live:no-build');
+});

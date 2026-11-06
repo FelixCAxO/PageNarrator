@@ -5,6 +5,7 @@ import {
 } from './number-validation.js';
 import { PDF_RENDER_UNLOAD_DELAY_MS } from './timing-config.js';
 import { t } from './i18n.js';
+import { createPdfPageModel } from './pdf-page-model.js';
 
 export const MAX_RENDERED_PAGES = 7;
 export const MAX_OUTPUT_SCALE = 1;
@@ -69,6 +70,11 @@ function showArtworkWarning(pageEl, textContent) {
   pageEl.append(notice);
 }
 
+function canRecoverPdfPaint(error) {
+  if (['RenderingCancelledException', 'AbortError'].includes(error?.name)) return false;
+  return !error?.code || ['pdf_unsupported', 'pdf_render', 'pdf_limit'].includes(error.code) || ['SyntaxError', 'NetworkError'].includes(error?.name);
+}
+
 export function createVirtualPdfPageRenderer({
   documentRef = document,
   windowRef = window,
@@ -124,24 +130,47 @@ export function createVirtualPdfPageRenderer({
     releaseRenderCanvas(record.canvas); record.canvas = null; record.pageEl.replaceChildren();
   }
 
+  async function renderReadablePage(page, pageEl, record, checkCurrent, renderError = null, content = null) {
+    const textContent = content || await page.getTextContent(); checkCurrent();
+    if (!textContent.items?.some(item => item.str?.trim()) || textContent.unmappedGlyphs || textContent.unknownType3Glyphs) {
+      throw renderError || Object.assign(new Error('PDF page has no mapped readable text.'), { code: 'pdf_unsupported' });
+    }
+    releaseRenderCanvas(record.canvas); record.canvas = null;
+    const layer = documentRef.createElement('div'); layer.className = 'textLayer pdf-readable-text';
+    const ordered = createPdfPageModel(textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 }).orderedItems;
+    const indices = [...new Set(ordered.map(item => item.originalIndex))];
+    const included = new Set(indices);
+    // Keep non-narrative furniture selectable after the reading-ordered body.
+    for (let index = 0; index < textContent.items.length; index++) if (!included.has(index)) indices.push(index);
+    for (const index of indices) {
+      const item = textContent.items[index];
+      const span = documentRef.createElement('span'); span.textContent = item.str;
+      span.setAttribute('data-pagenarrator-pdf-source-index', String(index));
+      layer.append(span, documentRef.createTextNode(item.hasEOL ? '\n' : ' '));
+    }
+    pageEl.replaceChildren(layer);
+    annotateTextLayer?.(layer, textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 });
+    showArtworkWarning(pageEl, { artworkWarnings: [{ kind: 'render' }] });
+  }
+
   async function renderPageInto(page, pageEl, record, retryCount = 0) {
     const checkCurrent = () => { if (renderedPages.get(record.pageNumber) !== record) { const error = new Error('PDF page rendering cancelled.'); error.name = 'RenderingCancelledException'; throw error; } };
     const viewport = typeof getPageViewport === 'function'
       ? getPageViewport(page, windowRef)
       : page.getViewport({ scale: getPageScale(page, windowRef) });
+    const textContent = await page.getTextContent(); checkCurrent();
+    applyPageViewportStyles(pageEl, viewport);
+    if (textContent.textOnly) return renderReadablePage(page, pageEl, record, checkCurrent, null, textContent);
     const outputScale = getCappedOutputScale(windowRef.devicePixelRatio, maxOutputScale);
     const canvasWidth = Math.floor(viewport.width * outputScale), canvasHeight = Math.floor(viewport.height * outputScale);
     if (typeof page.render === 'function' && (!Number.isSafeInteger(canvasWidth) || !Number.isSafeInteger(canvasHeight)
       || canvasWidth < 1 || canvasHeight < 1 || canvasWidth > MAX_RENDER_CANVAS_SIDE || canvasHeight > MAX_RENDER_CANVAS_SIDE
       || !Number.isSafeInteger(canvasWidth * canvasHeight) || canvasWidth * canvasHeight > MAX_RENDER_CANVAS_PIXELS)) {
-      const error = new RangeError('PDF page backing canvas limit exceeded.'); error.code = 'pdf_limit'; throw error;
+      const error = new RangeError('PDF page backing canvas limit exceeded.'); error.code = 'pdf_limit';
+      return renderReadablePage(page, pageEl, record, checkCurrent, error, textContent);
     }
 
-    applyPageViewportStyles(pageEl, viewport);
-
     if (typeof page.render !== 'function') {
-      const textContent = await page.getTextContent();
-      checkCurrent();
       if (pageEl.childElementCount > 0) return;
       const textLayerEl = documentRef.createElement('div');
       textLayerEl.className = 'textLayer';
@@ -153,7 +182,8 @@ export function createVirtualPdfPageRenderer({
         viewport,
       });
       record.textLayerTask = textLayer;
-      await textLayer.render();
+      try { await textLayer.render(); }
+      catch (error) { if (!canRecoverPdfPaint(error)) throw error; return renderReadablePage(page, pageEl, record, checkCurrent, error, textContent); }
       checkCurrent();
       annotateTextLayer?.(textLayerEl, textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 });
       showArtworkWarning(pageEl, textContent);
@@ -187,16 +217,16 @@ export function createVirtualPdfPageRenderer({
       await record.renderTask.promise;
       checkCurrent();
     } catch (renderError) {
-      if (renderError?.name === 'RenderingCancelledException') throw renderError;
-      if (retryCount < 2 && !['pdf_corrupt', 'pdf_unsupported', 'pdf_limit'].includes(renderError?.code)) {
+      if (['RenderingCancelledException', 'AbortError'].includes(renderError?.name) || renderError?.code === 'pdf_closed') throw renderError;
+      if (retryCount < 2 && !['pdf_corrupt', 'pdf_unsupported', 'pdf_render', 'pdf_limit'].includes(renderError?.code)) {
         releaseRenderCanvas(canvas);
         record.canvas = null;
         return renderPageInto(page, pageEl, record, retryCount + 1);
       }
+      if (canRecoverPdfPaint(renderError)) return renderReadablePage(page, pageEl, record, checkCurrent, renderError, textContent);
       throw renderError;
     }
 
-    const textContent = await page.getTextContent();
     checkCurrent();
     const textLayer = new pdfjs.TextLayer({
       page,
@@ -205,7 +235,8 @@ export function createVirtualPdfPageRenderer({
       viewport,
     });
     record.textLayerTask = textLayer;
-    await textLayer.render();
+    try { await textLayer.render(); }
+    catch (error) { if (!canRecoverPdfPaint(error)) throw error; return renderReadablePage(page, pageEl, record, checkCurrent, error, textContent); }
     checkCurrent();
     annotateTextLayer?.(textLayerEl, textContent.items, { pageView: page.view, pageRotation: page.rotate || 0 });
     showArtworkWarning(pageEl, textContent);

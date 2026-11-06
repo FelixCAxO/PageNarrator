@@ -53,7 +53,7 @@ describe('release ZIP', () => {
     git(['config', 'user.name', 'Release test']);
     git(['config', 'user.email', 'test@example.invalid']);
     for (const [path, contents] of Object.entries({ 'src/worker.js': 'committed source',
-      '.gitignore': 'docs/cws-listing/debug-*.png\n.cache/\n', 'package.json': '{"version":"1.0.1"}',
+      '.gitignore': 'docs/cws-listing/debug-*.png\n.cache/\nwebsite/credentials.json\nwebsite/.env\ntests/customer-data.csv\n', 'package.json': '{"version":"1.0.1"}',
       'extension/public/index.html': 'committed page', 'tooling/eslint.config.js': 'export default [];' })) {
       const target = join(root, path);
       mkdirSync(join(target, '..'), { recursive: true });
@@ -76,7 +76,7 @@ describe('release ZIP', () => {
     expect(() => createSourceArchive(root, binary, 'b'.repeat(40))).toThrow('differs from HEAD');
     writeFileSync(join(root, 'src/worker.js'), 'unfinished tracked change');
     expect(() => createSourceArchive(root, binary, commit)).toThrow('Commit source changes');
-    git(['add', 'website/credentials.json']);
+    git(['add', '--force', 'website/credentials.json']);
     expect(() => createSourceArchive(root, binary, commit)).toThrow('Commit source changes');
 
     const exported = mkdtempSync(join(tmpdir(), 'pn-exported-source-')); roots.push(exported);
@@ -88,4 +88,21 @@ describe('release ZIP', () => {
     writeFileSync(join(exported, 'src/worker.js'), 'changed source export');
     expect(() => createSourceArchive(exported, binary, commit)).toThrow('differs from its manifest');
   });
+
+  it.each(['src/untracked-worker.js', 'engines/new/worker.cpp', 'extension/public/local.js'])(
+    'refuses source exports that would omit an untracked build input: %s', path => {
+      const root = mkdtempSync(join(tmpdir(), 'pn-untracked-source-'));
+      roots.push(root);
+      const git = args => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+      git(['init']);
+      git(['config', 'user.name', 'Release test']);
+      git(['config', 'user.email', 'test@example.invalid']);
+      writeFileSync(join(root, 'package.json'), '{"version":"1.0.4"}');
+      git(['add', '.']); git(['commit', '-m', 'Fixture']);
+      mkdirSync(join(root, path, '..'), { recursive: true });
+      writeFileSync(join(root, path), 'uncommitted build input');
+      expect(() => createSourceArchive(root, { name: 'extension.zip', sha256: 'a'.repeat(64) }))
+        .toThrow(/Commit source changes/);
+    },
+  );
 });

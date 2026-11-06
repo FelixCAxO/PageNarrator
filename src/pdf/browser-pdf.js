@@ -93,6 +93,7 @@ export async function openPdfDocument(data, options = {}) {
         const page = { pageNumber, view: geometry.view, rotate: geometry.rotate, userUnit: geometry.userUnit,
           getViewport(settings = {}) { check(); return createPdfViewport(geometry.view, { rotation: geometry.rotate, ...settings, userUnit: geometry.userUnit }); },
           async getTextContent() { const payload = await pagePayload(pageNumber); return { items: payload.items, unknownType3Glyphs: payload.inspection.unknownType3Glyphs || 0,
+            ...(payload.inspection.textOnly ? { textOnly: true } : {}),
             ...(payload.inspection.unmappedGlyphs ? { unmappedGlyphs: payload.inspection.unmappedGlyphs } : {}),
             ...(payload.inspection.artworkWarnings ? { artworkWarnings: payload.inspection.artworkWarnings } : {}),
             styles: Object.fromEntries(payload.fonts.map(font => [font.family, { fontFamily: font.family, ascent: font.ascent, descent: font.descent, vertical: !!font.vertical }])) }; },

@@ -51,6 +51,7 @@ export async function installSilentOutputCapture(context, extensionDir, { output
     const epoch = Date.now() / 1000 - audioContext.currentTime;
     const chunks = [], warnings = [];
     let recorder, firstFrame = null, nextFrame = null, claimed = false, flushed = null, samples = 0;
+    let nonSilentSamples = 0, nonFiniteSamples = 0;
     let writes = Promise.resolve(), writeError = null, pendingBlocks = 0;
     globalThis.AudioContext = new Proxy(Native, { construct(Target, args) {
       if (!claimed) { claimed = true; return audioContext; }
@@ -72,6 +73,10 @@ export async function installSilentOutputCapture(context, extensionDir, { output
           firstFrame ??= data.frame;
           if (nextFrame !== null && nextFrame !== data.frame) warnings.push(`Missing render frames at ${nextFrame}`);
           samples += data.pcm.length;
+          for (const value of data.pcm) {
+            if (!Number.isFinite(value)) nonFiniteSamples++;
+            else if (value !== 0) nonSilentSamples++;
+          }
           if (streaming) {
             if (++pendingBlocks > 8) { writeError = 'Capture writer fell behind'; pendingBlocks--; }
             else {
@@ -91,11 +96,28 @@ export async function installSilentOutputCapture(context, extensionDir, { output
     })();
     globalThis.__silentOutputCapture = async () => {
       await __silentCaptureReady;
-      await new Promise(resolve => { flushed = resolve; recorder.port.postMessage({ flush: true, stop: true }); });
+      if (audioContext.state === 'closed') throw new Error('Capture audio context closed before its final flush.');
+      let flushTimer;
+      try {
+        await Promise.race([
+          (async () => {
+            // Stop suspends the reader context. Worklet messages need a running render thread.
+            if (audioContext.state === 'suspended') await audioContext.resume();
+            await new Promise(resolve => { flushed = resolve; recorder.port.postMessage({ flush: true, stop: true }); });
+          })(),
+          new Promise((_resolve, reject) => {
+            flushTimer = setTimeout(() => reject(new Error('Silent capture final flush timed out.')), 5000);
+          }),
+        ]);
+      } finally { clearTimeout(flushTimer); flushed = null; }
       await writes;
       if (writeError) throw new Error(writeError);
       const rate = audioContext.sampleRate;
+      if (!samples || !nonSilentSamples || nonFiniteSamples || warnings.length || !Number.isFinite(rate) || rate <= 0) {
+        throw new Error('Silent capture is empty, silent, non-finite, or discontinuous.');
+      }
       const metadata = { startedEpochSeconds: epoch + firstFrame / rate, rate, channels: 1, captureWarnings: warnings,
+        samples, nonSilentSamples, nonFiniteSamples,
         scope: 'Render-thread AudioWorklet capture with a non-rendering sink; browser physical output muted; excludes OS/device routing' };
       if (streaming) return { samples, metadata };
       const bytes = new Uint8Array(44 + samples * 4), view = new DataView(bytes.buffer);

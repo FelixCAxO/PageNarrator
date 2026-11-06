@@ -20,5 +20,6 @@ The pattern suite checks 38,016 synthetic table, prose, and sidenote cases again
 
 - Set `PN_REAL_PDF_CORPUS=1` and run `npm test -- tests/pdf/pdf-real-corpus.test.js` for the pinned public arXiv sample. Set `PN_REAL_PDF_LIMIT=5` for a short run. This lane uses PDF.js with PageNarrator extraction and highlighting.
 - The frozen private-library and older arXiv acceptance runs are optional historical lanes. Their original references and results belong with the tested revision. The current gate uses the original-parser corpus and packaged PDF/OCR tests.
+- Set `PN_PDF_ORIGINAL_VIEWER_CORPUS=1` and run `npm run test:e2e:local -- tests/e2e/pdf-original-public-smoke.e2e.js --project=extension --workers=1` to exercise three cached public PDFs through the built original viewer and worker. Inputs default to `.cache/pdf-corpus/`; `PN_PDF_ORIGINAL_VIEWER_CORPUS_DIR` selects another cache. The run records input hashes and page timings and checks extraction, selection, and passage highlights on the first, third, and final pages. It is a smoke sample, not a reading-order, raster-accuracy, or physical-hardware qualification.
 
 Structural scores cover the tested layouts. Raster accuracy, OCR recognition, speech naturalness, and coverage of independent publications require separate evidence. See [fixture provenance](pdf-fixture-provenance.md) and [OCR](pdf-ocr.md).

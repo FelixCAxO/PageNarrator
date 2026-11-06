@@ -36,6 +36,7 @@
     "node tooling/scripts/assert-release-package.mjs dist",
     "npm run test:e2e:local",
     "npm run test:e2e:real-model -- --workers=1 --output=artifacts/release-real-model",
+    "npm run test:e2e:omnivoice",
     "npm run test:live:no-build",
     "npm run probe:tts:lower-spec:no-build",
     "npm run probe:tts:lower-spec-pdf:no-build",
