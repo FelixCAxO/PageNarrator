@@ -102,12 +102,12 @@ describe('production website smoke audit', () => {
     const html = readFileSync(join(publicDir, 'chrome-extension.html'), 'utf8');
     const current = await auditPage('https://pagenarrator.com', contract, async () => new Response(html));
     expect(current.errors).toEqual([]);
-    const stale = html.replaceAll('Install v1.0.3', 'Install v1.0.2')
-      .replaceAll('pagenarrator-1.0.3.zip', 'pagenarrator-1.0.2.zip');
+    const stale = html.replaceAll('Install v1.0.4', 'Install v1.0.3')
+      .replaceAll('pagenarrator-1.0.4.zip', 'pagenarrator-1.0.3.zip');
     const result = await auditPage('https://pagenarrator.com', contract, async () => new Response(stale));
     expect(result.errors).toEqual(expect.arrayContaining([
-      'missing text: Install v1.0.3',
-      'missing link: https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip',
+      'missing text: Install v1.0.4',
+      'missing link: https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4.zip',
     ]));
   });
 

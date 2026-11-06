@@ -59,7 +59,11 @@ function measure() {
   const eyebrow = box(hero?.querySelector('.eyebrow'));
   const h1 = box(hero?.querySelector('h1'));
   const lead = box(hero?.querySelector('h1 ~ p'));
-  const actions = [...document.querySelectorAll('.hero-actions .btn')].map(box);
+  const actionGaps = [...document.querySelectorAll('.hero-actions')].flatMap((group) => {
+    const buttons = [...group.querySelectorAll('.btn')].map(box);
+    return buttons.slice(1).map((next, index) =>
+      Math.max(next.top - buttons[index].bottom, next.left - buttons[index].right));
+  });
   const features = [...document.querySelectorAll('.feature-grid article')].map(box);
   const tables = [...document.querySelectorAll('.comparison')].map((table) => ({
     hidden: table.scrollWidth - table.clientWidth,
@@ -77,8 +81,7 @@ function measure() {
       content: box(document.querySelector('.page-content h2, main > .section h2'))?.left,
       footer: box(document.querySelector('.footer-inner p'))?.left,
     },
-    ctaGap: actions.length === 2
-      ? Math.max(actions[1].top - actions[0].bottom, actions[1].left - actions[0].right) : null,
+    ctaGap: actionGaps.length ? Math.min(...actionGaps) : null,
     featureColumns: features.length ? new Set(features.map((rect) => Math.round(rect.left))).size : null,
     tables,
   };

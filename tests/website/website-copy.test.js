@@ -31,11 +31,11 @@ describe('website copy', () => {
     for (const name of ['chrome-extension.html', 'support.html']) {
       expect(bodyText(name), name).not.toMatch(/repository is currently private|repository access is required|(?:already have|with) repository access|preview access/i);
     }
-    for (const name of ['pagenarrator-1.0.3.zip', 'pagenarrator-1.0.3-source.zip']) {
-      expect(document.querySelector(`a[href="https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/${name}"]`)).toBeTruthy();
+    for (const name of ['pagenarrator-1.0.4.zip', 'pagenarrator-1.0.4-source.zip']) {
+      expect(document.querySelector(`a[href="https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/${name}"]`)).toBeTruthy();
     }
-    expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3"]')).toBeTruthy();
-    expect(text).toContain('Install v1.0.3');
+    expect(document.querySelector('a[href="https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.4"]')).toBeTruthy();
+    expect(text).toContain('Install v1.0.4');
     expect(text).not.toContain('Previous release downloads are no longer available');
     expect(text).toContain('original extension folder');
     expect(text).toContain('same folder path');

@@ -9,10 +9,10 @@ const { DOMParser } = new JSDOM('').window;
 const htmlParser = new DOMParser();
 const publicDir = fileURLToPath(new URL('../../website/public/', import.meta.url));
 const requiredText = {
-  '/': ['Read webpages and PDFs aloud.', 'No account or usage quota', 'Hugging Face'],
-  '/chrome-extension': ['Install v1.0.3', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation'],
-  '/support': ['source installation steps', 'Update without losing your place'],
-  '/changelog': ['Version 1.0.3', 'Open signed-in PDFs', 'higher-ranked OmniVoice variations'],
+  '/': ['PageNarrator 1.0.4', 'Read webpages and PDFs aloud.', 'No account or usage quota', 'Hugging Face', 'Independent listening reviews, physical hardware tiers and timing measurements remain unqualified. These checks have not been waived.'],
+  '/chrome-extension': ['Install v1.0.4', 'Download the ZIP and extract it.', '93 MB', '326 MB', 'Update an unpacked installation', 'Independent listening reviews, physical hardware tiers and timing measurements remain unqualified. These checks have not been waived.'],
+  '/support': ['source installation steps', 'Update without losing your place', 'Independent listening reviews, physical hardware tiers and timing measurements remain unqualified. These checks have not been waived.'],
+  '/changelog': ['Version 1.0.4', 'Better PDF text recovery, page navigation and speech efficiency.', 'Independent listening reviews, physical hardware tiers and timing measurements remain unqualified. These checks have not been waived.'],
   '/privacy': ['Chrome Web Store User Data Policy', 'Limited Use requirements', 'Built-in voice downloads', 'Online documents'],
   '/terms': ['GPL-3.0-or-later', 'MIT License', 'Apache License 2.0', 'These Terms do not restrict rights granted by those licenses'],
 };
@@ -55,11 +55,11 @@ export function loadPageContracts(directory = publicDir) {
         canonical: document.querySelector('link[rel="canonical"]')?.href,
         indexable,
         requiredText: requiredText[path] || [],
-        requiredLinks: /\/(?:chrome-extension|changelog|support)$/u.test(path)
-          ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip',
-            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip',
-            'https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3',
-            ...(path.endsWith('/changelog') ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-verification.md'] : [])] : [],
+        requiredLinks: /(?:\/(?:chrome-extension|changelog|support)$|\/$)/u.test(path)
+          ? ['https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-source.zip',
+            'https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.4',
+            'https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-verification.md'] : [],
         forbiddenText: path === '/changelog' ? [] : ['Piper', 'browser voice', 'system voice'],
       };
       return contract;

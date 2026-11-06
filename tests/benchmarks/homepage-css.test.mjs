@@ -101,8 +101,8 @@ async function compareVariants(options, name, allStates = true) {
     const states = allStates ? ['default', 'primary', 'secondary', 'nav', 'footer', 'keyboard', 'selection'] : ['default'];
     for (const state of states) {
       for (const { page } of [a, b]) {
-        if (state === 'primary') await page.locator('.hero-actions .primary').hover();
-        if (state === 'secondary') await page.locator('.hero-actions .secondary').hover();
+        if (state === 'primary') await page.locator('.hero .hero-actions .primary').hover();
+        if (state === 'secondary') await page.locator('.hero .hero-actions .secondary').hover();
         if (state === 'nav') await page.locator('.nav-links a').first().hover();
         if (state === 'footer') await page.locator('.footer-links a').last().hover();
         if (state === 'keyboard') {
@@ -150,7 +150,7 @@ void test('homepage retains font request, image, links, copy, and zero scripts',
   assert.match(html, /<img src="\/assets\/home-hero-1280-[a-f0-9]{12}\.webp"/);
   assert.doesNotMatch(html, /<script\b|\bloading="lazy"/i);
   assert.equal((html.match(/<h1>/g) || []).length, 1);
-  assert.equal((html.match(/<a\b/g) || []).length, 42);
+  assert.equal((html.match(/<a\b/g) || []).length, 46);
 });
 
 void test('safe minimization beats both baseline and unpruned minification on fixed bytes', async () => {
