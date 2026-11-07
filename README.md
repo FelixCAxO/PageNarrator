@@ -6,7 +6,9 @@ Free, open-source text-to-speech (TTS) extension for Chrome and desktop Chromium
 >
 > These are suggested starting points; minimum specs and smooth playback at these specs have not been verified. See [hardware recommendations](docs/requirements-hardware.md).
 
-[Download v1.0.3](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.3/pagenarrator-1.0.3-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
+[Download v1.0.4](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4.zip) · [Source ZIP](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-source.zip) · [Website](https://pagenarrator.com) · [Support](https://pagenarrator.com/support)
+
+Independent listening reviews, physical hardware qualification, and valid timing measurements on lower-spec devices remain open for v1.0.4. [Verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-verification.md)
 
 - **Private and offline:** narration stays on your device. Cached voices work offline until the cache is cleared or evicted.
 - **Free without quotas:** no account, subscription, or usage quota.
@@ -70,7 +72,7 @@ Load `dist/` as an unpacked extension.
 | `npm run build:website` | Regenerate localized pages and stage the site |
 | `npm run package` | Build the extension and matching source ZIPs |
 
-See [contributing and tests](docs/CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.3).
+See [contributing and tests](docs/CONTRIBUTING.md), [architecture](docs/project-architecture.md), and [release notes](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.4).
 
 Original code: [GPL-3.0-or-later](LICENSE); combined distribution: GPLv3. Keep [third-party notices](extension/public/legal/THIRD_PARTY_NOTICES.txt) and distribute the matching source ZIP with the extension. [License details](docs/third-party-voice-licenses.md).
 
