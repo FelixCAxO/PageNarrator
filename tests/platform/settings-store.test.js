@@ -1,4 +1,4 @@
-import { DEFAULT_OMNIVOICE_SETTINGS, getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { DEFAULT_OMNIVOICE_SETTINGS } from '../../src/lib/omnivoice-settings.js';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { STORAGE_KEYS } from '../../src/lib/storage-keys.js';
@@ -46,7 +46,7 @@ describe('settings store', () => {
     const adapter = createReaderEngineStorageAdapter({ storage });
     await expect(adapter.getPlaybackSettings()).resolves.toEqual({
       ttsEngine: 'kokoro',
-      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS, variation: getOmniVoiceVariationOrder('sv', 'female')[0] },
+      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS },
       language: 'sv',
       voice: 'piper-sv-se-nst-medium',
       voicesByLanguage: { sv: 'piper-sv-se-nst-medium' },
@@ -56,6 +56,7 @@ describe('settings store', () => {
       ttsBackendPreference: 'wasm',
       idleReleaseEnabled: false,
       skipCodeSnippets: true,
+      skipPdfEquationsAndTables: true,
       highlight: {
         area: { color: '#ffdd57', opacity: 0.1 },
         word: { color: '#ffdd57', opacity: 0.38 },
@@ -131,6 +132,7 @@ describe('settings store', () => {
       ttsBackendPreference: 'auto',
       idleReleaseEnabled: true,
       skipCodeSnippets: false,
+      skipPdfEquationsAndTables: true,
       highlight: {
         area: { color: '#00aa55', opacity: 0.25 },
         word: { color: '#7c3aed', opacity: 0.75 },
@@ -169,6 +171,7 @@ describe('settings store', () => {
       ttsBackendPreference: 'auto',
       idleReleaseEnabled: true,
       skipCodeSnippets: false,
+      skipPdfEquationsAndTables: true,
       voicesByLanguage: {},
       highlight: {
         area: { color: '#ffdd57', opacity: 0.1 },

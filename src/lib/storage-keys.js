@@ -1,5 +1,8 @@
+import { PERSONAL_VOICE_REFERENCES_KEY, PLAYBACK_SETTINGS_KEY } from '../platform/storage/playback-settings-storage.js';
+
 export const STORAGE_KEYS = Object.freeze({
-  PLAYBACK_SETTINGS: 'playbackSettings',
+  PLAYBACK_SETTINGS: PLAYBACK_SETTINGS_KEY,
+  OMNIVOICE_PERSONAL_REFERENCES: PERSONAL_VOICE_REFERENCES_KEY,
   FLOATING_READER_PENDING_ACTION: 'floatingReaderPendingAction',
   READABLE_TAB_TARGET: 'readableTabTarget',
   GPU_CALIBRATION_CACHE: 'pagenarratorGpuCalibration.v1',

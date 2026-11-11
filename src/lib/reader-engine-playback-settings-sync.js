@@ -19,10 +19,12 @@ export async function applyPlaybackSettingsFromStorage({
   resetTtsPerformanceGovernor = () => {},
   renderVoiceEngineSetting = () => {},
   onVoiceSelectionChanged = () => {},
+  personalReferencesChanged = false,
 } = {}) {
   const settings = await readerEngineStorage?.getPlaybackSettings?.().catch(() => null);
   if (!settings) return;
   const engineChanged = (els.ttsEngine?.value || 'kokoro') !== settings.ttsEngine;
+  const personalVoiceChanged = settings.ttsEngine === 'omnivoice-clone' && (els.personalVoice?.value || '') !== (settings.personalVoiceId || '');
   renderVoiceEngineSetting(settings);
 
   const nextLanguage = normalizeLanguageCode(settings.language || getSelectedLanguageCode());
@@ -32,7 +34,8 @@ export async function applyPlaybackSettingsFromStorage({
   const storedVoiceForLang = settings.voicesByLanguage?.[nextLanguage] || settings.voice;
   const hasVoiceOption = storedVoiceForLang && Array.from(els.voice?.options || [])
     .some((option) => option.value === storedVoiceForLang);
-  if (engineChanged || languageChanged || !hasVoiceOption) {
+  if (engineChanged || languageChanged || personalVoiceChanged || !hasVoiceOption
+      || (personalReferencesChanged && settings.ttsEngine === 'omnivoice-clone')) {
     await populateVoices();
   }
   const updatedHasVoiceOption = storedVoiceForLang && Array.from(els.voice?.options || [])

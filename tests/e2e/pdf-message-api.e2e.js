@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
-import { getExtensionId, launchExtensionContext } from './extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer } from './extension-fixture.js';
 
 const FIXTURE_DIR = path.resolve('tests/fixtures/pdfs');
 
@@ -42,11 +42,10 @@ async function sendTabMessage(context, tabId, message) {
 test('round-trips PDF viewer streaming messages through chrome.runtime', async () => {
   const { context, cleanup } = await launchExtensionContext();
   try {
-    const extensionId = await getExtensionId(context);
     const page = await context.newPage();
     const pdfUrl = await createPdfDataUrl('single-column.pdf');
 
-    await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(pdfUrl)}`);
+    await navigatePdfViewer(page, pdfUrl);
     await expect(page.locator('#pdf-status')).toContainText('1 page loaded', { timeout: 15_000 });
 
     await page.bringToFront();

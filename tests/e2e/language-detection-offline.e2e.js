@@ -62,14 +62,14 @@ test('detects requested page languages offline with the real Chrome API and engi
   } finally { await cleanup(); }
 });
 
-for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects German offline and preserves the chosen OmniVoice language`, async ({}, testInfo) => {
+for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects German offline and switches the voice to match`, async ({}, testInfo) => {
   test.skip(process.env.PN_E2E_LANGUAGE_DETECTION !== '1', 'Opt in to the real offline detector benchmark.');
   const root = path.resolve(process.env.PN_E2E_LANGUAGE_AUDIT_DIR || 'artifacts/omnivoice-language-retest');
   const corpus = JSON.parse(await readFile(path.join(root, 'corpus.json'), 'utf8'));
   const text = corpus.languages.filter(item => item.code === 'de').slice(0, 4).map(item => item.text).join(' ');
   const server = createServer((request, response) => {
     response.writeHead(200, { 'content-type': 'text/html; charset=utf-8' });
-    // Deliberately wrong page metadata: the suggestion must come from the actual text.
+    // Deliberately wrong page metadata: text detection comes first, so the switch must come from the actual text.
     response.end(`<html lang="en"><title>Language detection test</title><article><p>${text}</p></article></html>`);
   });
   await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
@@ -79,36 +79,54 @@ for (const locale of ['en', 'sv', 'ja']) test(`the ${locale} player detects Germ
     cleanup = launched.cleanup;
     const { context } = launched;
     await seedFlowTestFlags(context);
+    const worker = context.serviceWorkers()[0];
+    // Capable hosts default to OmniVoice; this journey must start with Kokoro.
+    await worker.evaluate(() => chrome.storage.local.set({ playbackSettings: {
+      ttsEngine: 'kokoro', language: 'en', voice: 'af_heart',
+    } }));
     const engine = await openRoutedReaderEngine(context);
     const article = await context.newPage();
     await article.goto(`http://127.0.0.1:${server.address().port}`);
     const requests = [];
     await context.route(/^https?:\/\//u, route => { requests.push(route.request().url()); return route.abort('internetdisconnected'); });
     await context.setOffline(true);
+    const readerState = async () => (await worker.evaluate(() => chrome.storage.session.get('readerEngineState'))).readerEngineState?.state;
+    const fp16 = await engine.evaluate(async () => Boolean((await navigator.gpu?.requestAdapter?.())?.features?.has?.('shader-f16')));
     const popup = await startReadFromToolbarPopup(context, article, { closePopup: false });
-    const suggestion = await engine.evaluate(() => chrome.i18n.getMessage('languageSuggestionOmniVoice', [
-      new Intl.DisplayNames([chrome.i18n.getUILanguage()], { type: 'language' }).of('de'),
-    ]));
-    expect(suggestion.length).toBeGreaterThan(20);
-    await expect(popup.locator('#popup-error')).toHaveText(suggestion);
-    await expect(engine.locator('#language-status')).toContainText(suggestion);
-    await expect(popup.locator('#popup-tts-engine')).toHaveValue('kokoro');
-    // Changing engines preserves the explicit voice language; detection remains informational for OmniVoice.
+    if (fp16) {
+      // One click: Kokoro hands a German page to German OmniVoice without visiting Voice settings.
+      await expect.poll(readerState).toBe('finished');
+      await expect(popup.locator('#popup-tts-engine')).toHaveValue('omnivoice');
+      await expect(popup.locator('#popup-language')).toHaveValue('de');
+      expect((await worker.evaluate(() => chrome.storage.local.get('playbackSettings'))).playbackSettings)
+        .toMatchObject({ ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true });
+    } else {
+      const suggestion = await engine.evaluate(() => chrome.i18n.getMessage('languageSuggestionOmniVoice', [
+        new Intl.DisplayNames([chrome.i18n.getUILanguage()], { type: 'language' }).of('de'),
+      ]));
+      expect(suggestion.length).toBeGreaterThan(20);
+      await expect(popup.locator('#popup-error')).toHaveText(suggestion);
+      await expect(popup.locator('#popup-tts-engine')).toHaveValue('kokoro');
+      await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
+    }
+    // A user-chosen OmniVoice language still follows the page, and the choice stays the user's.
+    await selectNativeOption(popup.locator('#popup-tts-engine'), 'kokoro');
     await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
-    await expect(popup.locator('#popup-language')).toHaveValue('en');
+    await selectNativeOption(popup.locator('#popup-language'), 'sv');
     await popup.close();
     const omnivoicePopup = await startReadFromToolbarPopup(context, article, { closePopup: false });
-    const worker = context.serviceWorkers()[0];
-    await expect.poll(async () => (await worker.evaluate(() => chrome.storage.session.get('readerEngineState')))
-      .readerEngineState?.state).toBe('finished');
-    await expect(engine.locator('#language-select')).toHaveValue('en');
+    await expect.poll(readerState).toBe('finished');
+    await expect(engine.locator('#language-select')).toHaveValue('de');
+    await expect(omnivoicePopup.locator('#popup-language')).toHaveValue('de');
     const detectedName = await engine.evaluate(() => new Intl.DisplayNames([chrome.i18n.getUILanguage()], { type: 'language' }).of('de'));
     await expect(engine.locator('#language-status')).toContainText(detectedName);
     await expect(omnivoicePopup.locator('#popup-tts-engine')).toHaveValue('omnivoice');
+    expect((await worker.evaluate(() => chrome.storage.local.get('playbackSettings'))).playbackSettings).not.toHaveProperty('ttsEngineAuto');
     expect((await omnivoicePopup.evaluate(() => chrome.i18n.getUILanguage())).split('-')[0]).toBe(locale);
     expect(requests).toEqual([]);
-    await writeFile(path.join(root, `offline-player-${locale}.json`), `${JSON.stringify({ locale, detected: 'de',
-      suggestion, kokoroRetainedUntilChoice: true, omnivoicePreservedChosenLanguage: true,
-      speech: 'silent flow fixture; real synthesis quality is measured separately', networkRequests: requests }, null, 2)}\n`);
+    await writeFile(path.join(root, `offline-player-${locale}.json`), `${JSON.stringify({ locale, detected: 'de', fp16,
+      kokoroSwitchedToOmniVoice: fp16, omnivoiceFollowedPageLanguage: true,
+      speech: 'silent flow fixture; real synthesis quality is measured separately', networkRequests: requests }, null, 2)}
+`);
   } finally { try { await cleanup(); } finally { await new Promise(resolve => server.close(resolve)); } }
 });

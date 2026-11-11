@@ -25,6 +25,12 @@ describe('original English normalizer', () => {
     expect(normalizeEnglishText("PDFs and GPU's memory.")[0].words).toEqual(['pee', 'dee', 'efs', 'and', 'gee', 'pee', "you's", 'memory']);
     expect(normalizeEnglishText('OCR and OCRs.')[0].words).toEqual(['oh', 'see', 'are', 'and', 'oh', 'see', 'ares']);
   });
+  it('reads past invisible PDF formatting and Greek math letters in English text', () => {
+    expect(normalizeEnglishText('● \u200BContinue with Σₖ and τ, then finish.')).toEqual([
+      { words: ['continue', 'with', 'sigma', 'k', 'and', 'tau'], punctuation: ',' },
+      { words: ['then', 'finish'], punctuation: '.' },
+    ]);
+  });
   it('bounds trust inputs and rejects invalid dates rather than producing partial text', () => {
     for (const [text, lang] of [['bad\0text', 'en'], ['text', 'sv'], ['2026-02-30', 'en'], ['x'.repeat(16385), 'en'], ['日本語', 'en']]) {
       expect(() => normalizeEnglishText(text, lang)).toThrow();

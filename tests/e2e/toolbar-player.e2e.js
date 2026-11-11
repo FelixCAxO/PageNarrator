@@ -20,6 +20,8 @@ test('clean install exposes setup and every advanced toolbar-player control', as
     }
     await popup.locator('#popup-settings').evaluate((node) => { node.open = true; });
     await popup.locator('#popup-advanced').evaluate((node) => { node.open = true; });
+    // New installs default to OmniVoice where WebGPU has fp16; these controls belong to Kokoro.
+    await selectNativeOption(popup.locator('#popup-tts-engine'), 'kokoro');
     await setNativeRange(popup.locator('#popup-speed'), '3');
     await setNativeRange(popup.locator('#popup-section-pause'), '1.5');
     await selectNativeOption(popup.locator('#popup-performance-profile'), 'quality');

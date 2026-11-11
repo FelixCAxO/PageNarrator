@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { expect } from '@playwright/test';
-import { launchExtensionContext, getExtensionId } from '../../tests/e2e/extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer } from '../../tests/e2e/extension-fixture.js';
 import { simplePdf, stream } from '../../tests/pdf-engine/fixtures.js';
 import { verticalCidCffPdf } from '../../tests/pdf-engine/cmap-cff-fixture.js';
 import { buildPdfBytes } from '../../tests/helpers/pdf-test-generator.js';
@@ -59,7 +59,7 @@ try {
   context.on('requestfailed', request => requestFailures.push({ id: activeCase, phase, url: request.url(), failure: request.failure()?.errorText }));
   context.on('response', response => { if (response.status() >= 400) httpErrors.push({ id: activeCase, phase, url: response.url(), status: response.status() }); });
   await context.route(url => retired.test(url.href), route => route.abort('blockedbyclient'));
-  const extensionId = await getExtensionId(context); let [worker] = context.serviceWorkers(); if (!worker) worker = await context.waitForEvent('serviceworker');
+  let [worker] = context.serviceWorkers(); if (!worker) worker = await context.waitForEvent('serviceworker');
   for (const [id, bytes] of cases) {
     activeCase = id; phase = 'navigation';
     const page = await context.newPage(), pageErrors = [], consoleMessages = [], beforeRequest = requests.length;
@@ -71,7 +71,7 @@ try {
     });
     const sourceUrl = `http://127.0.0.1:${server.address().port}/${id}.pdf`, started = performance.now(); let record, loadedMs, firstSourceTextMs;
     try {
-      await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(sourceUrl)}`);
+      await navigatePdfViewer(page, sourceUrl);
       await expect(page.locator('#pdf-status')).toContainText('loaded', { timeout: 20000 });
       loadedMs = performance.now() - started; phase = 'source-readiness';
       await expect.poll(() => page.locator('.pdf-page canvas').count(), { timeout: 20000 }).toBeGreaterThan(0);

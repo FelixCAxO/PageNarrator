@@ -3,7 +3,7 @@ import { readFile, writeFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
 import { privateOcrFixturePath, readPrivateOcrFixture } from '../../tooling/scripts/lib/ocr-private-fixtures.mjs';
-import { launchExtensionContext, getExtensionId, resolveExtensionDir } from './extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer, resolveExtensionDir } from './extension-fixture.js';
 import { ocrWordErrorRate, isOcrWordInRegion, validateOcrReferenceRegions } from '../helpers/ocr-word-error-rate.js';
 import { measureOcrReadingOrder } from '../helpers/ocr-reading-order.js';
 import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';
@@ -42,9 +42,8 @@ test('photographed PDF corpus measures real viewer OCR against manually transcri
     context.on('request', (request) => {
       if (/^https?:/.test(request.url()) && !request.url().startsWith('http://127.0.0.1:')) report.externalRequests.push(request.url());
     });
-    const id = await getExtensionId(context);
     const page = await context.newPage();
-    await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`http://127.0.0.1:${server.address().port}/book.pdf`)}`);
+    await navigatePdfViewer(page, `http://127.0.0.1:${server.address().port}/book.pdf`);
     await expect(page.locator('#pdf-status')).toContainText(`${manifest.sourcePageCount} page${manifest.sourcePageCount === 1 ? '' : 's'} loaded`, { timeout: 60_000 });
     const worker = context.serviceWorkers()[0];
     const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);

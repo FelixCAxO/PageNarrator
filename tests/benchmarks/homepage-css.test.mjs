@@ -49,9 +49,16 @@ async function openVariant(style, { width = 390, motion = 'no-preference', image
     .replace(/<link[^>]*rel="preconnect"[^>]*>/g, '')
     .replace(/<link[^>]*href="https:\/\/fonts.googleapis.com[^>]*>/g, `<style>${fontStyle}</style>`)
     .replace(`<link rel="stylesheet" href="${SOURCE_CSS}">`, `<style>${style}</style>`)
-    .replace(/\/assets\/screenshots\/toolbar-player-reading\.webp(?:\?v=[a-f0-9]+)?/, image
-      ? `data:image/svg+xml,${encodeURIComponent(imageFixture)}` : 'data:image/png;base64,invalid');
+    .replace(/<img\b[^>]*src="\/assets\/home-hero-[^"]+"[^>]*>/u, tag => tag
+      .replace(/\s(?:srcset|sizes)="[^"]*"/gu, '')
+      .replace(/\bsrc="[^"]*"/u, `src="${image
+        ? `data:image/svg+xml,${encodeURIComponent(imageFixture)}` : 'data:image/png;base64,invalid'}"`));
   await page.setContent(fixtureHtml, { waitUntil: 'load' });
+  const dimensions = await page.locator('.hero-visual img').evaluate(async (img, expectedImage) => {
+    await img.decode().catch(error => { if (expectedImage) throw error; return null; });
+    return [img.naturalWidth, img.naturalHeight];
+  }, image);
+  assert.deepEqual(dimensions, image ? [1280, 800] : [0, 0], 'Synthetic image fixture must replace the current responsive hero');
   await page.evaluate(() => document.fonts.ready);
   if (zoomText) await page.addStyleTag({ content: 'html { font-size: 32px; }' });
   await page.mouse.move(0, 0);
@@ -273,23 +280,6 @@ void test('visual oracle detects an intentional color regression', async () => {
   const b = await openVariant(css.replace('--ink:#f3f7ef', '--ink:#ff0000'));
   try { assert.notEqual((await snapshot(a.page)).sha256, (await snapshot(b.page)).sha256); }
   finally { await a.context.close(); await b.context.close(); }
-});
-
-void test('Chromium renders the real PNG and lossless WebP hero pixels identically', async () => {
-  const path = join(publicDir, 'assets/screenshots/toolbar-player-reading');
-  const [png, webp] = await Promise.all([readFile(`${path}.png`), readFile(`${path}.webp`)]);
-  const capture = async (type, bytes) => {
-    const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
-    try {
-      await page.setContent(`<img src="data:image/${type};base64,${bytes.toString('base64')}" alt="PageNarrator reading">`);
-      const dimensions = await page.locator('img').evaluate(async (img) => {
-        await img.decode();
-        return [img.naturalWidth, img.naturalHeight];
-      });
-      return { dimensions, screenshot: sha256(await page.screenshot()) };
-    } finally { await page.close(); }
-  };
-  assert.deepEqual(await capture('webp', webp), await capture('png', png));
 });
 
 for (const width of [360, 390, 412, 520, 521, 820, 821, 1280]) {

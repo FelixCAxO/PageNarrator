@@ -1,4 +1,6 @@
-import { DEFAULT_OMNIVOICE_SETTINGS, getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { DEFAULT_OMNIVOICE_SETTINGS } from '../../src/lib/omnivoice-settings.js';
+import { getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
+import { savePersonalVoiceReference } from '../../src/platform/storage/personal-voice-store.js';
 import { describe, expect, it } from 'vitest';
 import {
   clampPlaybackSpeed,
@@ -132,13 +134,14 @@ describe('playback settings storage', () => {
 
     await expect(getPlaybackSettings({ storage })).resolves.toEqual({
       ttsEngine: 'kokoro',
-      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS, variation: getOmniVoiceVariationOrder('sv', 'female')[0] },
+      omniVoice: { ...DEFAULT_OMNIVOICE_SETTINGS },
       language: 'sv',
       voice: 'piper-de-de-mls-medium',
       speed: 1.75,
       sectionPauseSeconds: DEFAULT_SECTION_PAUSE_SECONDS,
       highlight: DEFAULT_HIGHLIGHT_SETTINGS,
       skipCodeSnippets: DEFAULT_SKIP_CODE_SNIPPETS,
+      skipPdfEquationsAndTables: true,
       idleReleaseEnabled: DEFAULT_IDLE_RELEASE_ENABLED,
       ttsPerformanceProfile: TTS_PERFORMANCE_PROFILE_DEFAULT,
       ttsBackendPreference: 'auto',
@@ -172,6 +175,7 @@ describe('playback settings storage', () => {
       sectionPauseSeconds: 5,
       highlight: DEFAULT_HIGHLIGHT_SETTINGS,
       skipCodeSnippets: DEFAULT_SKIP_CODE_SNIPPETS,
+      skipPdfEquationsAndTables: true,
       idleReleaseEnabled: DEFAULT_IDLE_RELEASE_ENABLED,
       ttsPerformanceProfile: TTS_PERFORMANCE_PROFILE_DEFAULT,
       ttsBackendPreference: 'auto',
@@ -269,5 +273,46 @@ describe('playback settings storage', () => {
     }
 
     expect(losses).toBe(0);
+  });
+});
+
+describe('detection-chosen engine flag', () => {
+  it('defaults to OmniVoice on compatible hardware and preserves explicit engine choices', async () => {
+    const navigator = { gpu: { requestAdapter: async () => ({ features: new Set(['shader-f16']) }) } };
+    const storage = createMemoryStorage();
+    expect(await getPlaybackSettings({ storage, navigator })).toMatchObject({ ttsEngine: 'omnivoice' });
+    await savePlaybackSettings({ ttsEngine: 'kokoro' }, { storage });
+    expect(await getPlaybackSettings({ storage, navigator })).toMatchObject({ ttsEngine: 'kokoro' });
+    expect(await getPlaybackSettings({ storage: createMemoryStorage(), navigator: {} })).toMatchObject({ ttsEngine: 'kokoro' });
+  });
+
+  it('persists the cloning profile and preset selection through other settings changes', async () => {
+    const storage = createMemoryStorage();
+    const { id: personalVoiceId } = await savePersonalVoiceReference({ name: 'Test voice', lang: 'en', text: 'A voice sample.',
+      frames: 76, codes: new Uint16Array(8 * 76).fill(511) }, storage);
+    await savePlaybackSettings({ ttsEngine: 'omnivoice-clone', personalVoiceId }, { storage });
+    await savePlaybackSettings({ speed: 1.5 }, { storage });
+    expect(await getPlaybackSettings({ storage })).toMatchObject({ ttsEngine: 'omnivoice-clone', personalVoiceId, speed: 1.5 });
+    await savePlaybackSettings({ personalVoiceId: null }, { storage });
+    expect(await getPlaybackSettings({ storage })).not.toHaveProperty('personalVoiceId');
+  });
+
+  it('keeps the flag through unrelated saves and drops it when cleared', async () => {
+    const storage = createMemoryStorage();
+    await savePlaybackSettings({ ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true }, { storage });
+    await savePlaybackSettings({ speed: 1.5 }, { storage });
+    expect(await getPlaybackSettings({ storage })).toMatchObject({ ttsEngine: 'omnivoice', ttsEngineAuto: true, speed: 1.5 });
+    await savePlaybackSettings({ ttsEngineAuto: false }, { storage });
+    expect(await getPlaybackSettings({ storage })).not.toHaveProperty('ttsEngineAuto');
+    expect((await storage.get(PLAYBACK_SETTINGS_KEY))[PLAYBACK_SETTINGS_KEY]).not.toHaveProperty('ttsEngineAuto');
+  });
+
+  it('keeps the OmniVoice voice chosen for each language when another language is saved', async () => {
+    const storage = createMemoryStorage({ [PLAYBACK_SETTINGS_KEY]: { omniVoice: { gender: 'female', variation: 3 } } });
+    const [sv] = getOmniVoiceVoices('sv', 'female'), [de] = getOmniVoiceVoices('de', 'female');
+    await savePlaybackSettings({ omniVoice: { gender: 'female', voices: { sv }, whisper: false } }, { storage });
+    await savePlaybackSettings({ omniVoice: { gender: 'female', voices: { de }, whisper: true } }, { storage });
+    await savePlaybackSettings({ speed: 1.25 }, { storage });
+    expect((await getPlaybackSettings({ storage })).omniVoice).toEqual({ gender: 'female', voices: { sv, de }, variation: 3, whisper: true });
   });
 });

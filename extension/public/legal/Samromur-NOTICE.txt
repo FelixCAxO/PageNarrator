@@ -1,0 +1,18 @@
+Samrómur recorded references
+
+Source: https://huggingface.co/datasets/language-and-voice-lab/samromur_asr
+Source revision: 0326666bee1fab36bf99a2bfdee265179504da73
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Full license: CC-BY-4.0.txt
+https://creativecommons.org/licenses/by/4.0/legalcode
+Attribution: Samrómur, Language and Voice Lab, Reykjavík University, and the
+Almannarómur Center for Language Technology; Mollberg et al. (2020).
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
+identifies the dataset revision, split, speaker ID, source file, audio hash,
+encoder hash and preprocessing for each reference.
+
+The reference data keep their source license, separately from the PageNarrator
+implementation and the OmniVoice model.

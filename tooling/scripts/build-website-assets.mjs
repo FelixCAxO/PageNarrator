@@ -1,5 +1,5 @@
 // Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-import { readFile, writeFile, readdir } from 'node:fs/promises';
+import { readFile, writeFile, readdir, unlink } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
 
@@ -35,4 +35,8 @@ headers = headers.includes(start)
   ? headers.replace(new RegExp(`${start}[\\s\\S]*?${end}\\n?`, 'u'), cacheBlock)
   : `${headers.trimEnd()}\n\n${cacheBlock}`;
 await writeFile(`${root}/_headers`, headers);
+const retained = new Set(variants.map(variant => variant.src.slice('/assets/'.length)));
+for (const file of await readdir(`${root}/assets`)) {
+  if (/^home-hero-\d+-[a-f0-9]{12}\.webp$/u.test(file) && !retained.has(file)) await unlink(`${root}/assets/${file}`);
+}
 console.log(JSON.stringify({ heroVariants: variants, fontStylesheet: 'self-hosted' }));

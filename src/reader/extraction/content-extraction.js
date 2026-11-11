@@ -53,6 +53,8 @@ function createStreamedArticleResponse(article, speechChunkOptions, documentRef)
   return {
     ...article,
     text: '',
+    // Detection needs the article, not just the first loaded chunks (a mid-page start can be one short caption).
+    languageSample: String(article.text || '').slice(0, 3000),
     chunks: Array.isArray(article.chunks) ? article.chunks : [],
     streaming: true,
     chunkStreamId: streamId,

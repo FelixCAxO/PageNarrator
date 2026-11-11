@@ -20,6 +20,7 @@ describe('PDF viewer progress vertical slice', () => {
 
     const article = await createPdfViewerStreamingArticle({
       tab: { id: 12, title: 'Mock PDF' },
+      sourceUrl: 'https://example.test/mock.pdf',
       startPage: 3,
       sendMessage,
     });
@@ -32,7 +33,9 @@ describe('PDF viewer progress vertical slice', () => {
       totalReadableWordCount: article.totalReadableWordCount,
     });
 
-    expect(getStreamMetadata).toHaveBeenCalledWith({ type: 'getPdfStreamMetadata', startPage: 3 });
+    expect(getStreamMetadata).toHaveBeenCalledWith({
+      type: 'getPdfStreamMetadata', sourceUrl: 'https://example.test/mock.pdf', startPage: 3,
+    });
     expect(article.startPosition).toMatchObject({ pageNumber: 3 });
     expect(view.remainingLabel).toBe('120 words left');
   });

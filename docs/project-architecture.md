@@ -26,7 +26,7 @@ PDF scripts never execute. Highlights leave the host page's layout intact.
 
 ## Engines and storage
 
-Kokoro is the default: ten English voices, WebGPU when available, and a CPU / WebAssembly fallback. OmniVoice is experimental and requires WebGPU. During active reading, switching prepares the incoming engine and audio before releasing the previous model; both may be resident during the handoff. An idle switch releases the previous model first.
+New installations select OmniVoice on devices with WebGPU and fp16. Kokoro offers ten English voices with WebGPU and a CPU / WebAssembly fallback. OmniVoice Voice Cloning uses the same playback engine and stores personal references in trusted extension storage. During active reading, switching prepares the incoming engine and audio before releasing the previous model. Both may be resident during the handoff. An idle switch releases the previous model first.
 
 Incognito access is disabled in the manifest until reading metadata can be isolated from persistent extension storage. Kokoro workers get up to two seconds for graceful shutdown before forced termination, including after a stalled GPU operation.
 

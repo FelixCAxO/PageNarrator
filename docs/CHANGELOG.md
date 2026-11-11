@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.5 (2026-11-10)
+
+- Add 831 OmniVoice voices in 32 languages, with saved choices per language.
+- Create, record, preview, and save personal voices in Voice Cloning. Audio and speech processing stay on your device.
+- Match voices to the page language automatically. New installations use OmniVoice when supported and Kokoro otherwise. Saved engine choices are kept.
+- Open PDFs only after a read request. Skip equations and tables by default, with a switch in advanced settings to include them.
+
+The maintainer waived physical hardware testing and independent listening reviews for this version. Both remain not performed; listening quality and hardware performance are unverified. The [release policy](../tooling/config/release-policy.json) records the waiver.
+
 ## 1.0.4 (2026-11-06)
 
 - Keep PDF narration working with unfamiliar unembedded font names by substituting bundled fonts while preserving character mappings and PDF spacing.

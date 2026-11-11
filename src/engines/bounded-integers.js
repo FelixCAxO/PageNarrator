@@ -20,6 +20,11 @@ export function integerAddRange(a, b) {
   return Object.freeze({ min, max });
 }
 
+export function integerSubtractRange(a, b) {
+  if (!a || !b) throw new Error('Integer subtraction requires proven operand ranges.');
+  return integerAddRange(a, { min: -b.max, max: -b.min });
+}
+
 export function integerMultiplyRange(a, b) {
   if (!a || !b) throw new Error('Integer multiplication requires proven operand ranges.');
   const products = [a.min * b.min, a.min * b.max, a.max * b.min, a.max * b.max];

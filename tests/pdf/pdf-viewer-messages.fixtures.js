@@ -25,11 +25,16 @@ export async function loadViewer(importViewer = () => import('../../src/pdf-view
     await importViewer();
     const listener = fixture.listeners?.[0];
     if (!listener) throw new Error('Viewer fixture did not register its message handler.');
-    const ready = await sendViewerMessage(listener, { type: 'getPdfStreamMetadata' });
+    const ready = await requestViewerLoad(listener, fixture.dom.window.location);
     if (!ready?.ok) throw new Error(ready?.error || 'Viewer fixture initialization failed.');
   })();
   await fixture.loading;
   if (fixture.closing) throw new Error('Viewer fixture was closed while loading.');
+}
+
+export function requestViewerLoad(listener, location = globalThis.location) {
+  const sourceUrl = new URL(location.href).searchParams.get('src');
+  return sendViewerMessage(listener, { type: 'getPdfStreamMetadata', sourceUrl });
 }
 
 export async function cleanupViewerDom() {

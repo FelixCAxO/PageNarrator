@@ -58,6 +58,18 @@
           "scope": "Recorded duration and PCM reference-parity failures remain failed/unqualified, never passed or not performed. Preserve the failed diagnostics and numerical thresholds. Source/model integrity, finite/signal checks, operator numerical bounds, software functional checks and OCR/PDF checks remain required. This acceptance does not extend to v1.0.2 or later and does not authorize production arithmetic changes."
         }
       ]
+    },
+    {
+      "version": "1.0.5",
+      "authorizedBy": "user",
+      "authorizedOn": "2026-11-10",
+      "waivedGateIds": [
+        "physical-hardware",
+        "human-listening-reviews"
+      ],
+      "reason": "The maintainer explicitly waived physical hardware testing and human/listening reviews for v1.0.5.",
+      "scope": "Physical hardware and human/listening reviews remain not performed, never passed or verified, and establish no hardware performance or listening quality. Only v1.0.5 is covered; later versions require fresh evidence or a new explicit decision. Other software, source/model integrity, numerical operator, OCR and PDF checks remain required.",
+      "acceptedLimitations": []
     }
   ]
 }

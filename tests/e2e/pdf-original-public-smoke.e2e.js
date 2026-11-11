@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
-import { getExtensionId, launchExtensionContext } from './extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer } from './extension-fixture.js';
 
 // Versioned public inputs are cached locally; enabling this lane requires them.
 // This checks packaged parsing/viewer behavior, not transcription or timing quality.
@@ -30,7 +30,6 @@ for (const id of ['2604.17745v2', '2604.19299v1', '2604.19638v1']) {
       context.on('request', request => {
         if (/^https?:/.test(request.url()) && !request.url().startsWith(`${origin}/`)) report.externalRequests.push(request.url());
       });
-      const extensionId = await getExtensionId(context);
       const page = await context.newPage();
       page.on('worker', worker => report.workers.push(worker.url()));
       page.on('pageerror', error => report.errors.push(error.message));
@@ -38,7 +37,7 @@ for (const id of ['2604.17745v2', '2604.19299v1', '2604.19638v1']) {
         if (request.url().endsWith('/assets/pdf-engine/pdf.wasm')) report.originalParserLoaded = true;
       });
       const started = performance.now();
-      await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(`${origin}/document.pdf`)}`);
+      await navigatePdfViewer(page, `${origin}/document.pdf`);
       await expect(page.locator('[data-page-number="1"] .textLayer')).not.toBeEmpty({ timeout: 60_000 });
       report.firstSelectablePageMs = performance.now() - started;
       const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);

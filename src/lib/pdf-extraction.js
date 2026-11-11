@@ -3,6 +3,7 @@ import { chunkText } from './speech-chunks.js';
 import { TUNING_CONFIG } from './tuning-config.js';
 import { createLogger } from './logger.js';
 import { createPdfPageModel, renderPdfPageModel } from './pdf-page-model.js';
+import { getPlaybackSettings } from './playback-settings.js';
 import { PDF_WASM_ASSET_PATH } from '../pdf/assets.js';
 import { binaryResource, MAX_SOURCE_BYTES } from '../pdf/binary-resource.js';
 export { PDF_WASM_ASSET_PATH } from '../pdf/assets.js';
@@ -59,7 +60,7 @@ function safeDecodeURIComponent(value = '') {
   }
 }
 
-function isUsableSourceUrl(value = '') {
+export function isFetchablePdfSourceUrl(value = '') {
   const parsed = parseUrl(value);
   return Boolean(parsed && FETCHABLE_PDF_SOURCE_PROTOCOLS.has(parsed.protocol));
 }
@@ -85,7 +86,7 @@ function getExtensionPdfViewerSource(parsed) {
 
   const rawQuery = parsed.search.startsWith('?') ? parsed.search.slice(1) : '';
   const decodedQuery = safeDecodeURIComponent(rawQuery);
-  return isUsableSourceUrl(decodedQuery) ? decodedQuery : null;
+  return isFetchablePdfSourceUrl(decodedQuery) ? decodedQuery : null;
 }
 
 export function getPdfSourceUrl(tab = {}) {
@@ -170,7 +171,7 @@ export function isLikelyPdfTab(tab = {}) {
 }
 
 export function canFetchPdfSourceUrl(tab = {}) {
-  return isUsableSourceUrl(getPdfSourceUrl(tab));
+  return isFetchablePdfSourceUrl(getPdfSourceUrl(tab));
 }
 
 function hasPdfMagic(bytes) {
@@ -347,6 +348,7 @@ export async function extractPdfTextFromData(data, {
   cMapUrl,
   standardFontDataUrl,
   signal = null,
+  skipPdfEquationsAndTables = false,
 } = {}) {
   const pdfjs = await loadPdfjs(pdfjsImpl);
   configurePdfWorker(pdfjs, { runtime });
@@ -360,7 +362,7 @@ export async function extractPdfTextFromData(data, {
   });
 
   try {
-    return await extractPdfTextFromDocument(document, { title, url, startPage, pdfjs });
+    return await extractPdfTextFromDocument(document, { title, url, startPage, pdfjs, skipPdfEquationsAndTables });
   } finally {
     await destroyPdfLoad(document, loadingTask);
   }
@@ -371,6 +373,7 @@ export async function extractPdfTextFromDocument(document, {
   url = '',
   startPage = 1,
   pdfjs = null,
+  skipPdfEquationsAndTables = false,
 } = {}) {
   const firstPage = clampPdfPage(startPage, document.numPages);
   const pageRecords = [];
@@ -392,7 +395,7 @@ export async function extractPdfTextFromDocument(document, {
       sampleRunningContent,
       createNearbyRunningContentDetector(record, pageRecords),
     );
-    const pageChunk = createPdfPageChunk(record, { runningContent });
+    const pageChunk = createPdfPageChunk(record, { runningContent, skipPdfEquationsAndTables });
     if (pageChunk) {
       textPageChunkCount += 1;
       chunks.push(pageChunk);
@@ -431,6 +434,7 @@ export async function* iteratePdfSpeechChunks(document, {
   pdfjs = null,
   recognizePage = null,
   stopOnRasterImage = false,
+  skipPdfEquationsAndTables = false,
 } = {}) {
   const firstPage = clampPdfPage(startPage, document.numPages);
   let yieldedChunks = false;
@@ -441,6 +445,7 @@ export async function* iteratePdfSpeechChunks(document, {
     if ((record.hasOutlinedText || record.hasUnknownType3Text || record.hasUnmappedText) && record.needsOcr) throw createScannedPdfUnsupportedError();
     const pageChunk = createPdfPageChunk(record, {
       runningContent: filterRunningContent ? runningContent : null,
+      skipPdfEquationsAndTables,
     });
     if (!pageChunk) {
       // A native-text total cannot describe an OCR document; stop counting early.
@@ -579,9 +584,11 @@ export async function readPdfPageRecord(document, pageNumber, { pdfjs = null, re
   }
 }
 
-function createPdfPageChunk(record, { runningContent = null } = {}) {
+function createPdfPageChunk(record, { runningContent = null, skipPdfEquationsAndTables = false } = {}) {
   const lines = (record.lines || []).filter((line) => !runningContent?.shouldDrop?.(line, record));
-  const { anchorText, speech, narratedOriginalIndices } = renderPdfPageModel(lines, { pageView: record.pageView });
+  const { anchorText, speech, narratedOriginalIndices } = renderPdfPageModel(lines, {
+    pageView: record.pageView, skipPdfEquationsAndTables,
+  });
   if (!anchorText || !speech) return null;
   const itemOrders = new Map(record.model.orderedItems.map((item, order) => [item.originalIndex, order]));
 
@@ -918,6 +925,7 @@ export async function extractPdfArticle(options = {}) {
   const fetchImpl = hasInjectedFetch ? options.fetch : globalThis.fetch;
   const sourceUrl = getPdfSourceUrl(tab);
   if (!sourceUrl) throw new Error('No PDF URL found.');
+  const { skipPdfEquationsAndTables } = await getPlaybackSettings({ autoRepair: false });
 
   const documentParams = !requirePdfData && (!hasInjectedFetch || pdfjsImpl)
     ? getPdfDocumentParams(sourceUrl, {
@@ -940,6 +948,7 @@ export async function extractPdfArticle(options = {}) {
         url: sourceUrl,
         startPage,
         speechChunkOptions,
+        skipPdfEquationsAndTables,
         pdfjs,
         loadingTask,
       });
@@ -951,6 +960,7 @@ export async function extractPdfArticle(options = {}) {
         url: sourceUrl,
         startPage,
         pdfjs,
+        skipPdfEquationsAndTables,
       });
     } finally {
       await destroyPdfLoad(document, loadingTask);
@@ -978,6 +988,7 @@ export async function extractPdfArticle(options = {}) {
       url: sourceUrl,
       startPage,
       speechChunkOptions,
+      skipPdfEquationsAndTables,
       pdfjs,
       loadingTask,
     });
@@ -993,6 +1004,7 @@ export async function extractPdfArticle(options = {}) {
     cMapUrl,
     standardFontDataUrl,
     signal,
+    skipPdfEquationsAndTables,
   });
 }
 
@@ -1021,6 +1033,7 @@ function createStreamingPdfArticle(document, {
   speechChunkOptions = null,
   pdfjs = null,
   loadingTask = null,
+  skipPdfEquationsAndTables = false,
 } = {}) {
   const firstPage = clampPdfPage(startPage, document.numPages);
   const chunkOptions = normalizeSpeechChunkOptions(speechChunkOptions);
@@ -1032,7 +1045,7 @@ function createStreamingPdfArticle(document, {
     url,
     pageCount: document.numPages,
     streaming: true,
-    chunkStream: streamPdfDocumentChunks(document, { startPage: firstPage, ...chunkOptions, pdfjs, loadingTask }),
+    chunkStream: streamPdfDocumentChunks(document, { startPage: firstPage, ...chunkOptions, pdfjs, loadingTask, skipPdfEquationsAndTables }),
     ...(firstPage > 1 ? {
       startPosition: {
         source: 'page',
@@ -1049,9 +1062,10 @@ async function* streamPdfDocumentChunks(document, {
   targetMinLen = DEFAULT_PDF_SPEECH_CHUNK_TARGET_MIN_LEN,
   pdfjs = null,
   loadingTask = null,
+  skipPdfEquationsAndTables = false,
 } = {}) {
   try {
-    yield* iteratePdfSpeechChunks(document, { startPage, maxLen, targetMinLen, pdfjs });
+    yield* iteratePdfSpeechChunks(document, { startPage, maxLen, targetMinLen, pdfjs, skipPdfEquationsAndTables });
   } finally {
     await destroyPdfLoad(document, loadingTask);
   }

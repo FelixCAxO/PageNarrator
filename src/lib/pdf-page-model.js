@@ -2,6 +2,7 @@
 import { isNumericMatrix, isNumericMatrixValue, numericMatrixLabel } from './numeric-matrix.js';
 import { getVerticalPdfRegions, isVerticalPdfItem, joinVerticalText } from './pdf-vertical-model.js';
 import { pdfNarrationSource } from '../pdf/symbol-fonts.js';
+import { stripPdfEquations } from './pdf-equations.js';
 
 const RTL_LETTER_SHARE_THRESHOLD = 0.3;
 const LIST_PREFIX = /^(?:[•◦▪‣*-]|\d{1,3}[.)]|[a-z][.)])\s+/iu;
@@ -158,7 +159,7 @@ export function createPdfPageModel(items = [], {
 }
 
 export function renderPdfPageModel(lines = [], {
-  pageView = [0, 0, 612, 792], observedWords = getObservedWords(lines),
+  pageView = [0, 0, 612, 792], observedWords = getObservedWords(lines), skipPdfEquationsAndTables = false,
 } = {}) {
   const visibleLines = lines.filter((line) => !isImmediatePdfFurniture(line, pageView))
     .map((line) => {
@@ -170,34 +171,45 @@ export function renderPdfPageModel(lines = [], {
         text: getMeaningfulLineText(line, pageView, narrationSourceText, observedWords),
       };
     });
-  const renderedLines = visibleLines.filter((line) => line.text);
+  const renderedLines = visibleLines.filter((line) => line.text
+    && !(skipPdfEquationsAndTables && line.role === 'table-row'));
   const speechLines = prepareSpeechLines(renderedLines, pageView, observedWords);
   const anchorText = visibleLines.map((line) => line.rawText).filter(Boolean).join('\n\n');
   const speechParts = [];
+  const narratedLines = [];
+  const filterMath = skipPdfEquationsAndTables ? stripPdfEquations : text => text;
 
   for (let index = 0; index < speechLines.length;) {
     const line = speechLines[index];
     if (line.role === 'list-item') {
       const items = [];
       while (index < speechLines.length && speechLines[index].role === 'list-item') {
-        items.push(stripListPrefix(speechLines[index].text));
+        const text = filterMath(stripListPrefix(speechLines[index].text));
+        if (text) {
+          items.push(text);
+          narratedLines.push(speechLines[index]);
+        }
         index += 1;
       }
-      speechParts.push(`${items.map(stripTerminalPunctuation).join('; ')}.`);
+      if (items.length) speechParts.push(`${items.map(stripTerminalPunctuation).join('; ')}.`);
       continue;
     }
 
     if (line.role === 'title') {
-      const titleLines = [line.text];
-      index += 1;
+      const titleLines = [];
       while (index < speechLines.length && speechLines[index].role === 'title') {
-        titleLines.push(speechLines[index].text);
+        const text = filterMath(speechLines[index].text);
+        if (text) {
+          titleLines.push(text);
+          narratedLines.push(speechLines[index]);
+        }
         index += 1;
       }
       speechParts.push(withTerminal(titleLines.join(' '), ':'));
       continue;
     }
 
+    const firstIndex = index;
     let narrationSourceText = line.narrationSourceText;
     while (index + 1 < speechLines.length
       && canJoinWrappedLine(speechLines[index], speechLines[index + 1])) {
@@ -209,14 +221,17 @@ export function renderPdfPageModel(lines = [], {
     }
     // Each physical line already passed metadata filtering with its own geometry.
     // A wrapped paragraph must not inherit only the first line's font height.
-    const text = formatNarrationText(stripMetadataFragments(stripCitationMarkers(narrationSourceText)), observedWords);
+    const text = filterMath(formatNarrationText(stripMetadataFragments(stripCitationMarkers(narrationSourceText)), observedWords));
     speechParts.push(withTerminal(text, '.'));
+    if (!skipPdfEquationsAndTables || text) {
+      narratedLines.push(...speechLines.slice(firstIndex, index + 1).filter(candidate => filterMath(candidate.text)));
+    }
     index += 1;
   }
 
   return {
     anchorText,
-    narratedOriginalIndices: speechLines.flatMap(line => line.parts.filter(part => !part.numericMatrix).map(part => part.originalIndex)),
+    narratedOriginalIndices: narratedLines.flatMap(line => line.parts.filter(part => !part.numericMatrix).map(part => part.originalIndex)),
     speech: speechParts.join(' ').replace(/\s+/gu, ' ').trim(),
   };
 }

@@ -1,6 +1,6 @@
 {
   "name": "pagenarrator",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "private": true,
   "description": "Free, open-source text-to-speech extension for Chrome and Chromium. Read webpages and PDFs aloud with on-device AI voices. No account or usage quota.",
   "license": "GPL-3.0-or-later",

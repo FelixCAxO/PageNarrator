@@ -32,7 +32,7 @@ export function resolveExtensionDir({ extensionDir = null, testInfo = null, env 
   return path.resolve(selected);
 }
 
-export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null, backgroundThrottling = false, browserCommitBytes = null } = {}) {
+export async function launchExtensionContext({ extensionDir = null, hostPermissions = [], testInfo = null, locale = null, backgroundThrottling = false, browserCommitBytes = null, browserArgs = [] } = {}) {
   if (locale && !/^[a-z]{2}(?:_[A-Z]{2})?$/u.test(locale)) throw new Error('Expected a Chrome locale code.');
   if (browserCommitBytes !== null && (!Number.isSafeInteger(browserCommitBytes) || browserCommitBytes <= 0)) throw new Error('Expected a positive browser commit limit in bytes.');
   const selectedExtensionDir = resolveExtensionDir({ extensionDir, testInfo });
@@ -54,6 +54,7 @@ export async function launchExtensionContext({ extensionDir = null, hostPermissi
       `--load-extension=${preparedExtension.extensionDir}`,
       '--autoplay-policy=no-user-gesture-required',
       ...browserAdapterConfiguration().args,
+      ...browserArgs,
     ],
   };
   const nativeBrowser = backgroundThrottling || browserCommitBytes !== null
@@ -499,11 +500,22 @@ export async function createPdfDataUrl(fileName) {
 }
 
 export async function openPdfViewer(context, fileNameOrUrl) {
-  const extensionId = await getExtensionId(context);
   const page = await context.newPage();
   const pdfUrl = String(fileNameOrUrl || '').startsWith('data:')
     ? fileNameOrUrl
     : await createPdfDataUrl(fileNameOrUrl);
-  await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(pdfUrl)}`);
+  await navigatePdfViewer(page, pdfUrl);
   return page;
+}
+
+export async function navigatePdfViewer(page, sourceUrl) {
+  const worker = await getServiceWorker(page.context());
+  const extensionId = new URL(worker.url()).hostname;
+  await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(sourceUrl)}`);
+  const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);
+  // Viewer-only fixtures start a trusted read without initializing speech models.
+  return worker.evaluate(({ tabId, sourceUrl }) => chrome.tabs.sendMessage(tabId, {
+    type: 'getPdfStreamMetadata',
+    sourceUrl,
+  }), { tabId, sourceUrl });
 }

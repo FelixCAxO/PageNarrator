@@ -3,8 +3,8 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readFile } from 'node:fs/promises';
 import {
-  getExtensionId,
   launchExtensionContext,
+  navigatePdfViewer,
   openCorpusArticle,
   openExtensionPage,
   seedFlowTestFlags,
@@ -43,6 +43,8 @@ test.describe('All Functions & Settings E2E Verification', () => {
       await expect(popup.locator('#popup-area-opacity')).toHaveValue('0.1');
       await expect(popup.locator('#popup-word-opacity')).toHaveValue('0.38');
 
+      // New installs default to OmniVoice where WebGPU has fp16; these controls belong to Kokoro.
+      await selectNativeOption(popup.locator('#popup-tts-engine'), 'kokoro');
       // 1. Voice switching across built-in Kokoro voices
       await selectNativeOption(popup.locator('#popup-voice'), 'am_fenrir');
       await expect(popup.locator('#popup-settings-summary')).toContainText('Fenrir');
@@ -250,12 +252,11 @@ test.describe('All Functions & Settings E2E Verification', () => {
   test('5. PDF viewer loads, extracts text, handles page navigation and starts reading', async () => {
     const { context, cleanup } = await launchExtensionContext();
     try {
-      const extensionId = await getExtensionId(context);
       const fixtureBytes = await readFile(path.join(pdfFixtureDir, 'single-column.pdf'));
       const pdfDataUrl = `data:application/pdf;base64,${fixtureBytes.toString('base64')}`;
 
       const pdfPage = await context.newPage();
-      await pdfPage.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(pdfDataUrl)}`);
+      await navigatePdfViewer(pdfPage, pdfDataUrl);
 
       // Verify PDF viewer DOM
       await expect(pdfPage.locator('#pdf-status')).toContainText('1 page loaded', { timeout: 15_000 });

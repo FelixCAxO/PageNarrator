@@ -2,8 +2,9 @@ import { readFileSync } from 'node:fs';
 import { JSDOM } from 'jsdom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { createPopupApp } from '../../src/popup.js';
-import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { getOmniVoiceLegacyVoice, getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 import { MESSAGE_TYPES, READER_ACTION_TYPES } from '../../src/lib/message-types.js';
+import { saveDetectedVoice } from '../../src/platform/storage/settings-store.js';
 
 const htmlContent = readFileSync(new URL('../../src/popup.html', import.meta.url), 'utf8');
 
@@ -130,7 +131,10 @@ function createPopupHarness(overrides = {}) {
 
 describe('Popup controller flows: Read page, Read selected, and self-repair', () => {
   it('saves OmniVoice design in the toolbar popup and restores the previous Kokoro voice', async () => {
-    const harness = createPopupHarness({ storage: { playbackSettings: { language: 'en', voice: 'am_michael', voicesByLanguage: { en: 'am_michael' } } } });
+    const swedish = getOmniVoiceVoices('sv', 'male');
+    const harness = createPopupHarness({ storage: { playbackSettings: {
+      language: 'en', voice: 'am_michael', voicesByLanguage: { en: 'am_michael' }, omniVoice: { voices: { sv: swedish[0] } },
+    } } });
     await harness.popupApp.init();
     const { document, dom, storageData } = harness;
     const engine = document.getElementById('popup-tts-engine');
@@ -157,10 +161,23 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(document.getElementById('popup-omnivoice-pitch')).toBeNull();
     expect(document.getElementById('popup-omnivoice-age')).toBeNull();
     const variation = document.getElementById('popup-omnivoice-variation');
-    variation.value = '4';
-    variation.dispatchEvent(new dom.window.Event('input'));
-    await vi.waitFor(() => expect(storageData.playbackSettings.omniVoice.variation).toBe(getOmniVoiceVariationOrder('sv', 'female')[3]));
-    expect(document.getElementById('popup-omnivoice-variation-out').textContent).toBe('4 / 10');
+    const gender = document.getElementById('popup-omnivoice-gender');
+    gender.value = 'male';
+    gender.dispatchEvent(new dom.window.Event('input'));
+    await vi.waitFor(() => expect(storageData.playbackSettings.omniVoice).toMatchObject({ gender: 'male', voices: { sv: swedish[0] } }));
+    expect(variation.max).toBe(String(swedish.length));
+    expect(document.getElementById('popup-omnivoice-variation-out').textContent).toBe(`1 / ${swedish.length}`);
+    // Another language shows its own voice; the Swedish choice stays saved.
+    language.value = 'de';
+    language.dispatchEvent(new dom.window.Event('change'));
+    await vi.waitFor(() => expect(storageData.playbackSettings.language).toBe('de'));
+    expect(variation.value).toBe('1');
+    expect(storageData.playbackSettings.omniVoice.voices).toEqual({ sv: swedish[0] });
+    language.value = 'sv';
+    language.dispatchEvent(new dom.window.Event('change'));
+    await vi.waitFor(() => expect(storageData.playbackSettings.language).toBe('sv'));
+    expect(variation.value).toBe('1');
+    expect(gender.value).toBe('male');
     expect(storageData.playbackSettings.voice).toBe('am_michael');
     expect(storageData.playbackSettings.voicesByLanguage).toEqual({ en: 'am_michael' });
     engine.value = 'kokoro';
@@ -174,6 +191,131 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     dom.window.close();
   });
 
+  it('follows a detection switch to German OmniVoice and clears the auto flag when the user picks an engine', async () => {
+    const harness = createPopupHarness();
+    const storageListeners = [];
+    harness.chrome.storage.onChanged = { addListener: vi.fn(listener => storageListeners.push(listener)) };
+    await harness.popupApp.init();
+    const { document, dom, storageData } = harness;
+    const engine = document.getElementById('popup-tts-engine');
+    const language = document.getElementById('popup-language');
+    const oldValue = storageData.playbackSettings;
+    const newValue = { ...oldValue, ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true };
+    storageData.playbackSettings = newValue;
+    for (const listener of storageListeners) listener({ playbackSettings: { oldValue, newValue } }, 'local');
+    expect(engine.value).toBe('omnivoice');
+    expect(language.value).toBe('de');
+    expect(language.closest('label').hidden).toBe(false);
+    // A later save from the popup keeps the detected voice instead of reverting to stale controls.
+    const speed = document.getElementById('popup-speed');
+    speed.value = '1.5';
+    speed.dispatchEvent(new dom.window.Event('input'));
+    await vi.waitFor(() => expect(storageData.playbackSettings.speed).toBe(1.5));
+    expect(storageData.playbackSettings).toMatchObject({ ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true });
+    engine.value = 'kokoro';
+    engine.dispatchEvent(new dom.window.Event('change'));
+    await vi.waitFor(() => expect(storageData.playbackSettings.ttsEngine).toBe('kokoro'));
+    expect(storageData.playbackSettings).not.toHaveProperty('ttsEngineAuto');
+    dom.window.close();
+  });
+
+  it.each(['before', 'after'])('keeps a detected voice when its notification arrives %s a waiting popup save', async notification => {
+    const harness = createPopupHarness();
+    const listeners = [];
+    harness.chrome.storage.onChanged = { addListener: listener => listeners.push(listener) };
+    let queue = Promise.resolve();
+    vi.stubGlobal('navigator', { locks: { request: (_name, write) => {
+      const result = queue.then(write);
+      queue = result.catch(() => undefined);
+      return result;
+    } } });
+    let releaseDetection;
+    const held = new Promise(resolve => { releaseDetection = resolve; });
+    let detectionStarted;
+    const started = new Promise(resolve => { detectionStarted = resolve; });
+    let detectionChange;
+    harness.chrome.storage.local.set.mockImplementation(async update => {
+      if (update.playbackSettings.ttsEngineAuto && !detectionChange) {
+        detectionStarted();
+        await held;
+        const oldValue = harness.storageData.playbackSettings;
+        Object.assign(harness.storageData, update);
+        detectionChange = { playbackSettings: { oldValue, newValue: update.playbackSettings } };
+        if (notification === 'before') for (const listener of listeners) listener(detectionChange, 'local');
+      } else Object.assign(harness.storageData, update);
+    });
+    try {
+      await harness.popupApp.init();
+      const detecting = saveDetectedVoice({ engine: 'omnivoice', language: 'de', autoEngine: true }, { storage: harness.chrome.storage.local });
+      await started;
+      harness.popupApp.els.speed.value = '1.5';
+      const saving = harness.popupApp.saveSettings();
+      releaseDetection();
+      await detecting;
+      await saving;
+      if (notification === 'after') for (const listener of listeners) listener(detectionChange, 'local');
+      expect(harness.storageData.playbackSettings).toMatchObject({ ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true, speed: 1.5 });
+      expect(harness.popupApp.els.ttsEngine.value).toBe('omnivoice');
+      expect(harness.popupApp.els.language.value).toBe('de');
+    } finally {
+      releaseDetection();
+      vi.unstubAllGlobals();
+      harness.dom.window.close();
+    }
+  });
+
+  it('keeps a newer user voice selection when an earlier popup save is broadcast', async () => {
+    const harness = createPopupHarness();
+    const listeners = [];
+    harness.chrome.storage.onChanged = { addListener: listener => listeners.push(listener) };
+    let finishSave;
+    let first = true;
+    harness.chrome.storage.local.set.mockImplementation(update => {
+      const commit = () => {
+        const oldValue = harness.storageData.playbackSettings;
+        Object.assign(harness.storageData, update);
+        for (const listener of listeners) listener({ playbackSettings: { oldValue, newValue: update.playbackSettings } }, 'local');
+      };
+      if (first) {
+        first = false;
+        return new Promise(resolve => { finishSave = () => { commit(); resolve(); }; });
+      }
+      commit();
+      return Promise.resolve();
+    });
+    try {
+      await harness.popupApp.init();
+      const { ttsEngine, language } = harness.popupApp.els;
+      ttsEngine.value = 'omnivoice';
+      ttsEngine.dispatchEvent(new harness.dom.window.Event('change'));
+      await vi.waitFor(() => expect(finishSave).toBeTypeOf('function'));
+      language.value = 'sv';
+      language.dispatchEvent(new harness.dom.window.Event('change'));
+      finishSave();
+      await vi.waitFor(() => expect(harness.storageData.playbackSettings).toMatchObject({ ttsEngine: 'omnivoice', language: 'sv' }));
+      expect(language.value).toBe('sv');
+    } finally { harness.dom.window.close(); }
+  });
+
+  it('retries an explicit voice choice after a transient settings write failure', async () => {
+    const harness = createPopupHarness();
+    let failSave;
+    harness.chrome.storage.local.set.mockImplementationOnce(() => new Promise((_resolve, reject) => { failSave = reject; }));
+    try {
+      await harness.popupApp.init();
+      const engine = harness.popupApp.els.ttsEngine;
+      engine.value = 'omnivoice';
+      engine.dispatchEvent(new harness.dom.window.Event('change'));
+      await vi.waitFor(() => expect(failSave).toBeTypeOf('function'));
+      const saving = harness.popupApp.saveSettings();
+      failSave(new Error('Temporary storage failure'));
+      await expect(saving).rejects.toThrow('Temporary storage failure');
+      await harness.popupApp.saveSettings();
+      expect(harness.storageData.playbackSettings.ttsEngine).toBe('omnivoice');
+      expect(harness.storageData.playbackSettings).not.toHaveProperty('ttsEngineAuto');
+    } finally { harness.dom.window.close(); }
+  });
+
   it.each(['en', 'sv'])('restores saved whisper after populating the %s language picker', async (language) => {
     const harness = createPopupHarness({ storage: { playbackSettings: {
       ttsEngine: 'omnivoice', language, omniVoice: { gender: 'male', variation: 4, whisper: true },
@@ -183,8 +325,10 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(whisper.checked).toBe(true);
     expect(whisper.disabled).toBe(false);
     expect(harness.document.getElementById('popup-language').value).toBe(language);
-    expect(harness.document.getElementById('popup-omnivoice-variation').value)
-      .toBe(String(getOmniVoiceVariationOrder(language, 'male').indexOf(4) + 1));
+    const legacyVoice = getOmniVoiceLegacyVoice(language, 'male', 4);
+    const expectedRank = Math.max(1, getOmniVoiceVoices(language, 'male').indexOf(legacyVoice) + 1);
+    expect(harness.document.getElementById('popup-omnivoice-gender').value).toBe('male');
+    expect(harness.document.getElementById('popup-omnivoice-variation').value).toBe(String(expectedRank));
     harness.dom.window.close();
   });
 
@@ -196,6 +340,7 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
       finishSave = () => { Object.assign(harness.storageData, data); resolve(); };
     }));
     harness.document.getElementById('popup-tts-engine').value = 'omnivoice';
+    harness.document.getElementById('popup-tts-engine').dispatchEvent(new harness.dom.window.Event('change'));
     const reading = action === 'prepare' ? harness.popupApp.prepareVoice()
       : harness.popupApp.startRead({ type: READER_ACTION_TYPES.TOGGLE_PLAYBACK }, harness.popupApp.els.start);
     await vi.waitFor(() => expect(finishSave).toBeTypeOf('function'));
@@ -312,6 +457,25 @@ describe('Popup controller flows: Read page, Read selected, and self-repair', ()
     expect(actionReq).toBeDefined();
     expect(actionReq.action).toEqual({ type: READER_ACTION_TYPES.READ_SELECTED });
     expect(actionReq.tab).toMatchObject({ id: 42, url: 'https://news.example.test/article' });
+  });
+
+  it.each([
+    ['pagenarrator', 53],
+    ['another-extension', 42],
+  ])('uses the right PDF target when %s owns the active viewer', async (owner, expectedTabId) => {
+    const harness = createPopupHarness({
+      tab: { id: 53, url: `chrome-extension://${owner}/src/pdf-viewer.html?src=https%3A%2F%2Fexample.test%2Ffirst.pdf#page=7` },
+      storage: { readableTabTarget: { tabSnapshot: { id: 42, url: 'https://example.test/last.pdf' } } },
+    });
+    harness.chrome.tabs.getCurrent.mockResolvedValue(undefined);
+    await harness.popupApp.init();
+    await harness.popupApp.startRead({ type: READER_ACTION_TYPES.TOGGLE_PLAYBACK }, harness.document.getElementById('start-reading'));
+
+    expect(harness.sentMessages.at(-1)).toMatchObject({
+      type: MESSAGE_TYPES.READER_ENGINE_ACTION_REQUEST,
+      tab: { id: expectedTabId },
+    });
+    harness.dom.window.close();
   });
 
   it.each([

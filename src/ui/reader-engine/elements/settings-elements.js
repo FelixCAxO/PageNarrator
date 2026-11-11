@@ -17,6 +17,8 @@ export function getReaderEngineSettingsElements(documentRef = globalThis.documen
     omniVoiceVariation: byId('omnivoice-variation'),
     omniVoiceVariationOut: byId('omnivoice-variation-out'),
     omniVoiceWhisper: byId('omnivoice-whisper'),
+    personalVoiceSettings: byId('personal-voice-settings'),
+    personalVoice: byId('personal-voice-select'),
     speed: byId('speed'),
     speedOut: byId('speed-out'),
     ttsBackendStatus: byId('tts-backend-status'),

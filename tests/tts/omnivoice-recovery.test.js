@@ -1,8 +1,10 @@
 import { afterEach, expect, it, vi } from 'vitest';
 import { createOmniVoiceTts } from '../../src/tts/omnivoice/tts.js';
 import { createOmniVoiceWorker } from '../../src/tts/omnivoice/worker-client.js';
+import { getOmniVoicePreset, getOmniVoiceLegacyVoice, getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const voice = { detectCode: 'sv', omniVoice: { gender: 'female', variation: 4 } };
+const preset = getOmniVoicePreset(getOmniVoiceLegacyVoice('sv', 'female', 4) ?? getOmniVoiceVoices('sv', 'female')[0]);
 const audio = { pcm: Float32Array.of(.1, -.1), sampleRate: 24000 };
 afterEach(() => vi.useRealTimers());
 
@@ -34,7 +36,7 @@ it.each([false, true])('recovers an actual worker error during init=%s with a ne
   expect(workers[0].terminate).toHaveBeenCalledOnce();
   const calls = workers.flatMap(worker => worker.postMessage.mock.calls.map(([message]) => message)).filter(message => message.method === 'synthesize');
   expect(calls).toHaveLength(crashInit ? 1 : 2);
-  for (const call of calls) expect(call.request).toMatchObject({ lang: 'sv', seed: 45, speakerId: 'female-4' });
+  for (const call of calls) expect(call.request).toMatchObject({ lang: 'sv', seed: preset.seed, speakerId: preset.id });
   await tts.dispose();
   expect(workers[1].terminate).toHaveBeenCalledOnce();
 });

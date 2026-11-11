@@ -19,9 +19,9 @@
       <section class="voice-choice" aria-label="Choose voice model" data-i18n-aria-label="ui_9d65bbdb">
         <label class="field">
           <span data-i18n="ui_e6334598">Voice model</span>
-          <select id="popup-tts-engine" aria-describedby="popup-voice-model-help"><option value="kokoro" data-i18n="ui_38319e92">Kokoro (default)</option><option value="omnivoice" data-i18n="ui_a476bebf">OmniVoice (experimental)</option></select>
+          <select id="popup-tts-engine" aria-describedby="popup-voice-model-help"><option value="omnivoice" data-i18n="ui_3eb00ffe">OmniVoice</option><option value="kokoro" selected data-i18n="ui_ef973d2a">Kokoro</option><option value="omnivoice-clone" data-i18n="ui_ad9033da">OmniVoice Voice Cloning</option></select>
         </label>
-        <p id="popup-voice-model-help" class="field-help" role="status" data-i18n="ui_6c6b4ee0">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+        <p id="popup-voice-model-help" class="field-help" role="status" data-i18n="ui_e762d1dd">Ten English voices. Other languages switch to OmniVoice when supported. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
       </section>
 
       <details id="popup-settings" class="settings">
@@ -48,6 +48,10 @@
             <label class="field"><span><span data-i18n="ui_a2a40f30">Voice variation </span><output id="popup-omnivoice-variation-out" for="popup-omnivoice-variation">1 / 10</output></span><input id="popup-omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
             <p class="field-help" data-i18n="ui_16383585">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
             <label class="toggle"><input id="popup-omnivoice-whisper" type="checkbox" /><span data-i18n="ui_d975568d">Whisper</span></label>
+          </div>
+          <div id="popup-personal-voice-settings" hidden>
+            <label class="field"><span data-i18n="ui_8156f492">Personal voice preset</span><select id="popup-personal-voice"></select></label>
+            <a href="./personal-voices.html" target="_blank" rel="noopener" data-i18n="ui_a8cbb251">Manage personal voices</a>
           </div>
 
           <label class="field">
@@ -94,6 +98,7 @@
           <label class="field"><span data-i18n="ui_34c199e6">Processing</span><select id="popup-backend-preference"><option value="auto" data-i18n="ui_126befb6">Auto</option><option value="webgpu">WebGPU</option><option value="wasm" data-i18n="ui_bec07b52">CPU / WebAssembly</option></select></label>
           <label class="toggle"><input id="popup-idle-release" type="checkbox" checked /><span data-i18n="ui_e92f8761">Release voice memory when idle</span></label>
           <label class="toggle"><input id="popup-skip-code" type="checkbox" /><span data-i18n="ui_231b3e4b">Skip code snippets</span></label>
+          <label class="toggle"><input id="popup-skip-pdf-equations-and-tables" type="checkbox" checked /><span data-i18n="ui_ce18c7cb">Skip PDF equations and tables</span></label>
           <div class="color-grid">
             <label class="field"><span data-i18n="ui_456ac053">Area color</span><input id="popup-area-color" type="color" value="#ffdd57" /></label>
             <label class="field"><span data-i18n="ui_10cd7856">Word color</span><input id="popup-word-color" type="color" value="#ffdd57" /></label>
@@ -101,6 +106,7 @@
           <label class="field"><span><span data-i18n="ui_1e4dbab9">Area opacity </span><output id="popup-area-opacity-out">10%</output></span><input id="popup-area-opacity" type="range" min="0" max="1" step="0.01" value="0.1" /></label>
           <label class="field"><span><span data-i18n="ui_1688a6f4">Word opacity </span><output id="popup-word-opacity-out">38%</output></span><input id="popup-word-opacity" type="range" min="0" max="1" step="0.01" value="0.38" /></label>
           <p id="popup-hardware-status" class="field-help" data-i18n="ui_5c338a74">Processing shown after reading starts.</p>
+          <a id="popup-windows-gpu-help" class="field-help" href="https://developer.chrome.com/docs/web-platform/webgpu/troubleshooting-tips#windows-specific-limitations" target="_blank" rel="noreferrer" hidden>WebGPU <span aria-hidden="true">·</span> <span data-i18n="ui_0ec24245">Details</span></a>
         </div>
       </details>
 

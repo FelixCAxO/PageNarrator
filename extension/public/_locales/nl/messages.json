@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Open de pagina, klik op het PageNarrator-pictogram en kies ‘Pagina voorlezen’."
+  },
   "ui_3e8b2a3a": {
     "message": "Document laden…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Geannuleerd."
+  },
+  "ui_9d3f7d31": {
+    "message": "De persoonlijke stemactie mislukt."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice vereist WebGPU met fp16 ondersteuning."
+  },
+  "ui_34c2939b": {
+    "message": "Achtergrondgeluid verwijderen…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Model voor ruisonderdrukking downloaden… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Je kunt het opgeschoonde fragment afspelen of opslaan."
+  },
+  "ui_24b6564c": {
+    "message": "Ruisonderdrukking is niet beschikbaar. Je kunt het originele fragment opslaan."
+  },
+  "ui_f035394f": {
+    "message": "Je kunt het fragment afspelen of opslaan."
+  },
+  "ui_611ed81e": {
+    "message": "Opname loopt…"
+  },
+  "ui_514244f6": {
+    "message": "Opnemen met de microfoon is niet beschikbaar."
+  },
+  "ui_a8d5e97d": {
+    "message": "Geef toegang tot de microfoon om een fragment op te nemen."
+  },
+  "ui_7bcd5d33": {
+    "message": "Geen microfoon gevonden."
+  },
+  "ui_f6233044": {
+    "message": "Kies een audiobestand of neem een fragment op."
+  },
+  "ui_b1cbd878": {
+    "message": "Voer een vooraf ingestelde naam in en de woorden die in de opname worden gesproken."
+  },
+  "ui_a81b3b51": {
+    "message": "Het coderen van de voice sample..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Stem encoder downloaden... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Stemvoorinstelling opgeslagen."
+  },
+  "ui_3c91213b": {
+    "message": "Geselecteerd voor voorlezen."
+  },
+  "ui_1113ba39": {
+    "message": "Stemvoorbeeld voorbereiden…"
+  },
+  "ui_e0513158": {
+    "message": "Het stemvoorbeeld is klaar."
+  },
+  "ui_24e89fdd": {
+    "message": "Stemvoorinstelling verwijderd."
   },
   "ui_c08b976a": {
     "message": "Bezig…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Actie vereist"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikaans Engels, vrouwelijk"
+  },
+  "ui_faf95838": {
+    "message": "Amerikaans Engels, mannelijk"
+  },
+  "ui_f3768d40": {
+    "message": "Brits Engels, vrouwelijk"
+  },
+  "ui_4139054c": {
+    "message": "Kies een Engelse Kokoro-stem. Kokoro ondersteunt geen andere talen."
   },
   "ui_c0c171d2": {
     "message": "Deze actie kon niet worden voltooid."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Maak een persoonlijke stemvoorinstelling in Voice-instellingen."
+  },
   "ui_b7e3509c": {
     "message": "Codefragmenten overslaan"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator kon niet worden gestart."
   },
-  "ui_4d1cf041": {
-    "message": "Amerikaans Engels, vrouwelijk"
-  },
-  "ui_faf95838": {
-    "message": "Amerikaans Engels, mannelijk"
-  },
-  "ui_f3768d40": {
-    "message": "Brits Engels, vrouwelijk"
-  },
-  "ui_4139054c": {
-    "message": "Kies een Engelse Kokoro-stem. Kokoro ondersteunt geen andere talen."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator-speler"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Stemmodel"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (standaard)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimenteel)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Tien Engelse stemmen. Eerste installatie: ongeveer 93 MB op CPU of 326 MB op GPU. Een extra stem vereist ongeveer 0,5 MB. Je opgeslagen stem blijft behouden."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Tien Engelse stemmen. Andere talen schakelen over naar OmniVoice als dit wordt ondersteund. Eerste installatie: ongeveer 93 MB op CPU of 326 MB op GPU. Een extra stem vereist ongeveer 0,5 MB. Je opgeslagen stem blijft behouden."
   },
   "ui_2c04fde6": {
     "message": "Steminstellingen"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Fluisteren"
+  },
+  "ui_8156f492": {
+    "message": "Voorinstelling voor persoonlijke stem"
+  },
+  "ui_a8cbb251": {
+    "message": "Persoonlijke stemmen beheren"
   },
   "ui_3d7af8ef": {
     "message": "Afspeelsnelheid"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Codefragmenten overslaan"
   },
+  "ui_ce18c7cb": {
+    "message": "Vergelijkingen en tabellen in pdf's overslaan"
+  },
   "ui_456ac053": {
     "message": "Kleur van leesgebied"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "PageNarrator openen vanaf de pagina"
-  },
-  "ui_94a4b160": {
-    "message": "Open de pagina, klik op het PageNarrator-pictogram en kies ‘Pagina voorlezen’."
   },
   "ui_4be7c01e": {
     "message": "Ontbrekende stembestanden worden gedownload van Hugging Face tijdens het voorbereiden of voorlezen. De spraak wordt op dit apparaat gegenereerd. Cachebestanden kunnen offline worden hergebruikt totdat ze worden gewist."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF-pagina’s"
   },
+  "ui_328b6bff": {
+    "message": "Stemmonsters en voorinstellingen blijven op dit apparaat."
+  },
+  "ui_fff029e4": {
+    "message": "Creëer een persoonlijke stem"
+  },
+  "ui_12e7305d": {
+    "message": "Kies een audiobestand of neem 3–10 seconden duidelijke spraak op. Bestanden mogen maximaal 20 MB groot zijn. De encoder downloadt bij het eerste gebruik ongeveer 654 MB."
+  },
+  "ui_a01f1ba6": {
+    "message": "Taal gesproken in de opname"
+  },
+  "ui_1ade9af5": {
+    "message": "Audiobestand"
+  },
+  "ui_a4204cfb": {
+    "message": "Lees dit hardop voor met je gewone stem."
+  },
+  "ui_75637bc3": {
+    "message": "Een fragment opnemen"
+  },
+  "ui_523daa03": {
+    "message": "Achtergrondgeluid verwijderen"
+  },
+  "ui_905bc62f": {
+    "message": "Origineel fragment gebruiken"
+  },
+  "ui_67b9602a": {
+    "message": "Optioneel. Werkt op dit apparaat met WebGPU en downloadt bij het eerste gebruik ongeveer 493 MB."
+  },
+  "ui_026775c1": {
+    "message": "Naam van de voorinstelling"
+  },
+  "ui_706bbab1": {
+    "message": "Wat staat er in de opname"
+  },
+  "ui_b00f8855": {
+    "message": "Stemvoorinstelling opslaan"
+  },
+  "ui_80c87657": {
+    "message": "Opgeslagen persoonlijke stemmen"
+  },
+  "ui_83b7d497": {
+    "message": "Gebruiken voor voorlezen"
+  },
+  "ui_71accaa9": {
+    "message": "Stem beluisteren"
+  },
+  "ui_c348abed": {
+    "message": "Voorinstelling verwijderen"
+  },
+  "ui_8313d4fa": {
+    "message": "Opname stoppen"
+  },
+  "ui_35afca3b": {
+    "message": "Annuleren"
+  },
   "ui_6b68e4c5": {
     "message": "Experimenteel. 32 taalvermeldingen; de kwaliteit varieert. Vereist WebGPU met fp16 en ongeveer 1,35 GB aan downloads. Kies een stem, variant of fluisterstem."
+  },
+  "ui_9e93d684": {
+    "message": "Lees met een persoonlijke stemvoorkeursinstelling. Stemmonsters en verhaal blijven op dit apparaat. vereist WebGPU met fp16."
   },
   "ui_35a4186c": {
     "message": "Waarschuwing: fluisteren kan in deze taal woorden overslaan. Vergelijk het voorlezen met de tekst."

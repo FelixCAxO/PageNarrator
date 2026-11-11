@@ -8,6 +8,8 @@ import { createPackagedKokoroCpuEngine } from './cpu-engine.js';
 import { applyKokoroPhaseCorrection } from './phase-correction.js';
 import { createKokoroDataLoader } from './data-loader.js';
 
+const CPU_SEGMENT_MAX_INPUT_IDS = 192;
+
 export { createKokoroDataLoader } from './data-loader.js';
 
 /** Low-level engine; the app loader applies its scheduler/warmup and worker wrapper.
@@ -54,7 +56,9 @@ export async function loadBrowserKokoroBackend(modelId = KOKORO_DATA.modelId, { 
         return release;
       } };
     }
-    const backend = createBrowserKokoroBackend({ session, tokenizer, phonemizer, Tensor: inference.Tensor, loadStyle: async (/** @type {string} */ voice, { signal: styleSignal = signal } = {}) => {
+    const backend = createBrowserKokoroBackend({ session, tokenizer, phonemizer, Tensor: inference.Tensor,
+      maxInputIds: device === 'wasm' ? CPU_SEGMENT_MAX_INPUT_IDS : undefined,
+      loadStyle: async (/** @type {string} */ voice, { signal: styleSignal = signal } = {}) => {
       const bytes = await load(`voices/${voice}.bin`, ...(styleSignal ? [{ signal: styleSignal }] : []));
       if (bytes.byteLength !== 510 * 256 * 4) throw new Error(`Invalid Kokoro voice style: ${voice}.`);
       const style = new Float32Array(bytes.buffer, bytes.byteOffset, bytes.byteLength / 4);

@@ -2,66 +2,201 @@
   "ui_43b7293a": {
     "source": "$1 page loaded",
     "locations": [
-      "src/pdf-viewer.js:43"
+      "src/pdf-viewer.js:45"
     ]
   },
   "ui_ba72f3a3": {
     "source": "$1 pages loaded",
     "locations": [
-      "src/pdf-viewer.js:43"
+      "src/pdf-viewer.js:45"
+    ]
+  },
+  "ui_94a4b160": {
+    "source": "Click the PageNarrator extension icon while the page is active, then choose Read page.",
+    "locations": [
+      "src/pdf-viewer.js:50",
+      "src/reader-engine.html"
     ]
   },
   "ui_3e8b2a3a": {
     "source": "Loading document...",
     "locations": [
-      "src/pdf-viewer.js:192",
+      "src/pdf-viewer.js:217",
       "src/pdf-viewer.html"
     ]
   },
   "ui_ffb67f19": {
     "source": "Loading PDF...",
     "locations": [
-      "src/pdf-viewer.js:192",
-      "src/pdf-viewer.js:274"
+      "src/pdf-viewer.js:217",
+      "src/pdf-viewer.js:297"
     ]
   },
   "ui_d8ec62a0": {
     "source": "Open original link",
     "locations": [
-      "src/pdf-viewer.js:198"
+      "src/pdf-viewer.js:223"
     ]
   },
   "ui_abc76c7c": {
     "source": "Reopening PDF...",
     "locations": [
-      "src/pdf-viewer.js:212",
-      "src/pdf-viewer.js:241"
+      "src/pdf-viewer.js:236",
+      "src/pdf-viewer.js:265"
     ]
   },
   "ui_824a0948": {
     "source": "Page $1 of $2",
     "locations": [
-      "src/pdf-viewer.js:730",
+      "src/pdf-viewer.js:758",
       "src/lib\\pdf-reading-progress.js:9"
+    ]
+  },
+  "ui_27c010d6": {
+    "source": "Cancelled.",
+    "locations": [
+      "src/personal-voices.js:102"
+    ]
+  },
+  "ui_9d3f7d31": {
+    "source": "The personal voice action failed.",
+    "locations": [
+      "src/personal-voices.js:102"
+    ]
+  },
+  "ui_5367d8de": {
+    "source": "OmniVoice requires WebGPU with fp16 support.",
+    "locations": [
+      "src/personal-voices.js:111"
+    ]
+  },
+  "ui_34c2939b": {
+    "source": "Cleaning up background noise…",
+    "locations": [
+      "src/personal-voices.js:135"
+    ]
+  },
+  "ui_cd4b50fc": {
+    "source": "Downloading noise cleanup model… $1%",
+    "locations": [
+      "src/personal-voices.js:139"
+    ]
+  },
+  "ui_db322cc7": {
+    "source": "Cleaned clip ready to play or save.",
+    "locations": [
+      "src/personal-voices.js:145"
+    ]
+  },
+  "ui_24b6564c": {
+    "source": "Noise cleanup unavailable. Your original clip is ready to save.",
+    "locations": [
+      "src/personal-voices.js:148"
+    ]
+  },
+  "ui_f035394f": {
+    "source": "Clip ready to play or save.",
+    "locations": [
+      "src/personal-voices.js:156",
+      "src/personal-voices.js:191"
+    ]
+  },
+  "ui_611ed81e": {
+    "source": "Recording…",
+    "locations": [
+      "src/personal-voices.js:176"
+    ]
+  },
+  "ui_514244f6": {
+    "source": "Microphone recording is unavailable.",
+    "locations": [
+      "src/personal-voices.js:193"
+    ]
+  },
+  "ui_a8d5e97d": {
+    "source": "Allow microphone access to record a clip.",
+    "locations": [
+      "src/personal-voices.js:194"
+    ]
+  },
+  "ui_7bcd5d33": {
+    "source": "No microphone was found.",
+    "locations": [
+      "src/personal-voices.js:195"
+    ]
+  },
+  "ui_f6233044": {
+    "source": "Choose an audio file or record a clip.",
+    "locations": [
+      "src/personal-voices.js:211"
+    ]
+  },
+  "ui_b1cbd878": {
+    "source": "Enter a preset name and the words spoken in the recording.",
+    "locations": [
+      "src/personal-voices.js:212"
+    ]
+  },
+  "ui_a81b3b51": {
+    "source": "Encoding the voice sample…",
+    "locations": [
+      "src/personal-voices.js:214",
+      "src/personal-voices.js:216"
+    ]
+  },
+  "ui_7c9f5f3f": {
+    "source": "Downloading voice encoder… $1%",
+    "locations": [
+      "src/personal-voices.js:216"
+    ]
+  },
+  "ui_ab85ff73": {
+    "source": "Voice preset saved.",
+    "locations": [
+      "src/personal-voices.js:226"
+    ]
+  },
+  "ui_3c91213b": {
+    "source": "Selected for reading.",
+    "locations": [
+      "src/personal-voices.js:235"
+    ]
+  },
+  "ui_1113ba39": {
+    "source": "Preparing voice preview…",
+    "locations": [
+      "src/personal-voices.js:243"
+    ]
+  },
+  "ui_e0513158": {
+    "source": "Voice preview ready.",
+    "locations": [
+      "src/personal-voices.js:257"
+    ]
+  },
+  "ui_24e89fdd": {
+    "source": "Voice preset deleted.",
+    "locations": [
+      "src/personal-voices.js:269"
     ]
   },
   "ui_c08b976a": {
     "source": "Working…",
     "locations": [
-      "src/popup.js:116"
+      "src/popup.js:109"
     ]
   },
   "ui_059a0144": {
     "source": "$1 voice",
     "locations": [
-      "src/popup.js:148"
+      "src/popup.js:143"
     ]
   },
   "ui_27d1a499": {
     "source": "Voice",
     "locations": [
-      "src/popup.js:148",
-      "src/lib\\reader-engine-voice-settings-controller.js:240",
+      "src/popup.js:143",
+      "src/lib\\reader-engine-voice-settings-controller.js:269",
       "src/popup.html",
       "src/reader-engine.html"
     ]
@@ -69,57 +204,57 @@
   "ui_85d257a6": {
     "source": "Processing: WebGPU (dedicated GPU)",
     "locations": [
-      "src/popup.js:162"
+      "src/popup.js:157"
     ]
   },
   "ui_ea65fbf2": {
     "source": "Processing: WebGPU (integrated GPU)",
     "locations": [
-      "src/popup.js:164"
+      "src/popup.js:159"
     ]
   },
   "ui_4e4b8680": {
     "source": "Processing: WebGPU",
     "locations": [
-      "src/popup.js:165"
+      "src/popup.js:160"
     ]
   },
   "ui_7d6c19ce": {
     "source": "Processing: CPU / WebAssembly (slower)",
     "locations": [
-      "src/popup.js:167"
+      "src/popup.js:162"
     ]
   },
   "ui_5c338a74": {
     "source": "Processing shown after reading starts.",
     "locations": [
-      "src/popup.js:168",
+      "src/popup.js:163",
       "src/popup.html"
     ]
   },
   "ui_c513493a": {
     "source": "Preparing local voice… $1%",
     "locations": [
-      "src/popup.js:194"
+      "src/popup.js:189"
     ]
   },
   "ui_642babee": {
     "source": "Voice preparation failed. Try again.",
     "locations": [
-      "src/popup.js:196"
+      "src/popup.js:191"
     ]
   },
   "ui_523c0c96": {
     "source": "Missing voice files download from Hugging Face before setup.",
     "locations": [
-      "src/popup.js:197",
+      "src/popup.js:192",
       "src/popup.html"
     ]
   },
   "ui_8036af59": {
     "source": "Retry",
     "locations": [
-      "src/popup.js:199",
+      "src/popup.js:194",
       "src/lib/error-registry.js:pdf_access.actionLabel",
       "src/lib/error-registry.js:pdf_network.actionLabel",
       "src/lib/error-registry.js:pdf_unknown.actionLabel"
@@ -128,14 +263,14 @@
   "ui_fb625aee": {
     "source": "Prepare voice",
     "locations": [
-      "src/popup.js:199",
+      "src/popup.js:194",
       "src/popup.html"
     ]
   },
   "ui_b9328a4d": {
     "source": "$1 section",
     "locations": [
-      "src/popup.js:203",
+      "src/popup.js:198",
       "src/lib\\reader-engine-view.js:532",
       "src/lib\\reader-engine-view.js:540"
     ]
@@ -143,7 +278,7 @@
   "ui_c88f9f9a": {
     "source": "$1 sections",
     "locations": [
-      "src/popup.js:203",
+      "src/popup.js:198",
       "src/lib\\reader-engine-view.js:532",
       "src/lib\\reader-engine-view.js:540"
     ]
@@ -151,7 +286,7 @@
   "ui_a133c549": {
     "source": "Available when reading starts",
     "locations": [
-      "src/popup.js:203",
+      "src/popup.js:198",
       "src/popup.html",
       "src/popup.html"
     ]
@@ -159,7 +294,7 @@
   "ui_1d9bdb7f": {
     "source": "Transcript appears when text loads.",
     "locations": [
-      "src/popup.js:216",
+      "src/popup.js:211",
       "src/lib\\reader-engine-view.js:7",
       "src/popup.html",
       "src/reader-engine.html"
@@ -168,29 +303,29 @@
   "ui_fe92f855": {
     "source": "Current page",
     "locations": [
-      "src/popup.js:296",
+      "src/popup.js:291",
       "src/popup.html"
     ]
   },
   "ui_bf0c7feb": {
     "source": "Preparing…",
     "locations": [
-      "src/popup.js:302",
-      "src/popup.js:303",
-      "src/popup.js:467",
+      "src/popup.js:297",
+      "src/popup.js:298",
+      "src/popup.js:481",
       "src/popup.html"
     ]
   },
   "ui_3d77a20f": {
     "source": "Preparing voice… $1%",
     "locations": [
-      "src/popup.js:302"
+      "src/popup.js:297"
     ]
   },
   "ui_454d1d8a": {
     "source": "Resume",
     "locations": [
-      "src/popup.js:307",
+      "src/popup.js:302",
       "src/lib\\reader-engine-view.js:89",
       "src/reader-engine.html"
     ]
@@ -198,7 +333,7 @@
   "ui_44f9bf2d": {
     "source": "Pause",
     "locations": [
-      "src/popup.js:307",
+      "src/popup.js:302",
       "src/lib\\reader-engine-view.js:72",
       "src/popup.html"
     ]
@@ -206,8 +341,8 @@
   "ui_f3de41d3": {
     "source": "Ready to read",
     "locations": [
-      "src/popup.js:313",
-      "src/popup.js:313",
+      "src/popup.js:308",
+      "src/popup.js:308",
       "src/lib\\reader-engine-view.js:22",
       "src/popup.html",
       "src/reader-engine.html"
@@ -216,13 +351,13 @@
   "ui_9283b625": {
     "source": "Preparing voice…",
     "locations": [
-      "src/popup.js:313"
+      "src/popup.js:308"
     ]
   },
   "ui_5ee7339b": {
     "source": "Reading",
     "locations": [
-      "src/popup.js:313",
+      "src/popup.js:308",
       "src/lib\\reader-engine-reading-state-renderer.js:79",
       "src/reader-engine.html"
     ]
@@ -230,7 +365,7 @@
   "ui_de281feb": {
     "source": "Paused",
     "locations": [
-      "src/popup.js:313",
+      "src/popup.js:308",
       "src/lib\\reader-engine-reading-state-renderer.js:79",
       "src/lib\\reader-engine-view.js:86"
     ]
@@ -238,15 +373,39 @@
   "ui_a7b2cec3": {
     "source": "Finished",
     "locations": [
-      "src/popup.js:313"
+      "src/popup.js:308"
     ]
   },
   "ui_5d640b9c": {
     "source": "Needs attention",
     "locations": [
-      "src/popup.js:313",
+      "src/popup.js:308",
       "src/lib\\reader-engine-error-notices.js:68",
       "src/reader-engine.html"
+    ]
+  },
+  "ui_4d1cf041": {
+    "source": "American female",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_faf95838": {
+    "source": "American male",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_f3768d40": {
+    "source": "British female",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:49"
+    ]
+  },
+  "ui_4139054c": {
+    "source": "Choose an English Kokoro voice. Other languages are not supported.",
+    "locations": [
+      "src/tts\\voices\\language-voice-options.js:88"
     ]
   },
   "ui_c0c171d2": {
@@ -276,13 +435,13 @@
   "ui_6589cf1b": {
     "source": "Some artwork could not be shown. Text reading is still available.",
     "locations": [
-      "src/lib\\pdf-viewer-rendering.js:68"
+      "src/lib\\pdf-viewer-rendering.js:69"
     ]
   },
   "ui_58de2772": {
     "source": "Normal",
     "locations": [
-      "src/lib\\playback-settings.js:44",
+      "src/lib\\playback-settings.js:46",
       "src/popup.html",
       "src/reader-engine.html",
       "src/reader-engine.html"
@@ -291,13 +450,13 @@
   "ui_99f0d384": {
     "source": "Faster",
     "locations": [
-      "src/lib\\playback-settings.js:45"
+      "src/lib\\playback-settings.js:47"
     ]
   },
   "ui_f6adf6a7": {
     "source": "$1s slower",
     "locations": [
-      "src/lib\\playback-settings.js:48"
+      "src/lib\\playback-settings.js:50"
     ]
   },
   "ui_2c9ef2b2": {
@@ -801,128 +960,134 @@
   "ui_b9775b3a": {
     "source": "Experimental - quality not validated",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:107"
+      "src/lib\\reader-engine-voice-settings-controller.js:118"
     ]
   },
   "ui_c6b4d959": {
     "source": "$1 - adjusted",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:269"
+      "src/lib\\reader-engine-voice-settings-controller.js:298"
     ]
   },
   "ui_b835b751": {
     "source": "slow model loading",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:275"
+      "src/lib\\reader-engine-voice-settings-controller.js:304"
     ]
   },
   "ui_4f078920": {
     "source": "slow initial speech generation",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:276"
+      "src/lib\\reader-engine-voice-settings-controller.js:305"
     ]
   },
   "ui_007bbfcb": {
     "source": "slow section transitions",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:277"
+      "src/lib\\reader-engine-voice-settings-controller.js:306"
     ]
   },
   "ui_794a03d4": {
     "source": "Voice quality was adjusted. Reason: $1.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:279"
+      "src/lib\\reader-engine-voice-settings-controller.js:308"
     ]
   },
   "ui_8f5010a5": {
     "source": "the selected processing method",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:280"
+      "src/lib\\reader-engine-voice-settings-controller.js:309"
     ]
   },
   "ui_aa682200": {
     "source": "Voice processing: GPU (WebGPU) with CPU-friendly settings.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:304"
+      "src/lib\\reader-engine-voice-settings-controller.js:333"
     ]
   },
   "ui_3411bb9b": {
     "source": "Voice processing: GPU (WebGPU).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:305"
+      "src/lib\\reader-engine-voice-settings-controller.js:334"
     ]
   },
   "ui_078077a9": {
     "source": "Voice processing: CPU only (WebAssembly) because WebGPU is unavailable.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:308"
+      "src/lib\\reader-engine-voice-settings-controller.js:337"
     ]
   },
   "ui_9e335d53": {
     "source": "Voice processing: CPU only (WebAssembly).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:309"
+      "src/lib\\reader-engine-voice-settings-controller.js:338"
     ]
   },
   "ui_8646aeef": {
     "source": "Voice processing: system voice (browser or operating system).",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:311"
+      "src/lib\\reader-engine-voice-settings-controller.js:340"
     ]
   },
   "ui_815f1834": {
     "source": "Voice processing: checked when reading starts.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:313",
+      "src/lib\\reader-engine-voice-settings-controller.js:342",
       "src/reader-engine.html"
     ]
   },
   "ui_19f02581": {
     "source": "Using experimental OmniVoice on WebGPU.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:445"
+      "src/lib\\reader-engine-voice-settings-controller.js:474"
     ]
   },
   "ui_f7c3a723": {
     "source": "Model files download from Hugging Face; speech stays on this device.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:445"
+      "src/lib\\reader-engine-voice-settings-controller.js:474"
     ]
   },
   "ui_411e02b2": {
     "source": "Choose Kokoro if WebGPU is unavailable.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:445"
+      "src/lib\\reader-engine-voice-settings-controller.js:474"
     ]
   },
   "ui_3581ebdf": {
     "source": "Using Kokoro $1 voice.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:447"
+      "src/lib\\reader-engine-voice-settings-controller.js:476"
     ]
   },
   "ui_b6f3e0b5": {
     "source": "Missing voice files download from Hugging Face when you prepare or read.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:447"
+      "src/lib\\reader-engine-voice-settings-controller.js:476"
     ]
   },
   "ui_6813181e": {
     "source": "Speech runs on this device; cached files can be reused offline unless cleared.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:447"
+      "src/lib\\reader-engine-voice-settings-controller.js:476"
     ]
   },
   "ui_95b6ef87": {
     "source": "Experimental quality: $1.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:448"
+      "src/lib\\reader-engine-voice-settings-controller.js:477"
     ]
   },
   "ui_3c2745dc": {
     "source": "No $1 voice is available.",
     "locations": [
-      "src/lib\\reader-engine-voice-settings-controller.js:449"
+      "src/lib\\reader-engine-voice-settings-controller.js:478"
+    ]
+  },
+  "ui_3e922f09": {
+    "source": "Create a personal voice preset in Voice settings.",
+    "locations": [
+      "src/lib\\reader-engine-voice-settings-controller.js:611"
     ]
   },
   "ui_b7e3509c": {
@@ -1018,43 +1183,19 @@
   "ui_be75ad01": {
     "source": "Best-effort readerEngine operation failed.",
     "locations": [
-      "src/app\\reader-engine\\reader-engine-session.js:162"
+      "src/app\\reader-engine\\reader-engine-session.js:163"
     ]
   },
   "ui_eb6988d3": {
     "source": "Could not load resume position",
     "locations": [
-      "src/app\\reader-engine\\reader-engine-session.js:388"
+      "src/app\\reader-engine\\reader-engine-session.js:393"
     ]
   },
   "ui_1b842ad5": {
     "source": "PageNarrator failed to initialize.",
     "locations": [
-      "src/app\\reader-engine\\reader-engine-session.js:1029"
-    ]
-  },
-  "ui_4d1cf041": {
-    "source": "American female",
-    "locations": [
-      "src/tts\\voices\\language-voice-options.js:49"
-    ]
-  },
-  "ui_faf95838": {
-    "source": "American male",
-    "locations": [
-      "src/tts\\voices\\language-voice-options.js:49"
-    ]
-  },
-  "ui_f3768d40": {
-    "source": "British female",
-    "locations": [
-      "src/tts\\voices\\language-voice-options.js:49"
-    ]
-  },
-  "ui_4139054c": {
-    "source": "Choose an English Kokoro voice. Other languages are not supported.",
-    "locations": [
-      "src/tts\\voices\\language-voice-options.js:77"
+      "src/app\\reader-engine\\reader-engine-session.js:1037"
     ]
   },
   "ui_87d977c4": {
@@ -1077,22 +1218,30 @@
       "src/reader-engine.html"
     ]
   },
-  "ui_38319e92": {
-    "source": "Kokoro (default)",
+  "ui_3eb00ffe": {
+    "source": "OmniVoice",
     "locations": [
       "src/popup.html",
       "src/reader-engine.html"
     ]
   },
-  "ui_a476bebf": {
-    "source": "OmniVoice (experimental)",
+  "ui_ef973d2a": {
+    "source": "Kokoro",
     "locations": [
       "src/popup.html",
       "src/reader-engine.html"
     ]
   },
-  "ui_6c6b4ee0": {
-    "source": "Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.",
+  "ui_ad9033da": {
+    "source": "OmniVoice Voice Cloning",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_e762d1dd": {
+    "source": "Ten English voices. Other languages switch to OmniVoice when supported. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.",
     "locations": [
       "src/popup.html",
       "src/reader-engine.html",
@@ -1156,6 +1305,21 @@
   },
   "ui_d975568d": {
     "source": "Whisper",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html"
+    ]
+  },
+  "ui_8156f492": {
+    "source": "Personal voice preset",
+    "locations": [
+      "src/popup.html",
+      "src/reader-engine.html",
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_a8cbb251": {
+    "source": "Manage personal voices",
     "locations": [
       "src/popup.html",
       "src/reader-engine.html"
@@ -1287,6 +1451,12 @@
       "src/reader-engine.html"
     ]
   },
+  "ui_ce18c7cb": {
+    "source": "Skip PDF equations and tables",
+    "locations": [
+      "src/popup.html"
+    ]
+  },
   "ui_456ac053": {
     "source": "Area color",
     "locations": [
@@ -1395,12 +1565,6 @@
       "src/reader-engine.html"
     ]
   },
-  "ui_94a4b160": {
-    "source": "Click the PageNarrator extension icon while the page is active, then choose Read page.",
-    "locations": [
-      "src/reader-engine.html"
-    ]
-  },
   "ui_4be7c01e": {
     "source": "Missing voice files download on first use. Speech runs locally.",
     "locations": [
@@ -1422,6 +1586,7 @@
   "ui_0ec24245": {
     "source": "Details",
     "locations": [
+      "src/popup.html",
       "src/reader-engine.html"
     ]
   },
@@ -1741,8 +1906,128 @@
       "src/pdf-viewer.html"
     ]
   },
+  "ui_328b6bff": {
+    "source": "Voice samples and presets stay on this device.",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_fff029e4": {
+    "source": "Create a personal voice",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_12e7305d": {
+    "source": "Choose an audio file or record 3–10 seconds of clear speech. Files can be up to 20 MB. The encoder downloads about 654 MB on first use.",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_a01f1ba6": {
+    "source": "Language spoken in the recording",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_1ade9af5": {
+    "source": "Audio file",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_a4204cfb": {
+    "source": "Read this aloud in your normal voice.",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_75637bc3": {
+    "source": "Record a clip",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_523daa03": {
+    "source": "Clean up background noise",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_905bc62f": {
+    "source": "Use original clip",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_67b9602a": {
+    "source": "Optional. Runs on this device using WebGPU and downloads about 493 MB on first use.",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_026775c1": {
+    "source": "Preset name",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_706bbab1": {
+    "source": "What is said in the recording",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_b00f8855": {
+    "source": "Save voice preset",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_80c87657": {
+    "source": "Saved personal voices",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_83b7d497": {
+    "source": "Use for reading",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_71accaa9": {
+    "source": "Preview voice",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_c348abed": {
+    "source": "Delete preset",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_8313d4fa": {
+    "source": "Stop recording",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
+  "ui_35afca3b": {
+    "source": "Cancel",
+    "locations": [
+      "src/personal-voices.html"
+    ]
+  },
   "ui_6b68e4c5": {
     "source": "Experimental. 32 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper.",
+    "locations": [
+      "src/lib/omnivoice-settings.js"
+    ]
+  },
+  "ui_9e93d684": {
+    "source": "Read with a personal voice preset. Voice samples and narration stay on this device. Requires WebGPU with fp16.",
     "locations": [
       "src/lib/omnivoice-settings.js"
     ]

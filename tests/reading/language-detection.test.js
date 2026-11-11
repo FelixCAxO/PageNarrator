@@ -1,4 +1,6 @@
+import { JSDOM } from 'jsdom';
 import { describe, expect, it } from 'vitest';
+import { chooseArticleExtraction } from '../../src/lib/article-extraction.js';
 import {
   detectPageLanguage,
   normalizeDetectionSample,
@@ -97,5 +99,37 @@ describe('language detection', () => {
     expect(await detectPageLanguage(text, { i18n: { detectLanguage: async () => ({ isReliable: true,
       languages: [{ language: 'fr', percentage: 4 }, { language: 'en', percentage: 96 }],
     }) } })).toMatchObject({ code: 'en', percent: 96, reliable: true });
+  });
+});
+
+describe('page language', () => {
+  it('reads supported languages from <html lang>, including regional and legacy codes', async () => {
+    const { getDeclaredPageLanguage } = await import('../../src/lib/language-detection.js');
+    expect(['sv', 'sv-SE', 'SV_se', 'ar-EG', 'pt-BR', 'nb', 'nn-NO', 'iw', 'en-US'].map(getDeclaredPageLanguage))
+      .toEqual(['sv', 'sv', 'sv', 'arb', 'pt', 'no', 'no', 'he', 'en']);
+    expect(['', '  ', 'x-default', 'zz', null, undefined].map(getDeclaredPageLanguage)).toEqual([null, null, null, null, null, null]);
+  });
+
+  it('detects from the text first and falls back to the declared page language', async () => {
+    const { detectArticleLanguage } = await import('../../src/lib/language-detection.js');
+    const text = 'Das ist ein längerer deutscher Text, der für die Spracherkennung mehr als achtzig Zeichen umfasst und eindeutig ist.';
+    const german = { async detectLanguage() { return { isReliable: true, languages: [{ language: 'de', percentage: 100 }] }; } };
+    const unsure = { async detectLanguage() { return { isReliable: false, languages: [{ language: 'de', percentage: 55 }] }; } };
+    // A reliable detection wins over a wrong template default.
+    expect(await detectArticleLanguage({ pageLanguage: 'en', text }, { i18n: german })).toMatchObject({ code: 'de', reliable: true, source: 'text' });
+    // Unreliable detection, or a sample too short to detect (a read starting on one caption), uses the page's lang.
+    expect(await detectArticleLanguage({ pageLanguage: 'sv-SE', text }, { i18n: unsure }))
+      .toEqual({ code: 'sv', percent: 100, margin: 100, reliable: true, source: 'page' });
+    expect(await detectArticleLanguage({ pageLanguage: 'sv', text: 'linje. Foto: Martin Pahlmblad/TT.' }, { i18n: german }))
+      .toMatchObject({ code: 'sv', reliable: true, source: 'page' });
+    // Nothing usable either way: unreliable, so the current voice stays.
+    expect(await detectArticleLanguage({ pageLanguage: 'x-default', text }, { i18n: unsure })).toMatchObject({ reliable: false, source: 'text' });
+  });
+
+  it('carries the document language with every extracted article', () => {
+    const page = lang => new JSDOM(`<!doctype html><html${lang}><title>T</title><body><article><p>${'Det här är en svensk mening. '.repeat(8)}</p></article></body></html>`,
+      { url: 'https://example.test/a' }).window.document;
+    expect(chooseArticleExtraction(page(' lang="sv-SE"'), { startMode: 'top' }).pageLanguage).toBe('sv-SE');
+    expect(chooseArticleExtraction(page(''), { startMode: 'top' }).pageLanguage).toBe('');
   });
 });

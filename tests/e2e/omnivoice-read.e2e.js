@@ -4,8 +4,8 @@ import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeKokoroModelFiles, routeOmniVoiceModelFiles, seedKokoroModelCache } from './kokoro-download-fixture.js';
 import { buildCorpusFlowReport } from './corpus-flow-invariants.js';
-import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
-import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { selectNativeOption } from './native-controls-fixture.js';
+import { getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 import { browserAdapterConfiguration, verifyBrowserAdapter } from '../../tooling/scripts/lib/browser-adapter.mjs';
 
 const SAMPLES = [
@@ -51,7 +51,7 @@ const SAMPLES = [
   }
 ];
 
-test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async ({}, testInfo) => {
+test('reads with Kokoro and switches to OmniVoice controls on WebGPU', async ({}, testInfo) => {
   test.skip(process.env.PN_E2E_OMNIVOICE !== '1', 'Set PN_E2E_OMNIVOICE=1: requires pinned local speech fixtures and native WebGPU.');
   test.setTimeout(20 * 60_000);
   const server = createServer((request, response) => {
@@ -134,7 +134,7 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
         };
       }
     });
-    await seedRealTtsFlowFlags(context, { playbackSettings: { language: 'en', voice: 'af_heart', speed: 3, sectionPauseSeconds: 0 } });
+    await seedRealTtsFlowFlags(context, { playbackSettings: { ttsEngine: 'kokoro', language: 'en', voice: 'af_heart', speed: 3, sectionPauseSeconds: 0 } });
     let engine = await openRoutedReaderEngine(context);
     await expect(engine.locator('#tts-engine-select')).toHaveValue('kokoro');
     const article = await context.newPage();
@@ -149,11 +149,11 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
     await expect(popup.locator('#popup-voice')).toBeHidden();
     await selectNativeOption(popup.locator('#popup-language'), 'sv');
     await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'male');
-    await setNativeRange(popup.locator('#popup-omnivoice-variation'), 7);
+    await expect(popup.locator('#popup-omnivoice-variation')).toHaveAttribute('max', String(getOmniVoiceVoices('sv', 'male').length));
     await popup.locator('#popup-omnivoice-whisper').check();
     const worker = context.serviceWorkers()[0];
     await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then((s) => s.playbackSettings)))
-      .toMatchObject({ ttsEngine: 'omnivoice', omniVoice: { gender: 'male', variation: getOmniVoiceVariationOrder('sv', 'male')[6], whisper: true }, voice: 'af_heart' });
+      .toMatchObject({ ttsEngine: 'omnivoice', omniVoice: { gender: 'male', whisper: true }, voice: 'af_heart' });
     const submitsBefore = await engine.evaluate(() => globalThis.__omniGpuSubmissions);
     for (const sample of SAMPLES) {
       await selectNativeOption(popup.locator('#popup-language'), sample.code);
@@ -164,14 +164,12 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
         await expect(popup.locator('#popup-tts-engine')).toHaveValue('omnivoice');
         await popup.locator('#popup-settings summary').click();
         await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'female');
-        await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
         await popup.locator('#popup-omnivoice-whisper').uncheck();
         await expect.poll(() => worker.evaluate(() => chrome.storage.local.get('playbackSettings').then(s => s.playbackSettings)))
-          .toMatchObject({ language: sample.code, omniVoice: { gender: 'female', variation: getOmniVoiceVariationOrder(sample.code, 'female')[3], whisper: false } });
+          .toMatchObject({ language: sample.code, omniVoice: { gender: 'female', whisper: false } });
         await article.goto(`${origin}/${sample.code}`);
-        await startAndVerify(context, article, `omnivoice-${sample.code}-variation`);
+        await startAndVerify(context, article, `omnivoice-${sample.code}-female`);
         await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'male');
-        await setNativeRange(popup.locator('#popup-omnivoice-variation'), 7);
         await popup.locator('#popup-omnivoice-whisper').check();
       }
     }
@@ -192,12 +190,13 @@ test('keeps Kokoro as default and reads with OmniVoice sliders on WebGPU', async
     await article.goto(`${origin}/sv`);
     await startAndVerify(context, article, 'omnivoice-sv-restored');
 
-    // A fresh engine must restore sliders and reload model data from cache while offline.
+    // A fresh engine restores the saved voice and reloads model data from cache while offline.
     await engine.close();
     engine = await openRoutedReaderEngine(context);
     await expect(engine.locator('#tts-engine-select')).toHaveValue('omnivoice');
     await popup.reload();
-    await expect(popup.locator('#popup-omnivoice-variation')).toHaveValue('7');
+    await expect(popup.locator('#popup-omnivoice-gender')).toHaveValue('male');
+    await expect(popup.locator('#popup-omnivoice-variation')).toHaveValue('1');
     await expect(popup.locator('#popup-omnivoice-whisper')).toBeChecked();
     const network = await context.newCDPSession(engine);
     await network.send('Network.enable');

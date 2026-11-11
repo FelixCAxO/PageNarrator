@@ -1,10 +1,12 @@
 import { chromium, expect, test } from '@playwright/test';
+import { once } from 'node:events';
 import { mkdir, mkdtemp, readFile, rm, writeFile } from 'node:fs/promises';
+import { createServer } from 'node:http';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { resolveExtensionDir } from './extension-fixture.js';
 
-test('rejects external extension messages and ports without exposing or changing private state', async ({}, testInfo) => {
+test('rejects external extension access to private state and unauthorized PDF loads', async ({}, testInfo) => {
   const extensionDir = resolveExtensionDir({ testInfo });
   const manifest = JSON.parse(await readFile(path.join(extensionDir, 'manifest.json'), 'utf8'));
   // Empty ids/matches produces an install warning; omission still requires an
@@ -111,6 +113,47 @@ test('rejects external extension messages and ports without exposing or changing
       disconnected: true, received: [], error: expect.stringMatching(/receiving end does not exist/i),
     });
     expect(after).toEqual(before);
+
+    await test.step('opening the viewer from another extension does not fetch its source', async () => {
+      const pdf = await readFile('tests/fixtures/pdfs/single-column.pdf');
+      const requests = [];
+      const server = createServer((request, response) => {
+        requests.push(request.url);
+        response.writeHead(200, {
+          'Content-Type': 'application/pdf',
+          'Access-Control-Allow-Origin': `chrome-extension://${targetId}`,
+          'Access-Control-Allow-Credentials': 'true',
+        }).end(pdf);
+      }).listen(0, '127.0.0.1');
+      try {
+        await once(server, 'listening');
+        const source = `http://127.0.0.1:${server.address().port}/private.pdf`;
+        const viewerUrl = `chrome-extension://${targetId}/src/pdf-viewer.html?src=${encodeURIComponent(source)}`;
+        const opened = context.waitForEvent('page');
+        const tab = await probeWorker.evaluate(url => chrome.tabs.create({ url, active: false }), viewerUrl);
+        const viewer = await opened;
+        await viewer.waitForURL(viewerUrl, { waitUntil: 'load' });
+        const forged = await probeWorker.evaluate(({ tabId, sourceUrl }) => chrome.tabs.sendMessage(tabId, {
+          type: 'getPdfStreamMetadata', sourceUrl,
+        }).catch(error => error.message), { tabId: tab.id, sourceUrl: source });
+        expect(forged).toMatch(/receiving end does not exist/i);
+        const wrongSource = await targetWorker.evaluate(({ tabId, sourceUrl }) => chrome.tabs.sendMessage(tabId, {
+          type: 'getPdfStreamMetadata', sourceUrl,
+        }), { tabId: tab.id, sourceUrl: source + '?other-document' });
+        // Ordinary metadata requests must not start a load either. On the old
+        // viewer this call waits for the unauthorized download to complete.
+        const metadata = await targetWorker.evaluate(tabId => chrome.tabs.sendMessage(tabId, {
+          type: 'getPdfStreamMetadata',
+        }), tab.id);
+        expect(requests).toEqual([]);
+        expect(wrongSource).toMatchObject({ ok: false });
+        expect(metadata).toMatchObject({ ok: false });
+        await expect(viewer.locator('.pdf-page')).toHaveCount(0);
+      } finally {
+        server.closeAllConnections();
+        await new Promise(resolve => server.close(resolve));
+      }
+    });
   } finally {
     await context?.close();
     await rm(scratchDir, { recursive: true, force: true });

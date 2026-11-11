@@ -1,6 +1,6 @@
 # Verification status
 
-The latest release is **v1.0.4**. Its [public verification report](https://github.com/FelixCAxO/PageNarrator/releases/download/v1.0.4/pagenarrator-1.0.4-verification.md) records results and limits for the published ZIPs. Independent listening, physical hardware qualification and valid lower-spec timing measurements remain open. See the [changelog](CHANGELOG.md) for release history.
+**V1.0.5 is being prepared for release.** The latest published release is [v1.0.4](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.4). The local V1.0.5 verification report and checksums are in `releases/`; publish them with the matching extension and source ZIPs. Independent listening and physical hardware qualification were waived for V1.0.5 and remain not performed. See the [changelog](CHANGELOG.md) for release history.
 
 ## Verify a new candidate
 
@@ -12,6 +12,12 @@ The latest release is **v1.0.4**. Its [public verification report](https://githu
 - Use the [release checklist](launch-checklist.md) to build, verify, and distribute both matching ZIPs.
 
 Bind evidence to the tested commit and package hashes. Report failures, skips, waivers, and untested coverage separately.
+
+## V1.0.5 qualification
+
+V1.0.5 was first prepared on 2026-11-10. The maintainer waived the independent listening and physical hardware gates for this version only; the [release policy](../tooling/config/release-policy.json) records both as not performed, never as passed. The local verification report in `releases/` records the current candidate's software results, failed measurements and deferred checks separately. Lower-spec article measurements and the PDF probe remain pending at the maintainer's request; the release gate is not green. After source changes, run the relevant checks and bind rebuilt archives and evidence to the final commit. Lower-spec probe results describe the test host and do not qualify physical hardware tiers.
+
+The planned [release](https://github.com/FelixCAxO/PageNarrator/releases/tag/v1.0.5) must include the extension ZIP, matching source ZIP, verification report and SHA-256 checksums. Create tag `v1.0.5` on the final tested source commit when publication is authorized; the release links become available after publication.
 
 ## V1.0.4 qualification
 

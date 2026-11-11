@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Otvorte stránku, kliknite na ikonu PageNarrator a vyberte „Čítať stránku“."
+  },
   "ui_3e8b2a3a": {
     "message": "Načítavanie dokumentu…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Zrušené."
+  },
+  "ui_9d3f7d31": {
+    "message": "Osobná hlasová akcia zlyhala."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice vyžaduje WebGPU s podporou fp16."
+  },
+  "ui_34c2939b": {
+    "message": "Odstraňuje sa hluk v pozadí…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Sťahuje sa model na odstránenie hluku… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Vyčistenú ukážku možno prehrať alebo uložiť."
+  },
+  "ui_24b6564c": {
+    "message": "Odstránenie hluku nie je dostupné. Pôvodnú ukážku môžete uložiť."
+  },
+  "ui_f035394f": {
+    "message": "Ukážku možno prehrať alebo uložiť."
+  },
+  "ui_611ed81e": {
+    "message": "Nahráva sa…"
+  },
+  "ui_514244f6": {
+    "message": "Nahrávanie z mikrofónu nie je dostupné."
+  },
+  "ui_a8d5e97d": {
+    "message": "Povoľte prístup k mikrofónu, aby ste mohli nahrať ukážku."
+  },
+  "ui_7bcd5d33": {
+    "message": "Nenašiel sa žiadny mikrofón."
+  },
+  "ui_f6233044": {
+    "message": "Vyberte zvukový súbor alebo nahrajte ukážku."
+  },
+  "ui_b1cbd878": {
+    "message": "Zadajte prednastavený názov a slová hovorené v nahrávke."
+  },
+  "ui_a81b3b51": {
+    "message": "Kódovanie hlasovej vzorky ..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Stiahnuť hlasový kódovač... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Predvoľba hlasu bola uložená."
+  },
+  "ui_3c91213b": {
+    "message": "Vybrané na čítanie."
+  },
+  "ui_1113ba39": {
+    "message": "Pripravuje sa ukážka hlasu…"
+  },
+  "ui_e0513158": {
+    "message": "Ukážka hlasu je pripravená."
+  },
+  "ui_24e89fdd": {
+    "message": "Predvoľba hlasu bola odstránená."
   },
   "ui_c08b976a": {
     "message": "Spracovanie…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Vyžaduje pozornosť"
+  },
+  "ui_4d1cf041": {
+    "message": "Americká angličtina, ženský"
+  },
+  "ui_faf95838": {
+    "message": "Americká angličtina, mužský"
+  },
+  "ui_f3768d40": {
+    "message": "Britská angličtina, ženský"
+  },
+  "ui_4139054c": {
+    "message": "Vyberte anglický hlas Kokoro. Kokoro nepodporuje iné jazyky."
   },
   "ui_c0c171d2": {
     "message": "Túto akciu sa nepodarilo dokončiť."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Vytvorenie osobného hlasového prednastavenia v nastaveniach hlasu."
+  },
   "ui_b7e3509c": {
     "message": "Preskakovať úryvky kódu"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator sa nepodarilo spustiť."
   },
-  "ui_4d1cf041": {
-    "message": "Americká angličtina, ženský"
-  },
-  "ui_faf95838": {
-    "message": "Americká angličtina, mužský"
-  },
-  "ui_f3768d40": {
-    "message": "Britská angličtina, ženský"
-  },
-  "ui_4139054c": {
-    "message": "Vyberte anglický hlas Kokoro. Kokoro nepodporuje iné jazyky."
-  },
   "ui_87d977c4": {
     "message": "Prehrávač PageNarrator"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Hlasový model"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (predvolené)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimentálne)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Desať anglických hlasov. Prvé nastavenie: asi 93 MB pre CPU alebo 326 MB pre GPU. Ďalší hlas vyžaduje asi 0,5 MB. Uložený hlas sa zachová."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Desať anglických hlasov. Iné jazyky sa prepnú na OmniVoice, ak je podporovaný. Prvé nastavenie: asi 93 MB pre CPU alebo 326 MB pre GPU. Ďalší hlas vyžaduje asi 0,5 MB. Uložený hlas sa zachová."
   },
   "ui_2c04fde6": {
     "message": "Nastavenia hlasu"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Šepot"
+  },
+  "ui_8156f492": {
+    "message": "Predvoľba osobného hlasu"
+  },
+  "ui_a8cbb251": {
+    "message": "Spravovať osobný hlas"
   },
   "ui_3d7af8ef": {
     "message": "Rýchlosť prehrávania"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Preskakovať úryvky kódu"
   },
+  "ui_ce18c7cb": {
+    "message": "Preskakovať rovnice a tabuľky v PDF"
+  },
   "ui_456ac053": {
     "message": "Farba oblasti"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Otvoriť PageNarrator na stránke"
-  },
-  "ui_94a4b160": {
-    "message": "Otvorte stránku, kliknite na ikonu PageNarrator a vyberte „Čítať stránku“."
   },
   "ui_4be7c01e": {
     "message": "Chýbajúce hlasové súbory sa stiahnu z Hugging Face pri príprave alebo čítaní. Reč sa vytvára v tomto zariadení. Súbory vo vyrovnávacej pamäti možno používať offline, kým ich nevymažete."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "Strany PDF"
   },
+  "ui_328b6bff": {
+    "message": "Hlasové vzorky a prednastavenia zostávajú na tomto zariadení."
+  },
+  "ui_fff029e4": {
+    "message": "Vytvorte osobný hlas"
+  },
+  "ui_12e7305d": {
+    "message": "Vyberte zvukový súbor alebo nahrajte 3–10 sekúnd zreteľnej reči. Súbory môžu mať až 20 MB. Pri prvom použití kóder stiahne približne 654 MB."
+  },
+  "ui_a01f1ba6": {
+    "message": "Jazyk hovorený v nahrávke"
+  },
+  "ui_1ade9af5": {
+    "message": "Zvukový súbor"
+  },
+  "ui_a4204cfb": {
+    "message": "Prečítajte tento text nahlas svojím bežným hlasom."
+  },
+  "ui_75637bc3": {
+    "message": "Nahrať ukážku"
+  },
+  "ui_523daa03": {
+    "message": "Odstrániť hluk v pozadí"
+  },
+  "ui_905bc62f": {
+    "message": "Použiť pôvodnú ukážku"
+  },
+  "ui_67b9602a": {
+    "message": "Voliteľné. Funguje na tomto zariadení pomocou WebGPU a pri prvom použití stiahne približne 493 MB."
+  },
+  "ui_026775c1": {
+    "message": "Názov predvoľby"
+  },
+  "ui_706bbab1": {
+    "message": "Čo je uvedené v nahrávke"
+  },
+  "ui_b00f8855": {
+    "message": "Uložiť predvoľbu hlasu"
+  },
+  "ui_80c87657": {
+    "message": "Uložené osobné hlasy"
+  },
+  "ui_83b7d497": {
+    "message": "Použiť na čítanie"
+  },
+  "ui_71accaa9": {
+    "message": "Vypočuť hlas"
+  },
+  "ui_c348abed": {
+    "message": "Odstrániť predvoľbu"
+  },
+  "ui_8313d4fa": {
+    "message": "Zastaviť nahrávanie"
+  },
+  "ui_35afca3b": {
+    "message": "Zrušiť"
+  },
   "ui_6b68e4c5": {
     "message": "Experimentálne. 32 jazykových položiek; kvalita sa líši. Vyžaduje WebGPU s fp16 a stiahnutie asi 1,35 GB. Vyberte hlas, variant alebo šepot."
+  },
+  "ui_9e93d684": {
+    "message": "Čítanie pomocou osobného hlasového prednastavenia.Vzorky hlasu a rozprávanie zostávajú na tomto zariadení.Potrebuje WebGPU s fp16."
   },
   "ui_35a4186c": {
     "message": "Upozornenie: Šepkanie môže v tomto jazyku vynechávať slová. Porovnajte čítanie s textom."

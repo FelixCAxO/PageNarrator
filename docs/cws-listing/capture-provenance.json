@@ -2,25 +2,25 @@
   "method": "One native X11 display capture per image; crop top 80 pixels, convert to RGB. No screenshot composition, resizing, or UI layout overrides.",
   "environment": "Isolated Playwright 1.64.1 / Chromium 156.0.8078.4 / linux / Xvfb / Openbox.",
   "fixturePermissions": "Disposable extension copy adds tabs and localhost access. Pinned, hash-verified model fixtures seed the cache; actual packaged synthesis produces speech.",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "artifact": "Explicitly selected packaged extension; screenshots only, no Store submission.",
-  "capturedAt": "2026-11-05T11:58:32.668Z",
+  "capturedAt": "2026-11-10T17:34:53.344Z",
   "nodeVersion": "v22.23.3",
   "inputPackage": {
-    "fileCount": 352,
-    "bytes": 79403551,
-    "sha256": "e4c0c2933ddc0adad1fbc478904d728820a34a3d0d5fcf23371929cba10eaf4e"
+    "fileCount": 369,
+    "bytes": 80778492,
+    "sha256": "cb9107a14aefaab430c5aca3f8553ae58c0d1329c66ab6d75ac2b0513532c5e3"
   },
   "sourceHashNormalization": "UTF-8 with CRLF normalized to LF.",
   "sourceSha256": {
-    "src/popup.html": "f1a844d2c140c203d6c3a7dbbe21cdfd25ba577bca2f367a6cb833c7045b33b2",
+    "src/popup.html": "6f2902947ed0fd2c25990db4893de317adad29ee10e7d23da1233090eb6841a6",
     "src/popup.css": "ba31bc9c9a976735bbba81be1037f95ec45f530ae2b7ff1d4f9af4d6e8c52e21",
-    "src/popup.js": "ea9b6aaf227aa06e1642bb2f617ce79c19e437b1993151f17481c7adcff23ce3",
+    "src/popup.js": "0ba4d8a499ed60b6e556d1fb569df02d0ab02160dae36205863ac1f835c517ee",
     "src/pdf-viewer.html": "76fafcdea94d65b76f296f1265c8b02da1acf8bb4a71cf602005e1b5ed2e919b",
     "src/pdf-viewer.css": "578225ff5b6166aa8d034ea8915042b22787aec68a6ef22dfa9520258de9119a",
-    "src/pdf-viewer.js": "a833c101d6fcc3ac89a5a917386890d9c97c5c5749923ff25e604354e59a0576",
+    "src/pdf-viewer.js": "76a53ff9d814faa94f27875c99a2dcc5bc8bafaeadccd7fc271c9fd9204f6d13",
     "website/public/cws-demo.html": "c684671986eb2a0e58b2505f7756428d8ed0df7796f3fd0eb14509a99168ffcd",
-    "tooling/scripts/capture-current-product-media.mjs": "dd0dfbe1242b2bfe89c3fa18188fcfcc57b4943275a286b95d8d3442eba5cadb"
+    "tooling/scripts/capture-current-product-media.mjs": "e3f852ad1a4da3a590659631cb9d0396be1d44e312f3272f3c977e0d6acb9c9c"
   },
   "brandIconSha256": "6c24e1381eb7ecc01f93ba369a764bb33ea3d037635d04c7e97c9ce63048803c",
   "width": 1280,
@@ -28,8 +28,8 @@
   "images": [
     {
       "name": "screenshot-01-toolbar-player-idle.png",
-      "sha256": "0f959b958c3c16b767b48cd32968921f8ac1629cd5d28faf9b2739330a7ee89b",
-      "rawCaptureSha256": "3fb62de3283cd3ab115e3a187b1a0e5bcdf6d7e376db3cc27fbc0842f2561b21",
+      "sha256": "4d77649773b843a005c7b86bedac726adfc94faaa8879bd5d4aa25b033270792",
+      "rawCaptureSha256": "f182d4f9dabaee298f23105694799825185ddba6f305a9b688eeb6cf0eef25de",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -46,8 +46,8 @@
     },
     {
       "name": "screenshot-02-toolbar-player-reading.png",
-      "sha256": "e20bd40b2551713fa2c798e057e8f39cedda5f8213f0287d4fc995c5dba47108",
-      "rawCaptureSha256": "94efebf8d4bfdedc23b747c834aa74521459bfe6d1dc6c7e6df481d2a51d1b1f",
+      "sha256": "530c5c02fd60f50e90b3d393e412c0445fec4891772950271b940f0d8b41fd36",
+      "rawCaptureSha256": "8ead2f95cc9cd255dd17571c6f4149aff6be6f8e176b5a3380126d2a8140468f",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -66,8 +66,8 @@
     },
     {
       "name": "screenshot-03-toolbar-player-settings.png",
-      "sha256": "7bd407532e5c0daca88db705ee172f19df925c2cf64cc4f8e5e7e4250d54a4ed",
-      "rawCaptureSha256": "4e7a6d31421feb522ec768537947608ccdb78414827bbba5a23324dae7ca3023",
+      "sha256": "fb6528d5db341a3fb510489940ccc4eb6c105440dc35d28a27952391b7627a9e",
+      "rawCaptureSha256": "9865d0176e46e5a90d9c03bfa6c7c22334cb6dc2f79b08fb53979d4b351983e5",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Paused",
@@ -78,6 +78,7 @@
           "popup-backend-preference",
           "popup-idle-release",
           "popup-skip-code",
+          "popup-skip-pdf-equations-and-tables",
           "popup-area-color",
           "popup-word-color",
           "popup-area-opacity",
@@ -87,8 +88,8 @@
     },
     {
       "name": "screenshot-04-toolbar-player-pdf.png",
-      "sha256": "4df47bf6832b7af20d0ff8804ce3eb40edfcc895bb9b5c0473141dfe00e46e81",
-      "rawCaptureSha256": "a2ddec0a31a806eac9fff029bc6ac30b5142d712ec101120f5f67c37ff6ec94d",
+      "sha256": "81c02c77097bb1088553b7848788a534b738056bf75768a12c3b79c3c8ad8245",
+      "rawCaptureSha256": "1973c638b3ebbe99981c1c5ce4fcb0e4b335bf6fbb7354f024feb64f00551750",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Reading",
@@ -107,8 +108,8 @@
     },
     {
       "name": "screenshot-05-omnivoice-controls.png",
-      "sha256": "ae5ce00496987f59bdd3b43bf0b2f4259226b0d05a3cdbb7b0e9df2a58006fae",
-      "rawCaptureSha256": "041ea5a90aa932022472a5e41b29fcfc149164b67bcc490e80b072e8bd369912",
+      "sha256": "d7632cdfd2669fe24ee79aa661cdb655f485f17c841afae0b20bcbbc8dcf43d7",
+      "rawCaptureSha256": "aa418fe7db6d27e3256c490b8086f612e8c8a9afcc40ad588fd1b459ecdb117a",
       "nativePixelsUnchanged": true,
       "state": {
         "status": "Ready to read",
@@ -122,5 +123,17 @@
         ]
       }
     }
-  ]
+  ],
+  "postCaptureChanges": {
+    "tooling/scripts/capture-current-product-media.mjs": {
+      "capturedSourceSha256": "e3f852ad1a4da3a590659631cb9d0396be1d44e312f3272f3c977e0d6acb9c9c",
+      "sha256": "424df78fe44b890d655ac701365360ffd91f0b2295e27a96785b0e590493b4dc",
+      "change": "Removed unused WebP derivative; capture inputs and screenshot pixels are unchanged."
+    },
+    "src/popup.js": {
+      "capturedSourceSha256": "0ba4d8a499ed60b6e556d1fb569df02d0ab02160dae36205863ac1f835c517ee",
+      "sha256": "cb8c600558ffebdb27e0687b30f9d6269e84678c2feb3fbb9356d36f50763c93",
+      "change": "Settings persistence fix only; no HTML, styles, or screenshot files changed."
+    }
+  }
 }

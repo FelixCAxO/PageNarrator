@@ -33,12 +33,13 @@ export function executeMetadataMath(node, { value, numbers }) {
     if (fill.length !== 1) throw new Error('ConstantOfShape requires one fill value.');
     return metadataTensor(new Array(count).fill(fill[0]), shape, type);
   }
-  if (!['Add', 'Sub', 'Mul', 'Div', 'Equal', 'Greater', 'GreaterOrEqual', 'Less', 'And', 'Where', 'Cast', 'Expand', 'NonZero', 'Range'].includes(node.opType)) return null;
+  if (!['Add', 'Sub', 'Mul', 'Div', 'Ceil', 'Equal', 'Greater', 'GreaterOrEqual', 'Less', 'And', 'Where', 'Cast', 'Expand', 'NonZero', 'Range'].includes(node.opType)) return null;
   const inputs = node.inputs.map(value);
   if (inputs.some(input => !input.cpu)) return null;
   if (Object.keys(a).some(key => node.opType !== 'Cast' || !['to', 'saturate'].includes(key))) throw new Error(`Unsupported ${node.opType} attribute.`);
   if (node.opType === 'Cast' && a.saturate !== undefined && a.saturate !== 1) throw new Error('Only the default saturating Cast attribute is supported.');
   const first = inputs[0];
+  if (node.opType === 'Ceil') return mapBroadcast(inputs, Math.ceil, first.dataType);
   if (node.opType === 'NonZero') {
     const indices = [];
     for (let i = 0; i < first.data.length; i++) if (first.data[i] !== 0) indices.push(i);

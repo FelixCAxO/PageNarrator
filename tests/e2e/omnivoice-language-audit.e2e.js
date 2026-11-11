@@ -5,7 +5,7 @@ import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { launchExtensionContext, seedRealTtsFlowFlags } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
-import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
+import { createOmniVoiceRequest, getOmniVoicePickerState } from '../../src/lib/omnivoice-settings.js';
 import { OMNIVOICE_MODEL_BASE_URL } from '../../src/tts/omnivoice/loader.js';
 import { waveBytes, audioMeasures } from '../../tooling/scripts/lib/kokoro-speech-acceptance.mjs';
 import { acquireMeasurementLock } from '../../tooling/scripts/weak-hardware/measurement-lock.mjs';
@@ -92,12 +92,10 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
           tts = module.createOmniVoiceTts();
           await tts.init();
         };
-        globalThis.__languageAuditCall = async (method, { request }) => {
+        globalThis.__languageAuditCall = async (method, { request, omniVoice }) => {
           if (method !== 'synthesize') throw new Error('Unexpected adapter audit method.');
-          const [gender, variation] = request.speakerId.split('-');
           capture = { requests: [], replies: [], errors: [] };
-          const result = await tts.generate(request.text, { voice: { detectCode: request.lang,
-            omniVoice: { gender, variation: Number(variation), whisper: request.whisper === true } } });
+          const result = await tts.generate(request.text, { voice: { detectCode: request.lang, omniVoice } });
           if (capture.requests.length !== 1 || capture.replies.length !== 1 || capture.errors.length) {
             throw new Error('The adapter audit requires one successful synthesis at the selected seed.');
           }
@@ -132,7 +130,8 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
         .languages.find(item => item.code === scheduled.code);
       const text = item.text || 'Today we are reading a short story about a quiet garden.';
       const sampleId = item.id || item.code;
-      const request = createOmniVoiceRequest(text, { detectCode: item.code, omniVoice: item.omniVoice || { gender: 'female', variation: 1, whisper: false } });
+      const omniVoice = item.omniVoice || { gender: 'female', variation: 1, whisper: false };
+      const request = createOmniVoiceRequest(text, { detectCode: item.code, omniVoice });
       const requestSha256 = hash(JSON.stringify(request));
       const recordPath = path.join(root, 'records', `${sampleId}.json`);
       try {
@@ -150,11 +149,11 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
         semanticStatus: item.nativeText ? 'awaiting-independent-analysis' : 'unverified-no-native-reference', attempts: [] };
       if(item.replayOf){
         await page.evaluate(()=>__languageAuditReset());
-        const warmup=createOmniVoiceRequest(item.warmupText,{detectCode:item.code,omniVoice:item.omniVoice});
-        const warmupResult = await page.evaluate(async request => {
-          const result = await __languageAuditCall('synthesize', { request });
+        const warmup = createOmniVoiceRequest(item.warmupText, { detectCode: item.code, omniVoice });
+        const warmupResult = await page.evaluate(async args => {
+          const result = await __languageAuditCall('synthesize', args);
           return { speaker: result.speaker, actualRequest: result.actualRequest };
-        }, warmup);
+        }, { request: warmup, omniVoice });
         record.warmupSpeaker = warmupResult.speaker;
         if (adapterMode) { expect(warmupResult.actualRequest).toEqual(warmup); record.warmupRequest = warmupResult.actualRequest; }
         expect(record.warmupSpeaker.referenceHash).toBe(getOmniVoiceSpeakerReference(request).hash);
@@ -163,9 +162,9 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
         const started = Date.now();
         const attemptRequest = { ...request, seed: request.seed + attempt };
         try {
-          // Every normal preset and both variation-one whisper presets per language use the real worker.
+          // Every normal preset and the first whisper preset for each voice type use the real worker.
           // The remaining pure DSP probes use its exact float32 backing, with the same renderer and seed.
-          const deriveWhisper = reuseBacking && request.whisper && item.omniVoice.variation !== 1 && item.code !== 'sv' && !item.replayOf;
+          const deriveWhisper = reuseBacking && request.whisper && getOmniVoicePickerState(omniVoice, item.code).rank > 1 && item.code !== 'sv' && !item.replayOf;
           let result;
           const baselineId = sampleId.replace(/-whisper$/u,'');
           if (deriveWhisper) {
@@ -180,12 +179,12 @@ test('audits every OmniVoice language with resumable real GPU recordings', async
             record.rendererSha256 = rendererSha256;
             record.backingRecord = baselineId;
           } else {
-            result = await page.evaluate(async request => {
-            const result = await __languageAuditCall('synthesize', { request });
-            return { pcm: Array.from(result.pcm), sampleRate: result.sampleRate, speaker: result.speaker, timings: result.timings,
-              backingPcmSha256: result.backingPcmSha256, actualRequest: result.actualRequest,
-              actualWorkerUrl: result.actualWorkerUrl, voiceRecovery: result.voiceRecovery };
-            }, attemptRequest);
+            result = await page.evaluate(async args => {
+              const result = await __languageAuditCall('synthesize', args);
+              return { pcm: Array.from(result.pcm), sampleRate: result.sampleRate, speaker: result.speaker, timings: result.timings,
+                backingPcmSha256: result.backingPcmSha256, actualRequest: result.actualRequest,
+                actualWorkerUrl: result.actualWorkerUrl, voiceRecovery: result.voiceRecovery };
+            }, { request: attemptRequest, omniVoice });
             record.captureOrigin = adapterMode ? 'packaged-adapter' : 'packaged-worker';
             if (adapterMode) {
               expect(result.actualRequest).toEqual(attemptRequest);

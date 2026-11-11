@@ -2,7 +2,10 @@ import { expect, it, vi } from 'vitest';
 import { createOmniVoiceTts } from '../../src/tts/omnivoice/tts.js';
 import * as presetIndex from '../../src/tts/omnivoice/preset-seeds.js';
 
-const voice = { detectCode: 'en', omniVoice: { gender: 'female', variation: 4 } };
+const preset = presetIndex.getOmniVoicePreset(presetIndex.getOmniVoiceVoices('en', 'female')[0]);
+const voice = { detectCode: 'en', omniVoice: { gender: 'female', voices: { en: preset.id } } };
+const withPreset = overrides => { const real = presetIndex.getOmniVoicePreset;
+  return vi.spyOn(presetIndex, 'getOmniVoicePreset').mockImplementation(id => { const found = real(id); return found && { ...found, ...overrides }; }); };
 const audio = { pcm: Float32Array.of(.1, -.1), sampleRate: 24000 };
 const tooLong = () => Object.assign(new Error('Section exceeds the model context.'), { name: 'OmniVoiceSectionLengthError' });
 function setup(limit, onLeaf = () => audio) {
@@ -16,7 +19,7 @@ function setup(limit, onLeaf = () => audio) {
 }
 
 it('preserves measured pronunciation on every split section', async () => {
-  const pronunciation = vi.spyOn(presetIndex, 'getOmniVoicePresetPronunciationVariant').mockReturnValue('yue-nei5');
+  const pronunciation = withPreset({ pronunciationVariant: 'yue-nei5' });
   const { tts, engine } = setup(20);
   try {
     await tts.generate('您好，您今日想睇咩書？您可以慢慢揀。'.repeat(6), { voice: { ...voice, detectCode: 'yue' } });
@@ -28,7 +31,7 @@ it('preserves measured pronunciation on every split section', async () => {
 });
 
 it('preserves measured pace when an oversized section is split', async () => {
-  const speed = vi.spyOn(presetIndex, 'getOmniVoicePresetSpeed').mockReturnValue(.85);
+  const speed = withPreset({ speed: .85 });
   const { tts, engine } = setup(20);
   try {
     await tts.generate('The first sentence is complete. The second sentence follows.', { voice });
@@ -44,7 +47,7 @@ it('splits a bounded request while preserving all text, the preset and seed with
   const requests = engine.synthesize.mock.calls.map(([request]) => request), leaves = requests.filter(request => request.text.length <= 30);
   expect(leaves.map(request => request.text).join(' ')).toBe(text);
   expect(result.audio).toHaveLength(leaves.length * audio.pcm.length);
-  for (const request of requests) expect(request).toMatchObject({ lang: 'en', speakerId: 'female-4', seed: 45 });
+  for (const request of requests) expect(request).toMatchObject({ lang: 'en', speakerId: preset.id, seed: preset.seed });
   expect(loadRuntime).toHaveBeenCalledOnce(); expect(engine.init).toHaveBeenCalledOnce();
   expect(engine.dispose).not.toHaveBeenCalled(); expect(progress).toHaveBeenCalledOnce();
   await tts.dispose();
@@ -72,6 +75,18 @@ it('smooths an internal join without shortening or mutating the original section
   } finally { await tts.dispose(); }
 });
 
+it.each([false, true])('removes dead air at playback edges for either voice source (personal=%s)', async personal => {
+  const pcm = new Float32Array(48000);
+  pcm.fill(0.2, 12000, 36000);
+  const { tts } = setup(40, () => ({ ...audio, pcm }));
+  try {
+    const selected = personal ? { ...voice, personalReference: { id: 'clone:test' } } : voice;
+    const result = await tts.generate('First piece.', { voice: selected });
+    expect(result.audio.length).toBe(30720);
+    expect(result.audio).toEqual(pcm.subarray(8640, 39360));
+  } finally { await tts.dispose(); }
+});
+
 it('stops between sections when reading is cancelled', async () => {
   const controller = new AbortController();
   const { tts, engine } = setup(18, () => { controller.abort(); return audio; });
@@ -91,7 +106,7 @@ it('rejects an indivisible section without recursive retries', async () => {
 it('validates each section so invalid audio cannot be hidden by a valid section', async () => {
   const { tts, engine } = setup(18, request => request.text.startsWith('Second') ? { ...audio, pcm: Float32Array.of(NaN, 0) } : audio);
   await expect(tts.generate('First piece. Second piece.', { voice })).rejects.toMatchObject({ name: 'OmniVoiceAudioQualityError' });
-  expect(new Set(engine.synthesize.mock.calls.map(([request]) => request.speakerId))).toEqual(new Set(['female-4']));
-  expect(new Set(engine.synthesize.mock.calls.map(([request]) => request.seed))).toEqual(new Set([45, 46]));
+  expect(new Set(engine.synthesize.mock.calls.map(([request]) => request.speakerId))).toEqual(new Set([preset.id]));
+  expect(new Set(engine.synthesize.mock.calls.map(([request]) => request.seed))).toEqual(new Set([preset.seed, preset.seed + 1]));
   await tts.dispose();
 });

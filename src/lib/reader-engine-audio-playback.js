@@ -479,7 +479,7 @@ export function createAudioPlaybackManager({
         highlightPlanSuspended = true;
         highlightPlanResyncLoop.stop();
         clearPreEndHandoffTimer();
-        currentAudioWatchdog?.pause();
+        // Buffering must retain its failure deadline; only an explicit pause suspends it.
         sendHighlightPlanResync({ paused: true, force: true });
         scheduleStalledEndFence();
       };

@@ -2,16 +2,16 @@ import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import corpus from '../../tests/fixtures/omnivoice-language-quality.json' with {type:'json'};
 import { getOmniVoiceLanguageOptions } from '../../src/tts/omnivoice/languages.js';
+import { getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const languages=getOmniVoiceLanguageOptions();
 const includeWhisper=process.argv.includes('--include-whisper');
 assert.deepEqual(Object.keys(corpus.languages).sort(),languages.map(({code})=>code).sort());
-let cases=languages.flatMap(language=>['female','male'].flatMap(gender=>Array.from({length:10},(_,i)=>(includeWhisper?[false,true]:[false]).map(whisper=>({
+let cases=languages.flatMap(language=>['female','male'].flatMap(gender=>getOmniVoiceVoices(language.code,gender).flatMap((voiceId,i)=>(includeWhisper?[false,true]:[false]).map(whisper=>({
   id:`${language.code}-${gender}-${i+1}${whisper?'-whisper':''}`,code:language.code,name:language.label,text:corpus.languages[language.code],
   nativeText:true,source:'Authored development screening sentences; native listening review pending',
-  omniVoice:{gender,variation:i+1,whisper},
-}))).flat()));
-assert.equal(cases.length,includeWhisper?1280:640);
+  omniVoice:{gender,voices:{[language.code]:voiceId},whisper},
+})))));
 if(process.argv.includes('--include-replays')){
   const swedish=cases.filter(item=>item.code==='sv');
   cases=[...swedish,...swedish.map(item=>({

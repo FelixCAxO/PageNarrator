@@ -336,7 +336,7 @@ describe('toolbar player target resolver', () => {
     expect(mocks.extractReadableTab).not.toHaveBeenCalled();
     expect(sentMessages).toContainEqual([
       viewerTab.id,
-      { type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, startPage: 3 },
+      { type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, sourceUrl: 'https://example.test/viewer.pdf', startPage: 3 },
     ]);
   });
 
@@ -390,14 +390,18 @@ describe('toolbar player target resolver', () => {
       });
 
       expect(pageMessages).toEqual([[viewerTab.id, { type: MESSAGE_TYPES.GET_READING_START, afterFinishedRead: true }]]);
-      expect(metadataRequests).toEqual([{ type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, startPage: 5 }]);
+      expect(metadataRequests).toEqual([{
+        type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, sourceUrl: 'https://example.test/viewer.pdf', startPage: 5,
+      }]);
       expect(article.startPosition).toMatchObject({ pageNumber: 5 });
     });
 
     it('starts from page one while the viewer still rests on the last narrated page', async () => {
       const { article, metadataRequests } = await restartFinishedPdfRead(null);
 
-      expect(metadataRequests).toEqual([{ type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, startPage: 1 }]);
+      expect(metadataRequests).toEqual([{
+        type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA, sourceUrl: 'https://example.test/viewer.pdf', startPage: 1,
+      }]);
       expect(article.startPosition).toBeUndefined();
     });
 

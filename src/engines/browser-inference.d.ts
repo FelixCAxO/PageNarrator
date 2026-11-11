@@ -23,6 +23,7 @@ export class InferenceSession {
     engine?: unknown;
     externalData?: {path: string; data: ArrayBuffer | Uint8Array}[];
     releaseHostWeights?: boolean;
+    repairNodeOrder?: boolean;
   }): Promise<InferenceSession>;
   readonly inputNames: readonly string[];
   readonly outputNames: readonly string[];

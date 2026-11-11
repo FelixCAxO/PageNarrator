@@ -7,6 +7,7 @@ import * as browserInference from '../../engines/browser-inference.js';
 import { assertOmniVoiceAudio } from './audio-quality.js';
 import { prepareOmniVoiceGraph } from './rmsnorm-correction.js';
 import { getOmniVoiceSpeakerReference } from './speakers.js';
+import { preparePersonalVoiceSpeaker } from './personal-reference.js';
 import { renderOmniVoiceWhisper } from './whisper.js';
 
 const MAIN = 'omnivoice-main-kv-fp16-b1.onnx';
@@ -81,14 +82,17 @@ function normalizeSpokenText(text, lang, pronunciationVariant = null) {
 }
 
 /** @param {string} text @param {number} speed
- * @param {{durationSource?:string,text:string,frames:number}|null} [reference] */
+ * @param {{durationSource?:string,text:string,frames:number,source?:{generation?:{speed?:number}}}|null} [reference] */
 export function estimateOmniVoiceFrames(text, speed, reference = null) {
   // The decoder emits 960 samples per code frame (25 Hz); bundle metadata incorrectly says 75 Hz.
   const weight = [...normalizeSpokenText(text)].reduce((total, char) => total + characterWeight(char), 0);
   // Recorded speech supplies its own pace; generated references retain the single-rounding rule.
   const referenceWeight = reference && ['recording', 'recording-derived'].includes(reference.durationSource ?? '')
     ? [...normalizeSpokenText(reference.text)].reduce((total, char) => total + characterWeight(char), 0) : 0;
-  const estimate = reference && referenceWeight > 0 ? weight / referenceWeight * reference.frames : weight * 25 / 14.1;
+  // Refreshed cards already include their generation speed; recover the pace before applying playback speed.
+  const generationSpeed = reference?.durationSource === 'recording-derived' ? reference.source?.generation?.speed ?? 1 : 1;
+  const estimate = reference && referenceWeight > 0
+    ? weight / referenceWeight * reference.frames * generationSpeed : weight * 25 / 14.1;
   return Math.max(1, Math.floor((estimate < 50 ? 50 * (estimate / 50) ** (1 / 3) : estimate) / speed));
 }
 
@@ -195,11 +199,14 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
   let disposal = null;
   let retired = false;
   let generation = 0;
+  /** @type {{source: ReturnType<typeof preparePersonalVoiceSpeaker>, prepared: ReturnType<typeof preparePersonalVoiceSpeaker>}|null} */
+  let personalPrompt = null;
 
   async function releaseSessions() {
     const sessions = [main, decoder];
     main = decoder = null;
     mainGraphCorrection = null;
+    personalPrompt = null;
     const results = await Promise.allSettled(sessions.filter(Boolean).map(session => session.release()));
     for (const result of results) if (result.status === 'rejected') log('cleanup', String(result.reason));
   }
@@ -297,6 +304,42 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     }
   }
 
+  /** @param {BigInt64Array} codes @param {number} frames @param {number} current */
+  async function decodeAudio(codes, frames, current) {
+    const input = new decoderRuntime.Tensor('int64', codes, [1, CODEBOOKS, frames]);
+    let result;
+    try {
+      try {
+        result = await decoder.run({ audio_codes: input }, ['audio_values']);
+      } catch (error) {
+        if (!(error instanceof Error) || !error.message.endsWith('Tensor exceeds the WebGPU device buffer limit.')) throw error;
+        throw Object.assign(new Error('OmniVoice section exceeds the decoder buffer limit.', { cause: error }), { name: 'OmniVoiceSectionLengthError' });
+      }
+      checkAbort(current);
+      const output = result.audio_values;
+      if (output.type !== 'float32' || output.dims[0] !== 1 || output.dims[1] !== 1 || output.dims.length !== 3) throw new Error('Unexpected OmniVoice audio shape.');
+      const pcm = new Float32Array(await output.getData());
+      checkAbort(current);
+      return pcm;
+    } finally {
+      input.dispose();
+      if (result) disposeTensors(result);
+    }
+  }
+
+  /** @param {ReturnType<typeof preparePersonalVoiceSpeaker>} source @param {number} current */
+  async function preparePersonalPrompt(source, current) {
+    if (personalPrompt) {
+      const cached = personalPrompt.source;
+      if (cached.id === source.id && cached.hash === source.hash && cached.text === source.text
+        && cached.frames === source.frames && cached.referenceLanguage === source.referenceLanguage) return personalPrompt.prepared;
+    }
+    const pcm = await decodeAudio(source.codes, source.frames, current);
+    const prepared = preparePersonalVoiceSpeaker(source, pcm);
+    personalPrompt = { source, prepared };
+    return prepared;
+  }
+
   /** @param {any} request @param {((progress: {remainingMs: number}) => void)|null} onProgress */
   async function generate(request, onProgress) {
     const { text, lang, instruct, speed, seed, numStep, guidanceScale = 2, pronunciationVariant = null } = request;
@@ -312,7 +355,8 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
     checkAbort(current);
     const timings = { inferenceMs: 0, unmaskMs: 0, decoderMs: 0, whisperMs: 0 };
     const spokenText = normalizeSpokenText(text, lang, pronunciationVariant);
-    const reference = getSpeaker(request);
+    const speaker = getSpeaker(request);
+    const reference = request.personalReference === undefined ? speaker : await preparePersonalPrompt(speaker, current);
     const frames = estimateOmniVoiceFrames(spokenText, speed, reference);
     /** @param {string} value @returns {number[]} */
     const encode = (value) => Array.from(tokenizer.encode(value, { add_special_tokens: false }));
@@ -348,46 +392,29 @@ export function createOmniVoiceRuntime({ ort, tokenizer, fetch: fetchModel, log 
         onProgress?.({ remainingMs: (timings.inferenceMs + timings.unmaskMs) / completedSteps * (numStep - completedSteps) });
       }
       checkAbort(current);
-      const input = new decoderRuntime.Tensor('int64', codes, [1, CODEBOOKS, frames]);
-      let result;
-      try {
-        const decoderStart = performance.now();
-        try {
-          result = await decoder.run({ audio_codes: input }, ['audio_values']);
-        } catch (error) {
-          if (!(error instanceof Error) || !error.message.endsWith('Tensor exceeds the WebGPU device buffer limit.')) throw error;
-          throw Object.assign(new Error('OmniVoice section exceeds the decoder buffer limit.', { cause: error }), { name: 'OmniVoiceSectionLengthError' });
-        }
-        checkAbort(current);
-        const output = result.audio_values;
-        if (output.type !== 'float32' || output.dims[0] !== 1 || output.dims[1] !== 1 || output.dims.length !== 3) throw new Error('Unexpected OmniVoice audio shape.');
-        let pcm = new Float32Array(await output.getData());
+      const decoderStart = performance.now();
+      let pcm = await decodeAudio(codes, frames, current);
+      assertOmniVoiceAudio(pcm, 24000);
+      timings.decoderMs = performance.now() - decoderStart;
+      const backingPcmSha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', pcm)), value => value.toString(16).padStart(2, '0')).join('');
+      checkAbort(current);
+      if (request.whisper === true) {
+        const whisperStart = performance.now();
+        pcm = renderOmniVoiceWhisper(pcm, seed, lang);
+        timings.whisperMs = performance.now() - whisperStart;
         checkAbort(current);
         assertOmniVoiceAudio(pcm, 24000);
-        timings.decoderMs = performance.now() - decoderStart;
-        const backingPcmSha256 = Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', pcm)), value => value.toString(16).padStart(2, '0')).join('');
-        checkAbort(current);
-        if (request.whisper === true) {
-          const whisperStart = performance.now();
-          pcm = renderOmniVoiceWhisper(pcm, seed, lang);
-          timings.whisperMs = performance.now() - whisperStart;
-          checkAbort(current);
-          assertOmniVoiceAudio(pcm, 24000);
-        }
-        // The reference builder runs without a preset; playback never derives identity from document text.
-        const anchorHash = reference?.hash || Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', codes)), value => value.toString(16).padStart(2, '0')).join('');
-        checkAbort(current);
-        return { pcm, sampleRate: 24000, timings, backingPcmSha256, speaker: {
-          id: reference?.id || null,
-          referenceId: reference?.referenceId || null, referenceLanguage: reference?.referenceLanguage || reference?.lang || null,
-          referenceHash: reference?.hash || null, referenceFrames: reference?.frames || 0,
-          anchorHash,
-          guidanceScale, speed, pronunciationVariant,
-        } };
-      } finally {
-        input.dispose();
-        if (result) disposeTensors(result);
       }
+      // The reference builder runs without a preset; playback never derives identity from document text.
+      const anchorHash = reference?.hash || Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', codes)), value => value.toString(16).padStart(2, '0')).join('');
+      checkAbort(current);
+      return { pcm, sampleRate: 24000, timings, backingPcmSha256, speaker: {
+        id: reference?.id || null,
+        referenceId: reference?.referenceId || null, referenceLanguage: reference?.referenceLanguage || reference?.lang || null,
+        referenceHash: reference?.hash || null, referenceFrames: reference?.frames || 0,
+        anchorHash,
+        guidanceScale, speed, pronunciationVariant,
+      } };
     } finally {
       disposeTensors(conditional);
       disposeTensors(unconditional);

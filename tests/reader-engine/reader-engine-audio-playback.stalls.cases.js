@@ -95,6 +95,33 @@ describe('readerEngine audio playback manager', () => {
     expect(manager.getState().currentAudioWatchdog).toBeNull();
   });
 
+  it.each(['waiting', 'stalled'].flatMap(event => [false, true].map(early => ({ event, early }))))(
+    'bounds a $event stall when it occurs before playback starts: $early', async ({ event, early }) => {
+      vi.useFakeTimers();
+      const audio = createFakeAudio();
+      audio.duration = 2;
+      audio.currentTime = 0.8;
+      let start;
+      audio.play = () => new Promise(resolve => { start = resolve; });
+      const manager = createAudioPlaybackManager({
+        audioPool: { acquire: () => audio },
+        getSectionEarlyAdvanceSeconds: () => 0,
+        urlApi: { createObjectURL: () => 'blob:stalled', revokeObjectURL() {} },
+      });
+      let result;
+      const playback = manager.playAudio(new Blob(['audio']), [{ text: 'hello', start: 0, end: 2 }], { speech: 'hello' })
+        .then(() => { result = 'finished'; }, error => { result = error; });
+      if (!early) { start(); await vi.advanceTimersByTimeAsync(0); }
+      audio.dispatchEvent(new Event(event));
+      if (early) {
+        audio.dispatchEvent(new Event('playing'));
+        start();
+      }
+      await vi.advanceTimersByTimeAsync(60_000);
+      expect(result).toMatchObject({ code: 'audio_playback_stalled' });
+      await playback;
+    });
+
   it('does not finish a mid-stream stalled generated-audio clip with the EOF fence', async () => {
     vi.useFakeTimers();
     const calls = [];

@@ -74,6 +74,32 @@ it('preserves a verified cached file when its caller cancels during cache readin
   expect(fetcher).not.toHaveBeenCalled();
 });
 
+it('preserves cached data across a transient offline read stall', async () => {
+  vi.useFakeTimers();
+  const cache = { match: vi.fn().mockResolvedValueOnce(new Response(new ReadableStream({
+    start(stream) { stream.enqueue(data.subarray(0, 4)); },
+  }))).mockImplementation(async () => new Response(data)), delete: vi.fn(async () => true) };
+  const read = () => loadVerifiedFile('https://example.test/weights.bin', file, { label: 'Test', cache, stallMs: 40 });
+  const stalled = read().catch(error => error);
+  await vi.advanceTimersByTimeAsync(40);
+  expect(cache.delete).not.toHaveBeenCalled();
+  expect(await stalled).toMatchObject({ name: 'TimeoutError' });
+  await expect(read()).resolves.toEqual(data);
+});
+
+it('falls back to a verified network response after a cache read error without evicting the old entry', async () => {
+  const error = new Error('Cache read failed');
+  const cache = { match: async () => new Response(new ReadableStream({ start(stream) { stream.error(error); } })),
+    delete: vi.fn(async () => true), put: vi.fn(async () => {}) };
+  const onCacheError = vi.fn(), onCacheInvalid = vi.fn();
+  await expect(loadVerifiedFile('https://example.test/weights.bin', file, { label: 'Test', cache,
+    fetcher: async () => new Response(data), onCacheError, onCacheInvalid })).resolves.toEqual(data);
+  expect(onCacheError).toHaveBeenCalledWith(error);
+  expect(onCacheInvalid).not.toHaveBeenCalled();
+  expect(cache.delete).not.toHaveBeenCalled();
+  expect(cache.put).toHaveBeenCalledOnce();
+});
+
 it('rejects a body larger than the pinned size before it fills memory', async () => {
   const fetcher = async () => new Response(new Uint8Array(data.length + 1));
   await expect(loadVerifiedFile('https://example.test/weights.bin', file, { label: 'Test', fetcher })).rejects.toThrow('Invalid Test data size');

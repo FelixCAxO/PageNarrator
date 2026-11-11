@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import { createHash } from 'node:crypto';
-import { launchExtensionContext, getExtensionId } from './extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer } from './extension-fixture.js';
 
 test('local book produces speech through the built PDF viewer', async ({}, testInfo) => {
   test.skip(!process.env.PN_TEST_PDF, 'Set PN_TEST_PDF to a local book.');
@@ -21,10 +21,9 @@ test('local book produces speech through the built PDF viewer', async ({}, testI
     context.on('request', (request) => {
       if (/^https?:/.test(request.url()) && !request.url().startsWith('http://127.0.0.1:')) report.externalRequests.push(request.url());
     });
-    const id = await getExtensionId(context);
     const page = await context.newPage();
     const url = `http://127.0.0.1:${server.address().port}/book.pdf`;
-    await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(url)}`);
+    await navigatePdfViewer(page, url);
     await expect(page.locator('#pdf-status')).toContainText('pages loaded', { timeout: 60_000 });
     const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);
     const worker = context.serviceWorkers()[0];

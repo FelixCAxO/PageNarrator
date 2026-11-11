@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Avaa sivu, napsauta PageNarrator-kuvaketta ja valitse ”Lue sivu ääneen”."
+  },
   "ui_3e8b2a3a": {
     "message": "Ladataan asiakirjaa…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Peruutettu."
+  },
+  "ui_9d3f7d31": {
+    "message": "Henkilökohtainen äänentoisto epäonnistui."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice vaatii WebGPU ja fp16 tukea."
+  },
+  "ui_34c2939b": {
+    "message": "Poistetaan taustamelua…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Ladataan melunpoistomallia… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Voit kuunnella tai tallentaa puhdistetun näytteen."
+  },
+  "ui_24b6564c": {
+    "message": "Melunpoisto ei ole käytettävissä. Voit tallentaa alkuperäisen näytteen."
+  },
+  "ui_f035394f": {
+    "message": "Voit kuunnella tai tallentaa näytteen."
+  },
+  "ui_611ed81e": {
+    "message": "Tallennetaan…"
+  },
+  "ui_514244f6": {
+    "message": "Tallentaminen mikrofonilla ei ole käytettävissä."
+  },
+  "ui_a8d5e97d": {
+    "message": "Salli mikrofonin käyttö näytteen tallentamista varten."
+  },
+  "ui_7bcd5d33": {
+    "message": "Mikrofonia ei löytynyt."
+  },
+  "ui_f6233044": {
+    "message": "Valitse äänitiedosto tai tallenna näyte."
+  },
+  "ui_b1cbd878": {
+    "message": "Kirjoita esiasetettu nimi ja tallennuksessa puhutut sanat."
+  },
+  "ui_a81b3b51": {
+    "message": "Koodaamalla ääni näyte ..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Lataa äänikooderi... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Äänen esiasetus tallennettiin."
+  },
+  "ui_3c91213b": {
+    "message": "Valittu ääneenlukuun."
+  },
+  "ui_1113ba39": {
+    "message": "Valmistellaan ääninäytettä…"
+  },
+  "ui_e0513158": {
+    "message": "Ääninäyte on valmis."
+  },
+  "ui_24e89fdd": {
+    "message": "Äänen esiasetus poistettiin."
   },
   "ui_c08b976a": {
     "message": "Käsitellään…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Vaatii huomiota"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikanenglanti, naisääni"
+  },
+  "ui_faf95838": {
+    "message": "Amerikanenglanti, miesääni"
+  },
+  "ui_f3768d40": {
+    "message": "Brittienglanti, naisääni"
+  },
+  "ui_4139054c": {
+    "message": "Valitse englanninkielinen Kokoro-ääni. Kokoro ei tue muita kieliä."
   },
   "ui_c0c171d2": {
     "message": "Toimintoa ei voitu suorittaa loppuun."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Luo henkilökohtainen äänen esikatselu Voice-asetuksissa."
+  },
   "ui_b7e3509c": {
     "message": "Ohita koodikatkelmat"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarratoria ei voitu käynnistää."
   },
-  "ui_4d1cf041": {
-    "message": "Amerikanenglanti, naisääni"
-  },
-  "ui_faf95838": {
-    "message": "Amerikanenglanti, miesääni"
-  },
-  "ui_f3768d40": {
-    "message": "Brittienglanti, naisääni"
-  },
-  "ui_4139054c": {
-    "message": "Valitse englanninkielinen Kokoro-ääni. Kokoro ei tue muita kieliä."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator-soitin"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Äänimalli"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (oletus)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (kokeellinen)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Kymmenen englanninkielistä ääntä. Ensiasennus: noin 93 MB CPU:lla tai 326 MB GPU:lla. Lisä-ääni tarvitsee noin 0,5 MB. Tallennettu äänivalinta säilyy."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Kymmenen englanninkielistä ääntä. Muut kielet vaihtuvat OmniVoiceen, jos sitä tuetaan. Ensiasennus: noin 93 MB CPU:lla tai 326 MB GPU:lla. Lisä-ääni tarvitsee noin 0,5 MB. Tallennettu äänivalinta säilyy."
   },
   "ui_2c04fde6": {
     "message": "Ääniasetukset"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Kuiskaus"
+  },
+  "ui_8156f492": {
+    "message": "Oman äänen esiasetus"
+  },
+  "ui_a8cbb251": {
+    "message": "Hallitse henkilökohtaisia ääniä"
   },
   "ui_3d7af8ef": {
     "message": "Toistonopeus"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Ohita koodikatkelmat"
   },
+  "ui_ce18c7cb": {
+    "message": "Ohita PDF-tiedostojen yhtälöt ja taulukot"
+  },
   "ui_456ac053": {
     "message": "Lukualueen väri"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Avaa PageNarrator sivulta"
-  },
-  "ui_94a4b160": {
-    "message": "Avaa sivu, napsauta PageNarrator-kuvaketta ja valitse ”Lue sivu ääneen”."
   },
   "ui_4be7c01e": {
     "message": "Puuttuvat äänitiedostot ladataan Hugging Facesta äänen valmistelun tai lukemisen yhteydessä. Puhe tuotetaan tällä laitteella. Välimuistiin tallennettuja tiedostoja voi käyttää offline-tilassa, kunnes ne poistetaan."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF-sivut"
   },
+  "ui_328b6bff": {
+    "message": "Ääninäytteet ja esiasetukset pysyvät tässä laitteessa."
+  },
+  "ui_fff029e4": {
+    "message": "Luo henkilökohtainen ääni"
+  },
+  "ui_12e7305d": {
+    "message": "Valitse äänitiedosto tai tallenna 3–10 sekuntia selkeää puhetta. Tiedosto voi olla enintään 20 Mt. Ensimmäisellä käyttökerralla kooderi lataa noin 654 Mt."
+  },
+  "ui_a01f1ba6": {
+    "message": "Kieli, jota käytetään tallennuksessa"
+  },
+  "ui_1ade9af5": {
+    "message": "Äänitiedosto"
+  },
+  "ui_a4204cfb": {
+    "message": "Lue tämä ääneen tavallisella äänelläsi."
+  },
+  "ui_75637bc3": {
+    "message": "Tallenna ääninäyte"
+  },
+  "ui_523daa03": {
+    "message": "Poista taustamelu"
+  },
+  "ui_905bc62f": {
+    "message": "Käytä alkuperäistä näytettä"
+  },
+  "ui_67b9602a": {
+    "message": "Valinnainen. Toimii tällä laitteella WebGPU:n avulla ja lataa ensimmäisellä kerralla noin 493 Mt."
+  },
+  "ui_026775c1": {
+    "message": "Esiasetuksen nimi"
+  },
+  "ui_706bbab1": {
+    "message": "Mitä nauhoituksessa sanotaan"
+  },
+  "ui_b00f8855": {
+    "message": "Tallenna äänen esiasetus"
+  },
+  "ui_80c87657": {
+    "message": "Tallennetut omat äänet"
+  },
+  "ui_83b7d497": {
+    "message": "Käytä ääneenlukuun"
+  },
+  "ui_71accaa9": {
+    "message": "Kuuntele ääninäyte"
+  },
+  "ui_c348abed": {
+    "message": "Poista esiasetus"
+  },
+  "ui_8313d4fa": {
+    "message": "Lopeta tallennus"
+  },
+  "ui_35afca3b": {
+    "message": "Peruuta"
+  },
   "ui_6b68e4c5": {
     "message": "Kokeellinen. 32 kielimerkintää; laatu vaihtelee. Vaatii WebGPU:n, fp16-tuen ja noin 1,35 GB latauksia. Valitse ääni, muunnelma tai kuiskaus."
+  },
+  "ui_9e93d684": {
+    "message": "Lue henkilökohtaisella ääniasetuksella. Ääninäytteet ja kertomus pysyvät tässä laitteessa. Vaatii WebGPU ja fp16."
   },
   "ui_35a4186c": {
     "message": "Varoitus: Kuiskaus voi jättää sanoja pois tällä kielellä. Vertaa luentaa tekstiin."

@@ -12,6 +12,7 @@ import {
   getPdfStartPageFromUrl,
   getPdfSourceUrl,
   getPdfWasmUrl,
+  isFetchablePdfSourceUrl,
   iteratePdfSpeechChunks,
 } from './lib/pdf-extraction.js';
 import {
@@ -36,6 +37,7 @@ import { classifyPdfLoadError, isPdfWorkerTerminatedError } from './lib/pdf-view
 import { createPdfViewerMessageHandler } from './lib/pdf-viewer-message-handler.js';
 import { getPdfDisplayTitle } from './lib/pdf-document-title.js';
 import { normalizePositive } from './lib/number-validation.js';
+import { getPlaybackSettings } from './lib/playback-settings.js';
 
 const pdfViewerLogger = createLogger('pdf-viewer');
 localizeDocument(document);
@@ -45,6 +47,8 @@ function loadedPagesLabel(count) {
 const suppressPdfViewerError = createSuppressedErrorHandler(pdfViewerLogger, 'Best-effort PDF viewer operation failed.');
 const pagesEl = document.getElementById('pdf-pages');
 const statusEl = document.getElementById('pdf-status');
+const openPdfHint = t('Click the PageNarrator extension icon while the page is active, then choose Read page.');
+statusEl.textContent = openPdfHint;
 const pdfOcr = createPdfOcr({ onStatus: (text) => {
   statusEl.textContent = text || loadedPagesLabel(pdfDocument?.numPages || 0);
 } });
@@ -106,7 +110,10 @@ let pdfRepairPromise = null;
 let lastSelectionStartPosition = null;
 let lastPdfSelection = null;
 const initialPdfSourceUrl = getPdfSourceUrl({ url: location.href });
-let pdfToolbarState = createPdfToolbarState({ currentPage: getInitialPdfStartPage(initialPdfSourceUrl) });
+const validPdfSource = isFetchablePdfSourceUrl(initialPdfSourceUrl);
+let pdfToolbarState = createPdfToolbarState({
+  currentPage: validPdfSource ? getInitialPdfStartPage(initialPdfSourceUrl) : 1,
+});
 let toolbarBound = false;
 let visiblePageUpdateScheduled = false;
 let layoutRefreshPromise = Promise.resolve();
@@ -142,15 +149,7 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
   readyPromise: () => pdfReadyPromise,
   getReadingStartPosition,
   getPdfSelection,
-  getStreamMetadata: () => ({
-    ok: true,
-    title: document.title || '',
-    url: getPdfSourceUrl({ url: location.href }),
-    pageCount: Math.max(0, Math.trunc(Number(pdfDocument?.numPages) || 0)),
-    // Page progress is available immediately; a full word census would delay narration.
-    totalReadableWordCount: 0,
-    instanceToken: pdfViewerInstanceToken,
-  }),
+  getStreamMetadata: getPdfStreamMetadata,
   getPdfChunk,
   closePdfChunkStream,
   teardown: teardownPdfViewerResources,
@@ -190,12 +189,34 @@ chrome.runtime.onMessage.addListener(createPdfViewerMessageHandler({
   onError: suppressPdfViewerError,
 }));
 
-pdfReadyPromise = renderPdf().catch((error) => {
+async function getPdfStreamMetadata({ sourceUrl } = {}) {
+  // Chrome lets other extensions open this URL. Only a trusted read request
+  // carrying the expected source can start loading this viewer document.
+  if (sourceUrl !== undefined) {
+    if (!validPdfSource || sourceUrl !== initialPdfSourceUrl || pdfViewerTornDown) {
+      return { ok: false, error: openPdfHint };
+    }
+    pdfReadyPromise ??= renderPdf().catch(reportPdfLoadError);
+  }
+  await pdfReadyPromise;
+  if (!pdfDocument) return { ok: false, error: openPdfHint };
+  return {
+    ok: true,
+    title: document.title || '',
+    url: initialPdfSourceUrl,
+    pageCount: pdfDocument.numPages,
+    // Page progress is available immediately; a full word census would delay narration.
+    totalReadableWordCount: 0,
+    instanceToken: pdfViewerInstanceToken,
+  };
+}
+
+function reportPdfLoadError(error) {
   const recovery = classifyPdfLoadError(error);
   if (recovery.code !== 'pdf_access') pdfViewerLogger.error('PDF viewer failed to render document.', error);
   if (!statusEl.textContent || statusEl.textContent === t("Loading document...") || statusEl.textContent === t("Loading PDF...")) {
     statusEl.textContent = recovery.message;
-    const sourceUrl = recovery.code === 'pdf_access' && getPdfSourceUrl({ url: location.href });
+    const sourceUrl = recovery.code === 'pdf_access' && initialPdfSourceUrl;
     if (sourceUrl && /^https?:\/\//i.test(sourceUrl)) {
       const originalLink = document.createElement('a');
       originalLink.href = sourceUrl;
@@ -204,11 +225,10 @@ pdfReadyPromise = renderPdf().catch((error) => {
     }
   }
   throw error;
-});
-void pdfReadyPromise.catch(suppressPdfViewerError);
+}
 
 async function repairPdfDocument(reason = 'worker-crash') {
-  if (pdfViewerTornDown) return;
+  if (pdfViewerTornDown || !pdfReadyPromise) return;
   if (pdfRepairPromise) return pdfRepairPromise;
 
   pdfViewerLogger.warn(`Initiating PDF viewer self-repair (${reason})...`);
@@ -272,8 +292,7 @@ async function renderPdf({ targetPage = null } = {}) {
   if (pdfViewerTornDown) return;
   pdfViewerInstanceToken = createPdfViewerInstanceToken();
 
-  const sourceUrl = getPdfSourceUrl({ url: location.href });
-  if (!sourceUrl || sourceUrl === location.href) throw new Error('No PDF source URL found.');
+  const sourceUrl = initialPdfSourceUrl;
 
   statusEl.textContent = t("Loading PDF...");
   const wasmUrl = getPdfWasmUrl(chrome.runtime);
@@ -347,7 +366,7 @@ async function getPdfChunk(message = {}) {
   if (!stream) {
     stream = {
       instanceToken: pdfViewerInstanceToken,
-      iterator: iteratePdfSpeechChunks(pdfDocument, {
+      iterator: readPdfNarration(pdfDocument, {
         recognizePage: pdfOcr.recognizePage,
         startPage: message.startPage,
         maxLen: message.speechChunkOptions?.maxLen,
@@ -388,6 +407,11 @@ async function getPdfChunk(message = {}) {
     }
     throw chunkError;
   }
+}
+
+async function* readPdfNarration(document, options) {
+  const { skipPdfEquationsAndTables } = await getPlaybackSettings({ autoRepair: false });
+  yield* iteratePdfSpeechChunks(document, { ...options, skipPdfEquationsAndTables });
 }
 
 async function readPdfChunkBatch(stream, count) {
@@ -698,8 +722,7 @@ function applyToolbarAction(action, { updateHash = false, refreshLayout = false 
   const pageChanged = pdfToolbarState.currentPage !== previous.currentPage;
   renderPdfToolbar();
 
-  const sourceUrl = getPdfSourceUrl({ url: location.href });
-  saveSavedPdfPage(sourceUrl, pdfToolbarState.currentPage);
+  saveSavedPdfPage(initialPdfSourceUrl, pdfToolbarState.currentPage);
 
   if (updateHash || pageChanged) {
     updateLocationPageHash(pdfToolbarState.currentPage);

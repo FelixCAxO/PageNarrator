@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Buka halaman, klik ikon PageNarrator, lalu pilih “Baca halaman”."
+  },
   "ui_3e8b2a3a": {
     "message": "Memuat dokumen…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Dibatalkan."
+  },
+  "ui_9d3f7d31": {
+    "message": "Aksi suara pribadi gagal."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice membutuhkan WebGPU dengan dukungan fp16."
+  },
+  "ui_34c2939b": {
+    "message": "Mengurangi kebisingan latar…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Mengunduh model pengurang kebisingan… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Sampel yang sudah dibersihkan siap diputar atau disimpan."
+  },
+  "ui_24b6564c": {
+    "message": "Pengurangan kebisingan tidak tersedia. Anda dapat menyimpan sampel asli."
+  },
+  "ui_f035394f": {
+    "message": "Sampel siap diputar atau disimpan."
+  },
+  "ui_611ed81e": {
+    "message": "Sedang merekam…"
+  },
+  "ui_514244f6": {
+    "message": "Perekaman dengan mikrofon tidak tersedia."
+  },
+  "ui_a8d5e97d": {
+    "message": "Izinkan akses mikrofon untuk merekam sampel."
+  },
+  "ui_7bcd5d33": {
+    "message": "Mikrofon tidak ditemukan."
+  },
+  "ui_f6233044": {
+    "message": "Pilih file audio atau rekam sampel."
+  },
+  "ui_b1cbd878": {
+    "message": "Masukkan nama dan kata-kata yang diucapkan dalam rekaman."
+  },
+  "ui_a81b3b51": {
+    "message": "Mengkode sampel suara ..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Mengunduh kode suara... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Preset suara disimpan."
+  },
+  "ui_3c91213b": {
+    "message": "Dipilih untuk membaca."
+  },
+  "ui_1113ba39": {
+    "message": "Menyiapkan pratinjau suara…"
+  },
+  "ui_e0513158": {
+    "message": "Pratinjau suara siap."
+  },
+  "ui_24e89fdd": {
+    "message": "Preset suara dihapus."
   },
   "ui_c08b976a": {
     "message": "Memproses…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Perlu perhatian"
+  },
+  "ui_4d1cf041": {
+    "message": "Inggris Amerika, perempuan"
+  },
+  "ui_faf95838": {
+    "message": "Inggris Amerika, laki-laki"
+  },
+  "ui_f3768d40": {
+    "message": "Inggris Britania, perempuan"
+  },
+  "ui_4139054c": {
+    "message": "Pilih suara Kokoro berbahasa Inggris. Kokoro tidak mendukung bahasa lain."
   },
   "ui_c0c171d2": {
     "message": "Tindakan ini tidak dapat diselesaikan."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Buat preset suara pribadi di pengaturan suara."
+  },
   "ui_b7e3509c": {
     "message": "Lewati cuplikan kode"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator tidak dapat dimulai."
   },
-  "ui_4d1cf041": {
-    "message": "Inggris Amerika, perempuan"
-  },
-  "ui_faf95838": {
-    "message": "Inggris Amerika, laki-laki"
-  },
-  "ui_f3768d40": {
-    "message": "Inggris Britania, perempuan"
-  },
-  "ui_4139054c": {
-    "message": "Pilih suara Kokoro berbahasa Inggris. Kokoro tidak mendukung bahasa lain."
-  },
   "ui_87d977c4": {
     "message": "Pemutar PageNarrator"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Model suara"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (bawaan)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (eksperimental)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Sepuluh suara bahasa Inggris. Penyiapan awal: sekitar 93 MB pada CPU atau 326 MB pada GPU. Suara tambahan membutuhkan sekitar 0,5 MB. Pilihan suara yang disimpan tetap dipertahankan."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Sepuluh suara bahasa Inggris. Bahasa lain beralih ke OmniVoice jika didukung. Penyiapan awal: sekitar 93 MB pada CPU atau 326 MB pada GPU. Suara tambahan membutuhkan sekitar 0,5 MB. Pilihan suara yang disimpan tetap dipertahankan."
   },
   "ui_2c04fde6": {
     "message": "Pengaturan suara"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Bisikan"
+  },
+  "ui_8156f492": {
+    "message": "Preset suara pribadi"
+  },
+  "ui_a8cbb251": {
+    "message": "Mengelola suara pribadi"
   },
   "ui_3d7af8ef": {
     "message": "Kecepatan pemutaran"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Lewati cuplikan kode"
   },
+  "ui_ce18c7cb": {
+    "message": "Lewati persamaan dan tabel dalam PDF"
+  },
   "ui_456ac053": {
     "message": "Warna area"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Buka PageNarrator dari halaman"
-  },
-  "ui_94a4b160": {
-    "message": "Buka halaman, klik ikon PageNarrator, lalu pilih “Baca halaman”."
   },
   "ui_4be7c01e": {
     "message": "Berkas suara yang belum tersedia diunduh dari Hugging Face saat persiapan atau pembacaan. Ucapan dibuat di perangkat ini. Berkas dalam cache dapat digunakan kembali secara offline sampai dihapus."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "Halaman PDF"
   },
+  "ui_328b6bff": {
+    "message": "Sampel suara dan preset tetap berada pada perangkat ini."
+  },
+  "ui_fff029e4": {
+    "message": "Membuat Suara Pribadi"
+  },
+  "ui_12e7305d": {
+    "message": "Pilih file audio atau rekam 3–10 detik ucapan yang jelas. Ukuran file maksimal 20 MB. Encoder mengunduh sekitar 654 MB saat pertama kali digunakan."
+  },
+  "ui_a01f1ba6": {
+    "message": "Bahasa yang digunakan dalam rekaman"
+  },
+  "ui_1ade9af5": {
+    "message": "Berkas audio"
+  },
+  "ui_a4204cfb": {
+    "message": "Bacakan teks ini dengan suara Anda yang biasa."
+  },
+  "ui_75637bc3": {
+    "message": "Rekam sampel"
+  },
+  "ui_523daa03": {
+    "message": "Kurangi kebisingan latar"
+  },
+  "ui_905bc62f": {
+    "message": "Gunakan sampel asli"
+  },
+  "ui_67b9602a": {
+    "message": "Opsional. Berjalan pada perangkat ini dengan WebGPU dan mengunduh sekitar 493 MB saat pertama digunakan."
+  },
+  "ui_026775c1": {
+    "message": "Nama preset"
+  },
+  "ui_706bbab1": {
+    "message": "Apa yang dikatakan dalam rekaman"
+  },
+  "ui_b00f8855": {
+    "message": "Simpan preset suara"
+  },
+  "ui_80c87657": {
+    "message": "Suara pribadi tersimpan"
+  },
+  "ui_83b7d497": {
+    "message": "Gunakan untuk membaca"
+  },
+  "ui_71accaa9": {
+    "message": "Dengarkan pratinjau suara"
+  },
+  "ui_c348abed": {
+    "message": "Hapus preset"
+  },
+  "ui_8313d4fa": {
+    "message": "Hentikan rekaman"
+  },
+  "ui_35afca3b": {
+    "message": "Batal"
+  },
   "ui_6b68e4c5": {
     "message": "Eksperimental. 32 entri bahasa; kualitas bervariasi. Memerlukan WebGPU dengan fp16 dan unduhan sekitar 1,35 GB. Pilih suara, variasi, atau bisikan."
+  },
+  "ui_9e93d684": {
+    "message": "Baca dengan preset suara pribadi. sampel suara dan narasi tetap pada perangkat ini. Diperlukan WebGPU dengan fp16."
   },
   "ui_35a4186c": {
     "message": "Peringatan: Bisikan dapat melewatkan kata dalam bahasa ini. Bandingkan bacaan dengan teks."

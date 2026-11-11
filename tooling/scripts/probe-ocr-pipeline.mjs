@@ -6,9 +6,9 @@ import { dirname, extname, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium } from '@playwright/test';
 import { readPrivateOcrFixture } from './lib/ocr-private-fixtures.mjs';
+import { injectOcrReferenceAdapter } from './lib/ocr-reference-adapter.mjs';
 
 const root = resolve(fileURLToPath(new URL('../../', import.meta.url)));
-const referenceImport = "const { createBrowserInferenceEngine } = await import('../../engines/browser-inference.js');";
 const privateImages = new Map(await Promise.all(['curved-lines.png', 'rating-matrix.png'].map(async name =>
   [`/tests/fixtures/ocr/${name}`, await readPrivateOcrFixture(name)])));
 const photoPath = resolve(root, '.cache/engine-fixtures/docunet-35_1.jpg');
@@ -25,8 +25,7 @@ const server = createServer(async (request, response) => {
       const relativePath = pathname.slice(11);
       let source = await readFile(resolve(root, relativePath), 'utf8');
       if (relativePath === 'src/lib/pdf-ocr-unwarp.js') {
-        if (source.split(referenceImport).length !== 2) throw new Error('OCR reference adapter injection point changed.');
-        source = source.replace(referenceImport, "const createBrowserInferenceEngine = () => ({ ...globalThis.__pnOcrReference, dispose: async () => {} });");
+        source = injectOcrReferenceAdapter(source);
       }
       response.writeHead(200, { ...headers, 'Content-Type': 'text/javascript' }); response.end(source); return;
     }

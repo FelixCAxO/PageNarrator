@@ -1,6 +1,9 @@
 import { t } from './i18n.js';
 import { STORAGE_KEYS } from './storage-keys.js';
-import { normalizeOmniVoiceSettings } from './omnivoice-settings.js';
+import { canUseOmniVoice, isOmniVoiceProfile, normalizeOmniVoiceSettings } from './omnivoice-settings.js';
+import { isPersonalVoiceId } from '../tts/omnivoice/personal-reference.js';
+import { listPersonalVoiceReferences } from '../platform/storage/personal-voice-store.js';
+import { withPlaybackSettingsWriteLock } from '../platform/storage/playback-settings-storage.js';
 import {
   TTS_PERFORMANCE_PROFILE_DEFAULT,
   normalizeTtsPerformanceProfile,
@@ -9,7 +12,6 @@ import {
 export const MIN_SPEED = 0.5;
 export const MAX_SPEED = 3.0;
 export const PLAYBACK_SETTINGS_KEY = STORAGE_KEYS.PLAYBACK_SETTINGS;
-const PLAYBACK_SETTINGS_WRITE_LOCK = 'pagenarrator:playback-settings';
 export const DEFAULT_SECTION_PAUSE_SECONDS = 0;
 export const MIN_SECTION_PAUSE_SECONDS = -5;
 export const MAX_SECTION_PAUSE_SECONDS = 5;
@@ -18,6 +20,7 @@ export const DEFAULT_HIGHLIGHT_SETTINGS = Object.freeze({
   word: Object.freeze({ color: '#ffdd57', opacity: 0.38 }),
 });
 export const DEFAULT_SKIP_CODE_SNIPPETS = false;
+export const DEFAULT_SKIP_PDF_EQUATIONS_AND_TABLES = true;
 export const DEFAULT_IDLE_RELEASE_ENABLED = true;
 export const DEFAULT_TTS_BACKEND_PREFERENCE = 'auto';
 const TTS_BACKEND_PREFERENCES = Object.freeze(['auto', 'webgpu', 'wasm']);
@@ -60,21 +63,18 @@ export function normalizeHighlightSettings(settings = {}) {
   };
 }
 
-export async function getPlaybackSettings({ storage = globalThis.chrome?.storage?.local, autoRepair = true } = {}) {
+export async function getPlaybackSettings({ storage = globalThis.chrome?.storage?.local, autoRepair = true, navigator = globalThis.navigator } = {}) {
   const current = storage?.get ? await storage.get(PLAYBACK_SETTINGS_KEY) : {};
   const raw = current?.[PLAYBACK_SETTINGS_KEY];
-  const normalized = normalizePlaybackSettings(
-    /** @type {Record<string, unknown>} */ (isPlainObject(raw) ? raw : {}),
-  );
+  const normalizeStored = async value => normalizePlaybackSettings(
+    /** @type {Record<string, unknown>} */ (isPlainObject(value) ? value : { ttsEngine: await canUseOmniVoice(navigator) ? 'omnivoice' : 'kokoro' }));
   if (autoRepair && typeof storage?.set === 'function' && isPlaybackSettingsCorrupted(raw)) {
     try {
       // Re-read under the write lock: a save may have landed since the corrupt read, and a
       // blind write of the stale snapshot would revert it.
       return await withPlaybackSettingsWriteLock(async () => {
         const latest = (await storage.get(PLAYBACK_SETTINGS_KEY))?.[PLAYBACK_SETTINGS_KEY];
-        const repaired = normalizePlaybackSettings(
-          /** @type {Record<string, unknown>} */ (isPlainObject(latest) ? latest : {}),
-        );
+        const repaired = await normalizeStored(latest);
         if (isPlaybackSettingsCorrupted(latest)) await storage.set({ [PLAYBACK_SETTINGS_KEY]: repaired });
         return repaired;
       });
@@ -82,12 +82,14 @@ export async function getPlaybackSettings({ storage = globalThis.chrome?.storage
       // Best-effort storage repair
     }
   }
-  return normalized;
+  return normalizeStored(raw);
 }
 
-function withPlaybackSettingsWriteLock(task) {
-  const locks = globalThis.navigator?.locks;
-  return locks?.request ? locks.request(PLAYBACK_SETTINGS_WRITE_LOCK, task) : task();
+/** A save carries the voice picked for one language; picks for other languages stay. */
+function mergeOmniVoiceSettings(stored, update) {
+  if (!isPlainObject(update)) return stored;
+  const voices = { ...(isPlainObject(stored?.voices) ? stored.voices : {}), ...(isPlainObject(update.voices) ? update.voices : {}) };
+  return { ...(isPlainObject(stored) ? stored : {}), ...update, voices };
 }
 
 export async function savePlaybackSettings(settings, { storage = globalThis.chrome?.storage?.local } = {}) {
@@ -102,8 +104,9 @@ export async function savePlaybackSettings(settings, { storage = globalThis.chro
     const hasSetting = (name) => Object.prototype.hasOwnProperty.call(settingsObject, name);
     const language = normalizeLanguageSetting(hasSetting('language') ? settingsObject.language : raw.language);
     const next = {
-      ttsEngine: normalizeTtsEngine(hasSetting('ttsEngine') ? settingsObject.ttsEngine : raw.ttsEngine),
-      omniVoice: normalizeOmniVoiceSettings(hasSetting('omniVoice') ? settingsObject.omniVoice : raw.omniVoice, language),
+      ttsEngine: normalizeTtsEngine(hasSetting('ttsEngine') ? settingsObject.ttsEngine :
+        isPlainObject(stored?.[PLAYBACK_SETTINGS_KEY]) ? raw.ttsEngine : await canUseOmniVoice() ? 'omnivoice' : 'kokoro'),
+      omniVoice: normalizeOmniVoiceSettings(mergeOmniVoiceSettings(raw.omniVoice, hasSetting('omniVoice') ? settingsObject.omniVoice : null), language),
       language,
       voice: normalizeVoiceSetting(hasSetting('voice') ? settingsObject.voice : raw.voice),
       speed: hasSetting('speed')
@@ -122,6 +125,10 @@ export async function savePlaybackSettings(settings, { storage = globalThis.chro
       idleReleaseEnabled: hasSetting('idleReleaseEnabled')
         ? normalizeBooleanSetting(settingsObject.idleReleaseEnabled, DEFAULT_IDLE_RELEASE_ENABLED)
         : normalizeBooleanSetting(raw.idleReleaseEnabled, DEFAULT_IDLE_RELEASE_ENABLED),
+      skipPdfEquationsAndTables: normalizeBooleanSetting(
+        hasSetting('skipPdfEquationsAndTables') ? settingsObject.skipPdfEquationsAndTables : raw.skipPdfEquationsAndTables,
+        DEFAULT_SKIP_PDF_EQUATIONS_AND_TABLES,
+      ),
       ttsBackendPreference: hasSetting('ttsBackendPreference')
         ? normalizeTtsBackendPreference(settingsObject.ttsBackendPreference)
         : normalizeTtsBackendPreference(raw.ttsBackendPreference),
@@ -130,6 +137,14 @@ export async function savePlaybackSettings(settings, { storage = globalThis.chro
       ? settingsObject.lastBuiltInVoiceId
       : raw.lastBuiltInVoiceId);
     if (lastBuiltInVoiceId) next.lastBuiltInVoiceId = lastBuiltInVoiceId;
+    const personalVoiceId = hasSetting('personalVoiceId') ? settingsObject.personalVoiceId : raw.personalVoiceId;
+    if (isPersonalVoiceId(personalVoiceId)) {
+      const references = await listPersonalVoiceReferences(storage);
+      if (references.some(reference => reference.id === personalVoiceId)) next.personalVoiceId = personalVoiceId;
+      else if (hasSetting('personalVoiceId')) throw new Error(t('Create a personal voice preset in Voice settings.'));
+    }
+    // Stored only while true: page-language detection, not the user, chose the engine.
+    if (normalizeBooleanSetting(hasSetting('ttsEngineAuto') ? settingsObject.ttsEngineAuto : raw.ttsEngineAuto)) next.ttsEngineAuto = true;
 
     if (settingsObject?.language && settingsObject?.voice) {
       next.voicesByLanguage[next.language] = next.voice;
@@ -182,6 +197,7 @@ export function normalizePlaybackSettings(settings = {}) {
     sectionPauseSeconds: clampSectionPauseSeconds(settings?.sectionPauseSeconds),
     highlight: normalizeHighlightSettings(settings?.highlight),
     skipCodeSnippets: normalizeBooleanSetting(settings?.skipCodeSnippets),
+    skipPdfEquationsAndTables: normalizeBooleanSetting(settings?.skipPdfEquationsAndTables, DEFAULT_SKIP_PDF_EQUATIONS_AND_TABLES),
     idleReleaseEnabled: normalizeBooleanSetting(settings?.idleReleaseEnabled, DEFAULT_IDLE_RELEASE_ENABLED),
     ttsPerformanceProfile: normalizeTtsPerformanceProfile(settings?.ttsPerformanceProfile),
     ttsBackendPreference: normalizeTtsBackendPreference(settings?.ttsBackendPreference),
@@ -189,6 +205,8 @@ export function normalizePlaybackSettings(settings = {}) {
   };
   const lastBuiltInVoiceId = normalizeVoiceSetting(settings?.lastBuiltInVoiceId);
   if (lastBuiltInVoiceId) normalized.lastBuiltInVoiceId = lastBuiltInVoiceId;
+  if (isPersonalVoiceId(settings?.personalVoiceId)) normalized.personalVoiceId = settings.personalVoiceId;
+  if (settings?.ttsEngineAuto === true) normalized.ttsEngineAuto = true;
   return normalized;
 }
 
@@ -220,7 +238,7 @@ export function normalizeLanguageSetting(language) {
 }
 
 export function normalizeTtsEngine(engine) {
-  return engine === 'omnivoice' ? 'omnivoice' : 'kokoro';
+  return isOmniVoiceProfile(engine) ? engine : 'kokoro';
 }
 
 export function normalizeVoiceSetting(voice) {

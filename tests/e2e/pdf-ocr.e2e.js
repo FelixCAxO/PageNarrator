@@ -5,7 +5,7 @@ import { writeFile } from 'node:fs/promises';
 import { ocrWordErrorRate } from '../helpers/ocr-word-error-rate.js';
 import { tokenizeSpokenWords } from '../../src/lib/speech-tokenization.js';
 import { createReaderEnginePageHighlightController } from '../../src/lib/reader-engine-page-highlight-controller.js';
-import { launchExtensionContext, getExtensionId, seedFlowTestFlags, seedRealTtsFlowFlags,
+import { launchExtensionContext, getExtensionId, navigatePdfViewer, seedFlowTestFlags, seedRealTtsFlowFlags,
   startReadFromToolbarPopup } from './extension-fixture.js';
 
 async function scannedPdf(imagePath = null) {
@@ -43,7 +43,6 @@ test('historical curved photo PDF reaches real Kokoro playback from the popup', 
     const page = await context.newPage();
     const bytes = await scannedPdf(fixtureBytes);
     await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
-    await expect(page.locator('#pdf-status')).toContainText('page loaded');
     worker = context.serviceWorkers()[0];
     await startReadFromToolbarPopup(context, page);
     await expect.poll(() => page.evaluate(() =>
@@ -91,10 +90,11 @@ test('scanned PDF narration reports document pages through the real reader and p
     const progressImage = Buffer.from(`<svg width="1200" height="600" xmlns="http://www.w3.org/2000/svg"><rect width="100%" height="100%" fill="white"/>${progressLines.map((text, i) => `<text x="60" y="${65 + i * 64}" font-size="30" font-family="Arial">${text}</text>`).join('')}</svg>`);
     const bytes = await scannedPdf(progressImage);
     await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
-    await expect(page.locator('#pdf-status')).toContainText('page loaded');
+    await expect(page.locator('.pdf-page')).toHaveCount(0);
     // Real PDF/OCR/reader wiring, with silent synthesis to isolate progress reporting.
     const popup = await startReadFromToolbarPopup(context, page, { closePopup: false });
     await expect(popup.locator('#popup-status')).toHaveText('Reading', { timeout: 30_000 });
+    await expect(page.locator('#pdf-status')).toContainText('1 page loaded');
     await popup.locator('#popup-toggle').click();
     await expect(popup.locator('#popup-status')).toHaveText('Paused');
     await expect(popup.locator('#popup-progress')).toContainText('Page 1 of 1');
@@ -108,14 +108,13 @@ test('scanned PDF narration reports document pages through the real reader and p
 test('built viewer recognizes a raster PDF offline and emits anchored speech', async () => {
   const { context, cleanup } = await launchExtensionContext();
   try {
-    const id = await getExtensionId(context);
     const page = await context.newPage();
     const external = [];
     context.on('request', (request) => {
       if (/^https?:/.test(request.url())) external.push(request.url());
     });
     const bytes = await scannedPdf();
-    await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
+    await navigatePdfViewer(page, `data:application/pdf;base64,${bytes.toString('base64')}`);
     await expect(page.locator('#pdf-status')).toContainText('page loaded');
     const worker = context.serviceWorkers()[0];
     const started = Date.now();
@@ -171,10 +170,9 @@ test('historical rating matrix diagram reads its words without reciting cells an
   const fixtureBytes = await readPrivateOcrFixture('rating-matrix.png');
   const { context, cleanup } = await launchExtensionContext();
   try {
-    const id = await getExtensionId(context);
     const page = await context.newPage();
     const bytes = await scannedPdf(fixtureBytes);
-    await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
+    await navigatePdfViewer(page, `data:application/pdf;base64,${bytes.toString('base64')}`);
     await expect(page.locator('#pdf-status')).toContainText('page loaded');
     const worker = context.serviceWorkers()[0];
     const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);
@@ -248,10 +246,9 @@ test('historical curved scanned lines retain speech order and each word highligh
   const referenceText = await readPrivateOcrFixture('curved-body.txt', 'utf8');
   const { context, cleanup } = await launchExtensionContext();
   try {
-    const id = await getExtensionId(context);
     const page = await context.newPage();
     const bytes = await scannedPdf(fixtureBytes);
-    await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
+    await navigatePdfViewer(page, `data:application/pdf;base64,${bytes.toString('base64')}`);
     await expect(page.locator('#pdf-status')).toContainText('page loaded');
     const worker = context.serviceWorkers()[0];
     const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);
@@ -299,7 +296,7 @@ for (const gpuFailure of ['unavailable', 'adapter-rejection', 'model-rejection']
   test(`scanned PDF retains CPU OCR when WebGPU is ${gpuFailure}`, async () => {
     const { context, cleanup } = await launchExtensionContext();
     try {
-      const id = await getExtensionId(context), page = await context.newPage();
+      const page = await context.newPage();
       await page.addInitScript((mode) => {
         globalThis.__ocrAdapterAttempts = 0;
         globalThis.__ocrModelAttempts = 0;
@@ -318,7 +315,7 @@ for (const gpuFailure of ['unavailable', 'adapter-rejection', 'model-rejection']
           ? undefined : { requestAdapter: async () => { globalThis.__ocrAdapterAttempts++; throw new Error('Injected adapter failure'); } } });
       }, gpuFailure);
       const bytes = await scannedPdf();
-      await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
+      await navigatePdfViewer(page, `data:application/pdf;base64,${bytes.toString('base64')}`);
       await expect(page.locator('#pdf-status')).toContainText('page loaded');
       if (gpuFailure === 'model-rejection') test.skip(!await page.evaluate(async()=>!!await navigator.gpu?.requestAdapter()),'Model-failure coverage requires a GPU adapter.');
       const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);

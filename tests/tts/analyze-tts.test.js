@@ -16,7 +16,9 @@ describe('language detection in the shipped read loop and voice settings', () =>
   let detectLanguage;
   let populateVoices;
   let renderLanguageStatus;
-  let setLanguageSelectValue;
+  let applyDetectedVoice;
+  let canUseOmniVoice;
+  let storage;
   let ensureModel;
   let playKokoroSpeech;
   let readRunTracker;
@@ -33,7 +35,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
     detectLanguage = vi.fn(async () => ({ isReliable: true, languages: [{ language: 'en', percentage: 94 }] }));
     vi.stubGlobal('chrome', { ...globalThis.chrome, i18n: { detectLanguage } });
     vi.stubGlobal('__pnReaderEngineInitStage', globalThis.__pnReaderEngineInitStage);
-    const storage = createMemoryStorage();
+    storage = createMemoryStorage();
     const voiceSettings = createReaderEngineVoiceSettingsController({
       els,
       readerEngineStorage: createReaderEngineStorageAdapter({ storage }),
@@ -45,7 +47,8 @@ describe('language detection in the shipped read loop and voice settings', () =>
     await voiceSettings.populateVoices();
     populateVoices = vi.fn(voiceSettings.populateVoices);
     renderLanguageStatus = vi.fn(voiceSettings.renderLanguageStatus);
-    setLanguageSelectValue = vi.fn((value) => { els.language.value = value; });
+    applyDetectedVoice = vi.fn(voiceSettings.applyDetectedVoice);
+    canUseOmniVoice = vi.fn(async () => false);
     ensureModel = vi.fn(async () => {});
     playKokoroSpeech = vi.fn(async () => {});
     readRunTracker = createReadRunTracker();
@@ -53,7 +56,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
       state, readRunTracker,
       extractActiveTab: async () => article,
       setReadingState: (next) => { state.readingState = next; },
-      populateVoices, renderLanguageStatus, setLanguageSelectValue,
+      renderLanguageStatus, applyDetectedVoice, canUseOmniVoice, isEngineAuto: voiceSettings.isEngineAuto,
       resolveSelectedVoice: voiceSettings.resolveSelectedVoice,
       ensureModel, playKokoroSpeech,
     });
@@ -68,8 +71,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
     await readLoop.readPage();
 
     expect(detectLanguage).toHaveBeenCalledWith(article.text);
-    expect(setLanguageSelectValue).toHaveBeenCalledExactlyOnceWith('en');
-    expect(populateVoices).toHaveBeenCalledOnce();
+    expect(applyDetectedVoice).not.toHaveBeenCalled();
     expect(els.language.value).toBe('en');
     const voices = [...els.voice.options].map((option) => getVoiceById(option.value));
     expect(voices).toHaveLength(10);
@@ -89,7 +91,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
     await readLoop.readPage();
 
     expect(detectLanguage).toHaveBeenCalledTimes(sample === 'short' ? 0 : 1);
-    expect(setLanguageSelectValue).not.toHaveBeenCalled();
+    expect(applyDetectedVoice).not.toHaveBeenCalled();
     expect(populateVoices).not.toHaveBeenCalled();
     expect(state.selectedLanguageCode).toBe('en');
     expect(els.language.value).toBe('en');
@@ -118,7 +120,7 @@ describe('language detection in the shipped read loop and voice settings', () =>
     finishDetection({ languages: [{ language: 'fr', percentage: 94 }] });
     await reading;
 
-    expect(setLanguageSelectValue).not.toHaveBeenCalled();
+    expect(applyDetectedVoice).not.toHaveBeenCalled();
     expect(populateVoices).not.toHaveBeenCalled();
     expect(renderLanguageStatus).not.toHaveBeenCalled();
     expect(state.selectedLanguageCode).toBe('en');
@@ -130,9 +132,11 @@ describe('language detection in the shipped read loop and voice settings', () =>
     expect(state.activeReadingCursor).toBeNull();
   });
 
-  it('suggests OmniVoice and does not synthesize reliably detected foreign text with English Kokoro', async () => {
+  it('keeps English Kokoro and explains OmniVoice when this browser cannot run it', async () => {
     detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'de', percentage: 99 }] });
     await readLoop.readPage();
+    expect(canUseOmniVoice).toHaveBeenCalledOnce();
+    expect(applyDetectedVoice).not.toHaveBeenCalled();
     expect(state.selectedLanguageCode).toBe('en');
     expect(state.readingState).toBe('error');
     expect(els.languageStatus.textContent).toContain('Choose OmniVoice and German');
@@ -140,17 +144,42 @@ describe('language detection in the shipped read loop and voice settings', () =>
     expect(playKokoroSpeech).not.toHaveBeenCalled();
   });
 
-  it('keeps the chosen OmniVoice language while reporting a different detected language', async () => {
+  it('switches a German page from Kokoro to German OmniVoice and remembers detection chose it', async () => {
+    canUseOmniVoice.mockResolvedValue(true);
+    detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'de', percentage: 99 }] });
+    await readLoop.readPage();
+    expect(applyDetectedVoice).toHaveBeenCalledExactlyOnceWith({ engine: 'omnivoice', code: 'de', autoEngine: true });
+    expect(els.ttsEngine.value).toBe('omnivoice');
+    expect(els.language.value).toBe('de');
+    expect((await storage.get('playbackSettings')).playbackSettings).toMatchObject({ ttsEngine: 'omnivoice', language: 'de', ttsEngineAuto: true });
+    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:de:') }));
+    expect(els.languageStatus.textContent).toContain('Detected German (99%).');
+  });
+
+  it('switches the chosen OmniVoice language to the detected page language', async () => {
     els.ttsEngine.value = 'omnivoice';
     state.selectedLanguageCode = 'sv';
     await populateVoices();
-    populateVoices.mockClear();
     detectLanguage.mockResolvedValue({ isReliable: true, languages: [{ language: 'zh-CN', percentage: 99 }] });
     await readLoop.readPage();
-    expect(state.selectedLanguageCode).toBe('sv');
-    expect(els.language.value).toBe('sv');
-    expect(populateVoices).not.toHaveBeenCalled();
-    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:sv:') }));
+    expect(applyDetectedVoice).toHaveBeenCalledExactlyOnceWith({ engine: 'omnivoice', code: 'zh', autoEngine: false });
+    expect(els.language.value).toBe('zh');
+    expect(canUseOmniVoice).not.toHaveBeenCalled();
+    expect(ensureModel).toHaveBeenCalledWith(expect.objectContaining({ warmupVoice: expect.stringContaining('omnivoice:zh:') }));
     expect(els.languageStatus.textContent).toContain('Detected Chinese (99%).');
+  });
+
+  it.each([[true, 'kokoro'], [false, 'omnivoice']])('returns an English page to Kokoro only when detection chose OmniVoice (auto %s)', async (auto, engine) => {
+    await storage.set({ playbackSettings: { ttsEngine: 'omnivoice', language: 'de', ...(auto ? { ttsEngineAuto: true } : {}) } });
+    els.ttsEngine.value = 'omnivoice';
+    state.selectedLanguageCode = 'de';
+    await populateVoices();
+    await readLoop.readPage();
+    expect(applyDetectedVoice).toHaveBeenCalledExactlyOnceWith({ engine, code: 'en', autoEngine: false });
+    expect(els.ttsEngine.value).toBe(engine);
+    const stored = (await storage.get('playbackSettings')).playbackSettings;
+    expect(stored.ttsEngine).toBe(engine);
+    expect(stored.ttsEngineAuto).toBeUndefined();
+    expect(state.readingState).toBe('finished');
   });
 });

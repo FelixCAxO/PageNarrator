@@ -133,6 +133,18 @@ export async function openProbePdfDocument(cdp, extensionId, serviceWorkerSessio
       await cdp.send('Page.navigate', { url: viewerUrl }, pdfSessionId);
     }
     await cdp.send('Target.activateTarget', { targetId });
+    const tabId = await waitFor(async () => {
+      const result = await evaluateExpression(cdp, pdfSessionId,
+        'document.readyState === "complete" && chrome.tabs.getCurrent().then(tab => tab.id)');
+      return result.result.value;
+    }, 'Probe PDF viewer tab was not ready for a read request', 10_000);
+    const metadata = await cdp.send('Runtime.evaluate', {
+      expression: `chrome.tabs.sendMessage(${tabId}, ${JSON.stringify({ type: 'getPdfStreamMetadata', sourceUrl: pdfUrl })})`,
+      awaitPromise: true,
+      returnByValue: true,
+    }, serviceWorkerSessionId, { timeoutMs: 30_000 });
+    if (!metadata.result?.value?.ok) throw new Error(metadata.result?.value?.error || 'Probe PDF viewer rejected the read request');
+
     await waitFor(async () => {
       const result = await evaluateExpression(cdp, pdfSessionId, `(() => ({
         readyState: document.readyState,
@@ -147,12 +159,6 @@ export async function openProbePdfDocument(cdp, extensionId, serviceWorkerSessio
         ? value
         : null;
     }, `Probe PDF viewer did not finish loading the ${documentType} workload`, 30_000);
-
-    const tabId = await waitFor(
-      () => getTabIdByUrl(cdp, serviceWorkerSessionId, viewerUrl),
-      'Probe PDF viewer tab was not visible to the extension',
-      10_000,
-    );
 
     return {
       documentType,

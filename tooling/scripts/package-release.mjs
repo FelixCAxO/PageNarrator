@@ -102,7 +102,7 @@ export async function packageRelease(packageDir, options = {}) {
 }
 
 const SOURCE_PATHS = ['src', 'extension', 'engines', 'tooling', 'tests', 'website', 'docs',
-  'README.md', 'LICENSE', 'package.json', 'package-lock.json', 'tsconfig.json', '.nvmrc', '.gitignore', '.gitattributes'];
+  'README.md', 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'package.json', 'package-lock.json', 'tsconfig.json', '.nvmrc', '.gitignore', '.gitattributes'];
 
 export function createSourceArchive(sourceRoot, binary, candidateId = process.env.PN_CANDIDATE_ID || process.env.GITHUB_SHA) {
   const staging = mkdtempSync(join(tmpdir(), 'pn-source-export-'));
@@ -144,7 +144,17 @@ export function createSourceArchive(sourceRoot, binary, candidateId = process.en
       sha256: createHash('sha256').update(readFileSync(join(root, path))).digest('hex') })) };
     return createZip(root, files, {
       'SOURCE-MANIFEST.json': Buffer.from(`${JSON.stringify(manifest, null, 2)}\n`),
-      'SOURCE-README.txt': Buffer.from('Matching PageNarrator source for the accompanying extension ZIP.\nDistribute both ZIPs together.\nPageNarrator own code is GPL-3.0-or-later. Retained UK pronunciation data is GPL-3.0-only; the combined distribution is conveyed under GPL version 3. Other data retain their individual notices.\nUse Node 26.12.1 with npm 12.2.1: npm ci; npm run build. Compatible LTS ranges are listed in README.md. See docs/browser-engine.md for pinned native rebuilds.\nSet PN_CANDIDATE_ID to SOURCE-MANIFEST.json candidateId to reproduce the diagnostic identifier.\nKokoro and OmniVoice model data are downloaded on demand and are not included.\nUpstream runtime packages in devDependencies are development comparison oracles, never browser executable dependencies.\n'),
+      'SOURCE-README.txt': Buffer.from([
+        'Matching PageNarrator source for the accompanying extension ZIP.',
+        'Distribute both ZIPs together and retain the third-party notices.',
+        "PageNarrator's own code is GPL-3.0-or-later. Convey the GPL-covered work that incorporates the retained UK pronunciation records under GPL version 3.",
+        'Upstream OmniVoice source code is Apache-2.0. OmniVoice pretrained weights are CC BY-NC (https://huggingface.co/k2-fsa/OmniVoice#license).',
+        'Downloaded speech models stay outside both ZIPs. See docs/third-party-voice-licenses.md and extension/public/legal/THIRD_PARTY_NOTICES.txt for the applicable terms, including speaker-source terms.',
+        'Use Node 26.12.1 with npm 12.2.1. Run npm ci followed by npm run build. Compatible LTS ranges are listed in README.md. See docs/browser-engine.md for pinned native rebuilds.',
+        'Set PN_CANDIDATE_ID to SOURCE-MANIFEST.json candidateId to reproduce the diagnostic identifier.',
+        'Upstream runtime packages in devDependencies are development comparison oracles, never browser executable dependencies.',
+        '',
+      ].join('\n')),
     });
   } finally {
     rmSync(staging, { recursive: true, force: true });

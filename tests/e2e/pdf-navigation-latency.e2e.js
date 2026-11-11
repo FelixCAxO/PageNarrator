@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { buildPdfBytes } from '../helpers/pdf-test-generator.js';
-import { getExtensionId, launchExtensionContext } from './extension-fixture.js';
+import { launchExtensionContext, navigatePdfViewer } from './extension-fixture.js';
 
 // A real PDF, module worker, WASM parser, canvas paint, and selectable text layer.
 const bytes = buildPdfBytes(Array.from({ length: 20 }, (_, index) => ({
@@ -43,13 +43,12 @@ for (const [deviceMemory, canvasLimit] of [[4, 3], [8, 5]]) {
         Object.defineProperty(navigator, 'deviceMemory', { configurable: true, get: () => memory });
         Object.defineProperty(navigator, 'hardwareConcurrency', { configurable: true, get: () => 2 });
       }, deviceMemory);
-      const id = await getExtensionId(context);
       const page = await context.newPage();
       const errors = [];
       page.on('pageerror', error => errors.push(error.message));
       const cdp = await context.newCDPSession(page);
       await cdp.send('Emulation.setCPUThrottlingRate', { rate: 6 });
-      await page.goto(`chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(source)}`);
+      await navigatePdfViewer(page, source);
       await expect(page.locator('[data-page-number="1"] .textLayer')).toContainText('Marker page 1 ');
       const samples = [];
       for (const number of [6, 10, 14, 18]) samples.push(await measureJump(page, [number]));

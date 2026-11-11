@@ -9,6 +9,7 @@
     "../src/tts/**/*.js",
     "../src/platform/**/*.js",
     "../src/ui/**/*.js",
+    "../src/lib/abort-signal.js",
     "../src/lib/core/**/*.js",
     "../src/types/**/*.d.ts",
     "../src/engines/*.d.ts"

@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
-import { launchExtensionContext, openExtensionPage, getExtensionId, seedFlowTestFlags } from './extension-fixture.js';
+import { launchExtensionContext, openExtensionPage, navigatePdfViewer, seedFlowTestFlags } from './extension-fixture.js';
 import { openRoutedReaderEngine } from './kokoro-download-fixture.js';
 import { messageKey } from '../../src/lib/i18n.js';
 import { selectNativeOption } from './native-controls-fixture.js';
@@ -88,10 +88,9 @@ for (const locale of locales.filter(locale => selected.has(locale))) {
       layouts.push({ surface: 'reader-diagnostic', width: 400, failures: readerFailures });
       await engine.screenshot({ path: path.join(root, `${locale}-reader.png`), fullPage: true });
       expect(readerFailures, JSON.stringify(readerFailures)).toEqual([]);
-      const extensionId = await getExtensionId(context);
       const pdf = await context.newPage();
       const bytes = await readFile('tests/fixtures/pdfs/single-column.pdf');
-      await pdf.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(`data:application/pdf;base64,${bytes.toString('base64')}`)}`);
+      await navigatePdfViewer(pdf, `data:application/pdf;base64,${bytes.toString('base64')}`);
       await expect(pdf.locator('#pdf-status')).toHaveText(copy('$1 page loaded').replace('$arg1$', '1'));
       await expect(pdf.locator('.textLayer')).toContainText('PageNarrator single column fixture');
       await expect(pdf.locator('#pdf-zoom-out-btn')).toHaveAttribute('aria-label', copy('Zoom out'));

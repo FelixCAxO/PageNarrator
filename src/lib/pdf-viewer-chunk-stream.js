@@ -19,6 +19,7 @@ export async function createPdfViewerStreamingArticle({
   const firstPage = normalizeStartPage(startPage);
   const metadata = await sendViewerMessage(sendMessage, tab.id, {
     type: MESSAGE_TYPES.GET_PDF_STREAM_METADATA,
+    sourceUrl,
     startPage: firstPage,
   }, { timeoutMs: messageTimeoutMs });
   assertViewerResponse(metadata, 'Could not read PDF metadata from the viewer.');

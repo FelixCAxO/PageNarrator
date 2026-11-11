@@ -2,7 +2,7 @@ import { createOmniVoiceRequest } from '../../lib/omnivoice-settings.js';
 import { createLogger, createSuppressedErrorHandler } from '../../lib/logger.js';
 
 import { createOmniVoiceWorker } from './worker-client.js';
-import { assertOmniVoiceAudio } from './audio-quality.js';
+import { assertOmniVoiceAudio, trimOmniVoiceNarrationEdges, trimOmniVoicePlaybackEdges } from './audio-quality.js';
 import { OMNIVOICE_MODEL_BASE_URL } from './loader.js';
 import { withAbortSignal } from '../../lib/abort-signal.js';
 export { OMNIVOICE_MODEL_REVISION, OMNIVOICE_MODEL_BASE_URL } from './loader.js';
@@ -77,7 +77,9 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
           try {
             const result = await runtime.synthesize(request, ...(progress ? [{ onProgress: progress }] : []));
             if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
-            return { pcm: result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm), sampleRate: result.sampleRate };
+            const pcm = result.pcm instanceof Float32Array ? result.pcm : Float32Array.from(result.pcm);
+            const trim = request.whisper ? trimOmniVoicePlaybackEdges : trimOmniVoiceNarrationEdges;
+            return { pcm: trim(pcm), sampleRate: result.sampleRate };
           } catch (error) {
             if (!(error instanceof Error) || error.name !== 'OmniVoiceSectionLengthError') throw error;
             const parts = splitSectionText(request.text, request.lang);
@@ -121,12 +123,13 @@ export function createOmniVoiceTts({ loadRuntime = createOmniVoiceWorker, onProg
                 ...(seed !== params.seed ? { voiceRecovery: { selectedSeed: params.seed, seed } } : {}) };
             } catch (error) {
               if (retired || signal?.aborted) throw error;
-              await resetRuntime();
+              const badAudio = error instanceof Error && error.name === 'OmniVoiceAudioQualityError';
+              if (!badAudio || attempt) await resetRuntime();
               if (attempt) throw error;
               // Retry sampling with the same fixed speakerId, never substitute another voice.
-              const badAudio = error instanceof Error && error.name === 'OmniVoiceAudioQualityError';
               if (badAudio) seed = (seed + 1) >>> 0;
-              logger.warn('OmniVoice failed; restarting with the same voice.', { error, selectedSeed: params.seed, seed, speakerId: params.speakerId });
+              logger.warn(badAudio ? 'OmniVoice rejected audio; retrying with the same voice.' : 'OmniVoice failed; restarting with the same voice.',
+                { error, selectedSeed: params.seed, seed, speakerId: params.speakerId });
               onProgress({ message: badAudio ? 'Audio check failed. Retrying with the same voice…' : 'Voice engine stopped. Restarting with the same voice…' });
               if (retired || signal?.aborted) throw new DOMException('Reading stopped.', 'AbortError');
             }

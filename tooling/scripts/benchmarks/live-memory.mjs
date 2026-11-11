@@ -6,7 +6,7 @@ import { createServer } from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { chromium, expect } from '@playwright/test';
-import { launchExtensionContext, getExtensionId, openCorpusArticle, seedHardwareProfile,
+import { launchExtensionContext, navigatePdfViewer, openCorpusArticle, seedHardwareProfile,
   startReadFromToolbarPopup, recordPlaybackEvents } from '../../../tests/e2e/extension-fixture.js';
 import { routeKokoroModelFiles, seedKokoroModelCache } from '../../../tests/e2e/kokoro-download-fixture.js';
 import { startCorpusFixtureServer } from '../../../tests/e2e/corpus-fixture-server.js';
@@ -106,7 +106,7 @@ async function measure({ extensionDir, workload, repeat, output, pdf, articleSer
       await new Promise(resolve => pdfServer.listen(0, '127.0.0.1', resolve));
       const page = await context.newPage();
       phase('pdf-load');
-      await page.goto(`chrome-extension://${await getExtensionId(context)}/src/pdf-viewer.html?src=${encodeURIComponent(`http://127.0.0.1:${pdfServer.address().port}/book.pdf`)}`);
+      await navigatePdfViewer(page, `http://127.0.0.1:${pdfServer.address().port}/book.pdf`);
       await expect(page.locator('#pdf-status')).toContainText('1 page loaded', { timeout: 60000 });
       const tabId = await page.evaluate(async () => (await chrome.tabs.getCurrent()).id);
       const metadata = await worker.evaluate(tabId => chrome.tabs.sendMessage(tabId, { type: 'getPdfStreamMetadata', startPage: 1 }), tabId);

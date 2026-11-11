@@ -55,7 +55,7 @@ function walk(dir) {
 }
 
 const requiredFolders = ['docs', 'engines', 'extension', 'src', 'tests', 'tooling', 'website'];
-const requiredFiles = ['.gitattributes', '.gitignore', '.nvmrc', 'LICENSE', 'README.md', 'package-lock.json', 'package.json', 'tsconfig.json'];
+const requiredFiles = ['.gitattributes', '.gitignore', '.nvmrc', 'LICENSE', 'README.md', 'THIRD_PARTY_NOTICES.md', 'package-lock.json', 'package.json', 'tsconfig.json'];
 const trackedPaths = existsSync(join(root, '.git'))
   ? execFileSync('git', ['ls-files', '-z'], { cwd: root, encoding: 'utf8' }).split('\0').filter(Boolean)
   : JSON.parse(readFileSync(join(root, 'SOURCE-MANIFEST.json'), 'utf8')).files.map(file => file.path);

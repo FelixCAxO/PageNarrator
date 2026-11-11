@@ -27,7 +27,7 @@ describe('public website deployment', () => {
       expect(existsSync(join(output, file)), file).toBe(false);
     }
     for (const file of ['index.html', '404.html', 'privacy.html', '_headers', '_redirects',
-      'assets/pagenarrator-icon.png', 'assets/screenshots/toolbar-player-reading.webp']) {
+      'assets/pagenarrator-icon.png', 'assets/screenshots/toolbar-player-reading.png']) {
       expect(readFileSync(join(output, file)), file).toEqual(readFileSync(join(source, file)));
     }
     expect(result.files.filter(file => file.endsWith('.html'))).toHaveLength(390);

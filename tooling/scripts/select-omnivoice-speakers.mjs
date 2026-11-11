@@ -11,6 +11,8 @@ const candidates=resolve(option('candidates')||'artifacts/omnivoice-fixed-voices
 const analysis=resolve(option('analysis')||'artifacts/omnivoice-fixed-voices/native-reference-analysis-v1');
 const output=resolve(option('output')||'artifacts/omnivoice-fixed-voices/reference-selected-native-v1');
 const planOnly=process.argv.includes('--plan-only'),allowReview=process.argv.includes('--allow-review');
+const voicesPerGender=Number(option('count') ?? 10);
+assert.ok(Number.isInteger(voicesPerGender) && voicesPerGender >= 1 && voicesPerGender <= 30, 'Expected --count=1..30');
 const pool=JSON.parse(await readFile(`${candidates}/speakers.json`,'utf8'));
 assert.equal(pool.modelRevision,OMNIVOICE_DATA.revision);
 const files=(await readdir(analysis)).filter(file=>/^reference-analysis-\d+\.json$/u.test(file));
@@ -50,9 +52,9 @@ for(const lang of languages)for(const gender of ['female','male']){
   const pending=captured.length-entries.length;
   coverage.push({lang,gender,candidates:captured.length,analysed:entries.length,admitted,usable,pending});
   const required=allowReview?usable:admitted;
-  if(captured.length>=10&&!pending&&required<10){
+  if(captured.length>=voicesPerGender&&!pending&&required<voicesPerGender){
     const nextSeed=Math.max(...captured.map(speaker=>speaker.seed))+1;
-    const extra=Math.max(0,Math.min(12-required,30-captured.length));
+    const extra=Math.max(0,Math.min(voicesPerGender+2-required,30-captured.length));
     for(let index=0;index<extra;index++)jobs.push({lang,gender,seed:nextSeed+index,variation:index+1});
   }
 }
@@ -60,16 +62,16 @@ await mkdir(output,{recursive:true});
 await writeFile(`${output}/selection-plan.json`,JSON.stringify({minimum,coverage,jobs},null,2)+'\n');
 if(planOnly){console.log(JSON.stringify({analysed:evaluated.length,candidates:pool.speakers.length,additionalCandidates:jobs.length,coverage}));}
 else{
-  assert.ok(coverage.every(group=>group.candidates>=10&&!group.pending),'Incomplete native-language reference pool');
-  assert.ok(allowReview||coverage.every(group=>group.admitted>=10),'Some languages need additional reference candidates; see selection-plan.json');
+  assert.ok(coverage.every(group=>group.candidates>=voicesPerGender&&!group.pending),'Incomplete native-language reference pool');
+  assert.ok(allowReview||coverage.every(group=>group.admitted>=voicesPerGender),'Some languages need additional reference candidates; see selection-plan.json');
   const selected=[];
   for(const lang of languages)for(const gender of ['female','male']){
     const available=evaluated.filter(item=>item.speaker.lang===lang&&item.speaker.gender===gender
       &&!item.reasons.some(reason=>['signal','acoustics','style'].includes(reason)));
-    const chosen=selectOmniVoiceSpeakers(available);
+    const chosen=selectOmniVoiceSpeakers(available, voicesPerGender);
     chosen.forEach((item,index)=>selected.push({...item,id:`${lang}-${gender}-${index+1}`,variation:index+1}));
   }
-  assert.equal(selected.length,640);
+  assert.equal(selected.length,languages.length*2*voicesPerGender);
   const speakers=[],referenceAnalysis=[];
   for(const item of selected){
     await copyFile(`${candidates}/${item.speaker.id}.wav`,`${output}/${item.id}.wav`);
@@ -85,7 +87,7 @@ else{
   await writeFile(`${output}/reference-analysis.json`,JSON.stringify(referenceAnalysis,null,2)+'\n');
   if(process.argv.includes('--write-catalog')){
     const catalog={version:3,modelRevision:pool.modelRevision,speakers:speakers.map(toOmniVoiceCatalogEntry)};
-    await writeFile('src/tts/omnivoice/speaker-data.js','// Generated language-specific references; see tooling/scripts/build-omnivoice-speakers.mjs and tooling/scripts/select-omnivoice-speakers.mjs.\nexport default '+JSON.stringify(catalog)+';\n');
+    await writeFile('src/tts/omnivoice/speaker-data.js','// Generated language-specific references; see docs/omnivoice-fixed-voices.md.\nexport default '+JSON.stringify(catalog)+';\n');
   }
   console.log(JSON.stringify({output,selected:speakers.length,automaticReferencePasses:receipt.automaticPasses,reviewRequired:receipt.reviewRequired}));
 }

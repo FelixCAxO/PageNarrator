@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>OmniVoice Voice Cloning</title>
+    <link rel="icon" href="/icons/icon-32.png" />
+    <link rel="stylesheet" href="./popup.css" />
+    <link rel="stylesheet" href="./personal-voices.css" />
+  </head>
+  <body class="personal-voices">
+    <main class="popup-shell">
+      <header>
+        <h1 data-i18n="ui_ad9033da">OmniVoice Voice Cloning</h1>
+        <p data-i18n="ui_328b6bff">Voice samples and presets stay on this device.</p>
+      </header>
+      <form id="create-voice" class="settings-body">
+        <fieldset id="import-controls">
+          <legend data-i18n="ui_fff029e4">Create a personal voice</legend>
+          <p class="field-help" data-i18n="ui_12e7305d">Choose an audio file or record 3–10 seconds of clear speech. Files can be up to 20 MB. The encoder downloads about 654 MB on first use.</p>
+          <label class="field"><span data-i18n="ui_a01f1ba6">Language spoken in the recording</span><select id="voice-language" required></select></label>
+          <label class="field"><span data-i18n="ui_1ade9af5">Audio file</span><input id="voice-file" type="file" accept="audio/*,.wav,.mp3,.m4a,.flac,.ogg,.opus,.webm,.aac" /></label>
+          <p class="field-help" data-i18n="ui_a4204cfb">Read this aloud in your normal voice.</p>
+          <p id="recording-prompt" dir="auto"></p>
+          <div><button id="record-voice" type="button" aria-describedby="recording-prompt" data-i18n="ui_75637bc3">Record a clip</button></div>
+          <audio id="recorded-clip" controls hidden></audio>
+          <div class="preset-actions">
+            <button id="clean-clip" type="button" disabled data-i18n="ui_523daa03">Clean up background noise</button>
+            <button id="use-original-clip" type="button" hidden data-i18n="ui_905bc62f">Use original clip</button>
+          </div>
+          <p class="field-help" data-i18n="ui_67b9602a">Optional. Runs on this device using WebGPU and downloads about 493 MB on first use.</p>
+          <label class="field"><span data-i18n="ui_026775c1">Preset name</span><input id="voice-name" type="text" maxlength="80" required /></label>
+          <label class="field"><span data-i18n="ui_706bbab1">What is said in the recording</span><textarea id="voice-text" rows="3" maxlength="400" required></textarea></label>
+          <button class="primary" type="submit" data-i18n="ui_b00f8855">Save voice preset</button>
+        </fieldset>
+      </form>
+      <fieldset id="preset-controls" class="settings-body">
+        <legend data-i18n="ui_80c87657">Saved personal voices</legend>
+        <label class="field"><span data-i18n="ui_8156f492">Personal voice preset</span><select id="saved-voice"></select></label>
+        <div class="preset-actions">
+          <button id="use-voice" type="button" data-i18n="ui_83b7d497">Use for reading</button>
+          <button id="preview-voice" type="button" data-i18n="ui_71accaa9">Preview voice</button>
+          <button id="delete-voice" type="button" data-i18n="ui_c348abed">Delete preset</button>
+        </div>
+        <audio id="preview-audio" controls hidden></audio>
+      </fieldset>
+      <p id="voice-status" class="field-help" role="status"></p>
+      <div class="preset-actions">
+        <button id="stop-recording" type="button" hidden data-i18n="ui_8313d4fa">Stop recording</button>
+        <button id="cancel-voice-action" type="button" hidden data-i18n="ui_35afca3b">Cancel</button>
+      </div>
+    </main>
+    <script type="module" src="./personal-voices.js"></script>
+  </body>
+</html>

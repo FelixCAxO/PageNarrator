@@ -1,6 +1,7 @@
 import { trustedEngineSender, installViewerDom, installChromeRuntime, sendViewerMessage, createFakePdfDocument, createTrackingRenderer, getRenderedPageNumbers, createVisibleEntry } from "./pdf-viewer-profile.fixtures.js";
 
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { requestViewerLoad } from '../pdf/pdf-viewer-messages.fixtures.js';
 
 describe('PDF viewer memory profile wiring', () => {
   afterEach(() => {
@@ -91,6 +92,7 @@ describe('PDF viewer memory profile wiring', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(getRenderedPageNumbers(renderer)).toEqual([10, 11]);
     });
@@ -220,6 +222,7 @@ describe('PDF viewer memory profile wiring', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(getRenderedPageNumbers(renderer)).toEqual([10, 11]);
     });

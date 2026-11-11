@@ -33,12 +33,13 @@ for (const filename of (await readdir('src', { recursive: true })).filter(name =
   }
   visit(tree);
 }
-for (const file of ['src/popup.html', 'src/reader-engine.html', 'src/pdf-viewer.html']) {
+for (const file of ['src/popup.html', 'src/reader-engine.html', 'src/pdf-viewer.html', 'src/personal-voices.html']) {
   const { document } = new JSDOM(await readFile(file, 'utf8')).window;
   for (const element of document.querySelectorAll('*')) {
     for (const attribute of element.attributes) {
       if (!attribute.name.startsWith('data-i18n')) continue;
-      const entry = previous[attribute.value];
+      const caption = attribute.name === 'data-i18n' ? element.textContent.trim() : null;
+      const entry = previous[attribute.value] ?? (caption && messageKey(caption) === attribute.value ? { message: caption } : null);
       if (!entry) throw new Error(`Missing message ${attribute.value} in ${file}`);
       if (attribute.value.startsWith('ui_')) add(entry.message.replace(/\$arg(\d+)\$/gu, '$$$1'), file);
     }

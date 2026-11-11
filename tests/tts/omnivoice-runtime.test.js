@@ -3,6 +3,7 @@ import { createOmniVoiceRuntime, estimateOmniVoiceFrames, omniVoiceUnmaskSchedul
 import { floatToHalf, halfToFloat } from '../../src/engines/tensor-format.js';
 import { prepareOmniVoiceGraph } from '../../src/tts/omnivoice/rmsnorm-correction.js';
 import { getOmniVoiceSpeakerReference } from '../../src/tts/omnivoice/speakers.js';
+import { createOmniVoiceRequest } from '../../src/lib/omnivoice-settings.js';
 
 vi.mock('../../src/tts/omnivoice/rmsnorm-correction.js', () => ({ prepareOmniVoiceGraph: vi.fn(async bytes => ({
   bytes, version: 'verified-test-graph', norms: 113, originalSha256: 'original', normalizationSha256: 'corrected', modifiedSha256: 'projected',
@@ -51,6 +52,50 @@ function fixture(options = {}) {
 }
 
 describe('PageNarrator OmniVoice inference bridge', () => {
+  it('conditions the main graph on a saved personal reference and rejects malformed audio codes', async () => {
+    const f = fixture(); await f.runtime.init('https://model.test');
+    const personalReference = { id: 'clone:9b2678e3-1f21-4672-ab81-4781f5d51652', name: 'My Swedish voice', lang: 'sv',
+      text: 'Här är min röst.', frames: 76, codes: new Array(8 * 76).fill(461), hash: 'a'.repeat(64) };
+    const decoded = Float32Array.from({ length: 76 * 960 }, (_, index) => Math.sin(index / 20) * 0.2);
+    f.decoder.run.mockResolvedValueOnce({ audio_values: new f.ort.Tensor('float32', decoded, [1, 1, decoded.length]) });
+    const params = { ...createOmniVoiceRequest('Hej!', { detectCode: 'sv', personalReference }), numStep: request.numStep };
+    const result = await f.runtime.synthesize(params);
+    expect(result.speaker).toMatchObject({ id: personalReference.id, referenceHash: personalReference.hash, referenceFrames: 76 });
+    expect(f.tokenizer.encode.mock.calls.some(([value]) => value.includes('Här är min röst. Hej!'))).toBe(true);
+    const feeds = f.main.run.mock.calls[0][0];
+    const start = feeds.audio_mask.data.indexOf(1);
+    expect([...feeds.input_ids.data.slice(start, start + 76)]).toEqual(new Array(76).fill(461n));
+    await expect(f.runtime.synthesize({ ...params, personalReference: { ...personalReference, codes: [1024] } })).rejects.toThrow(/personal voice reference/i);
+    expect(f.main.run).toHaveBeenCalledTimes(2 * request.numStep);
+    await f.runtime.dispose();
+  });
+
+  it('prepares a saved reference once and conditions each section on its spoken frames', async () => {
+    const f = fixture();
+    await f.runtime.init('https://model.test');
+    const frames = 76;
+    const personalReference = { id: 'clone:9b2678e3-1f21-4672-ab81-4781f5d51652', name: 'Swedish voice', lang: 'sv',
+      text: 'Här är min röst', frames, codes: Array.from({ length: 8 * frames }, (_, index) => index), hash: 'a'.repeat(64) };
+    const decoded = new Float32Array(frames * 960);
+    for (let index = 12 * 960; index < 65 * 960; index += 1) decoded[index] = Math.sin(index / 20) * 0.2;
+    f.decoder.run.mockResolvedValueOnce({ audio_values: new f.ort.Tensor('float32', decoded, [1, 1, decoded.length]) });
+    const params = { ...createOmniVoiceRequest('Hej!', { detectCode: 'sv', personalReference }), numStep: request.numStep };
+    for (const text of ['Hej!', 'God morgon!']) {
+      const result = await f.runtime.synthesize({ ...params, text, personalReference: structuredClone(personalReference) });
+      expect(result.speaker).toMatchObject({ id: personalReference.id, referenceHash: personalReference.hash, referenceFrames: 54 });
+    }
+    expect(f.decoder.run).toHaveBeenCalledTimes(3);
+    expect(f.tokenizer.encode).toHaveBeenCalledWith('<|text_start|>Här är min röst. Hej!<|text_end|>', { add_special_tokens: false });
+    const feeds = f.main.run.mock.calls[0][0];
+    const start = feeds.audio_mask.data.indexOf(1);
+    for (let book = 0; book < 8; book += 1) {
+      const offset = book * feeds.input_ids.dims[2] + start;
+      expect(feeds.input_ids.data.slice(offset, offset + 54))
+        .toEqual(BigInt64Array.from(personalReference.codes.slice(book * frames + 12, book * frames + 66), BigInt));
+    }
+    await f.runtime.dispose();
+  });
+
   it('reports the actual guidance scale for each synthesis', async () => {
     const f = fixture(); await f.runtime.init('https://model.test');
     for (const [guidanceScale, speed] of [[2, 1], [3, .85]]) {

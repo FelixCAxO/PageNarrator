@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Mở trang, nhấp vào biểu tượng PageNarrator rồi chọn “Đọc trang”."
+  },
   "ui_3e8b2a3a": {
     "message": "Đang tải tài liệu…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Đã hủy."
+  },
+  "ui_9d3f7d31": {
+    "message": "Hành động giọng nói cá nhân thất bại."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice yêu cầu WebGPU với fp16 hỗ trợ."
+  },
+  "ui_34c2939b": {
+    "message": "Đang khử tiếng ồn nền…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Đang tải mô hình khử ồn… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Bạn có thể nghe hoặc lưu đoạn đã khử ồn."
+  },
+  "ui_24b6564c": {
+    "message": "Không thể khử ồn. Bạn có thể lưu đoạn ghi âm gốc."
+  },
+  "ui_f035394f": {
+    "message": "Bạn có thể nghe hoặc lưu mẫu."
+  },
+  "ui_611ed81e": {
+    "message": "Đang ghi âm…"
+  },
+  "ui_514244f6": {
+    "message": "Không thể ghi âm bằng micrô."
+  },
+  "ui_a8d5e97d": {
+    "message": "Cho phép truy cập micrô để ghi âm mẫu."
+  },
+  "ui_7bcd5d33": {
+    "message": "Không tìm thấy micrô."
+  },
+  "ui_f6233044": {
+    "message": "Chọn tệp âm thanh hoặc ghi âm mẫu."
+  },
+  "ui_b1cbd878": {
+    "message": "Nhập một tên đặt trước và các từ được nói trong bản ghi."
+  },
+  "ui_a81b3b51": {
+    "message": "Mã hóa mẫu giọng nói..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Tải về mã hóa giọng nói... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Đã lưu cấu hình giọng nói."
+  },
+  "ui_3c91213b": {
+    "message": "Đã chọn để đọc thành tiếng."
+  },
+  "ui_1113ba39": {
+    "message": "Đang chuẩn bị mẫu nghe thử…"
+  },
+  "ui_e0513158": {
+    "message": "Đã có mẫu nghe thử."
+  },
+  "ui_24e89fdd": {
+    "message": "Đã xóa cấu hình giọng nói."
   },
   "ui_c08b976a": {
     "message": "Đang xử lý…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Cần xử lý"
+  },
+  "ui_4d1cf041": {
+    "message": "Tiếng Anh Mỹ, nữ"
+  },
+  "ui_faf95838": {
+    "message": "Tiếng Anh Mỹ, nam"
+  },
+  "ui_f3768d40": {
+    "message": "Tiếng Anh Anh, nữ"
+  },
+  "ui_4139054c": {
+    "message": "Chọn giọng Kokoro tiếng Anh. Kokoro không hỗ trợ ngôn ngữ khác."
   },
   "ui_c0c171d2": {
     "message": "Không hoàn tất được thao tác này."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Tạo một cài đặt trước giọng nói cá nhân trong cài đặt giọng nói."
+  },
   "ui_b7e3509c": {
     "message": "Bỏ qua đoạn mã"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "Không khởi động được PageNarrator."
   },
-  "ui_4d1cf041": {
-    "message": "Tiếng Anh Mỹ, nữ"
-  },
-  "ui_faf95838": {
-    "message": "Tiếng Anh Mỹ, nam"
-  },
-  "ui_f3768d40": {
-    "message": "Tiếng Anh Anh, nữ"
-  },
-  "ui_4139054c": {
-    "message": "Chọn giọng Kokoro tiếng Anh. Kokoro không hỗ trợ ngôn ngữ khác."
-  },
   "ui_87d977c4": {
     "message": "Trình phát PageNarrator"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Mô hình giọng đọc"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (mặc định)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (thử nghiệm)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Mười giọng tiếng Anh. Thiết lập lần đầu cần khoảng 93 MB cho CPU hoặc 326 MB cho GPU. Thêm một giọng cần khoảng 0,5 MB. Lựa chọn giọng đã lưu được giữ nguyên."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Mười giọng tiếng Anh. Các ngôn ngữ khác chuyển sang OmniVoice nếu được hỗ trợ. Thiết lập lần đầu cần khoảng 93 MB cho CPU hoặc 326 MB cho GPU. Thêm một giọng cần khoảng 0,5 MB. Lựa chọn giọng đã lưu được giữ nguyên."
   },
   "ui_2c04fde6": {
     "message": "Cài đặt giọng đọc"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Thì thầm"
+  },
+  "ui_8156f492": {
+    "message": "Cấu hình giọng cá nhân"
+  },
+  "ui_a8cbb251": {
+    "message": "Quản lý giọng nói cá nhân"
   },
   "ui_3d7af8ef": {
     "message": "Tốc độ phát"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Bỏ qua đoạn mã"
   },
+  "ui_ce18c7cb": {
+    "message": "Bỏ qua phương trình và bảng trong PDF"
+  },
   "ui_456ac053": {
     "message": "Màu vùng đọc"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Mở PageNarrator từ trang"
-  },
-  "ui_94a4b160": {
-    "message": "Mở trang, nhấp vào biểu tượng PageNarrator rồi chọn “Đọc trang”."
   },
   "ui_4be7c01e": {
     "message": "Các tệp giọng đọc còn thiếu được tải từ Hugging Face khi chuẩn bị hoặc bắt đầu đọc. Giọng nói được tạo trên thiết bị này. Có thể dùng lại các tệp trong bộ nhớ đệm khi ngoại tuyến cho đến khi chúng bị xóa."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "Các trang PDF"
   },
+  "ui_328b6bff": {
+    "message": "Các mẫu giọng nói và thiết lập trước vẫn còn trên thiết bị này."
+  },
+  "ui_fff029e4": {
+    "message": "Tạo giọng nói cá nhân"
+  },
+  "ui_12e7305d": {
+    "message": "Chọn tệp âm thanh hoặc ghi âm 3–10 giây giọng nói rõ ràng. Tệp có thể có dung lượng tối đa 20 MB. Bộ mã hóa tải xuống khoảng 654 MB trong lần đầu sử dụng."
+  },
+  "ui_a01f1ba6": {
+    "message": "Ngôn ngữ nói trong bản ghi âm"
+  },
+  "ui_1ade9af5": {
+    "message": "Tệp âm thanh"
+  },
+  "ui_a4204cfb": {
+    "message": "Đọc to đoạn này bằng giọng nói thường ngày của bạn."
+  },
+  "ui_75637bc3": {
+    "message": "Ghi âm mẫu"
+  },
+  "ui_523daa03": {
+    "message": "Khử tiếng ồn nền"
+  },
+  "ui_905bc62f": {
+    "message": "Dùng đoạn ghi âm gốc"
+  },
+  "ui_67b9602a": {
+    "message": "Tùy chọn. Chạy trên thiết bị này bằng WebGPU và tải khoảng 493 MB ở lần đầu sử dụng."
+  },
+  "ui_026775c1": {
+    "message": "Tên cấu hình"
+  },
+  "ui_706bbab1": {
+    "message": "Những gì được nói trong bản ghi âm"
+  },
+  "ui_b00f8855": {
+    "message": "Lưu cấu hình giọng nói"
+  },
+  "ui_80c87657": {
+    "message": "Giọng cá nhân đã lưu"
+  },
+  "ui_83b7d497": {
+    "message": "Dùng để đọc thành tiếng"
+  },
+  "ui_71accaa9": {
+    "message": "Nghe thử giọng nói"
+  },
+  "ui_c348abed": {
+    "message": "Xóa cấu hình"
+  },
+  "ui_8313d4fa": {
+    "message": "Dừng ghi âm"
+  },
+  "ui_35afca3b": {
+    "message": "Hủy"
+  },
   "ui_6b68e4c5": {
     "message": "Thử nghiệm. Có 32 mục ngôn ngữ với chất lượng khác nhau. Cần WebGPU hỗ trợ fp16 và tải xuống khoảng 1,35 GB. Chọn giọng, biến thể hoặc thì thầm."
+  },
+  "ui_9e93d684": {
+    "message": "Đọc với thiết lập trước giọng nói cá nhân. mẫu giọng nói và kể chuyện vẫn ở trên thiết bị này. Yêu cầu WebGPU với fp16."
   },
   "ui_35a4186c": {
     "message": "Cảnh báo: Chế độ thì thầm có thể bỏ sót từ trong ngôn ngữ này. Hãy đối chiếu phần đọc với văn bản."

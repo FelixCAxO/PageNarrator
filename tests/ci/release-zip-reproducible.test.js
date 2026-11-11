@@ -69,6 +69,9 @@ describe('release ZIP', () => {
     const archive = createSourceArchive(root, binary, commit), entries = zipEntries(archive);
     expect(Object.keys(entries).sort()).toEqual(['.gitignore', 'SOURCE-MANIFEST.json', 'SOURCE-README.txt',
       'extension/public/index.html', 'package.json', 'src/worker.js', 'tooling/eslint.config.js']);
+    const sourceReadme = entries['SOURCE-README.txt'].toString();
+    expect(sourceReadme).toContain('OmniVoice source code is Apache-2.0');
+    expect(sourceReadme).toContain('OmniVoice pretrained weights are CC BY-NC');
     const manifest = JSON.parse(entries['SOURCE-MANIFEST.json']);
     expect(manifest.candidateId).toBe(commit); expect(manifest.binary).toEqual(binary);
     for (const row of manifest.files) expect(row.sha256).toBe(createHash('sha256').update(entries[row.path]).digest('hex'));

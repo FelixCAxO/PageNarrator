@@ -32,18 +32,22 @@ function sourceSegments(text, pattern) {
   return result;
 }
 
-/** @param {string} source */
-function sourceSplit(source) {
+/** @param {string} source @param {boolean} [required] */
+function sourceSplit(source, required = true) {
   const middle = Math.floor(source.length / 2);
-  let split = source.lastIndexOf(' ', middle);
-  if (split <= 0) split = source.indexOf(' ', middle);
-  if (split <= 0 || split >= source.length - 1) throw new RangeError('Kokoro word is too long; split the input.');
-  return split + 1;
+  let split = 0;
+  for (const space of source.matchAll(/(?<=\S)\s+(?=\S)/gu)) {
+    if (split && space.index > middle) break;
+    split = space.index + space[0].length;
+    if (space.index >= middle) break;
+  }
+  if (!split && required) throw new RangeError('Kokoro word is too long; split the input.');
+  return split;
 }
 
 /** First-party Kokoro adapter. Inference and phonemization are injected, never silently substituted.
  * @param {any} dependencies */
-export function createBrowserKokoroBackend({ session, tokenizer, phonemizer, Tensor, loadStyle }) {
+export function createBrowserKokoroBackend({ session, tokenizer, phonemizer, Tensor, loadStyle, maxInputIds = 512 }) {
   let closed = false;
   /** @type {Promise<void>|null} */
   let disposal = null;
@@ -135,6 +139,14 @@ export function createBrowserKokoroBackend({ session, tokenizer, phonemizer, Ten
           if (!(error instanceof RangeError)) throw error;
           const split = sourceSplit(source);
           yield* segment(source.slice(0, split)); yield* segment(source.slice(split)); return;
+        }
+        // CPU decoder activations scale with the spoken sequence. Short strings
+        // of numbers can exceed the arena even when the tokenizer accepts them.
+        const split = ids.length > maxInputIds ? sourceSplit(source, false) : 0;
+        if (split) {
+          yield* segment(source.slice(0, split));
+          yield* segment(source.slice(split));
+          return;
         }
         const audio = await backend.generate_from_ids(ids, { voice, speed, signal });
         yield { text: source, phonemes: phones, audio: { ...audio, phonemes: phones } };

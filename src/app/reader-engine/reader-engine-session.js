@@ -119,6 +119,7 @@ export function createReaderEngineChromeAdapter({
       let activePdfPageCount = sessionState.activePdfPageCount;
       let modelSetupState = sessionState.modelSetupState;
       let activeTranscript = '';
+      /** @type {{device?: string}|null} */
       let backendPlan = null;
       let activePageContextKey = sessionState.activePageContextKey;
       /** @type {{id?: number, [key: string]: any}|null} */
@@ -179,7 +180,11 @@ export function createReaderEngineChromeAdapter({
           setSectionPause: (seconds) => setSectionPause(seconds),
           requestJump: (index) => { void Promise.resolve(requestJump(index)).catch(suppressReaderEngineError); },
           syncPlayerState: (action) => readingStateRenderer?.broadcastPlayerState({ syncRequestId: action.requestId }),
-          prepareVoice: () => { void Promise.resolve(ensureModel({ warmupVoice: resolveSelectedVoice()?.id })).catch(suppressReaderEngineError); },
+          prepareVoice: () => {
+            const error = voiceSettingsController.getVoiceSelectionError();
+            if (error) { suppressReaderEngineError(new Error(error)); return; }
+            void Promise.resolve(ensureModel({ warmupVoice: resolveSelectedVoice()?.id })).catch(suppressReaderEngineError);
+          },
         },
       });
       const readerEngineTargetResolver = createReaderEngineTargetResolver({
@@ -622,6 +627,7 @@ export function createReaderEngineChromeAdapter({
         getActiveTtsProfileConfig,
         resolveSelectedVoice,
         trackActiveVoiceSynthesisPromise,
+        getSynthesisBackend: () => backendPlan?.device,
         trackActiveVoiceSynthesisSegments,
         highlightQueuedChunk,
         suppressError: suppressReaderEngineError,
@@ -729,8 +735,10 @@ export function createReaderEngineChromeAdapter({
         loadSavedResumePosition,
         renderResumePrompt,
         setArticleSummary,
-        setLanguageSelectValue: (value) => { els.language.value = value; },
-        populateVoices,
+        applyDetectedVoice: voiceSettingsController.applyDetectedVoice,
+        isEngineAuto: voiceSettingsController.isEngineAuto,
+        canUseOmniVoice: voiceSettingsController.canUseOmniVoice,
+        getVoiceSelectionError: voiceSettingsController.getVoiceSelectionError,
         renderLanguageStatus,
         resolveSelectedVoice,
         ensureModel,
@@ -921,12 +929,13 @@ export function createReaderEngineChromeAdapter({
       }
       function setPlaybackSpeed(speed) { readerEngineSettingsManager.setPlaybackSpeed(speed); }
       function setSectionPause(sectionPauseSeconds) { readerEngineSettingsManager.setSectionPause(sectionPauseSeconds); }
-      const applyPlaybackSettingsFromStorage = () => applyStoredPlaybackSettings({
+      const applyPlaybackSettingsFromStorage = (personalReferencesChanged = false) => applyStoredPlaybackSettings({
         els, getSelectedLanguageCode: () => selectedLanguageCode, setSelectedLanguageCode: (value) => { selectedLanguageCode = value; },
         readerEngineStorage, readerEngineSettingsManager, populateVoices, renderTtsBackendPreferenceSetting, renderTtsPerformanceProfileSetting, renderIdleReleaseSetting,
         renderHighlightSettings, renderSkipCodeSettings, resetTtsPerformanceGovernor,
         updateVoiceSettingsSummary, renderLanguageStatus, warmSelectedVoice, renderVoiceEngineSetting,
         onVoiceSelectionChanged: () => { for (const listener of voiceSelectionListeners) listener(); },
+        personalReferencesChanged,
       });
       async function init() {
         globalThis.__pnReaderEngineInitStage = 'test-flags';
@@ -1005,8 +1014,9 @@ export function createReaderEngineChromeAdapter({
             updatePanelTargetTabFromStorageValue(changes[READABLE_TAB_TARGET_KEY].newValue);
             void refreshActiveTabContext().catch(suppressReaderEngineError);
           }
-          if (changes[STORAGE_KEYS.PLAYBACK_SETTINGS]) {
-            void applyPlaybackSettingsFromStorage().catch(suppressReaderEngineError);
+          const personalReferencesChanged = Boolean(changes[STORAGE_KEYS.OMNIVOICE_PERSONAL_REFERENCES]);
+          if (changes[STORAGE_KEYS.PLAYBACK_SETTINGS] || (personalReferencesChanged && els.ttsEngine?.value === 'omnivoice-clone')) {
+            void applyPlaybackSettingsFromStorage(personalReferencesChanged).catch(suppressReaderEngineError);
           }
         });
         chrome.tabs.onActivated.addListener((activeInfo) => {

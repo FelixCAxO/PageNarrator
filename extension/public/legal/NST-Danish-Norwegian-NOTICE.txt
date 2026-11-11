@@ -1,0 +1,22 @@
+NST Danish and Norwegian recorded references
+
+Danish source: https://huggingface.co/datasets/alexandrainst/nst-da (revision 0f14ad2005e0aab8f56cf3213b7689da1faf23c2)
+Norwegian source: https://huggingface.co/datasets/NbAiLab/NST (revision f57f05c811f41c08204541f86b63597243ec1622)
+Original distribution: Språkbanken, National Library of Norway (licence: CC Zero)
+Norwegian: https://www.nb.no/sprakbanken/ressurskatalog/en/oai-nb-no-sbr-13/ (hdl:21.11146/13)
+Danish: https://www.nb.no/sprakbanken/ressurskatalog/en/oai-nb-no-sbr-19/ (hdl:21.11146/19)
+License: CC0 1.0 Universal (public domain dedication) as released by Språkbanken.
+The NbAiLab/NST mirror additionally labels its repackaging Apache-2.0; the
+underlying recordings and transcripts are CC0 as released by Språkbanken.
+https://creativecommons.org/publicdomain/zero/1.0/legalcode
+Attribution (not required by CC0): NST Danish and Norwegian ASR databases, Nordic
+Language Technology, distributed by Språkbanken at the National Library of Norway.
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
+identifies the dataset revision, split, speaker ID, source file, audio hash,
+encoder hash and preprocessing for each reference.
+
+The reference data keep their source license, separately from the PageNarrator
+implementation and the OmniVoice model.

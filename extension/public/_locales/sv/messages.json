@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Öppna sidan, klicka på PageNarrator-ikonen och välj ”Läs upp sidan”."
+  },
   "ui_3e8b2a3a": {
     "message": "Läser in dokument…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Avbrutet."
+  },
+  "ui_9d3f7d31": {
+    "message": "Det gick inte att slutföra åtgärden för den personliga rösten."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice kräver WebGPU med fp16-stöd."
+  },
+  "ui_34c2939b": {
+    "message": "Tar bort bakgrundsljud…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Laddar ned modell för brusreducering… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Det rensade klippet kan spelas upp eller sparas."
+  },
+  "ui_24b6564c": {
+    "message": "Brusreducering är inte tillgänglig. Du kan spara originalklippet."
+  },
+  "ui_f035394f": {
+    "message": "Klippet kan spelas upp eller sparas."
+  },
+  "ui_611ed81e": {
+    "message": "Spelar in…"
+  },
+  "ui_514244f6": {
+    "message": "Det går inte att spela in med mikrofonen."
+  },
+  "ui_a8d5e97d": {
+    "message": "Tillåt åtkomst till mikrofonen för att spela in."
+  },
+  "ui_7bcd5d33": {
+    "message": "Ingen mikrofon hittades."
+  },
+  "ui_f6233044": {
+    "message": "Välj en ljudfil eller spela in ett klipp."
+  },
+  "ui_b1cbd878": {
+    "message": "Ange ett namn på förinställningen och skriv vad som sägs i inspelningen."
+  },
+  "ui_a81b3b51": {
+    "message": "Kodar röstprovet…"
+  },
+  "ui_7c9f5f3f": {
+    "message": "Hämtar röstkodaren… $arg1$ %",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Röstförinställningen sparades."
+  },
+  "ui_3c91213b": {
+    "message": "Vald för uppläsning."
+  },
+  "ui_1113ba39": {
+    "message": "Förbereder provlyssning…"
+  },
+  "ui_e0513158": {
+    "message": "Rösten är klar att provlyssna på."
+  },
+  "ui_24e89fdd": {
+    "message": "Röstförinställningen togs bort."
   },
   "ui_c08b976a": {
     "message": "Arbetar…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Behöver åtgärdas"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikansk engelska, kvinnoröst"
+  },
+  "ui_faf95838": {
+    "message": "Amerikansk engelska, mansröst"
+  },
+  "ui_f3768d40": {
+    "message": "Brittisk engelska, kvinnoröst"
+  },
+  "ui_4139054c": {
+    "message": "Välj en engelsk Kokoro-röst. Kokoro stöder inga andra språk."
   },
   "ui_c0c171d2": {
     "message": "Åtgärden kunde inte slutföras."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Skapa en personlig förinställning under Röstinställningar."
+  },
   "ui_b7e3509c": {
     "message": "Hoppa över kodavsnitt"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator kunde inte startas."
   },
-  "ui_4d1cf041": {
-    "message": "Amerikansk engelska, kvinnoröst"
-  },
-  "ui_faf95838": {
-    "message": "Amerikansk engelska, mansröst"
-  },
-  "ui_f3768d40": {
-    "message": "Brittisk engelska, kvinnoröst"
-  },
-  "ui_4139054c": {
-    "message": "Välj en engelsk Kokoro-röst. Kokoro stöder inga andra språk."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator-spelare"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Röstmodell"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (standard)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimentell)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Tio engelska röster. Första installationen: cirka 93 MB för CPU eller 326 MB för GPU. En till röst kräver cirka 0,5 MB. Din sparade röst behålls."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Tio engelska röster. Andra språk byter till OmniVoice när det stöds. Första installationen: cirka 93 MB för CPU eller 326 MB för GPU. En till röst kräver cirka 0,5 MB. Din sparade röst behålls."
   },
   "ui_2c04fde6": {
     "message": "Röstinställningar"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Viskning"
+  },
+  "ui_8156f492": {
+    "message": "Personlig röstförinställning"
+  },
+  "ui_a8cbb251": {
+    "message": "Hantera personliga röster"
   },
   "ui_3d7af8ef": {
     "message": "Uppspelningshastighet"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Hoppa över kodavsnitt"
   },
+  "ui_ce18c7cb": {
+    "message": "Hoppa över ekvationer och tabeller i PDF-filer"
+  },
   "ui_456ac053": {
     "message": "Läsområdets färg"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Öppna PageNarrator från sidan"
-  },
-  "ui_94a4b160": {
-    "message": "Öppna sidan, klicka på PageNarrator-ikonen och välj ”Läs upp sidan”."
   },
   "ui_4be7c01e": {
     "message": "Röstfiler som saknas hämtas från Hugging Face när du förbereder rösten eller läser. Talet skapas på den här enheten. Cachade filer kan återanvändas offline så länge de inte rensas."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF-sidor"
   },
+  "ui_328b6bff": {
+    "message": "Röstprover och förinställningar stannar kvar på den här enheten."
+  },
+  "ui_fff029e4": {
+    "message": "Skapa en personlig röst"
+  },
+  "ui_12e7305d": {
+    "message": "Välj en ljudfil eller spela in 3–10 sekunder tydligt tal. Ljudfiler får vara högst 20 MB. Vid första användningen laddas röstkodaren på cirka 654 MB ned."
+  },
+  "ui_a01f1ba6": {
+    "message": "Språk som talas i inspelningen"
+  },
+  "ui_1ade9af5": {
+    "message": "Ljudfil"
+  },
+  "ui_a4204cfb": {
+    "message": "Läs det här högt med din vanliga röst."
+  },
+  "ui_75637bc3": {
+    "message": "Spela in ett klipp"
+  },
+  "ui_523daa03": {
+    "message": "Ta bort bakgrundsljud"
+  },
+  "ui_905bc62f": {
+    "message": "Använd originalklippet"
+  },
+  "ui_67b9602a": {
+    "message": "Valfritt. Körs på enheten med WebGPU och laddar ned cirka 493 MB vid första användningen."
+  },
+  "ui_026775c1": {
+    "message": "Förinställningens namn"
+  },
+  "ui_706bbab1": {
+    "message": "Vad som sägs i inspelningen"
+  },
+  "ui_b00f8855": {
+    "message": "Spara röstförinställning"
+  },
+  "ui_80c87657": {
+    "message": "Sparade personliga röster"
+  },
+  "ui_83b7d497": {
+    "message": "Använd för uppläsning"
+  },
+  "ui_71accaa9": {
+    "message": "Provlyssna på rösten"
+  },
+  "ui_c348abed": {
+    "message": "Ta bort förinställning"
+  },
+  "ui_8313d4fa": {
+    "message": "Stoppa inspelningen"
+  },
+  "ui_35afca3b": {
+    "message": "Avbryt"
+  },
   "ui_6b68e4c5": {
     "message": "Experimentell. 32 språkposter med varierande kvalitet. Kräver WebGPU med fp16 och cirka 1,35 GB hämtningar. Välj röst, variant eller viskning."
+  },
+  "ui_9e93d684": {
+    "message": "Läs upp med en personlig röstförinställning. Röstprover och uppläsning stannar på den här enheten. Kräver WebGPU med fp16."
   },
   "ui_35a4186c": {
     "message": "Varning: Viskning kan utelämna ord på det här språket. Kontrollera uppläsningen mot texten."

@@ -8,7 +8,7 @@ import { concatPlan, convolutionPlan, poolingPlan, reductionPlan, resizePlan } f
 import { CONCAT_SHADER, CONV_DIRECT_SHADER, CONV_TILED_SHADER, POOL_SHADER, REDUCE_MEAN_SHADER, RESIZE_SHADER } from './webgpu-cnn-shaders.js';
 import { ARGMAX_SHADER, BATCH_NORM_SHADER, GATHER_SHADER, INDEX_SHADER, SOFTMAX_SHADER } from './webgpu-index-shaders.js';
 import { GRID_SAMPLE_SHADER, PAD_SHADER } from './webgpu-image-shaders.js';
-import { integerAddRange, integerMultiplyRange, integerRange } from './bounded-integers.js';
+import { integerAddRange, integerMultiplyRange, integerRange, integerSubtractRange } from './bounded-integers.js';
 import { CHECKED_GATHER_TENSOR_SHADER, GATHER_TENSOR_SHADER, INTEGER_ADD_SHADER } from './webgpu-integer-shaders.js';
 import { liftConvolution } from './cnn-shape.js';
 import { CONV_1D_SHADER, ZERO_INSERT_CONV_1D_SHADER, ZERO_TAIL_CONV_1D_SHADER, CONV_TRANSPOSE_1D_SHADER, SNAKE_SHADER } from './webgpu-audio-shaders.js';
@@ -20,7 +20,7 @@ import { planGpuWorkspace } from './gpu-workspace-plan.js';
 import { HALF_SCALED_MASKED_SOFTMAX_SHADER, HALF_ROTARY_SHADER } from './webgpu-attention-shaders.js';
 
 export const GPU_BINARY_OPERATIONS = Object.freeze({ ...BINARY_OPERATIONS, Pow: 4, PRelu: 5 });
-export const GPU_UNARY_OPERATIONS = Object.freeze({ ...UNARY_OPERATIONS, Sin: 10, Cos: 11 });
+export const GPU_UNARY_OPERATIONS = Object.freeze({ ...UNARY_OPERATIONS, Sin: 10, Cos: 11, Ceil: 12, Elu: 13 });
 const COMMANDS_PER_SUBMISSION = 256;
 
 function floatBits(value) { return new Uint32Array(Float32Array.of(value).buffer)[0]; }
@@ -669,6 +669,38 @@ class ComputeBatch {
     return output;
   }
 
+  instanceNorm(input, scale, bias, epsilon = 1e-5) {
+    this.checkNumeric(input, scale, bias);
+    const axes = input.shape.slice(2).map((_, index) => index + 2);
+    if (!axes.length || [scale, bias].some(tensor => tensor.shape.length !== 1 || tensor.length !== input.shape[1])
+      || !Number.isFinite(epsilon) || epsilon < 0) throw new RangeError('Invalid instance normalization parameters.');
+    const mean = this.reduce(input, axes);
+    const centered = this.binary('Sub', input, mean);
+    this.recycle(mean);
+    const square = this.binary('Mul', centered, centered);
+    const variance = this.reduce(square, axes);
+    this.recycle(square);
+    const adjustment = this.fill([], epsilon, input.dataType);
+    const adjusted = this.binary('Add', variance, adjustment);
+    this.recycle(variance);
+    this.recycle(adjustment);
+    const deviation = this.unary('Sqrt', adjusted);
+    this.recycle(adjusted);
+    const normalized = this.binary('Div', centered, deviation);
+    this.recycle(centered);
+    this.recycle(deviation);
+    const channelShape = [1, input.shape[1], ...axes.map(() => 1)];
+    const channelScale = this.view(scale, channelShape);
+    const scaled = this.binary('Mul', normalized, channelScale);
+    this.recycle(normalized);
+    this.recycle(channelScale);
+    const channelBias = this.view(bias, channelShape);
+    const output = this.binary('Add', scaled, channelBias);
+    this.recycle(scaled);
+    this.recycle(channelBias);
+    return output;
+  }
+
   scaledMaskedSoftmax(input, scale, mask) {
     this.checkNumeric(input, scale, mask);
     const shape = input.shape;
@@ -814,7 +846,7 @@ class ComputeBatch {
     const x = Math.min(groups, this.engine.device.limits.maxComputeWorkgroupsPerDimension);
     parameters.set([output.length, shape.length,
       Number((a.length === output.length || a.length === 1) && (b.length === output.length || b.length === 1)),
-      opcode, floatBits(alpha), floatBits(beta), Number(a.length === 1) + Number(b.length === 1) * 2, x]);
+      opcode, bounds ? alpha : floatBits(alpha), bounds ? beta : floatBits(beta), Number(a.length === 1) + Number(b.length === 1) * 2, x]);
     parameters.set(shape, 8);
     parameters.set(broadcastStrides(a.shape, shape), 16);
     parameters.set(broadcastStrides(b.shape, shape), 24);
@@ -844,13 +876,22 @@ class ComputeBatch {
   binary(operation, a, b) {
     if (a.dataType === 'int32' || b.dataType === 'int32') {
       this.checkOwnership(a, b);
-      if (a.dataType !== b.dataType || !['Add', 'Mul'].includes(operation)) throw new Error('Only range-proven Add/Mul is supported for GPU integer arithmetic.');
-      return this.elementwise(a, b, broadcastShape(a.shape, b.shape), operation === 'Mul' ? 1 : 0, 0, 0,
-        operation === 'Mul' ? integerMultiplyRange(a.bounds, b.bounds) : integerAddRange(a.bounds, b.bounds));
+      const operations = { Add: [0, integerAddRange], Mul: [1, integerMultiplyRange], Sub: [2, integerSubtractRange] };
+      if (a.dataType !== b.dataType || !Object.hasOwn(operations, operation)) throw new Error('Only range-proven Add, Mul, and Sub support GPU integer arithmetic.');
+      const [opcode, range] = operations[operation];
+      return this.elementwise(a, b, broadcastShape(a.shape, b.shape), opcode, 0, 0, range(a.bounds, b.bounds));
     }
     this.checkNumeric(a, b);
     if (!Object.hasOwn(GPU_BINARY_OPERATIONS, operation)) throw new Error(`Unsupported GPU operation ${operation}.`);
     return this.elementwise(a, b, broadcastShape(a.shape, b.shape), GPU_BINARY_OPERATIONS[operation]);
+  }
+
+  clipInteger(input, min = -2147483648, max = 2147483647) {
+    this.checkOwnership(input);
+    if (input.dataType !== 'int32' || ![min, max].every(Number.isInteger) || min < -2147483648 || max > 2147483647 || min > max) {
+      throw new RangeError('Integer Clip requires ordered int32 bounds.');
+    }
+    return this.elementwise(input, input, input.shape, 3, min, max, { min, max });
   }
 
   cast(input, to) {

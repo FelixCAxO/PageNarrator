@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Abre la página, pulsa el icono de PageNarrator y elige «Leer página»."
+  },
   "ui_3e8b2a3a": {
     "message": "Cargando documento…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Cancelado."
+  },
+  "ui_9d3f7d31": {
+    "message": "La acción de voz personal fracasó."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice requiere WebGPU con soporte fp16."
+  },
+  "ui_34c2939b": {
+    "message": "Quitando el ruido de fondo…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Descargando el modelo de reducción de ruido… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Puedes escuchar o guardar el clip limpio."
+  },
+  "ui_24b6564c": {
+    "message": "La reducción de ruido no está disponible. Puedes guardar el clip original."
+  },
+  "ui_f035394f": {
+    "message": "Puedes escuchar o guardar el clip."
+  },
+  "ui_611ed81e": {
+    "message": "Grabando…"
+  },
+  "ui_514244f6": {
+    "message": "No se puede grabar con el micrófono."
+  },
+  "ui_a8d5e97d": {
+    "message": "Permite el acceso al micrófono para grabar un clip."
+  },
+  "ui_7bcd5d33": {
+    "message": "No se encontró ningún micrófono."
+  },
+  "ui_f6233044": {
+    "message": "Elige un archivo de audio o graba un clip."
+  },
+  "ui_b1cbd878": {
+    "message": "Introduzca un nombre predefinido y las palabras habladas en la grabación."
+  },
+  "ui_a81b3b51": {
+    "message": "Codificación de la muestra de voz..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Descargar codificador de voz... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Preajuste de voz guardado."
+  },
+  "ui_3c91213b": {
+    "message": "Seleccionada para la lectura."
+  },
+  "ui_1113ba39": {
+    "message": "Preparando la muestra de voz…"
+  },
+  "ui_e0513158": {
+    "message": "La muestra de voz está lista."
+  },
+  "ui_24e89fdd": {
+    "message": "Preajuste de voz eliminado."
   },
   "ui_c08b976a": {
     "message": "Procesando…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Requiere atención"
+  },
+  "ui_4d1cf041": {
+    "message": "Inglés estadounidense, femenina"
+  },
+  "ui_faf95838": {
+    "message": "Inglés estadounidense, masculina"
+  },
+  "ui_f3768d40": {
+    "message": "Inglés británico, femenina"
+  },
+  "ui_4139054c": {
+    "message": "Elige una voz de Kokoro en inglés. Kokoro no admite otros idiomas."
   },
   "ui_c0c171d2": {
     "message": "No se ha podido completar esta acción."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Crear un predeterminado de voz personal en la configuración de voz."
+  },
   "ui_b7e3509c": {
     "message": "Omitir fragmentos de código"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "No se ha podido iniciar PageNarrator."
   },
-  "ui_4d1cf041": {
-    "message": "Inglés estadounidense, femenina"
-  },
-  "ui_faf95838": {
-    "message": "Inglés estadounidense, masculina"
-  },
-  "ui_f3768d40": {
-    "message": "Inglés británico, femenina"
-  },
-  "ui_4139054c": {
-    "message": "Elige una voz de Kokoro en inglés. Kokoro no admite otros idiomas."
-  },
   "ui_87d977c4": {
     "message": "Reproductor de PageNarrator"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Modelo de voz"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (predeterminado)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimental)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Diez voces en inglés. Configuración inicial: unos 93 MB con CPU o 326 MB con GPU. Otra voz requiere unos 0,5 MB. Se conserva la voz guardada."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Diez voces en inglés. Otros idiomas cambian a OmniVoice si es compatible. Configuración inicial: unos 93 MB con CPU o 326 MB con GPU. Otra voz requiere unos 0,5 MB. Se conserva la voz guardada."
   },
   "ui_2c04fde6": {
     "message": "Ajustes de voz"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Susurro"
+  },
+  "ui_8156f492": {
+    "message": "Preajuste de voz personal"
+  },
+  "ui_a8cbb251": {
+    "message": "Gestión de voces personales"
   },
   "ui_3d7af8ef": {
     "message": "Velocidad de reproducción"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Omitir fragmentos de código"
   },
+  "ui_ce18c7cb": {
+    "message": "Omitir ecuaciones y tablas en archivos PDF"
+  },
   "ui_456ac053": {
     "message": "Color del área"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Abrir PageNarrator desde la página"
-  },
-  "ui_94a4b160": {
-    "message": "Abre la página, pulsa el icono de PageNarrator y elige «Leer página»."
   },
   "ui_4be7c01e": {
     "message": "Los archivos de voz que falten se descargan de Hugging Face al preparar la voz o leer. La voz se genera en este dispositivo. Los archivos en caché pueden reutilizarse sin conexión hasta que se borren."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "Páginas del PDF"
   },
+  "ui_328b6bff": {
+    "message": "Las muestras de voz y los presets permanecen en este dispositivo."
+  },
+  "ui_fff029e4": {
+    "message": "Crea una voz personal"
+  },
+  "ui_12e7305d": {
+    "message": "Elige un archivo de audio o graba de 3 a 10 segundos de voz clara. Los archivos pueden pesar hasta 20 MB. El codificador descarga unos 654 MB en el primer uso."
+  },
+  "ui_a01f1ba6": {
+    "message": "Lenguaje hablado en la grabación"
+  },
+  "ui_1ade9af5": {
+    "message": "Archivo de audio"
+  },
+  "ui_a4204cfb": {
+    "message": "Lee esto en voz alta con tu voz habitual."
+  },
+  "ui_75637bc3": {
+    "message": "Grabar un clip"
+  },
+  "ui_523daa03": {
+    "message": "Quitar ruido de fondo"
+  },
+  "ui_905bc62f": {
+    "message": "Usar el clip original"
+  },
+  "ui_67b9602a": {
+    "message": "Opcional. Se ejecuta en este dispositivo con WebGPU y descarga unos 493 MB la primera vez."
+  },
+  "ui_026775c1": {
+    "message": "Nombre del preajuste"
+  },
+  "ui_706bbab1": {
+    "message": "Lo que dice la grabación"
+  },
+  "ui_b00f8855": {
+    "message": "Guardar preajuste de voz"
+  },
+  "ui_80c87657": {
+    "message": "Voces personales guardadas"
+  },
+  "ui_83b7d497": {
+    "message": "Usar para la lectura"
+  },
+  "ui_71accaa9": {
+    "message": "Escuchar muestra de voz"
+  },
+  "ui_c348abed": {
+    "message": "Eliminar preajuste"
+  },
+  "ui_8313d4fa": {
+    "message": "Detener grabación"
+  },
+  "ui_35afca3b": {
+    "message": "Cancelar"
+  },
   "ui_6b68e4c5": {
     "message": "Experimental. 32 entradas de idiomas; la calidad varía. Requiere WebGPU con fp16 y unos 1,35 GB de descargas. Elige voz, variante o susurro."
+  },
+  "ui_9e93d684": {
+    "message": "Leer con un predeterminado de voz personal. las muestras de voz y la narración permanecen en este dispositivo. Requiere WebGPU con fp16."
   },
   "ui_35a4186c": {
     "message": "Advertencia: el susurro puede omitir palabras en este idioma. Compara la lectura con el texto."

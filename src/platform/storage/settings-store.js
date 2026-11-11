@@ -12,6 +12,12 @@ export async function saveVoiceSelection({ language = 'en', voice = null, storag
   }, { storage });
 }
 
+/** Save the engine and language page-language detection chose; omniVoice only when it chose OmniVoice.
+ * @param {{ engine: string, language: string, autoEngine: boolean, omniVoice?: object|null }} choice */
+export async function saveDetectedVoice({ engine, language, autoEngine, omniVoice = null }, { storage = globalThis.chrome?.storage?.local } = {}) {
+  return savePlaybackSettings({ ttsEngine: engine, language, ttsEngineAuto: autoEngine, ...(omniVoice ? { omniVoice } : {}) }, { storage });
+}
+
 export async function savePlaybackSpeed(speed, { storage = globalThis.chrome?.storage?.local } = {}) {
   return savePlaybackSettings({ speed }, { storage });
 }

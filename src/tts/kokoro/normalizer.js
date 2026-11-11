@@ -13,8 +13,10 @@ const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 
 const ABBREVIATIONS = { mr: 'mister', mrs: 'missus', ms: 'miz', dr: 'doctor', prof: 'professor', sr: 'senior', jr: 'junior',
   st: 'saint', vs: 'versus', etc: 'et cetera', 'e.g': 'for example', 'i.e': 'that is', fig: 'figure', figs: 'figures', p: 'page', pp: 'pages' };
 /** @type {Record<string, string>} */
-const SYMBOLS = { α: 'alpha', β: 'beta', γ: 'gamma', δ: 'delta', ε: 'epsilon', θ: 'theta', λ: 'lambda', μ: 'mu', π: 'pie',
-  σ: 'sigma', φ: 'phi', ω: 'omega', '&': 'and', '%': 'percent', '+': 'plus', '=': 'equals', '@': 'at', '#': 'number', '°': 'degrees' };
+const SYMBOLS = { α: 'alpha', β: 'beta', γ: 'gamma', δ: 'delta', ε: 'epsilon', ζ: 'zeta', η: 'eta', θ: 'theta',
+  ι: 'iota', κ: 'kappa', λ: 'lambda', μ: 'mu', ν: 'nu', ξ: 'xi', ο: 'omicron', π: 'pie', ρ: 'rho', σ: 'sigma',
+  ς: 'sigma', τ: 'tau', υ: 'upsilon', φ: 'phi', χ: 'chi', ψ: 'psi', ω: 'omega',
+  '&': 'and', '%': 'percent', '+': 'plus', '=': 'equals', '@': 'at', '#': 'number', '°': 'degrees' };
 /** @type {Record<string, string>} */
 const ORDINALS = { one: 'first', two: 'second', three: 'third', five: 'fifth', eight: 'eighth', nine: 'ninth', twelve: 'twelfth' };
 /** @type {Record<string, string>} */
@@ -51,7 +53,8 @@ export function normalizeEnglishText(input, dialect = 'en-us') {
   if (!['en-us', 'en-gb', 'en'].includes(dialect)) throw new Error(`Invalid language identifier: "${dialect}".`);
   if (typeof input !== 'string' || input.includes('\0')) throw new Error('Phonemizer requires text without null characters.');
   if (input.length > 16_384) throw new RangeError('English phonemizer text exceeds 16384 characters.');
-  let text = input.normalize('NFKD').replace(/\p{M}/gu, '').replace(/[’‘]/g, "'")
+  // PDF exporters insert zero-width word breaks and other invisible format marks.
+  let text = input.normalize('NFKD').replaceAll('\u200B', ' ').replace(/[\p{M}\p{Cf}]/gu, '').replace(/[’‘]/g, "'")
     .replace(/æ/gi, 'ae').replace(/œ/gi, 'oe').replaceAll('−', '-').replaceAll('_', ' ');
   text = text.replace(/[A-Za-z]+(?:'s)?/g, word => {
     const base = word.replace(/(?:'s|s)$/, '');
@@ -95,7 +98,7 @@ export function normalizeEnglishText(input, dialect = 'en-us') {
     .replace(/\b([a-z]+)'ve\b/gi, '$1 have').replace(/\b([a-z]+)'ll\b/gi, '$1 will');
   text = text.replace(/(^|\s)'(bout|cause|em|til)\b/gi, (_, space, word) => `${space}${COLLOQUIAL[word.toLowerCase()]}`);
   text = text.replace(/\b([A-Z]{2,8})(s|'s)?\b/g, (word, base, suffix) => INITIALISMS.has(base) ? `${spellEnglishLetters(base.toLowerCase(), dialect)}${suffix ?? ''}` : word);
-  text = text.replace(/[αβγδεθλμπσφω&%+=@#°]/g, char => ` ${SYMBOLS[char]} `);
+  text = text.replace(/[α-ω&%+=@#°]/giu, char => ` ${SYMBOLS[char.toLowerCase()] ?? char} `);
   if (/[^a-z\s\p{P}\p{S}]/iu.test(text)) throw new Error('Text contains characters outside the English phonemizer alphabet.');
   const clauses = [];
   let words = [];

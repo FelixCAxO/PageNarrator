@@ -77,7 +77,7 @@ describe('packaged UI translations', () => {
   });
 
   it('keeps all static controls and accessibility text wired without replacing nested controls', () => {
-    for (const file of ['src/popup.html', 'src/reader-engine.html', 'src/pdf-viewer.html']) {
+    for (const file of ['src/popup.html', 'src/reader-engine.html', 'src/pdf-viewer.html', 'src/personal-voices.html']) {
       const document = new JSDOM(readFileSync(new URL(`../../${file}`, import.meta.url), 'utf8')).window.document;
       const walker = document.createTreeWalker(document.body, 4);
       for (let node = walker.nextNode(); node; node = walker.nextNode()) {

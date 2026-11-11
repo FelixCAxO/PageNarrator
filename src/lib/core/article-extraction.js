@@ -28,7 +28,8 @@ export function chooseArticleExtraction(document, { articleFallback, readSelecti
   markExtraction(document, 'pn:extract:start');
   try {
     const article = chooseArticleExtractionResult(document, { articleFallback, readSelection, startMode });
-    return { ...article, totalReadableWordCount: getTotalReadableWordCount(article) };
+    // The page's declared language backs up text detection when Chrome's detector is unsure or the text is too short.
+    return { ...article, totalReadableWordCount: getTotalReadableWordCount(article), pageLanguage: String(document.documentElement?.lang || '').trim() };
   } finally {
     markExtraction(document, 'pn:extract:end');
   }

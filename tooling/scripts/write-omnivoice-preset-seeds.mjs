@@ -1,93 +1,115 @@
+// Writes src/tts/omnivoice/preset-seeds.js: the shipped OmniVoice voices by stable voice ID.
+// New catalog voices are added to the append-only registry; registered voices keep their frozen playback settings.
+// --check verifies both files without writing.
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync } from 'node:fs';
-import { createHash } from 'node:crypto';
 import catalog from '../../src/tts/omnivoice/speaker-data.js';
 import { getOmniVoiceLanguageOptions } from '../../src/tts/omnivoice/languages.js';
+import { getOmniVoiceVoiceId } from '../../src/tts/omnivoice/voice-id.js';
 import { getOmniVoicePlaybackSeed, getOmniVoicePlaybackNumStep, getOmniVoicePlaybackGenderCue, getOmniVoicePlaybackGuidanceScale, getOmniVoicePlaybackSpeed, getOmniVoicePlaybackPronunciationVariant } from './lib/omnivoice-speaker-selection.mjs';
 
-const seeds = Object.fromEntries(getOmniVoiceLanguageOptions().map(({ code }) => [code, [Array(10).fill(null), Array(10).fill(null)]]));
-const stepOverrides = {};
-const noGenderCue = [];
-const guidanceOverrides = {};
-const speedOverrides = {};
-const pronunciationOverrides = {};
-assert.equal(catalog.speakers.length, 640);
+const check = process.argv.includes('--check');
+const registryFile = new URL('../config/omnivoice-voice-registry.json', import.meta.url);
+const indexFile = new URL('../../src/tts/omnivoice/preset-seeds.js', import.meta.url);
+const registryText = readFileSync(registryFile, 'utf8');
+const registry = JSON.parse(registryText);
+const v104 = JSON.parse(readFileSync(new URL('../config/omnivoice-v104-voices.json', import.meta.url), 'utf8'));
+const languages = getOmniVoiceLanguageOptions().map(({ code }) => code);
+const defaultSteps = lang => lang === 'tr' ? 32 : 24;
+
+const shipped = new Map();
 for (const speaker of catalog.speakers) {
-  assert.ok(Object.hasOwn(seeds, speaker.lang));
-  assert.ok(['female', 'male'].includes(speaker.gender));
-  assert.ok(Number.isInteger(speaker.variation) && speaker.variation >= 1 && speaker.variation <= 10);
-  assert.equal(speaker.id, `${speaker.lang}-${speaker.gender}-${speaker.variation}`);
-  const group = seeds[speaker.lang][speaker.gender === 'male' ? 1 : 0];
-  assert.equal(group[speaker.variation - 1], null, 'Duplicate preset seed binding');
-  group[speaker.variation - 1] = getOmniVoicePlaybackSeed(speaker);
-  const steps = getOmniVoicePlaybackNumStep(speaker);
-  if (steps !== (speaker.lang === 'tr' ? 32 : 24)) stepOverrides[speaker.id] = steps;
-  if (!getOmniVoicePlaybackGenderCue(speaker)) noGenderCue.push(speaker.id);
-  const guidance = getOmniVoicePlaybackGuidanceScale(speaker);
-  if (guidance !== 2) guidanceOverrides[speaker.id] = guidance;
-  const speed = getOmniVoicePlaybackSpeed(speaker);
-  if (speed !== 1) speedOverrides[speaker.id] = speed;
-  const pronunciation = getOmniVoicePlaybackPronunciationVariant(speaker);
-  if (pronunciation !== null) pronunciationOverrides[speaker.id] = pronunciation;
+  assert.ok(languages.includes(speaker.lang), `Unknown language ${speaker.lang}`);
+  assert.ok(['female', 'male'].includes(speaker.gender), `Unknown gender for ${speaker.id}`);
+  const id = getOmniVoiceVoiceId(speaker);
+  assert.ok(!shipped.has(id), `${id} appears twice; each person or generated voice ships once per language`);
+  shipped.set(id, speaker);
+  const registered = registry.voices[id];
+  if (registered) {
+    assert.equal(registered.lang, speaker.lang, `${id} changed language`);
+    assert.equal(registered.gender, speaker.gender, `${id} changed gender`);
+    continue;
+  }
+  assert.ok(!check, `${id} is not registered; run node tooling/scripts/write-omnivoice-preset-seeds.mjs`);
+  registry.voices[id] = { lang: speaker.lang, gender: speaker.gender, seed: getOmniVoicePlaybackSeed(speaker), numStep: getOmniVoicePlaybackNumStep(speaker),
+    genderCue: getOmniVoicePlaybackGenderCue(speaker), guidanceScale: getOmniVoicePlaybackGuidanceScale(speaker),
+    speed: getOmniVoicePlaybackSpeed(speaker), pronunciationVariant: getOmniVoicePlaybackPronunciationVariant(speaker) };
 }
-assert.ok(Object.values(seeds).every(groups => groups.every(group => group.every(Number.isInteger))));
-const catalogSha256 = createHash('sha256').update(readFileSync(new URL('../../src/tts/omnivoice/speaker-data.js', import.meta.url))).digest('hex');
+
+const voices = {}, legacy = {};
+for (const lang of languages) for (const gender of ['female', 'male']) {
+  // v1.0.4 display order first, then newer voices in catalog slot order.
+  const ranked = (v104.order[lang]?.[gender] || []).filter(id => shipped.has(id));
+  const rest = [...shipped].filter(([id, s]) => s.lang === lang && s.gender === gender && !ranked.includes(id))
+    .sort(([, a], [, b]) => (a.variation ?? 0) - (b.variation ?? 0) || a.id.localeCompare(b.id)).map(([id]) => id);
+  const ids = [...ranked, ...rest];
+  assert.ok(ids.length, `${lang} has no ${gender} voice`);
+  (voices[lang] ??= {})[gender] = ids.map(id => {
+    const { seed, numStep, genderCue, guidanceScale, speed, pronunciationVariant } = registry.voices[id];
+    const overrides = { ...(numStep !== defaultSteps(lang) ? { numStep } : {}), ...(!genderCue ? { genderCue } : {}),
+      ...(guidanceScale !== 2 ? { guidanceScale } : {}), ...(speed !== 1 ? { speed } : {}), ...(pronunciationVariant !== null ? { pronunciationVariant } : {}) };
+    return Object.keys(overrides).length ? [id, seed, overrides] : [id, seed];
+  });
+  (legacy[lang] ??= {})[gender] = Array.from({ length: 10 }, (_, index) => ids.indexOf(v104.slots[`${lang}-${gender}-${index + 1}`]));
+}
+
+const block = value => Object.entries(value).map(([lang, genders]) => `  ${JSON.stringify(lang)}: {\n${Object.entries(genders)
+  .map(([gender, rows]) => `    ${JSON.stringify(gender)}: [\n${rows.map(row => `      ${JSON.stringify(row)}`).join(',\n')}\n    ]`).join(',\n')}\n  }`).join(',\n');
 const output = `// Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-// Generated by tooling/scripts/write-omnivoice-preset-seeds.mjs. Catalog SHA-256: ${catalogSha256}
-/** @type {Record<string, number[][]>} */
-const SEEDS = ${JSON.stringify(seeds, null, 2)};
-/** @type {Record<string, number>} */
-const STEP_OVERRIDES = ${JSON.stringify(stepOverrides, null, 2)};
-/** @type {Set<string>} */
-const NO_GENDER_CUE = new Set(${JSON.stringify(noGenderCue)});
-/** @type {Record<string, number>} */
-const GUIDANCE_OVERRIDES = ${JSON.stringify(guidanceOverrides, null, 2)};
-/** @type {Record<string, number>} */
-const SPEED_OVERRIDES = ${JSON.stringify(speedOverrides, null, 2)};
-/** @type {Record<string, string>} */
-const PRONUNCIATION_OVERRIDES = ${JSON.stringify(pronunciationOverrides, null, 2)};
+// Generated by tooling/scripts/write-omnivoice-preset-seeds.mjs from speaker-data.js and tooling/config/omnivoice-voice-registry.json.
+// Shipped voices per language and gender in display order: [voiceId, playbackSeed, overrides?].
+/** @type {Record<string, Record<'female'|'male', Array<[string, number, Record<string, any>?]>>>} */
+const VOICES = {
+${block(voices)}
+};
+// v1.0.4 saved {gender, variation}; variation N points at this list position (-1: that voice no longer ships).
+/** @type {Record<string, Record<'female'|'male', number[]>>} */
+const LEGACY_VARIATIONS = {
+${Object.entries(legacy).map(([lang, g]) => `  ${JSON.stringify(lang)}: ${JSON.stringify(g)}`).join(',\n')}
+};
 
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function getOmniVoicePresetSeed(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const groups = Object.hasOwn(SEEDS, lang) ? SEEDS[lang] : SEEDS.en;
-  return groups[gender === 'male' ? 1 : 0][variation - 1];
-}
-
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function getOmniVoicePresetNumStep(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const code = Object.hasOwn(SEEDS, lang) ? lang : 'en';
-  return STEP_OVERRIDES[\`\${code}-\${gender === 'male' ? 'male' : 'female'}-\${variation}\`] ?? (code === 'tr' ? 32 : 24);
+/** @typedef {{id:string,lang:string,gender:'female'|'male',seed:number,numStep:number,genderCue:boolean,guidanceScale:number,speed:number,pronunciationVariant:string|null}} OmniVoicePreset */
+/** @type {Map<string, OmniVoicePreset>} */
+const PRESETS = new Map();
+for (const [lang, genders] of Object.entries(VOICES)) for (const [gender, rows] of Object.entries(genders)) for (const [id, seed, overrides = {}] of rows) {
+  PRESETS.set(id, { id, lang, gender: /** @type {'female'|'male'} */ (gender), seed, numStep: overrides.numStep ?? (lang === 'tr' ? 32 : 24), genderCue: overrides.genderCue ?? true,
+    guidanceScale: overrides.guidanceScale ?? 2, speed: overrides.speed ?? 1, pronunciationVariant: overrides.pronunciationVariant ?? null });
 }
 
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function hasOmniVoicePresetGenderCue(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const code = Object.hasOwn(SEEDS, lang) ? lang : 'en';
-  return !NO_GENDER_CUE.has(\`\${code}-\${gender === 'male' ? 'male' : 'female'}-\${variation}\`);
+/** Catalog language for a page language; rare catalog languages use the English voices. @param {unknown} code */
+export function getOmniVoiceVoiceLanguage(code) {
+  return typeof code === 'string' && Object.hasOwn(VOICES, code) ? code : 'en';
 }
 
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function getOmniVoicePresetGuidanceScale(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const code = Object.hasOwn(SEEDS, lang) ? lang : 'en';
-  return GUIDANCE_OVERRIDES[\`\${code}-\${gender === 'male' ? 'male' : 'female'}-\${variation}\`] ?? 2;
+/** Voice IDs in display order. @param {unknown} code @param {unknown} gender @returns {string[]} */
+export function getOmniVoiceVoices(code, gender) {
+  return VOICES[getOmniVoiceVoiceLanguage(code)][gender === 'male' ? 'male' : 'female'].map(([id]) => id);
 }
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function getOmniVoicePresetSpeed(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const code = Object.hasOwn(SEEDS, lang) ? lang : 'en';
-  return SPEED_OVERRIDES[code + '-' + (gender === 'male' ? 'male' : 'female') + '-' + variation] ?? 1;
+
+/** @param {unknown} id @returns {OmniVoicePreset|null} */
+export function getOmniVoicePreset(id) {
+  return (typeof id === 'string' && PRESETS.get(id)) || null;
 }
-/** @param {string} lang @param {string} gender @param {number} variation */
-export function getOmniVoicePresetPronunciationVariant(lang, gender, variation) {
-  if (!Number.isInteger(variation) || variation < 1 || variation > 10) throw new Error('Unknown OmniVoice preset variation.');
-  const code = Object.hasOwn(SEEDS, lang) ? lang : 'en';
-  return PRONUNCIATION_OVERRIDES[code + '-' + (gender === 'male' ? 'male' : 'female') + '-' + variation] ?? null;
+
+/** Voice a v1.0.4 {gender, variation} choice meant, while it still ships. @param {unknown} code @param {unknown} gender @param {unknown} variation */
+export function getOmniVoiceLegacyVoice(code, gender, variation) {
+  if (!Number.isInteger(variation) || Number(variation) < 1 || Number(variation) > 10) return null;
+  const lang = getOmniVoiceVoiceLanguage(code), key = gender === 'male' ? 'male' : 'female';
+  return VOICES[lang][key][LEGACY_VARIATIONS[lang][key][Number(variation) - 1]]?.[0] ?? null;
 }
 `;
-const file = new URL('../../src/tts/omnivoice/preset-seeds.js', import.meta.url);
-if (process.argv.includes('--check')) assert.equal(readFileSync(file, 'utf8'), output, 'Regenerate preset seeds with node tooling/scripts/write-omnivoice-preset-seeds.mjs');
-else writeFileSync(file, output);
-console.log(`${process.argv.includes('--check') ? 'Checked' : 'Generated'} 640 OmniVoice preset playback bindings.`);
+const registryOutput = `{
+  "about": ${JSON.stringify(registry.about)},
+  "voices": {
+${Object.entries(registry.voices).map(([id, v]) => `    ${JSON.stringify(id)}: ${JSON.stringify(v)}`).join(',\n')}
+  }
+}
+`;
+if (check) {
+  assert.equal(registryText, registryOutput, 'Regenerate with node tooling/scripts/write-omnivoice-preset-seeds.mjs');
+  assert.equal(readFileSync(indexFile, 'utf8'), output, 'Regenerate with node tooling/scripts/write-omnivoice-preset-seeds.mjs');
+} else {
+  writeFileSync(registryFile, registryOutput);
+  writeFileSync(indexFile, output);
+}
+console.log(`${check ? 'Checked' : 'Generated'} ${shipped.size} OmniVoice voices (${Object.keys(registry.voices).length} registered IDs).`);

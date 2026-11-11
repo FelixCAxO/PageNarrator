@@ -195,6 +195,28 @@ describe('Kokoro data-only loader', () => {
     expect(cpuEngineFactory).toHaveBeenCalledTimes(1); await backend.dispose(); await backend.dispose();
     expect(events).toEqual(['session', 'compute']); expect(phonemizer.dispose).toHaveBeenCalledTimes(1);
   });
+  it('splits dense text before CPU inference while keeping the full source', async () => {
+    const { session, phonemizer } = make();
+    phonemizer.phonemizeText.mockImplementation(async text => 'w'.repeat(text.trim().length * 5));
+    const backend = await loadBrowserKokoroBackend(undefined, {
+      device: 'wasm', dtype: 'q8',
+      loadData: async file => {
+        if (file.includes('.onnx')) return new Uint8Array();
+        if (file.endsWith('.bin')) return new Uint8Array(510 * 256 * 4);
+        return new TextEncoder().encode(JSON.stringify(file === 'tokenizer.json' ? tokenizerJson : tokenizerConfig));
+      },
+      phonemizerFactory: async () => phonemizer,
+      cpuEngineFactory: async () => ({ dispose: async () => {} }),
+      inference: { Tensor, InferenceSession: { create: async () => session } },
+    });
+    try {
+      const text = 'The results were 12345 times 98765 minus 54321 plus 78901.';
+      const chunks = await Array.fromAsync(backend.stream(text));
+      expect(chunks.length).toBeGreaterThan(1);
+      expect(chunks.map(chunk => chunk.text).join('')).toBe(text);
+      expect(session.run.mock.calls.every(([feeds]) => feeds.input_ids.dims[1] <= 192)).toBe(true);
+    } finally { await backend.dispose(); }
+  });
   it('releases its packaged CPU engine when q8 graph initialization fails', async () => {
     const compute = { dispose: vi.fn() }, phonemizer = { dispose: vi.fn() };
     const loadData = async file => file.includes('.onnx') ? new Uint8Array() : new TextEncoder().encode(JSON.stringify(file === 'tokenizer.json' ? tokenizerJson : tokenizerConfig));

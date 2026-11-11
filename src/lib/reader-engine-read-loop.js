@@ -5,8 +5,8 @@ import { getChunkWordCounts, getTotalChunkWordCount } from './reader-engine-view
 import { findStartChunkIndex, findStartChunkIndexByText } from './reading-start.js';
 import { applyReadingPreferences } from './reading-filters.js';
 import { createCodeCleanupSuggestion } from './reading-suggestions.js';
-import { detectPageLanguage } from './language-detection.js';
-import { getDetectedLanguageSuggestion, getUnsupportedLanguageMessage, normalizeLanguageCode } from './language-voice-options.js';
+import { detectArticleLanguage } from './language-detection.js';
+import { chooseVoiceForDetectedLanguage, getUnsupportedLanguageMessage } from './language-voice-options.js';
 import { createSpeechEngineHandoff } from './speech-engine-handoff.js';
 import {
   clearSpeechPreloadState,
@@ -52,8 +52,10 @@ export function createReadLoopOrchestrator({
   loadSavedResumePosition = async () => null,
   renderResumePrompt = () => {},
   setArticleSummary = () => {},
-  setLanguageSelectValue = () => {},
-  populateVoices = async () => {},
+  applyDetectedVoice = async () => {},
+  isEngineAuto = async () => false,
+  canUseOmniVoice = async () => false,
+  getVoiceSelectionError = () => '',
   renderLanguageStatus = async () => {},
   resolveSelectedVoice = () => null,
   ensureModel = async () => null,
@@ -377,19 +379,27 @@ export function createReadLoopOrchestrator({
         await flashResumeSection(article.tabId, state.activeChunks[state.currentChunk]).catch(suppressError);
         if (stopIfRequested()) return;
       }
-      const detectedLanguage = await detectPageLanguage(articleTextSample);
+      const detectedLanguage = await detectArticleLanguage({ pageLanguage: article.pageLanguage,
+        text: article.text || article.languageSample || articleTextSample });
       if (stopIfRequested()) return;
-      const suggestion = getDetectedLanguageSuggestion(detectedLanguage, resolveSelectedVoice()?.engine || 'kokoro');
-      await renderLanguageStatus(detectedLanguage);
-      if (suggestion && !suggestion.supported) {
-        setReadingState('error', { message: getUnsupportedLanguageMessage(suggestion.code) });
+      const voiceSelectionError = getVoiceSelectionError();
+      if (voiceSelectionError) {
+        setReadingState('error', { message: voiceSelectionError });
         return;
       }
-      // OmniVoice's language is an explicit user choice; detection must not replace it.
-      if (suggestion?.supported && resolveSelectedVoice()?.engine !== 'omnivoice') {
-        state.selectedLanguageCode = normalizeLanguageCode(detectedLanguage.code);
-        setLanguageSelectValue(state.selectedLanguageCode);
-        await populateVoices();
+      // Match the voice to the page so a foreign page reads without visiting Voice settings.
+      const currentEngine = resolveSelectedVoice()?.engine || 'kokoro';
+      const voiceChoice = chooseVoiceForDetectedLanguage(detectedLanguage, { engine: currentEngine, autoEngine: await isEngineAuto() });
+      if (stopIfRequested()) return;
+      if (voiceChoice?.engine === 'omnivoice' && currentEngine !== 'omnivoice' && !(await canUseOmniVoice())) {
+        if (stopIfRequested()) return;
+        await renderLanguageStatus(detectedLanguage);
+        setReadingState('error', { message: getUnsupportedLanguageMessage(voiceChoice.code) });
+        return;
+      }
+      if (stopIfRequested()) return;
+      if (voiceChoice && (voiceChoice.engine !== currentEngine || voiceChoice.code !== state.selectedLanguageCode)) {
+        await applyDetectedVoice(voiceChoice);
         if (stopIfRequested()) return;
       }
       await renderLanguageStatus(detectedLanguage);

@@ -8,6 +8,7 @@ releases/
 artifacts/
 .DS_Store
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *.log
 .env
@@ -22,6 +23,7 @@ __pycache__/
 .agents/
 .codex/
 .superpowers/
+.hermes/
 .cache/
 tmp/
 docs/cws-listing/debug-*.png

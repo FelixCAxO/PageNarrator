@@ -1,7 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { launchExtensionContext, openExtensionPage } from './extension-fixture.js';
-import { selectNativeOption, setNativeRange } from './native-controls-fixture.js';
-import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { launchExtensionContext, openExtensionPage, seedRealTtsFlowFlags } from './extension-fixture.js';
+import { selectNativeOption } from './native-controls-fixture.js';
 
 test('voice model is easy to reach and switching preserves both sets of controls', async ({}, testInfo) => {
   const { context, cleanup } = await launchExtensionContext({ testInfo });
@@ -10,6 +9,7 @@ test('voice model is easy to reach and switching preserves both sets of controls
     if (/huggingface\.co|hf\.co|xethub\.hf\.co/.test(request.url())) downloads.push(request.url());
   });
   try {
+    await seedRealTtsFlowFlags(context, { playbackSettings: { ttsEngine: 'kokoro', language: 'en', voice: 'af_heart' } });
     let popup = await openExtensionPage(context, 'popup');
     await popup.setViewportSize({ width: 350, height: 600 });
     const model = popup.locator('#popup-tts-engine');
@@ -20,6 +20,8 @@ test('voice model is easy to reach and switching preserves both sets of controls
 
     await popup.locator('#popup-settings > summary').click();
     await selectNativeOption(popup.locator('#popup-voice'), 'am_michael');
+    await expect.poll(() => popup.evaluate(() => chrome.storage.local.get('playbackSettings')
+      .then(value => value.playbackSettings.voice))).toBe('am_michael');
     await selectNativeOption(model, 'omnivoice');
     await expect(popup.locator('#popup-omnivoice-settings')).toBeVisible();
     await expect(popup.locator('#popup-voice')).toBeHidden();
@@ -27,9 +29,9 @@ test('voice model is easy to reach and switching preserves both sets of controls
     await expect(popup.locator('#popup-language')).toBeInViewport();
     await expect(popup.locator('#popup-voice-model-help')).toContainText('1.35 GB');
     await selectNativeOption(popup.locator('#popup-language'), 'sv');
-    await setNativeRange(popup.locator('#popup-omnivoice-variation'), 4);
+    await selectNativeOption(popup.locator('#popup-omnivoice-gender'), 'male');
     await expect.poll(() => popup.evaluate(() => chrome.storage.local.get('playbackSettings')
-      .then(value => value.playbackSettings.omniVoice.variation))).toBe(getOmniVoiceVariationOrder('sv', 'female')[3]);
+      .then(value => value.playbackSettings.omniVoice.gender))).toBe('male');
     await popup.locator('#popup-omnivoice-whisper').check();
     await expect(popup.locator('#popup-omnivoice-pitch')).toHaveCount(0);
     await expect(popup.locator('#popup-omnivoice-age')).toHaveCount(0);
@@ -50,7 +52,8 @@ test('voice model is easy to reach and switching preserves both sets of controls
     await selectNativeOption(popup.locator('#popup-tts-engine'), 'omnivoice');
     await expect(popup.locator('#popup-settings')).toHaveAttribute('open', '');
     await expect(popup.locator('#popup-language')).toBeInViewport();
-    await expect(popup.locator('#popup-omnivoice-variation')).toHaveValue('4');
+    await expect(popup.locator('#popup-omnivoice-gender')).toHaveValue('male');
+    await expect(popup.locator('#popup-omnivoice-variation')).toHaveValue('1');
     await expect(popup.locator('#popup-omnivoice-whisper')).toBeChecked();
     expect(await popup.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await popup.evaluate(() => window.scrollTo(0, 0));

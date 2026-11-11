@@ -5,6 +5,7 @@ import { once } from 'node:events';
 import {
   getExtensionId,
   launchExtensionContext,
+  navigatePdfViewer,
   openCorpusArticle,
   seedFlowTestFlags,
   startReadFromToolbarPopup,
@@ -37,18 +38,16 @@ test('opens a PDF with the existing browser session and stops at a sign-in redir
     try {
       const origin = 'http://127.0.0.1:' + server.address().port;
       const page = await context.newPage();
-      const id = await getExtensionId(context);
-      const viewerUrl = `chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(origin + '/protected.pdf')}`;
       const errors = [];
       page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
-      await page.goto(viewerUrl);
+      await navigatePdfViewer(page, origin + '/protected.pdf');
       await expect(page.locator('#pdf-status')).toContainText('Open the original link in Chrome');
       await expect(page.getByRole('link', { name: 'Open original link' })).toHaveAttribute('href', origin + '/protected.pdf');
       expect(signInRequests).toEqual([]);
       expect(errors.filter(message => message.includes('CORS'))).toEqual([]);
 
       await page.goto(origin + '/session');
-      await page.goto(viewerUrl);
+      await navigatePdfViewer(page, origin + '/protected.pdf');
       await expect(page.locator('#pdf-status')).toContainText('1 page loaded');
       await expect(page.locator('.textLayer')).toContainText('PageNarrator single column fixture');
       expect(signInRequests).toEqual([]);
@@ -107,13 +106,17 @@ test('retains trusted extension PDF navigation, extraction, and teardown', async
   try {
     const id = await getExtensionId(context);
     const worker = context.serviceWorkers()[0];
-    const viewerUrl = `chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(await fixturePdfUrl())}`;
+    const sourceUrl = await fixturePdfUrl();
+    const viewerUrl = `chrome-extension://${id}/src/pdf-viewer.html?src=${encodeURIComponent(sourceUrl)}`;
     const pagePromise = context.waitForEvent('page');
     const tab = await worker.evaluate((url) => chrome.tabs.create({ url, active: true }), viewerUrl);
     const page = await pagePromise;
-    await expect(page.locator('#pdf-status')).toContainText('1 page loaded', { timeout: 15_000 });
-    const metadata = await worker.evaluate((tabId) => chrome.tabs.sendMessage(tabId, { type: 'getPdfStreamMetadata' }), tab.id);
+    await page.waitForLoadState('load');
+    const metadata = await worker.evaluate(({ tabId, sourceUrl }) => chrome.tabs.sendMessage(tabId, {
+      type: 'getPdfStreamMetadata', sourceUrl,
+    }), { tabId: tab.id, sourceUrl });
     expect(metadata).toMatchObject({ ok: true, pageCount: 1 });
+    await expect(page.locator('#pdf-status')).toContainText('1 page loaded');
     const chunk = await worker.evaluate(({ tabId, instanceToken }) => chrome.tabs.sendMessage(tabId, {
       type: 'getPdfChunk', streamId: 'trusted-security-test', instanceToken,
     }), { tabId: tab.id, instanceToken: metadata.instanceToken });

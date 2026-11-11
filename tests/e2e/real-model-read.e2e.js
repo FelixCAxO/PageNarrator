@@ -247,10 +247,10 @@ test.describe('real Kokoro model end-to-end reads', () => {
       const pdfPage = await context.newPage();
       watchPageErrors(pdfPage, 'pdf-viewer', extensionErrors);
       await pdfPage.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(LIVE_ARXIV_PDF_URL)}`);
-      await expect(pdfPage.locator('#pdf-status')).toHaveText(/^[1-9]\d* pages? loaded$/, { timeout: 120_000 });
       await seedReadableTabTarget(context, pdfPage, { allowActiveExtensionTab: true });
 
       await startReadFromToolbarPopup(context, pdfPage);
+      await expect(pdfPage.locator('#pdf-status')).toHaveText(/^[1-9]\d* pages? loaded$/, { timeout: 120_000 });
       await waitForEngineState(context, /reading|finished/, MODEL_READY_TIMEOUT_MS);
       await expect.poll(async () => {
         const diagnostics = await getEngineDiagnostics(context);

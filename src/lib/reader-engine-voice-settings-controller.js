@@ -29,9 +29,11 @@ import {
   getTtsPerformanceProfileConfig,
 } from './tts-performance-profile.js';
 import { DEFAULT_RUNTIME_POLICY } from '../tts/runtime/default-runtime-policy.js';
-import { normalizeOmniVoiceSettings, getOmniVoiceVariationOrder, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './omnivoice-settings.js';
+import { normalizeOmniVoiceSettings, getOmniVoicePickerState, renderOmniVoicePicker, readOmniVoicePicker, resolveOmniVoicePreset, VOICE_ENGINE_HELP, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING, isOmniVoiceProfile, canUseOmniVoice as checkOmniVoiceSupport } from './omnivoice-settings.js';
 import { getOmniVoiceLanguageOptions, getOmniVoiceLanguage } from '../tts/omnivoice/languages.js';
+import { listPersonalVoiceReferences } from '../platform/storage/personal-voice-store.js';
 import {
+  saveDetectedVoice,
   saveIdleReleaseDiagnostic,
   savePlaybackSpeed,
   saveReadingCleanupSetting,
@@ -58,6 +60,13 @@ export function createReaderEngineVoiceSettingsController({
   let lastAdjustedProfileDecision = null;
   let ttsBackendPreference = DEFAULT_TTS_BACKEND_PREFERENCE;
   let lastDetectedLanguage = null;
+  // Holds every language's voice pick; the controls show only the selected language's.
+  let omniVoiceSettings = normalizeOmniVoiceSettings();
+  const getOmniVoiceSettings = () => omniVoiceSettings;
+  const isCloning = () => els.ttsEngine?.value === 'omnivoice-clone';
+  let personalVoiceId = '';
+  /** @type {Awaited<ReturnType<typeof listPersonalVoiceReferences>>} */
+  let personalReferences = [];
 
   function getSelectedLanguageCode() {
     return state?.selectedLanguageCode || 'en';
@@ -77,7 +86,8 @@ export function createReaderEngineVoiceSettingsController({
 
   function populateLanguageOptions() {
     els.language.replaceChildren();
-    const languages = els.ttsEngine?.value === 'omnivoice' ? getOmniVoiceLanguageOptions(getSelectedLanguageCode()) : getLanguageOptions();
+    const languages = isOmniVoiceProfile(els.ttsEngine?.value)
+      ? getOmniVoiceLanguageOptions(isCloning() ? '' : getSelectedLanguageCode()) : getLanguageOptions();
     for (const language of localizeLanguageOptions(languages)) {
       const option = document.createElement('option');
       option.value = language.code;
@@ -111,6 +121,16 @@ export function createReaderEngineVoiceSettingsController({
 
     globalThis.__pnReaderEngineInitStage = 'voices-saved';
     const savedVoice = await readerEngineStorage.getStoredVoiceForLanguage(getSelectedLanguageCode()).catch(() => null);
+    if (isCloning()) {
+      personalReferences = await listPersonalVoiceReferences(readerEngineStorage.rawStorage).catch(() => []);
+      if (els.personalVoice) {
+        const selected = personalReferences.some(reference => reference.id === personalVoiceId) ? personalVoiceId : personalReferences[0]?.id || '';
+        els.personalVoice.replaceChildren(...personalReferences.map(reference => new Option(reference.name, reference.id)));
+        els.personalVoice.value = selected;
+        els.personalVoice.disabled = !selected;
+        personalVoiceId = selected;
+      }
+    }
 
     if (els.voice) els.voice.replaceChildren(fragment);
 
@@ -142,20 +162,26 @@ export function createReaderEngineVoiceSettingsController({
       updateVoiceSettingsSummary();
       await populateVoices();
       resetTtsPerformanceGovernor({ ttsPerformanceProfile: els.ttsPerformanceProfileSelect?.value, ttsBackendPreference });
-      savePlaybackSettingsSoon({ ttsEngine: els.ttsEngine.value, language: getSelectedLanguageCode() });
+      savePlaybackSettingsSoon({ ttsEngine: els.ttsEngine.value, language: getSelectedLanguageCode(), ttsEngineAuto: false });
       onVoiceSelectionChanged();
     });
     for (const control of [els.omniVoiceGender, els.omniVoiceVariation, els.omniVoiceWhisper]) {
       control?.addEventListener('input', () => {
-        renderOmniVoiceSettings(getOmniVoiceSettings());
+        renderOmniVoiceSettings(readOmniVoicePicker(els, omniVoiceSettings, getSelectedLanguageCode()));
         updateVoiceSettingsSummary();
         savePlaybackSettingsSoon({ omniVoice: getOmniVoiceSettings() });
         onVoiceSelectionChanged();
       });
     }
+    els.personalVoice?.addEventListener('change', () => {
+      personalVoiceId = els.personalVoice.value;
+      savePlaybackSettingsSoon({ personalVoiceId });
+      updateVoiceSettingsSummary();
+      onVoiceSelectionChanged();
+    });
     els.language.addEventListener('change', async () => {
       setSelectedLanguageCode(normalizeLanguageCode(els.language.value));
-      if (els.ttsEngine?.value === 'omnivoice') {
+      if (isOmniVoiceProfile(els.ttsEngine?.value)) {
         savePlaybackSettingsSoon({ language: getSelectedLanguageCode(), omniVoice: getOmniVoiceSettings() });
       } else {
         await saveVoiceSelection({
@@ -219,13 +245,15 @@ export function createReaderEngineVoiceSettingsController({
   }
 
   function updateVoiceSettingsSummary() {
-    const omni = els.ttsEngine?.value === 'omnivoice';
-    if (els.omniVoiceSettings) els.omniVoiceSettings.hidden = !omni;
+    const profile = els.ttsEngine?.value || 'kokoro';
+    const omni = isOmniVoiceProfile(profile);
+    if (els.omniVoiceSettings) els.omniVoiceSettings.hidden = profile !== 'omnivoice';
+    if (els.personalVoiceSettings) els.personalVoiceSettings.hidden = !isCloning();
     if (els.voice?.closest('label')) els.voice.closest('label').hidden = omni;
     if (els.language?.closest('label')) els.language.closest('label').hidden = !omni;
     if (els.kokoroRequirements) els.kokoroRequirements.hidden = omni;
-    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[omni ? 'omnivoice' : 'kokoro']);
-    if (omni && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(getSelectedLanguageCode())) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
+    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[profile]);
+    if (profile === 'omnivoice' && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(getSelectedLanguageCode())) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
     renderOmniVoiceSettings(getOmniVoiceSettings());
     if (!els.voiceSettingsSummary) return;
     const language = getLanguageOption(getSelectedLanguageCode());
@@ -451,11 +479,17 @@ export function createReaderEngineVoiceSettingsController({
     updateVoiceSettingsSummary();
   }
   function resolveSelectedVoice() {
-    if (els.ttsEngine?.value === 'omnivoice') {
+    if (isOmniVoiceProfile(els.ttsEngine?.value)) {
       const language = getSelectedLanguageCode();
       if (!getOmniVoiceLanguage(language)) return null;
+      if (isCloning()) {
+        const personalReference = personalReferences.find(reference => reference.id === personalVoiceId);
+        return personalReference ? { id: `${personalReference.id}:${language}`, engine: 'omnivoice', label: personalReference.name,
+          detectCode: language, lang: language, personalReference } : null;
+      }
       const omniVoice = getOmniVoiceSettings();
-      return { id: `omnivoice:${language}:${JSON.stringify(omniVoice)}`, engine: 'omnivoice', label: 'OmniVoice', detectCode: language, lang: language, omniVoice };
+      const { id, gender } = resolveOmniVoicePreset(omniVoice, language);
+      return { id: `omnivoice:${language}:${gender}:${id}${omniVoice.whisper ? ':whisper' : ''}`, engine: 'omnivoice', label: 'OmniVoice', detectCode: language, lang: language, omniVoice };
     }
     return resolveVoiceSelection(els.voice.value, getSelectedLanguageCode());
   }
@@ -464,37 +498,50 @@ export function createReaderEngineVoiceSettingsController({
   async function restoreVoiceSelection(voice) {
     const language = normalizeLanguageCode(voice.detectCode || voice.lang);
     setSelectedLanguageCode(language);
-    if (els.ttsEngine) els.ttsEngine.value = voice.engine;
-    if (voice.engine === 'omnivoice') renderOmniVoiceSettings(voice.omniVoice);
+    const profile = voice.personalReference ? 'omnivoice-clone' : voice.engine;
+    if (els.ttsEngine) els.ttsEngine.value = profile;
+    if (voice.personalReference) personalVoiceId = voice.personalReference.id;
+    if (voice.omniVoice) renderOmniVoiceSettings(voice.omniVoice);
     await populateVoices();
     if (voice.engine === 'kokoro') els.voice.value = voice.id;
     updateVoiceSettingsSummary();
-    savePlaybackSettingsSoon({ ttsEngine: voice.engine, language,
-      ...(voice.engine === 'omnivoice' ? { omniVoice: voice.omniVoice } : { voice: voice.id }) });
+    savePlaybackSettingsSoon({ ttsEngine: profile, language,
+      ...(voice.personalReference ? { personalVoiceId } : voice.engine === 'omnivoice' ? { omniVoice: voice.omniVoice } : { voice: voice.id }) });
   }
 
-  function getOmniVoiceSettings() {
-    const language = getSelectedLanguageCode();
-    const gender = els.omniVoiceGender?.value;
-    const order = getOmniVoiceVariationOrder(language, gender);
-    return normalizeOmniVoiceSettings({ gender,
-      variation: order[Number(els.omniVoiceVariation?.value) - 1], whisper: els.omniVoiceWhisper?.checked }, language);
+  /** Switch to the engine and language detection chose, saved at once so a late settings sync cannot undo it. */
+  async function applyDetectedVoice({ engine, code, autoEngine }) {
+    if (isCloning() && engine === 'omnivoice') {
+      if (!getOmniVoiceLanguageOptions().some(language => language.code === code)) return;
+      setSelectedLanguageCode(code);
+      await populateVoices();
+      await saveDetectedVoice({ engine: 'omnivoice-clone', language: code, autoEngine: false }, { storage: readerEngineStorage.rawStorage }).catch(suppressReaderEngineError);
+      return;
+    }
+    setSelectedLanguageCode(code);
+    if (els.ttsEngine) els.ttsEngine.value = engine;
+    await populateVoices();
+    await saveDetectedVoice({ engine, language: code, autoEngine,
+      omniVoice: engine === 'omnivoice' ? getOmniVoiceSettings() : null }, { storage: readerEngineStorage.rawStorage }).catch(suppressReaderEngineError);
+  }
+
+  async function isEngineAuto() {
+    return !isCloning() && (await readerEngineStorage.getPlaybackSettings().catch(() => null))?.ttsEngineAuto === true;
+  }
+
+  // Same check the OmniVoice runtime makes before it downloads anything.
+  async function canUseOmniVoice() {
+    return checkOmniVoiceSupport(getNavigator());
   }
 
   function renderOmniVoiceSettings(settings = {}) {
-    const config = normalizeOmniVoiceSettings(settings, getSelectedLanguageCode());
-    const rank = getOmniVoiceVariationOrder(getSelectedLanguageCode(), config.gender).indexOf(config.variation) + 1;
-    if (els.omniVoiceGender) els.omniVoiceGender.value = config.gender;
-    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(rank);
-    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${rank} / 10`;
-    if (els.omniVoiceWhisper) {
-      els.omniVoiceWhisper.checked = config.whisper;
-      els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(getSelectedLanguageCode());
-    }
+    omniVoiceSettings = normalizeOmniVoiceSettings(settings, getSelectedLanguageCode());
+    renderOmniVoicePicker(els, getOmniVoicePickerState(omniVoiceSettings, getSelectedLanguageCode()), getSelectedLanguageCode());
   }
 
   function renderVoiceEngineSetting(settings = {}) {
-    if (els.ttsEngine) els.ttsEngine.value = settings?.ttsEngine === 'omnivoice' ? 'omnivoice' : 'kokoro';
+    if (els.ttsEngine) els.ttsEngine.value = isOmniVoiceProfile(settings?.ttsEngine) ? settings.ttsEngine : 'kokoro';
+    personalVoiceId = settings?.personalVoiceId || '';
     renderOmniVoiceSettings(settings?.omniVoice);
     updateVoiceSettingsSummary();
   }
@@ -543,7 +590,7 @@ export function createReaderEngineVoiceSettingsController({
     const governor = getTtsPerformanceGovernor();
     return Object.freeze({
       ...governor.currentConfig(),
-      ...(els.ttsEngine?.value === 'omnivoice' ? { maxChunkLength: 240, targetMinLength: 120, preloadAhead: 4, progressiveSegments: false, speechPreloadTimeoutMs: 60_000 } : {}),
+      ...(isOmniVoiceProfile(els.ttsEngine?.value) ? { maxChunkLength: 240, targetMinLength: 120, preloadAhead: 4, progressiveSegments: false, speechPreloadTimeoutMs: 60_000 } : {}),
       requestedProfile: governor.requestedProfile?.() || TTS_PERFORMANCE_PROFILE_DEFAULT,
     });
   }
@@ -558,6 +605,10 @@ export function createReaderEngineVoiceSettingsController({
   }
 
   return {
+    applyDetectedVoice,
+    canUseOmniVoice,
+    getVoiceSelectionError: () => isCloning() && !resolveSelectedVoice() ? t('Create a personal voice preset in Voice settings.') : '',
+    isEngineAuto,
     renderVoiceEngineSetting,
     bindVoiceSettings,
     getActiveTtsProfileConfig,

@@ -1,0 +1,17 @@
+AISHELL-3 recorded references
+
+Source: https://huggingface.co/datasets/AISHELL/AISHELL-3
+Source revision: f20d5db4a31fe779ef07bb1af4ea92da5c786622
+Original distribution: https://www.openslr.org/93/
+License: Apache License 2.0. Full license: Apache-2.0.txt
+Attribution: Yao Shi, Hui Bu, Xin Xu, Shaoji Zhang and Ming Li (2021), AISHELL-3:
+A Multi-speaker Mandarin TTS Corpus; Beijing Shell Shell Technology Co., Ltd.
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
+identifies the dataset revision, split, speaker ID, source file, audio hash,
+encoder hash and preprocessing for each reference.
+
+The reference data keep their source license, separately from the PageNarrator
+implementation and the OmniVoice model.

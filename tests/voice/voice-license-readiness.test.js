@@ -1,64 +1,78 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
+import { OMNIVOICE_DATA } from '../../src/tts/omnivoice/model-data.js';
+import { OMNIVOICE_ENCODER_DATA } from '../../src/tts/omnivoice/reference-encoder.js';
 import omniVoiceCatalog from '../../src/tts/omnivoice/speaker-data.js';
+import { getOmniVoiceVoiceId } from '../../src/tts/omnivoice/voice-id.js';
+import voiceScores from '../../tooling/config/omnivoice-voice-scores.json';
 
 describe('current release voice license readiness', () => {
-  it('retains the license and attribution for recorded OmniVoice references', () => {
-    const license = readFileSync(new URL('../../extension/public/legal/CC-BY-4.0.txt', import.meta.url), 'utf8');
-    const notice = readFileSync(new URL('../../extension/public/legal/LibriTTS-R-NOTICE.txt', import.meta.url), 'utf8');
+  it('attributes the pinned OmniVoice export and states the upstream weight terms', () => {
     const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
-    expect(license).toContain('Attribution 4.0 International');
-    expect(notice).toContain('made available by Google LLC');
-    expect(notice).toContain('Miipher');
-    expect(notices).toContain('LibriTTS-R-NOTICE.txt');
-    const fleursNotice = readFileSync(new URL('../../extension/public/legal/FLEURS-NOTICE.txt', import.meta.url), 'utf8');
-    expect(fleursNotice).toContain('Conneau');
-    expect(fleursNotice).toContain('CC BY 4.0');
-    const shareAlike = readFileSync(new URL('../../extension/public/legal/CC-BY-SA-4.0.txt', import.meta.url), 'utf8');
-    const jvnvNotice = readFileSync(new URL('../../extension/public/legal/JVNV-NOTICE.txt', import.meta.url), 'utf8');
-    const spiceNotice = readFileSync(new URL('../../extension/public/legal/SpiCE-NOTICE.txt', import.meta.url), 'utf8');
-    expect(shareAlike).toContain('Attribution-ShareAlike 4.0 International');
-    expect(jvnvNotice).toContain('Detai Xin');
-    expect(jvnvNotice).toContain('CC BY-SA 4.0');
-    expect(spiceNotice).toContain('Khia A. Johnson');
-    expect(spiceNotice).toContain('10.5683/SP2/MJOXP3');
-    expect(notices).toContain('JVNV-NOTICE.txt');
-    expect(notices).toContain('SpiCE-NOTICE.txt');
-    for (const speaker of omniVoiceCatalog.speakers.filter(speaker => speaker.durationSource)) {
-      expect(['LibriTTS-R', 'google/fleurs', 'SpiCE', 'JVNV']).toContain(speaker.source.dataset);
-      expect(speaker.source.license).toBe(speaker.source.dataset === 'JVNV' ? 'CC-BY-SA-4.0' : 'CC-BY-4.0');
-      if (speaker.source.dataset === 'LibriTTS-R') {
-        expect(speaker.source.readerId).toBeTruthy();
-        expect(speaker.source.recordingId).toBeTruthy();
-        expect(speaker.source.url).toBe('https://www.openslr.org/141/');
-      } else if (speaker.source.dataset === 'google/fleurs') {
-        expect(speaker.source.revision).toBe('70bb2e84b976b7e960aa89f1c648e09c59f894dd');
-        expect(speaker.source.config).toBeTruthy();
-        expect(['dev', 'train', 'test']).toContain(speaker.source.split);
-        expect(speaker.source.originalFile).toMatch(/^\d+\.wav$/u);
-        expect(speaker.source.metadataSha256).toMatch(/^[a-f0-9]{64}$/u);
-        expect(speaker.source.archiveSha256).toMatch(/^[a-f0-9]{64}$/u);
-        expect(speaker.source.url).toBe('https://huggingface.co/datasets/google/fleurs');
-      } else if (speaker.source.dataset === 'SpiCE') {
-        expect(speaker.source.readerId).toBeTruthy();
-        expect(speaker.source.revision).toBe('1.0');
-        expect(speaker.source.url).toBe('https://doi.org/10.5683/SP2/MJOXP3');
-        expect(speaker.source.originalAudioSha256).toMatch(/^[a-f0-9]{64}$/u);
-        expect(speaker.source.annotationSha256).toMatch(/^[a-f0-9]{64}$/u);
-        expect(speaker.source.endSample).toBeGreaterThan(speaker.source.startSample);
-      } else if (speaker.source.dataset === 'JVNV') {
-        expect(speaker.source.readerId).toMatch(/^[FM][12]$/u);
-        expect(speaker.source.language).toBe('ja');
-        expect(speaker.source.url).toBe('https://sites.google.com/site/shinnosuketakamichi/research-topics/jvnv_corpus');
-        expect(speaker.source.archiveUrl).toBe('https://ss-takashi.sakura.ne.jp/corpus/jvnv/jvnv_ver1.zip');
-        expect(speaker.source.archiveMember).toMatch(/^jvnv_v1\/.+\.wav$/u);
-        expect(speaker.source.archiveMemberCrc32).toMatch(/^[a-f0-9]{8}$/u);
-        for (const key of ['archiveIndexSha256', 'transcriptSha256', 'officialPageSha256']) expect(speaker.source[key]).toMatch(/^[a-f0-9]{64}$/u);
-      }
-      expect(speaker.source.audioSha256).toMatch(/^[a-f0-9]{64}$/u);
-      expect(speaker.source.encoderSha256).toMatch(/^[a-f0-9]{64}$/u);
-      expect(speaker.source.preprocessing).toBeTruthy();
+    const modelNotice = notices.split('On-demand voice models')[1].split('Kokoro-82M')[0];
+    expect(modelNotice).toContain(`https://huggingface.co/${OMNIVOICE_DATA.modelId}`);
+    expect(modelNotice).toContain(OMNIVOICE_DATA.revision);
+    expect(modelNotice).toContain('https://huggingface.co/k2-fsa/OmniVoice#license');
+    expect(modelNotice).toMatch(/Pretrained weights: CC BY-NC/u);
+    expect(modelNotice).toContain('Built with Higgs Materials licensed from Boson AI USA, Inc.');
+    expect(readFileSync(new URL('../../extension/public/legal/Boson-Higgs-Audio-2-LICENSE.txt', import.meta.url), 'utf8'))
+      .toContain('BOSON HIGGS AUDIO 2 COMMUNITY LICENSE AGREEMENT');
+    expect(readFileSync(new URL('../../extension/public/legal/Meta-Llama-3-LICENSE.txt', import.meta.url), 'utf8'))
+      .toContain('META LLAMA 3 COMMUNITY LICENSE AGREEMENT');
+  });
+
+  it('keeps attribution and generation details for every OmniVoice card', () => {
+    const hash = expect.stringMatching(/^[a-f0-9]{64}$/u);
+    expect(omniVoiceCatalog.speakers).toHaveLength(831);
+    for (const speaker of omniVoiceCatalog.speakers) {
+      expect(speaker.source, speaker.id).toMatchObject({
+        kind: 'recording-derived',
+        dataset: expect.any(String),
+        license: expect.stringMatching(/^(?:CC0-1\.0|CC-BY-4\.0|CC-BY-SA-4\.0|Apache-2\.0)$/u),
+        attribution: expect.any(String),
+        url: expect.stringMatching(/^https:\/\//u),
+        audioSha256: hash,
+        encoderSha256: OMNIVOICE_ENCODER_DATA.sha256,
+        parentReferenceHash: hash,
+        parentStableVoiceId: getOmniVoiceVoiceId(speaker),
+        generation: {
+          modelRevision: OMNIVOICE_DATA.revision,
+          lang: speaker.lang,
+          nativeGeneratedCodes: true,
+          generatedAudioSha256: hash,
+        },
+      });
     }
+  });
+
+  it('binds every voice score to the shipped card', () => {
+    expect(Object.keys(voiceScores.voices)).toHaveLength(831);
+    for (const speaker of omniVoiceCatalog.speakers) {
+      const score = voiceScores.voices[getOmniVoiceVoiceId(speaker)];
+      expect(score.hash).toBe(speaker.hash);
+      expect(score.similarity).toBeGreaterThanOrEqual(-1);
+      expect(score.similarity).toBeLessThanOrEqual(1);
+      for (const quality of [score.originalQuality, score.newQuality]) {
+        expect(Number.isFinite(quality)).toBe(true);
+        expect(quality).toBeGreaterThan(0);
+        expect(quality).toBeLessThanOrEqual(5);
+      }
+      expect(Array.isArray(score.reviewFlags)).toBe(true);
+    }
+  });
+
+  it('pins the restored Common Voice references to the archived 17.0 distribution', () => {
+    const references = omniVoiceCatalog.speakers.filter(speaker => speaker.source?.dataset === 'mozilla/common_voice_17_0');
+    expect(references).toHaveLength(490);
+    for (const speaker of references) {
+      expect(speaker.source, speaker.id).toMatchObject({
+        revision: '8262c16bf297c87a9cd88c51997c4758ed7a8ba2',
+        license: 'CC0-1.0',
+      });
+    }
+    const notice = readFileSync(new URL('../../extension/public/legal/CommonVoice-NOTICE.txt', import.meta.url), 'utf8');
+    expect(notice).toContain('Mozilla Common Voice Corpus 17.0');
+    expect(notice).toContain('8262c16bf297c87a9cd88c51997c4758ed7a8ba2');
   });
 
   it('uses the new licensed OmniVoice bridge and excludes the former vendored executable', () => {

@@ -1,12 +1,28 @@
 import { JSDOM } from 'jsdom';
-import { getOmniVoiceVariationOrder } from '../../src/lib/omnivoice-settings.js';
+import { getOmniVoiceLegacyVoice, getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 import { readFileSync } from 'node:fs';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { createReaderEngineVoiceSettingsController } from '../../src/lib/reader-engine-voice-settings-controller.js';
 import { getReaderEngineSettingsElements } from '../../src/ui/reader-engine/elements/settings-elements.js';
 
+function legacyRank(lang, gender, variation) {
+  const savedVoice = getOmniVoiceLegacyVoice(lang, gender, variation);
+  return String(Math.max(1, getOmniVoiceVoices(lang, gender).indexOf(savedVoice) + 1));
+}
+
 describe('reader engine voice settings', () => {
   afterEach(() => vi.unstubAllGlobals());
+
+  it.each([
+    ['an fp16 adapter', { gpu: { requestAdapter: async () => ({ features: new Set(['shader-f16']) }) } }, true],
+    ['an adapter without fp16', { gpu: { requestAdapter: async () => ({ features: new Set() }) } }, false],
+    ['no adapter', { gpu: { requestAdapter: async () => null } }, false],
+    ['a failing adapter request', { gpu: { requestAdapter: async () => { throw new Error('lost'); } } }, false],
+    ['no WebGPU', {}, false],
+  ])('offers OmniVoice for a detected language only with %s', async (_name, navigator, expected) => {
+    const controller = createReaderEngineVoiceSettingsController({ els: {}, navigator });
+    expect(await controller.canUseOmniVoice()).toBe(expected);
+  });
 
   it('keeps four OmniVoice chunks ahead without changing voice quality settings', () => {
     const dom = new JSDOM(readFileSync(new URL('../../src/reader-engine.html', import.meta.url), 'utf8'));
@@ -34,13 +50,13 @@ describe('reader engine voice settings', () => {
     expect(els.omniVoiceWhisper.disabled).toBe(false);
     expect(els.omniVoiceWhisper.checked).toBe(true);
     expect(els.voiceEngineHelp.textContent).toContain('Warning: Whisper can omit words');
-    expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
+    expect(controller.resolveSelectedVoice().omniVoice).toEqual({ ...saved.omniVoice, voices: {} });
     state.setSelectedLanguageCode('sv');
     controller.renderVoiceEngineSetting(saved);
     await controller.populateVoices();
     expect(els.omniVoiceWhisper.disabled).toBe(false);
     expect(els.voiceEngineHelp.textContent).not.toContain('Warning: Whisper can omit words');
-    expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
+    expect(controller.resolveSelectedVoice().omniVoice).toEqual({ ...saved.omniVoice, voices: {} });
     dom.window.close();
   });
 
@@ -60,7 +76,7 @@ describe('reader engine voice settings', () => {
     await controller.restoreVoiceSelection({ id: 'am_michael', engine: 'kokoro', lang: 'en-US' });
     expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ ttsEngine: 'kokoro', language: 'en', voice: 'am_michael' });
     expect(controller.resolveSelectedVoice().id).toBe('am_michael');
-    expect(els.omniVoiceVariation.value).toBe(String(getOmniVoiceVariationOrder('en', 'male').indexOf(8) + 1));
+    expect(els.omniVoiceVariation.value).toBe(legacyRank('en', 'male', 8));
 
     // Kokoro failed to load while OmniVoice kept reading.
     await controller.restoreVoiceSelection({ id: 'omnivoice:sv', engine: 'omnivoice', detectCode: 'sv', omniVoice });
@@ -69,7 +85,7 @@ describe('reader engine voice settings', () => {
     dom.window.close();
   });
 
-  it('restores OmniVoice controls, saves slider changes, and returns to the saved Kokoro voice', async () => {
+  it('restores OmniVoice controls, saves voice type changes, and returns to the saved Kokoro voice', async () => {
     const dom = new JSDOM(readFileSync(new URL('../../src/reader-engine.html', import.meta.url), 'utf8'));
     vi.stubGlobal('document', dom.window.document);
     const els = getReaderEngineSettingsElements(dom.window.document);
@@ -86,7 +102,7 @@ describe('reader engine voice settings', () => {
     expect(els.readerSettings.open).toBe(false);
     els.ttsEngine.value = 'omnivoice';
     els.ttsEngine.dispatchEvent(new dom.window.Event('change'));
-    await vi.waitFor(() => expect(savePlaybackSettingsSoon).toHaveBeenCalledWith({ ttsEngine: 'omnivoice', language: 'en' }));
+    await vi.waitFor(() => expect(savePlaybackSettingsSoon).toHaveBeenCalledWith({ ttsEngine: 'omnivoice', language: 'en', ttsEngineAuto: false }));
     expect(els.language.options).toHaveLength(32);
     expect([...els.language.options].map(option => option.value)).toContain('yue');
     expect([...els.language.options].map(option => option.value)).not.toContain('sol');
@@ -100,15 +116,18 @@ describe('reader engine voice settings', () => {
     const firstVoiceId = controller.resolveSelectedVoice().id;
     expect(dom.window.document.getElementById('omnivoice-pitch')).toBeNull();
     expect(dom.window.document.getElementById('omnivoice-age')).toBeNull();
-    els.omniVoiceVariation.value = '4';
-    els.omniVoiceVariation.dispatchEvent(new dom.window.Event('input'));
-    expect(els.omniVoiceVariationOut.textContent).toBe('4 / 10');
-    expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ omniVoice: { gender: 'female', variation: getOmniVoiceVariationOrder('en', 'female')[3], whisper: false } });
+    els.omniVoiceGender.value = 'male';
+    els.omniVoiceGender.dispatchEvent(new dom.window.Event('input'));
+    const english = getOmniVoiceVoices('en', 'male');
+    expect(els.omniVoiceVariation.max).toBe(String(english.length));
+    expect(els.omniVoiceVariationOut.textContent).toBe(`1 / ${english.length}`);
+    expect(savePlaybackSettingsSoon).toHaveBeenLastCalledWith({ omniVoice: { gender: 'male', voices: {}, whisper: false } });
+    expect(controller.resolveSelectedVoice().id).toBe(`omnivoice:en:male:${english[0]}`);
     expect(controller.resolveSelectedVoice().id).not.toBe(firstVoiceId);
     const saved = { ttsEngine: 'omnivoice', omniVoice: { gender: 'male', variation: 8, whisper: true } };
     controller.renderVoiceEngineSetting(saved);
-    expect(controller.resolveSelectedVoice().omniVoice).toEqual(saved.omniVoice);
-    expect(els.omniVoiceVariation.value).toBe(String(getOmniVoiceVariationOrder('en', 'male').indexOf(8) + 1));
+    expect(controller.resolveSelectedVoice().omniVoice).toEqual({ ...saved.omniVoice, voices: {} });
+    expect(els.omniVoiceVariation.value).toBe(legacyRank('en', 'male', 8));
     controller.renderVoiceEngineSetting({ ttsEngine: 'kokoro' });
     await controller.populateVoices();
     expect(controller.resolveSelectedVoice().id).toBe('am_michael');

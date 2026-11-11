@@ -3,6 +3,8 @@
 /** @typedef {{ path: string, bytes: number, sha256: string }} PinnedFile */
 /** @typedef {PinnedFile & { chunkBytes: number, hashes: readonly string[] }} VerificationChunks */
 
+class ModelIntegrityError extends Error {}
+
 /** Return a hash-pinned model file from the cache, or download, verify and cache it.
  * Slow links remain usable while bytes arrive; callers can cancel at any time.
  * @param {string} url @param {PinnedFile} file
@@ -34,8 +36,13 @@ export async function loadVerifiedFile(url, file, { label, cache = null, fetcher
     }
     catch (error) {
       signal?.throwIfAborted();
-      await cache?.delete(url).catch(onCacheError);
-      onCacheInvalid(error);
+      if (error instanceof ModelIntegrityError) {
+        await cache?.delete(url).catch(onCacheError);
+        onCacheInvalid(error);
+      } else {
+        onCacheError(error);
+        if (!fetcher) throw error;
+      }
     }
   }
   if (!fetcher) throw new Error(`${label} data is unavailable offline: ${file.path}.`);
@@ -89,7 +96,7 @@ async function download(url, file, { label, fetcher, stallMs, onProgress, signal
       restartStallTimer();
       if (length + value.length > bytes.length) {
         controller.abort();
-        throw new Error(`Invalid ${label} data size: ${file.path}.`);
+        throw new ModelIntegrityError(`Invalid ${label} data size: ${file.path}.`);
       }
       bytes.set(value, length);
       length += value.length;
@@ -100,7 +107,7 @@ async function download(url, file, { label, fetcher, stallMs, onProgress, signal
         lastProgressAt = now;
       }
     }
-    if (length !== bytes.length) throw new Error(`Invalid ${label} data size: ${file.path}.`);
+    if (length !== bytes.length) throw new ModelIntegrityError(`Invalid ${label} data size: ${file.path}.`);
     return bytes;
   } catch (error) {
     void reader?.cancel(error).catch(() => false);
@@ -116,7 +123,7 @@ async function download(url, file, { label, fetcher, stallMs, onProgress, signal
 /** @param {Uint8Array<ArrayBuffer>} bytes @param {PinnedFile} file @param {string} label
  * @param {VerificationChunks|null} chunks @param {AbortSignal|null} signal */
 async function verify(bytes, file, label, chunks, signal) {
-  if (bytes.byteLength !== file.bytes) throw new Error(`Invalid ${label} data size: ${file.path}.`);
+  if (bytes.byteLength !== file.bytes) throw new ModelIntegrityError(`Invalid ${label} data size: ${file.path}.`);
   const hashes = chunks?.hashes ?? [file.sha256];
   for (let index = 0; index < hashes.length; index++) {
     signal?.throwIfAborted();
@@ -124,7 +131,7 @@ async function verify(bytes, file, label, chunks, signal) {
     const part = chunks ? bytes.subarray(index * chunks.chunkBytes, (index + 1) * chunks.chunkBytes) : bytes;
     const digest = new Uint8Array(await crypto.subtle.digest('SHA-256', part));
     signal?.throwIfAborted();
-    if (Array.from(digest, value => value.toString(16).padStart(2, '0')).join('') !== hashes[index]) throw new Error(`${label} data hash mismatch: ${file.path}.`);
+    if (Array.from(digest, value => value.toString(16).padStart(2, '0')).join('') !== hashes[index]) throw new ModelIntegrityError(`${label} data hash mismatch: ${file.path}.`);
   }
   return bytes;
 }

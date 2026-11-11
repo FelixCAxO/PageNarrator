@@ -10,8 +10,9 @@ const html = readFileSync(new URL('../../src/popup.html', import.meta.url), 'utf
 // reader-engine-voice-runtime-controller.js sends modelSetup as { phase, progress, detail, eta },
 // and reader-engine-view.js leaves remainingLabel empty and the title as "No page loaded"
 // until the page is extracted.
-async function createHarness() {
+async function createHarness(platform = 'Win32') {
   const dom = new JSDOM(html, { url: 'chrome-extension://pagenarrator/src/popup.html' });
+  Object.defineProperty(dom.window.navigator, 'platform', { value: platform });
   const listeners = [];
   const sent = [];
   const storage = { voiceSetupPending: true, customVoiceConfigs: [] };
@@ -133,6 +134,18 @@ describe('popup player while a read is preparing', () => {
     expect($('popup-hardware-status').textContent).toBe('Processing: WebGPU');
     broadcast({ state: 'idle', backend: { device: 'wasm' } });
     expect($('popup-hardware-status').textContent).toBe('Processing: CPU / WebAssembly (slower)');
+  });
+
+  it('links to Windows GPU selection help before reading starts', async () => {
+    const { $ } = await createHarness();
+    const help = $('popup-windows-gpu-help');
+    expect(help?.hidden).toBe(false);
+    expect(help.href).toBe('https://developer.chrome.com/docs/web-platform/webgpu/troubleshooting-tips#windows-specific-limitations');
+  });
+
+  it('hides Windows GPU selection help on other platforms', async () => {
+    const { $ } = await createHarness('Linux x86_64');
+    expect($('popup-windows-gpu-help')?.hidden).toBe(true);
   });
 
   it('brings the setup card back with Retry when a read fails during setup', async () => {

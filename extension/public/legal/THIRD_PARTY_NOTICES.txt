@@ -45,25 +45,40 @@ Algorithm reference and adapted upstream material: Apache License 2.0
 New JavaScript implementation of prompt preparation, multilingual duration estimation,
 guided iterative unmasking and ONNX decoding with cancellation/resource cleanup.
 Language IDs/names and Unicode script weights are adapted from the same licensed reference.
-640 codec-token speaker references are included as speaker data. References are
-generated with the pinned OmniVoice model or encoded from attributed recordings.
-Recorded English references use LibriTTS-R (Google LLC, CC BY 4.0); see
-LibriTTS-R-NOTICE.txt and CC-BY-4.0.txt. Per-reference source and processing
-metadata are retained in src/tts/omnivoice/speaker-data.js.
-Additional recorded-reference source notices are FLEURS-NOTICE.txt and
-SpiCE-NOTICE.txt (CC BY 4.0), and JVNV-NOTICE.txt (CC BY-SA 4.0).
-The full licenses are CC-BY-4.0.txt and CC-BY-SA-4.0.txt; each reference
-retains its source license separately from the model and application code.
+Recorded speaker references retain their source licenses and attribution.
+See CommonVoice-NOTICE.txt,
+LibriTTS-R-NOTICE.txt, FLEURS-NOTICE.txt, JVNV-NOTICE.txt, SpiCE-NOTICE.txt,
+NST-NOTICE.txt, NST-Danish-Norwegian-NOTICE.txt, MLS-NOTICE.txt,
+Samromur-NOTICE.txt, and AISHELL-3-NOTICE.txt for source details.
+RE-USE source: https://huggingface.co/nvidia/NVIDIA-NemotronLabs-RE-USE
+RE-USE revision: 31f82f2efad1095034492f236e8dac9239ba713b (OpenMDW-1.1).
 The former vendored OmniVoice bridge is not included.
-See vendor/omnivoice/PROVENANCE.md for references and browser-specific changes.
+See engines/vendor/omnivoice/PROVENANCE.md in the matching source archive for
+references and browser-specific changes.
 
 On-demand voice models
 
-OmniVoice fp16 B=1 KV ONNX conversion (experimental)
-Source: https://huggingface.co/MarkShark2/omnivoice-onnx-kv-b1-fp16
+OmniVoice pretrained speech model by k2-fsa and Xiaomi Corp. (Han Zhu et al.)
+Pretrained weights: CC BY-NC, per https://huggingface.co/k2-fsa/OmniVoice#license
+Upstream source code: Apache-2.0 (Apache-2.0.txt).
+
+MarkShark2's fp16 B=1 KV ONNX conversion of the OmniVoice model
+Export source: https://huggingface.co/MarkShark2/omnivoice-onnx-kv-b1-fp16
 Revision: 0111dd42766f32e6ebb91434ded76f0e697d834a
-Model metadata license: Apache License 2.0.
-Downloaded model/tokenizer data are cached on first use; narration runs locally.
+The publisher's CC BY-NC terms apply to the weights in this export.
+Commercial use of those weights requires separate permission from the rights holders.
+The model downloads on demand and stays outside both release ZIPs.
+
+OmniVoice audio encoder and decoder (Boson Higgs Audio 2)
+Built with Higgs Materials licensed from Boson AI USA, Inc., Copyright Boson
+AI USA, Inc., All Rights Reserved and Meta Llama 3 licensed under the Meta
+Llama 3 Community License, Copyright Meta Platforms, Inc., All Right
+Reserved. Based on Meta Llama 3.
+Meta Llama 3 is licensed under the Meta Llama 3 Community License, Copyright
+© Meta Platforms, Inc. All Rights Reserved.
+Boson Higgs Audio 2 is licensed under the Boson Community License, Copyright
+© Boson AI USA, Inc. All Rights Reserved.
+See Boson-Higgs-Audio-2-LICENSE.txt and Meta-Llama-3-LICENSE.txt.
 
 Kokoro-82M
 Source: https://huggingface.co/hexgrad/Kokoro-82M
@@ -80,9 +95,9 @@ phase correction creates a separate in-memory graph; cached model/weight bytes
 remain unchanged.
 
 The full Apache License 2.0 is included in Apache-2.0.txt. PageNarrator's own code
-is GPL-3.0-or-later; the full license is included in GPL-3.0.txt. The retained
-UK pronunciation records remain GPL-3.0-only, which constrains conveyance of
-the combined distribution to GPL version 3. Individual data notices follow.
+is GPL-3.0-or-later. See GPL-3.0.txt for the full license. Convey the
+GPL-covered work that incorporates the retained UK pronunciation records
+under GPL version 3. Individual data notices follow.
 
 Bundled OCR neural models (Apache License 2.0)
 PaddlePaddle/UVDoc_onnx

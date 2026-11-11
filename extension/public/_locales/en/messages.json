@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Click the PageNarrator extension icon while the page is active, then choose Read page."
+  },
   "ui_3e8b2a3a": {
     "message": "Loading document..."
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Cancelled."
+  },
+  "ui_9d3f7d31": {
+    "message": "The personal voice action failed."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice requires WebGPU with fp16 support."
+  },
+  "ui_34c2939b": {
+    "message": "Cleaning up background noise…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Downloading noise cleanup model… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Cleaned clip ready to play or save."
+  },
+  "ui_24b6564c": {
+    "message": "Noise cleanup unavailable. Your original clip is ready to save."
+  },
+  "ui_f035394f": {
+    "message": "Clip ready to play or save."
+  },
+  "ui_611ed81e": {
+    "message": "Recording…"
+  },
+  "ui_514244f6": {
+    "message": "Microphone recording is unavailable."
+  },
+  "ui_a8d5e97d": {
+    "message": "Allow microphone access to record a clip."
+  },
+  "ui_7bcd5d33": {
+    "message": "No microphone was found."
+  },
+  "ui_f6233044": {
+    "message": "Choose an audio file or record a clip."
+  },
+  "ui_b1cbd878": {
+    "message": "Enter a preset name and the words spoken in the recording."
+  },
+  "ui_a81b3b51": {
+    "message": "Encoding the voice sample…"
+  },
+  "ui_7c9f5f3f": {
+    "message": "Downloading voice encoder… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Voice preset saved."
+  },
+  "ui_3c91213b": {
+    "message": "Selected for reading."
+  },
+  "ui_1113ba39": {
+    "message": "Preparing voice preview…"
+  },
+  "ui_e0513158": {
+    "message": "Voice preview ready."
+  },
+  "ui_24e89fdd": {
+    "message": "Voice preset deleted."
   },
   "ui_c08b976a": {
     "message": "Working…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Needs attention"
+  },
+  "ui_4d1cf041": {
+    "message": "American female"
+  },
+  "ui_faf95838": {
+    "message": "American male"
+  },
+  "ui_f3768d40": {
+    "message": "British female"
+  },
+  "ui_4139054c": {
+    "message": "Choose an English Kokoro voice. Other languages are not supported."
   },
   "ui_c0c171d2": {
     "message": "Could not complete this action."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Create a personal voice preset in Voice settings."
+  },
   "ui_b7e3509c": {
     "message": "Skip code snippets?"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator failed to initialize."
   },
-  "ui_4d1cf041": {
-    "message": "American female"
-  },
-  "ui_faf95838": {
-    "message": "American male"
-  },
-  "ui_f3768d40": {
-    "message": "British female"
-  },
-  "ui_4139054c": {
-    "message": "Choose an English Kokoro voice. Other languages are not supported."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator player"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Voice model"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (default)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimental)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Ten English voices. Other languages switch to OmniVoice when supported. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept."
   },
   "ui_2c04fde6": {
     "message": "Voice settings"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Whisper"
+  },
+  "ui_8156f492": {
+    "message": "Personal voice preset"
+  },
+  "ui_a8cbb251": {
+    "message": "Manage personal voices"
   },
   "ui_3d7af8ef": {
     "message": "Playback speed"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Skip code snippets"
   },
+  "ui_ce18c7cb": {
+    "message": "Skip PDF equations and tables"
+  },
   "ui_456ac053": {
     "message": "Area color"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Open PageNarrator from the page"
-  },
-  "ui_94a4b160": {
-    "message": "Click the PageNarrator extension icon while the page is active, then choose Read page."
   },
   "ui_4be7c01e": {
     "message": "Missing voice files download on first use. Speech runs locally."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF pages"
   },
+  "ui_328b6bff": {
+    "message": "Voice samples and presets stay on this device."
+  },
+  "ui_fff029e4": {
+    "message": "Create a personal voice"
+  },
+  "ui_12e7305d": {
+    "message": "Choose an audio file or record 3–10 seconds of clear speech. Files can be up to 20 MB. The encoder downloads about 654 MB on first use."
+  },
+  "ui_a01f1ba6": {
+    "message": "Language spoken in the recording"
+  },
+  "ui_1ade9af5": {
+    "message": "Audio file"
+  },
+  "ui_a4204cfb": {
+    "message": "Read this aloud in your normal voice."
+  },
+  "ui_75637bc3": {
+    "message": "Record a clip"
+  },
+  "ui_523daa03": {
+    "message": "Clean up background noise"
+  },
+  "ui_905bc62f": {
+    "message": "Use original clip"
+  },
+  "ui_67b9602a": {
+    "message": "Optional. Runs on this device using WebGPU and downloads about 493 MB on first use."
+  },
+  "ui_026775c1": {
+    "message": "Preset name"
+  },
+  "ui_706bbab1": {
+    "message": "What is said in the recording"
+  },
+  "ui_b00f8855": {
+    "message": "Save voice preset"
+  },
+  "ui_80c87657": {
+    "message": "Saved personal voices"
+  },
+  "ui_83b7d497": {
+    "message": "Use for reading"
+  },
+  "ui_71accaa9": {
+    "message": "Preview voice"
+  },
+  "ui_c348abed": {
+    "message": "Delete preset"
+  },
+  "ui_8313d4fa": {
+    "message": "Stop recording"
+  },
+  "ui_35afca3b": {
+    "message": "Cancel"
+  },
   "ui_6b68e4c5": {
     "message": "Experimental. 32 language entries; quality varies. Requires WebGPU with fp16 and about 1.35 GB of downloads. Choose a voice, variation, or whisper."
+  },
+  "ui_9e93d684": {
+    "message": "Read with a personal voice preset. Voice samples and narration stay on this device. Requires WebGPU with fp16."
   },
   "ui_35a4186c": {
     "message": "Warning: Whisper can omit words in this language. Check the reading against the text."

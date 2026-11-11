@@ -119,7 +119,9 @@ try {
             generation:{modelRevision,lang,seed,numStep,guidanceScale:job.guidanceScale??2,speed:job.speed||1,pronunciationVariant:job.pronunciationVariant??null,instruct:request.instruct}},
         }:{})};
         referencePool.push(generated);
-        await globalThis.saveSpeaker({...generated,variation,whisper,referenceId,instruct:request.instruct,numStep,speaker:result.speaker,pcm:Array.from(result.pcm),elapsedMs:Math.round(performance.now()-started)});
+        await globalThis.saveSpeaker({...generated,variation,whisper,referenceId:selectedReference?.referenceId ?? null,
+          instruct:request.instruct,numStep,speed:job.speed ?? 1,guidanceScale:job.guidanceScale ?? 2,
+          speaker:result.speaker,pcm:Array.from(result.pcm),elapsedMs:Math.round(performance.now()-started)});
       }
     }finally{await runtime.dispose();}
     const a=await navigator.gpu.requestAdapter();return {vendor:a.info.vendor,architecture:a.info.architecture};

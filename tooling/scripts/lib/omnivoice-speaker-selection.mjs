@@ -54,10 +54,11 @@ export function toOmniVoiceCatalogEntry(speaker) {
     assert.equal(getOmniVoiceLanguage(speaker.referenceLanguage)?.code, speaker.referenceLanguage, 'Invalid reference language');
     entry.referenceLanguage = speaker.referenceLanguage;
   }
+  if (speaker.source?.kind === 'generated') entry.source = speaker.source;
   if (['recording', 'recording-derived'].includes(speaker.durationSource)) {
     const source = speaker.source;
     assert.ok(source?.kind === speaker.durationSource && typeof source.dataset === 'string' && source.dataset
-      && ['CC-BY-4.0', 'CC-BY-SA-4.0', 'CC0-1.0'].includes(source.license) && typeof source.attribution === 'string' && source.attribution
+      && ['CC-BY-4.0', 'CC-BY-SA-4.0', 'CC0-1.0', 'Apache-2.0'].includes(source.license) && typeof source.attribution === 'string' && source.attribution
       && typeof source.url === 'string' && source.url.startsWith('https://')
       && /^[a-f0-9]{64}$/u.test(source.audioSha256) && /^[a-f0-9]{64}$/u.test(source.encoderSha256)
       && (speaker.durationSource !== 'recording-derived' || /^[a-f0-9]{64}$/u.test(source.parentReferenceHash)),

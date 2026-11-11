@@ -27,7 +27,7 @@ clean-room process is claimed.
 The licensed reference's attribution is retained in the new runtime header,
 this provenance file, and the packaged third-party notices.
 
-Continuous narration uses the reference's long-form conditioning interface with 640 bundled fixed speaker prompts: ten female and ten male variations per selectable language. The catalog contains 525 references encoded from publisher recordings, six references derived from those recordings, and 109 generated references. Attributed sources are LibriTTS-R, google/fleurs, SpiCE and JVNV. Each reference retains its source license (CC BY 4.0 or CC BY-SA 4.0), source IDs, audio/archive/encoder hashes and preprocessing metadata; see the corresponding source notices in extension/public/legal. `tooling/scripts/build-omnivoice-speakers.mjs` regenerates candidate reference WAVs, codec tokens and provenance; the runtime's injected `getSpeaker` dependency allows the builder to generate these unconditioned reference samples. Playback always resolves the selected preset from `speaker-data.js`, within the selected language, independent of document text, position, worker lifetime or retry sampling seed. Changing language selects its own fixed reference set. The reference-audio mask includes the fixed prompt, while unconditional input and audio decoding contain only new target tokens. Prompt tokens are never modified or decoded as part of the new output. The per-preset playback index retains the selected seed, refinement step count, conditioning cue, guidance scale, speed and optional pronunciation variant; references without overrides retain the documented defaults. User-facing audio import remains unavailable; development tooling can encode recorded references. A conservative signal check rejects non-finite samples, constant output, severe clipping and obvious broadband static before playback. On failure the worker reloads and retries once with the next sampling seed and the same explicit speaker ID/reference. Further sections return to the selected sampling seed. `voiceRecovery` records selected and retry seeds; failure after one retry stops reading. Signal checks do not qualify pronunciation, naturalness, cross-device identity or overall language quality. Native listening remains separate from ASR, DNSMOS and WavLM screening.
+Continuous narration uses 831 generated speaker references across 32 languages. OmniVoice generated each card from a fixed parent reference; the catalog retains the generated codec tokens directly. Card metadata records the parent reference hash, generation settings and token hash, with attribution retained in the metadata and packaged notices. See [cards and scores](../../../docs/omnivoice-fixed-voices.md#cards-and-scores). Playback always resolves the selected preset from `speaker-data.js`, within the selected language, independent of document text, position, worker lifetime or retry sampling seed. Changing language selects its own fixed reference set. The reference-audio mask includes the fixed prompt, while unconditional input and audio decoding contain only new target tokens. Prompt tokens are never modified or decoded as part of the new output. The per-preset playback index retains the selected seed, refinement step count, conditioning cue, guidance scale, speed and optional pronunciation variant; references without overrides retain the documented defaults. Personal voice import decodes a local file to 24 kHz mono, pads to a 1920-sample boundary, and encodes the reference once in a dedicated worker. The personal preset stores the transcript, reference codes, language and hash locally. It reuses the same synthesis path as a built-in reference. A conservative signal check rejects non-finite samples, constant output, severe clipping and obvious broadband static before playback. On failure the worker reloads and retries once with the next sampling seed and the same explicit speaker ID/reference. Further sections return to the selected sampling seed. `voiceRecovery` records selected and retry seeds; failure after one retry stops reading. Signal checks do not qualify pronunciation, naturalness, cross-device identity or overall language quality. Native listening remains separate from ASR, DNSMOS and WavLM screening.
 
 Browser choices: expose all 646 languages from the pinned upstream language catalog; use a one-second
 Latin duration reference (25 code frames) with upstream Unicode script weights, deterministic seeded position noise,
@@ -46,9 +46,9 @@ scripts, ASR, or remote PCM/text upload are implemented.
 
 ## Model interface
 
-Model: `MarkShark2/omnivoice-onnx-kv-b1-fp16`, revision
-`0111dd42766f32e6ebb91434ded76f0e697d834a`, metadata Apache-2.0:
-https://huggingface.co/MarkShark2/omnivoice-onnx-kv-b1-fp16/tree/0111dd42766f32e6ebb91434ded76f0e697d834a
+The pretrained model is OmniVoice by k2-fsa and Xiaomi Corp. ([Han Zhu et al.](https://arxiv.org/abs/2604.00688)). The [original publisher's model card](https://huggingface.co/k2-fsa/OmniVoice#license) specifies CC BY-NC for the weights, with no version given. Apache-2.0 applies to the upstream source code.
+
+PageNarrator downloads [MarkShark2's fp16 B=1 KV ONNX conversion](https://huggingface.co/MarkShark2/omnivoice-onnx-kv-b1-fp16/tree/0111dd42766f32e6ebb91434ded76f0e697d834a) at revision `0111dd42766f32e6ebb91434ded76f0e697d834a`. The export carries an Apache-2.0 metadata tag. The pretrained OmniVoice weights retain the publisher's noncommercial terms through conversion and browser graph changes. The model is fetched on demand and kept outside the extension and source ZIPs.
 
 The pinned ONNX graphs were inspected directly to determine their public
 tensor names, data types and dimensions. The main graph takes int64
@@ -100,9 +100,10 @@ independently promotes 253 reference MatMul operations to float32 accumulation,
 then rounds their outputs back to half, matching PageNarrator's accumulation
 policy. `--unmodified-model` preserves the unmodified-model experiment.
 The original executable tokenizer, main-graph and audio-decoder replacements are described
-in [browser-engine.md](../../docs/browser-engine.md), including independent
-token and waveform comparisons. Their code is GPL-3.0-or-later; the retained
-model data keep the model's declared Apache-2.0 license.
+in [browser-engine.md](../../../docs/browser-engine.md), including independent
+token and waveform comparisons. PageNarrator's runtime code is GPL-3.0-or-later.
+
+The optional import model is `omnivoice-encoder-fixed.onnx` from the same pinned revision. Its length is 654,406,661 bytes and its SHA-256 is `e6b492911cdec14af947bddc6723a866595641e5c240c7df76619ac22ee39ad0`. The browser verifies bounded chunks before use. The graph executor orders the two forward dependencies in this export and runs the existing weights with local WebGPU implementations of Ceil, Elu, and InstanceNormalization. One prepared Swedish sample produced the same 1,680 audio codes in native CPU ONNX Runtime and Chromium WebGPU.
 
 ## Checks
 

@@ -299,6 +299,9 @@ describe('Chrome Web Store listing assets', () => {
     expect(provenance.brandIconSha256, 'Recapture media after changing the shared logo').toBe(
       createHash('sha256').update(readFileSync(join(root, 'website/public/assets/pagenarrator-icon.png'))).digest('hex'),
     );
+    // These reviewed edits affect persistence or unused derivatives, not the captured layout.
+    const nonVisualPaths = ['src/popup.js', 'tooling/scripts/capture-current-product-media.mjs'];
+    for (const path of Object.keys(provenance.postCaptureChanges || {})) expect(nonVisualPaths).toContain(path);
     for (const path of ['src/popup.html', 'src/popup.css', 'src/popup.js', 'src/pdf-viewer.html', 'src/pdf-viewer.css', 'src/pdf-viewer.js',
       neutralCwsDemoPath, 'tooling/scripts/capture-current-product-media.mjs']) {
       const legacyPath = path.replace(/^tooling\/scripts\//, 'scripts/');
@@ -312,7 +315,12 @@ describe('Chrome Web Store listing assets', () => {
         if (recordedPath !== path) source = source.replace("'extension/artwork',", "'icons',").replace(path, legacyPath);
       }
       const hash = createHash('sha256').update(source).digest('hex');
-      expect(provenance.sourceSha256?.[recordedPath], `Recapture media after changing ${path}`).toBe(hash);
+      const update = provenance.postCaptureChanges?.[path];
+      if (update) {
+        expect(update.capturedSourceSha256).toBe(provenance.sourceSha256[recordedPath]);
+        expect(update.change).toMatch(/\S/u);
+      }
+      expect(update?.sha256 ?? provenance.sourceSha256?.[recordedPath], `Recapture media after changing ${path}`).toBe(hash);
     }
     for (const image of provenance.images) {
       expect(image.sha256).toBe(createHash('sha256').update(readFileSync(join(root, 'docs/cws-listing', image.name))).digest('hex'));

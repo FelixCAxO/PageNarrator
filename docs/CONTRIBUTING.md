@@ -6,7 +6,7 @@ Use Node.js 26.12.1 with npm 12.2.1. `.nvmrc` selects this tested Current releas
 
 - Read the callers and existing tests for the behavior you change.
 - Keep narration local. Preserve settings, saved positions, and reversible page highlights.
-- Keep Kokoro as the default. OmniVoice stays an explicit experimental choice.
+- On new installations, choose OmniVoice when the device supports WebGPU with fp16. Use Kokoro otherwise. Preserve saved engine choices and keep personal voice presets local.
 - Keep model and native-source pins current. See [engine builds](browser-engine.md#reproduction) and [pronunciation data](../engines/vendor/pronunciation/README.md).
 
 ## Checks
@@ -15,7 +15,7 @@ Run `npm test`, `npm run lint`, `npm run typecheck`, `npm run typecheck:boundari
 
 For browser tests, run `npx playwright install chromium` and `npm run test:models`, then `npm run verify:integration`. The full `npm run verify:release` also requires independent listening and physical-hardware evidence. See [verification status](release-readiness.md). Run performance measurements alone; simulated limits do not prove physical hardware support or listening quality.
 
-Run `npm run test:e2e:omnivoice` for the required packaged OmniVoice journeys. It verifies pinned model fixtures and enables the real engine explicitly; missing GPU support or skipped journeys fail this release check. The ordinary local browser suite keeps expensive model journeys opt-in.
+Run `npm run test:e2e:omnivoice` for the required packaged OmniVoice journeys. It verifies the pinned synthesis and voice encoder models, plays new built-in voices, and imports, previews, and narrates with a saved clone. Missing GPU support or skipped journeys fail this release check. The ordinary local browser suite keeps expensive model journeys opt-in.
 
 In PowerShell, use `npm.cmd` when forwarding test-runner flags after `--`.
 

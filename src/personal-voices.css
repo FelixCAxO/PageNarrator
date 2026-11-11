@@ -1,0 +1,42 @@
+body.personal-voices {
+  width: min(100%, 640px);
+  max-height: none;
+  margin-inline: auto;
+}
+
+.personal-voices fieldset {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  min-width: 0;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.personal-voices input[type="text"],
+.personal-voices textarea {
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+}
+
+.personal-voices .preset-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.personal-voices audio { max-width: 100%; }
+
+#recording-prompt {
+  color: var(--text);
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-size: 16px;
+  line-height: 1.5;
+}

@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "打开页面，点击 PageNarrator 图标，然后选择“朗读页面”。"
+  },
   "ui_3e8b2a3a": {
     "message": "正在加载文档…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "已取消。"
+  },
+  "ui_9d3f7d31": {
+    "message": "个人声音行动失败了。"
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice 需要 WebGPU 与 fp16 支持。"
+  },
+  "ui_34c2939b": {
+    "message": "正在清除背景噪声…"
+  },
+  "ui_cd4b50fc": {
+    "message": "正在下载降噪模型… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "已清理的片段可以播放或保存。"
+  },
+  "ui_24b6564c": {
+    "message": "降噪不可用。你可以保存原始片段。"
+  },
+  "ui_f035394f": {
+    "message": "片段可以播放或保存。"
+  },
+  "ui_611ed81e": {
+    "message": "正在录制…"
+  },
+  "ui_514244f6": {
+    "message": "无法使用麦克风录制。"
+  },
+  "ui_a8d5e97d": {
+    "message": "请允许访问麦克风以录制片段。"
+  },
+  "ui_7bcd5d33": {
+    "message": "未找到麦克风。"
+  },
+  "ui_f6233044": {
+    "message": "请选择音频文件或录制片段。"
+  },
+  "ui_b1cbd878": {
+    "message": "输入预设的名称和在录音中说话的单词。"
+  },
+  "ui_a81b3b51": {
+    "message": "编码语音样本..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "下载语音编码器... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "语音预设已保存。"
+  },
+  "ui_3c91213b": {
+    "message": "已选为朗读语音。"
+  },
+  "ui_1113ba39": {
+    "message": "正在准备语音试听…"
+  },
+  "ui_e0513158": {
+    "message": "语音试听已就绪。"
+  },
+  "ui_24e89fdd": {
+    "message": "语音预设已删除。"
   },
   "ui_c08b976a": {
     "message": "正在处理…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "需要处理"
+  },
+  "ui_4d1cf041": {
+    "message": "美式英语，女声"
+  },
+  "ui_faf95838": {
+    "message": "美式英语，男声"
+  },
+  "ui_f3768d40": {
+    "message": "英式英语，女声"
+  },
+  "ui_4139054c": {
+    "message": "请选择 Kokoro 的英语语音。Kokoro 不支持其他语言。"
   },
   "ui_c0c171d2": {
     "message": "无法完成此操作。"
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "在语音设置中创建个人语音预设。"
+  },
   "ui_b7e3509c": {
     "message": "跳过代码片段"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator 初始化失败。"
   },
-  "ui_4d1cf041": {
-    "message": "美式英语，女声"
-  },
-  "ui_faf95838": {
-    "message": "美式英语，男声"
-  },
-  "ui_f3768d40": {
-    "message": "英式英语，女声"
-  },
-  "ui_4139054c": {
-    "message": "请选择 Kokoro 的英语语音。Kokoro 不支持其他语言。"
-  },
   "ui_87d977c4": {
     "message": "PageNarrator 播放器"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "语音模型"
   },
-  "ui_38319e92": {
-    "message": "Kokoro（默认）"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice（实验性）"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "十种英语语音。首次设置约需下载 93 MB（CPU）或 326 MB（GPU）。每增加一种语音约需 0.5 MB。已保存的语音选择会保留。"
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "十种英语语音。其他语言在支持时会切换到 OmniVoice。首次设置约需下载 93 MB（CPU）或 326 MB（GPU）。每增加一种语音约需 0.5 MB。已保存的语音选择会保留。"
   },
   "ui_2c04fde6": {
     "message": "语音设置"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "耳语"
+  },
+  "ui_8156f492": {
+    "message": "个人语音预设"
+  },
+  "ui_a8cbb251": {
+    "message": "管理个人声音"
   },
   "ui_3d7af8ef": {
     "message": "播放速度"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "跳过代码片段"
   },
+  "ui_ce18c7cb": {
+    "message": "跳过 PDF 中的公式和表格"
+  },
   "ui_456ac053": {
     "message": "区域颜色"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "从页面打开 PageNarrator"
-  },
-  "ui_94a4b160": {
-    "message": "打开页面，点击 PageNarrator 图标，然后选择“朗读页面”。"
   },
   "ui_4be7c01e": {
     "message": "准备语音或开始朗读时，缺少的语音文件会从 Hugging Face 下载。 语音在此设备上生成。缓存文件可离线重复使用，除非被清除。"
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF 页面"
   },
+  "ui_328b6bff": {
+    "message": "语音样本和预设留在此设备上。"
+  },
+  "ui_fff029e4": {
+    "message": "创建个人声音"
+  },
+  "ui_12e7305d": {
+    "message": "请选择音频文件，或录制 3–10 秒清晰的语音。文件最大为 20 MB。首次使用时会下载约 654 MB 的编码器。"
+  },
+  "ui_a01f1ba6": {
+    "message": "录音中所说的语言"
+  },
+  "ui_1ade9af5": {
+    "message": "音频文件"
+  },
+  "ui_a4204cfb": {
+    "message": "请用平时的声音朗读这段文字。"
+  },
+  "ui_75637bc3": {
+    "message": "录制片段"
+  },
+  "ui_523daa03": {
+    "message": "清除背景噪声"
+  },
+  "ui_905bc62f": {
+    "message": "使用原始片段"
+  },
+  "ui_67b9602a": {
+    "message": "可选功能。使用 WebGPU 在此设备上运行，首次使用时下载约 493 MB。"
+  },
+  "ui_026775c1": {
+    "message": "预设名称"
+  },
+  "ui_706bbab1": {
+    "message": "录音中所说的"
+  },
+  "ui_b00f8855": {
+    "message": "保存语音预设"
+  },
+  "ui_80c87657": {
+    "message": "已保存的个人语音"
+  },
+  "ui_83b7d497": {
+    "message": "用于朗读"
+  },
+  "ui_71accaa9": {
+    "message": "试听语音"
+  },
+  "ui_c348abed": {
+    "message": "删除预设"
+  },
+  "ui_8313d4fa": {
+    "message": "停止录制"
+  },
+  "ui_35afca3b": {
+    "message": "取消"
+  },
   "ui_6b68e4c5": {
     "message": "实验性功能。包含 32 个语言条目，质量各异。需要支持 fp16 的 WebGPU，并下载约 1.35 GB 文件。可选择语音、变体或耳语。"
+  },
+  "ui_9e93d684": {
+    "message": "使用个人语音预设阅读. 语音样本和叙事留在此设备上. 需要 WebGPU 与 fp16。"
   },
   "ui_35a4186c": {
     "message": "警告：此语言的耳语可能会漏词。请对照原文检查朗读内容。"

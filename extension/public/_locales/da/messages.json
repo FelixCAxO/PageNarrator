@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Åbn siden, klik på PageNarrator-ikonet, og vælg »Læs siden op«."
+  },
   "ui_3e8b2a3a": {
     "message": "Indlæser dokument…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Annulleret."
+  },
+  "ui_9d3f7d31": {
+    "message": "Den personlige stemmeaktion mislykkedes."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice kræver WebGPU med fp16 support."
+  },
+  "ui_34c2939b": {
+    "message": "Fjerner baggrundsstøj…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Henter model til støjreduktion… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Det rensede klip kan afspilles eller gemmes."
+  },
+  "ui_24b6564c": {
+    "message": "Støjreduktion er ikke tilgængelig. Du kan gemme det oprindelige klip."
+  },
+  "ui_f035394f": {
+    "message": "Klippet kan afspilles eller gemmes."
+  },
+  "ui_611ed81e": {
+    "message": "Optager…"
+  },
+  "ui_514244f6": {
+    "message": "Mikrofonoptagelse er ikke tilgængelig."
+  },
+  "ui_a8d5e97d": {
+    "message": "Tillad adgang til mikrofonen for at optage et klip."
+  },
+  "ui_7bcd5d33": {
+    "message": "Der blev ikke fundet en mikrofon."
+  },
+  "ui_f6233044": {
+    "message": "Vælg en lydfil, eller optag et klip."
+  },
+  "ui_b1cbd878": {
+    "message": "Indtast et forudindstillet navn og de ord, der blev talt i optagelsen."
+  },
+  "ui_a81b3b51": {
+    "message": "Kodning af stemmeprøven ..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Download af stemmekoderen... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Stemmeforvalget er gemt."
+  },
+  "ui_3c91213b": {
+    "message": "Valgt til oplæsning."
+  },
+  "ui_1113ba39": {
+    "message": "Forbereder stemmeprøven…"
+  },
+  "ui_e0513158": {
+    "message": "Stemmeprøven er klar."
+  },
+  "ui_24e89fdd": {
+    "message": "Stemmeforvalget er slettet."
   },
   "ui_c08b976a": {
     "message": "Arbejder…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Kræver handling"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikansk engelsk, kvindestemme"
+  },
+  "ui_faf95838": {
+    "message": "Amerikansk engelsk, mandestemme"
+  },
+  "ui_f3768d40": {
+    "message": "Britisk engelsk, kvindestemme"
+  },
+  "ui_4139054c": {
+    "message": "Vælg en engelsk Kokoro-stemme. Kokoro understøtter ikke andre sprog."
   },
   "ui_c0c171d2": {
     "message": "Handlingen kunne ikke fuldføres."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Opret en personlig stemmeforudindstilling i Stemindstillinger."
+  },
   "ui_b7e3509c": {
     "message": "Spring kodestykker over"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator kunne ikke starte."
   },
-  "ui_4d1cf041": {
-    "message": "Amerikansk engelsk, kvindestemme"
-  },
-  "ui_faf95838": {
-    "message": "Amerikansk engelsk, mandestemme"
-  },
-  "ui_f3768d40": {
-    "message": "Britisk engelsk, kvindestemme"
-  },
-  "ui_4139054c": {
-    "message": "Vælg en engelsk Kokoro-stemme. Kokoro understøtter ikke andre sprog."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator-afspiller"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Stemmemodel"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (standard)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (eksperimentel)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Ti engelske stemmer. Første opsætning: ca. 93 MB til CPU eller 326 MB til GPU. En ekstra stemme kræver ca. 0,5 MB. Din gemte stemme bevares."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Ti engelske stemmer. Andre sprog skifter til OmniVoice, når det understøttes. Første opsætning: ca. 93 MB til CPU eller 326 MB til GPU. En ekstra stemme kræver ca. 0,5 MB. Din gemte stemme bevares."
   },
   "ui_2c04fde6": {
     "message": "Stemmeindstillinger"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Hvisken"
+  },
+  "ui_8156f492": {
+    "message": "Personligt stemmeforvalg"
+  },
+  "ui_a8cbb251": {
+    "message": "Styring af personlige stemmer"
   },
   "ui_3d7af8ef": {
     "message": "Afspilningshastighed"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Spring kodestykker over"
   },
+  "ui_ce18c7cb": {
+    "message": "Spring ligninger og tabeller i PDF-filer over"
+  },
   "ui_456ac053": {
     "message": "Læseområdets farve"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Åbn PageNarrator fra siden"
-  },
-  "ui_94a4b160": {
-    "message": "Åbn siden, klik på PageNarrator-ikonet, og vælg »Læs siden op«."
   },
   "ui_4be7c01e": {
     "message": "Manglende stemmefiler hentes fra Hugging Face, når du forbereder stemmen eller læser. Talen genereres på denne enhed. Cachelagrede filer kan genbruges offline, indtil de slettes."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF-sider"
   },
+  "ui_328b6bff": {
+    "message": "Stemmemønstre og forudindstillinger forbliver på denne enhed."
+  },
+  "ui_fff029e4": {
+    "message": "Skab en personlig stemme"
+  },
+  "ui_12e7305d": {
+    "message": "Vælg en lydfil, eller optag 3–10 sekunders tydelig tale. Filer må fylde op til 20 MB. Koderen henter ca. 654 MB ved første brug."
+  },
+  "ui_a01f1ba6": {
+    "message": "Sprog, der tales i optagelsen"
+  },
+  "ui_1ade9af5": {
+    "message": "Lydfil"
+  },
+  "ui_a4204cfb": {
+    "message": "Læs dette højt med din almindelige stemme."
+  },
+  "ui_75637bc3": {
+    "message": "Optag et klip"
+  },
+  "ui_523daa03": {
+    "message": "Fjern baggrundsstøj"
+  },
+  "ui_905bc62f": {
+    "message": "Brug det oprindelige klip"
+  },
+  "ui_67b9602a": {
+    "message": "Valgfrit. Kører på enheden med WebGPU og henter ca. 493 MB ved første brug."
+  },
+  "ui_026775c1": {
+    "message": "Navn på forvalg"
+  },
+  "ui_706bbab1": {
+    "message": "Hvad der står i optagelsen"
+  },
+  "ui_b00f8855": {
+    "message": "Gem stemmeforvalg"
+  },
+  "ui_80c87657": {
+    "message": "Gemte personlige stemmer"
+  },
+  "ui_83b7d497": {
+    "message": "Brug til oplæsning"
+  },
+  "ui_71accaa9": {
+    "message": "Lyt til stemmen"
+  },
+  "ui_c348abed": {
+    "message": "Slet forvalg"
+  },
+  "ui_8313d4fa": {
+    "message": "Stop optagelsen"
+  },
+  "ui_35afca3b": {
+    "message": "Annuller"
+  },
   "ui_6b68e4c5": {
     "message": "Eksperimentel. 32 sprogposter med varierende kvalitet. Kræver WebGPU med fp16 og ca. 1,35 GB download. Vælg stemme, variant eller hvisken."
+  },
+  "ui_9e93d684": {
+    "message": "Læs med en personlig stemmeforudindstilling. Stemmeprøver og fortælling forbliver på denne enhed. Kræver WebGPU med fp16."
   },
   "ui_35a4186c": {
     "message": "Advarsel: Hvisken kan udelade ord på dette sprog. Sammenlign oplæsningen med teksten."

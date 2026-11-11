@@ -317,6 +317,8 @@ fn main(@builtin(global_invocation_id) position: vec3<u32>) {
     case 109u: { result = clamp(bitcast<f32>(cfg[4u]) * x + bitcast<f32>(cfg[5u]), 0.0, 1.0); }
     case 110u: { result = sin(x); }
     case 111u: { result = cos(x); }
+    case 112u: { result = ceil(x); }
+    case 113u: { if (x < 0.0) { result = bitcast<f32>(cfg[4u]) * (exp(x) - 1.0); } }
     default: {}
   }
   dst[index] = result;

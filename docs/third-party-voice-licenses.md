@@ -1,12 +1,23 @@
 # Voice licenses
 
-PageNarrator 1.0.4 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
+PageNarrator 1.0.5 offers ten English voices from the Apache-2.0 [Kokoro-82M](https://huggingface.co/hexgrad/Kokoro-82M) model through the Apache-2.0 [ONNX community build](https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX). Missing model data downloads from Hugging Face on preparation or first use. Speech runs locally. Cached files work offline. Model weights stay out of the ZIP; runtime code and notices ship with it. Piper and browser/system voices are not offered.
 
 ## Experimental OmniVoice
 
-Reader settings expose an additional experimental OmniVoice engine, separately from the reviewed Kokoro catalog. The pinned model metadata for `MarkShark2/omnivoice-onnx-kv-b1-fp16` declares Apache-2.0. PageNarrator's GPL-3.0-or-later tokenizer, graph executor, main speech inference and audio decoder run the retained data in an original packaged worker. The browser bridge replaces the former vendored bridge; its mathematical reference is k2-fsa/OmniVoice's Apache-2.0 inference implementation, with attribution retained. The retired executable implementations are excluded from runtime and source packaging. Sources, revisions, and implementation choices are recorded in [PROVENANCE.md](../engines/vendor/omnivoice/PROVENANCE.md). VoiceStudio application code is not included. Remaining integration, quality and performance gates are recorded in the browser-engine documentation.
+| Component | License |
+| --- | --- |
+| PageNarrator's original code | [GPL-3.0-or-later](../LICENSE) |
+| Upstream OmniVoice source code and adapted reference material | [Apache-2.0](https://github.com/k2-fsa/OmniVoice/blob/master/LICENSE) |
+| OmniVoice pretrained weights | [CC BY-NC per k2-fsa's model card](https://huggingface.co/k2-fsa/OmniVoice#license) |
+| OmniVoice audio encoder and decoder | [Boson Higgs Audio 2 Community License](../extension/public/legal/Boson-Higgs-Audio-2-LICENSE.txt) and [Meta Llama 3 Community License](../extension/public/legal/Meta-Llama-3-LICENSE.txt) |
 
-The 640 OmniVoice presets contain 525 references encoded from publisher recordings, six references derived from recordings, and 109 generated references. The 531 recording-based entries retain attribution to LibriTTS-R (348), google/fleurs (173), SpiCE (9), or JVNV (1). These are preset counts, not counts of distinct people. LibriTTS-R, FLEURS and SpiCE data retain CC BY 4.0; JVNV data retain CC BY-SA 4.0. Source notices and full license texts ship with the extension: [LibriTTS-R](../extension/public/legal/LibriTTS-R-NOTICE.txt), [FLEURS](../extension/public/legal/FLEURS-NOTICE.txt), [SpiCE](../extension/public/legal/SpiCE-NOTICE.txt), [JVNV](../extension/public/legal/JVNV-NOTICE.txt), [CC BY 4.0](../extension/public/legal/CC-BY-4.0.txt), and [CC BY-SA 4.0](../extension/public/legal/CC-BY-SA-4.0.txt). The catalog retains reader and recording IDs, source audio and archive hashes, encoder hashes, preprocessing, and parent reference hashes for derived data. PageNarrator resamples to mono 24 kHz, pads codec boundaries where needed, and encodes the complete selected utterance. Recorded data keep their separate license from the model and application code.
+The weight terms apply to the ONNX conversion used for narration and voice cloning. Commercial use of the weights requires separate permission from the rights holders. [Model attribution and export revision](../engines/vendor/omnivoice/PROVENANCE.md#model-interface).
+
+### Speaker references
+
+The 831 references across 32 languages retain their dataset licenses and required attribution in the [packaged notices](../extension/public/legal/THIRD_PARTY_NOTICES.txt). PageNarrator does not attempt to identify speakers.
+
+OmniVoice's pretrained weights remain noncommercial. The codec terms require an expanded Boson license if the licensee and its affiliates exceeded 100,000 annual active users across their products or services in the preceding calendar year. The package includes the required codec licenses and credits. [Boson agreement](../extension/public/legal/Boson-Higgs-Audio-2-LICENSE.txt) · [Third-party notices](../extension/public/legal/THIRD_PARTY_NOTICES.txt).
 
 ## Runtime-ready catalog
 
@@ -21,7 +32,7 @@ These voices are upstream grade C+ or higher and have no per-voice CC BY entry i
 
 All other Kokoro voice IDs remain excluded from the selector because they are below the current quality floor, ungraded, non-English, or carry separate per-voice attribution requirements. Adding one requires a fresh source, license, and listening review.
 
-The public selected manifest must match `src/tts/voices/voice-registry.js`. The release ZIP includes `legal/Apache-2.0.txt`, `legal/GPL-3.0.txt`, and `legal/THIRD_PARTY_NOTICES.txt`, and `tests/voice/voice-license-readiness.test.js` enforces the Kokoro voice allowlist and attribution for recorded OmniVoice references.
+The public selected manifest must match `src/tts/voices/voice-registry.js`. The release ZIP includes `legal/Apache-2.0.txt`, `legal/GPL-3.0.txt`, and `legal/THIRD_PARTY_NOTICES.txt`. The voice license test checks the Kokoro voice allowlist, the recorded reference provenance, and the OmniVoice notices.
 
 ## Original browser speech implementation and retained data
 
@@ -29,6 +40,6 @@ The app's Kokoro registry loads PageNarrator's own packaged module worker, chara
 
 The original normalizer, contextual pronunciation decisions and bounded spelling rules execute PageNarrator code. [The pronunciation data manifest](../engines/vendor/pronunciation/README.md) records the pinned CMUdict US records and static UK IPA records, their exact source revisions, exclusions and licenses. Static eSpeak-generated lexical transcriptions in the UK source are retained data; eSpeak's executable rules, compiled dictionary programs, interpreter and WASM are removed. Exact eSpeak pronunciation parity, including UK variants and every out-of-vocabulary word, is not promised.
 
-PageNarrator's own code is GPL-3.0-or-later. CMUdict retains its permissive copyright notice. The UK `ipa-dict` records retain their GPL-3.0 license; they are not relicensed to GPL-3.0-or-later or Apache-2.0. This GPL version boundary also applies when conveying the combined distribution. Kokoro model weights, tokenizer vocabulary and voice styles retain Apache-2.0 and their original acknowledgements. Keep these individual notices with redistributed data.
+PageNarrator's own code is GPL-3.0-or-later. CMUdict retains its permissive copyright notice. Convey the GPL-covered work that incorporates the retained UK `ipa-dict` records under GPL version 3. Kokoro model weights, tokenizer vocabulary and voice styles retain Apache-2.0 and their original acknowledgements. Keep the individual third-party notices with redistributed data.
 
 Only immutable, size- and SHA-256-verified model/style bytes enter the persistent cache. The guarded `kokoro-exact-zero-phase-v2` correction creates a separate ephemeral graph with unchanged weights and records both hashes. It applies the [upstream negative-real/exact-zero-imaginary correction](https://github.com/hexgrad/kokoro/blob/93abff8795bfb00f78a14fa5d551198f445067ab/kokoro/custom_stft.py#L135-L139) and PageNarrator's canonical positive-zero phase at a coincident spectral origin. This prevents `atan(0/0)` contamination, preserves every nonzero path and is not full IEEE/Torch signed-zero parity. [Numerical policy and evidence](browser-engine.md#numerical-policy-and-preserved-failures) explains the runtime corrections. See [verification status](release-readiness.md) for results.

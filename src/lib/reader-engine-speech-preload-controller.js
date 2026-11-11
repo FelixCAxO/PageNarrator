@@ -22,6 +22,7 @@ export function createReaderEngineSpeechPreloadController({
   readRunTracker,
   getNowMs = () => Date.now(),
   getActiveTtsProfileConfig,
+  getSynthesisBackend = () => null,
   resolveSelectedVoice,
   trackActiveVoiceSynthesisPromise,
   trackActiveVoiceSynthesisSegments,
@@ -296,8 +297,10 @@ export function createReaderEngineSpeechPreloadController({
 
     const managedPreloadState = preloadState && typeof preloadState === 'object' ? preloadState : {};
     const profile = getActiveTtsProfileConfig();
-    // OmniVoice is serial; start its timeout when work can run, not behind several queued chunks.
-    const maxInFlight = selectedVoice.engine === 'omnivoice' ? 1 : getSpeechPreloadMaxInFlight({
+    // Both workers serialize synthesis here. Keep lookahead in the reader so each
+    // request gets its full synthesis budget when it reaches the worker.
+    const serialSynthesis = selectedVoice.engine === 'omnivoice' || getSynthesisBackend() === 'wasm';
+    const maxInFlight = serialSynthesis ? 1 : getSpeechPreloadMaxInFlight({
       preloadAhead: profile.preloadAhead,
       minimumAhead,
       progressiveSegments: profile.progressiveSegments,

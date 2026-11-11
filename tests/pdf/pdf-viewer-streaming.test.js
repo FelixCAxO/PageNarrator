@@ -82,7 +82,7 @@ describe('PDF viewer streaming article bridge', () => {
     await iterator.return();
 
     expect(messages).toEqual([
-      [77, { type: 'getPdfStreamMetadata', startPage: 5 }],
+      [77, { type: 'getPdfStreamMetadata', sourceUrl: 'https://example.test/book.pdf', startPage: 5 }],
       [77, {
         type: 'getPdfChunk',
         streamId: 'test-stream',

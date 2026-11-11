@@ -67,6 +67,17 @@ export function getDetectedLanguageSuggestion(detected, engine = 'kokoro') {
   return { code: language.code, label: language.label, engine: supported ? engine : 'omnivoice', supported };
 }
 
+/** Engine and language that match a reliably detected page language, or null to keep the current voice.
+ * autoEngine marks OmniVoice chosen by detection rather than by the user. */
+export function chooseVoiceForDetectedLanguage(detected, { engine = 'kokoro', autoEngine = false } = {}) {
+  const suggestion = getDetectedLanguageSuggestion(detected, engine);
+  if (!suggestion) return null;
+  // Kokoro is the lighter English engine: go back to it when detection, not the user, picked OmniVoice.
+  if (suggestion.code === 'en' && engine === 'omnivoice' && autoEngine) return { engine: 'kokoro', code: 'en', autoEngine: false };
+  if (!suggestion.supported) return { engine: 'omnivoice', code: suggestion.code, autoEngine: true };
+  return { engine, code: suggestion.code, autoEngine: engine === 'omnivoice' && autoEngine };
+}
+
 export function getUnsupportedLanguageMessage(code) {
   const language = getOmniVoiceLanguage(code);
   const label = language ? languageName(language.code, language.label) : '';

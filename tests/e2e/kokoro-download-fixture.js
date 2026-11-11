@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import path from 'node:path';
 import { openExtensionPage } from './extension-fixture.js';
 import browserModels from '../fixtures/browser-speech-models.json' with { type: 'json' };
+import { OMNIVOICE_ENCODER_DATA } from '../../src/tts/omnivoice/reference-encoder.js';
 
 const MODEL_ID = 'onnx-community/Kokoro-82M-v1.0-ONNX';
 const MODEL_REVISION = '1939ad2a8e416c0acfeecc08a694d14ef25f2231';
@@ -49,11 +50,13 @@ export async function routeKokoroModelFiles(context, { live = false } = {}) {
   return routeModelFiles(context, { live, fixtureRoot, prefix: KOKORO_DOWNLOAD_PREFIX });
 }
 
-export async function routeOmniVoiceModelFiles(context) {
+export async function routeOmniVoiceModelFiles(context, { includeEncoder = false } = {}) {
   const fixtureRoot = path.resolve(process.env.PN_BROWSER_MODEL_DIR || '.cache/engine-models', browserModels.modelId);
-  for (const file of browserModels.files) {
+  const files = includeEncoder ? [...browserModels.files, OMNIVOICE_ENCODER_DATA] : browserModels.files;
+  const prepare = includeEncoder ? 'npm run test:e2e:omnivoice' : 'node tooling/scripts/download-browser-models.mjs --speech';
+  for (const file of files) {
     const asset = path.join(fixtureRoot, file.path), hash = createHash('sha256');
-    if (!existsSync(asset) || statSync(asset).size !== file.bytes) throw new Error('OmniVoice fixtures are missing. Run node tooling/scripts/download-browser-models.mjs --speech.');
+    if (!existsSync(asset) || statSync(asset).size !== file.bytes) throw new Error(`OmniVoice fixture missing or incomplete: ${file.path}. Run ${prepare}.`);
     for await (const chunk of createReadStream(asset)) hash.update(chunk);
     if (hash.digest('hex') !== file.sha256) throw new Error(`OmniVoice fixture hash differs: ${file.path}`);
   }

@@ -3,8 +3,8 @@ import { readFile } from 'node:fs/promises';
 import { createServer } from 'node:http';
 import path from 'node:path';
 import {
-  getExtensionId,
   launchExtensionContext,
+  navigatePdfViewer,
   seedFlowTestFlags,
   startReadFromToolbarPopup,
 } from './extension-fixture.js';
@@ -20,11 +20,10 @@ async function createPdfDataUrl(fileName) {
 test('loads the built extension PDF viewer on deterministic PDF fixtures', async () => {
   const { context, cleanup } = await launchExtensionContext();
   try {
-    const extensionId = await getExtensionId(context);
     const page = await context.newPage();
     const pdfUrl = await createPdfDataUrl('single-column.pdf');
 
-    await page.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(pdfUrl)}`);
+    await navigatePdfViewer(page, pdfUrl);
 
     await expect(page.locator('#pdf-status')).toContainText('1 page loaded', { timeout: 15_000 });
     await expect(page.locator('[data-pagenarrator-id="pdf-page-1"] .textLayer')).toContainText(

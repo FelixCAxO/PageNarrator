@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { requestViewerLoad } from './pdf-viewer-messages.fixtures.js';
 
 function installViewerDom() {
   const dom = new JSDOM(`
@@ -49,16 +50,18 @@ function installViewerDom() {
 }
 
 function installChromeRuntime() {
+  const listeners = [];
   globalThis.chrome = {
     runtime: {
       id: 'test',
       getURL: (path) => `chrome-extension://test/${path}`,
       getManifest: () => ({ background: { service_worker: 'service-worker-loader.js' } }),
       onMessage: {
-        addListener() {},
+        addListener: (listener) => listeners.push(listener),
       },
     },
   };
+  return listeners;
 }
 
 function createFakePdfDocument(pageCount = 3) {
@@ -138,7 +141,7 @@ describe('PDF viewer page indicator', () => {
   it('preserves a focused page edit while scrolling updates the current page', async () => {
     vi.resetModules();
     const dom = installViewerDom();
-    installChromeRuntime();
+    const listeners = installChromeRuntime();
     const observedPages = new Map();
     let observerCallback = null;
 
@@ -164,6 +167,7 @@ describe('PDF viewer page indicator', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(dom.window.document.querySelector('[data-page-number="3"]')).toBeTruthy();
     });
@@ -229,6 +233,7 @@ describe('PDF viewer page indicator', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(observedPages.get(3)).toBeTruthy();
     });

@@ -32,6 +32,7 @@ export async function probeWebGpuBackend({ navigator = globalThis.navigator } = 
 
 export function createWebGpuRequestAdapterOptions(navigator = globalThis.navigator) {
   const platform = String(navigator?.userAgentData?.platform || navigator?.platform || '');
+  // On Windows, Chromium binds WebGPU to the browser GPU process's adapter.
   return /^win/i.test(platform) ? undefined : { powerPreference: 'high-performance' };
 }
 

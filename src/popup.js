@@ -27,8 +27,9 @@ import { getPopupRecoveryMessage } from './lib/ui-error-messages.js';
 import { DEFAULT_TITLE as ENGINE_PLACEHOLDER_TITLE, getSetupView } from './lib/reader-engine-view.js';
 import { installTrustedUiEventBoundary } from './lib/trusted-ui-events.js';
 import { isTrustedExtensionPage } from './lib/extension-message-security.js';
-import { normalizeOmniVoiceSettings, getOmniVoiceVariationOrder, VOICE_ENGINE_HELP, isOmniVoiceWhisperAvailable, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './lib/omnivoice-settings.js';
+import { isOmniVoiceProfile, normalizeOmniVoiceSettings, getOmniVoicePickerState, renderOmniVoicePicker, readOmniVoicePicker, VOICE_ENGINE_HELP, hasOmniVoiceWhisperWordLossRisk, OMNIVOICE_WHISPER_WARNING } from './lib/omnivoice-settings.js';
 import { getOmniVoiceLanguageOptions } from './tts/omnivoice/languages.js';
+import { listPersonalVoiceReferences } from './platform/storage/personal-voice-store.js';
 
 const logger = createLogger('popup');
 const suppressError = createSuppressedErrorHandler(logger, 'Best-effort popup operation failed.');
@@ -49,14 +50,17 @@ export function getPopupElements(doc = globalThis.document) {
     omniVoiceGender: byId('popup-omnivoice-gender'),
     omniVoiceVariation: byId('popup-omnivoice-variation'),
     omniVoiceVariationOut: byId('popup-omnivoice-variation-out'), omniVoiceWhisper: byId('popup-omnivoice-whisper'),
+    personalVoiceSettings: byId('popup-personal-voice-settings'), personalVoice: byId('popup-personal-voice'),
     speed: byId('popup-speed'), speedOut: byId('popup-speed-out'),
     sectionPause: byId('popup-section-pause'), sectionPauseOut: byId('popup-section-pause-out'),
     performanceProfile: byId('popup-performance-profile'), backendPreference: byId('popup-backend-preference'),
     idleRelease: byId('popup-idle-release'),
-    skipCode: byId('popup-skip-code'), areaColor: byId('popup-area-color'), wordColor: byId('popup-word-color'),
+    skipCode: byId('popup-skip-code'), skipPdfEquationsAndTables: byId('popup-skip-pdf-equations-and-tables'),
+    areaColor: byId('popup-area-color'), wordColor: byId('popup-word-color'),
     areaOpacity: byId('popup-area-opacity'), areaOpacityOut: byId('popup-area-opacity-out'),
     wordOpacity: byId('popup-word-opacity'), wordOpacityOut: byId('popup-word-opacity-out'),
     hardwareStatus: byId('popup-hardware-status'),
+    windowsGpuHelp: byId('popup-windows-gpu-help'),
     transcriptCard: byId('popup-transcript-card'), transcriptCount: byId('popup-transcript-count'), transcript: byId('popup-transcript'),
     queueCard: byId('popup-queue-card'), queueCount: byId('popup-queue-count'), queueSearch: byId('popup-queue-search'),
     queueFirst: byId('popup-queue-first'), queueJump: byId('popup-queue-jump'), queueGo: byId('popup-queue-go'),
@@ -80,25 +84,15 @@ export function createPopupApp({
 
   const getSpeed = () => clampPlaybackSpeed(els.speed?.value);
   const getPause = () => clampSectionPauseSeconds(els.sectionPause?.value);
-  const isOmniVoice = () => els.ttsEngine?.value === 'omnivoice';
-  function getOmniVoiceSettings() {
-    const language = els.language?.value;
-    const gender = els.omniVoiceGender?.value;
-    const order = getOmniVoiceVariationOrder(language, gender);
-    return normalizeOmniVoiceSettings({ gender,
-      variation: order[Number(els.omniVoiceVariation?.value) - 1], whisper: els.omniVoiceWhisper?.checked }, language);
-  }
+  const isOmniVoice = () => isOmniVoiceProfile(els.ttsEngine?.value);
+  const isCloning = () => els.ttsEngine?.value === 'omnivoice-clone';
+  // Holds every language's voice pick; the controls show only the selected language's.
+  let omniVoiceSettings = normalizeOmniVoiceSettings();
+  const getOmniVoiceSettings = () => omniVoiceSettings;
 
   function renderOmniVoiceSettings(value) {
-    const settings = normalizeOmniVoiceSettings(value, els.language?.value);
-    const rank = getOmniVoiceVariationOrder(els.language?.value, settings.gender).indexOf(settings.variation) + 1;
-    if (els.omniVoiceGender) els.omniVoiceGender.value = settings.gender;
-    if (els.omniVoiceVariation) els.omniVoiceVariation.value = String(rank);
-    if (els.omniVoiceWhisper) {
-      els.omniVoiceWhisper.checked = settings.whisper;
-      els.omniVoiceWhisper.disabled = !isOmniVoiceWhisperAvailable(els.language?.value);
-    }
-    if (els.omniVoiceVariationOut) els.omniVoiceVariationOut.textContent = `${rank} / 10`;
+    omniVoiceSettings = normalizeOmniVoiceSettings(value, els.language?.value);
+    renderOmniVoicePicker(els, getOmniVoicePickerState(omniVoiceSettings, els.language?.value), els.language?.value);
   }
 
   function showError(error) {
@@ -136,14 +130,16 @@ export function createPopupApp({
 
   function renderSettingsSummary() {
     if (!els.settingsSummary) return;
-    const name = isOmniVoice() ? 'OmniVoice' : String(selectedVoice()?.label || '').split(' - ')[0];
-    if (els.omniVoiceSettings) els.omniVoiceSettings.hidden = !isOmniVoice();
+    const profile = els.ttsEngine?.value || 'kokoro';
+    const name = isCloning() ? els.personalVoice?.selectedOptions[0]?.textContent : isOmniVoice() ? 'OmniVoice' : String(selectedVoice()?.label || '').split(' - ')[0];
+    if (els.omniVoiceSettings) els.omniVoiceSettings.hidden = profile !== 'omnivoice';
+    if (els.personalVoiceSettings) els.personalVoiceSettings.hidden = !isCloning();
     if (els.voice?.closest('label')) els.voice.closest('label').hidden = isOmniVoice();
     if (els.language?.closest('label')) els.language.closest('label').hidden = !isOmniVoice();
     if (els.backendPreference?.closest('label')) els.backendPreference.closest('label').hidden = isOmniVoice();
     if (els.performanceProfile?.closest('label')) els.performanceProfile.closest('label').hidden = isOmniVoice();
-    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[isOmniVoice() ? 'omnivoice' : 'kokoro']);
-    if (isOmniVoice() && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(els.language?.value)) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
+    if (els.voiceEngineHelp) els.voiceEngineHelp.textContent = t(VOICE_ENGINE_HELP[profile]);
+    if (profile === 'omnivoice' && els.voiceEngineHelp && hasOmniVoiceWhisperWordLossRisk(els.language?.value)) els.voiceEngineHelp.textContent += ' ' + t(OMNIVOICE_WHISPER_WARNING);
     renderOmniVoiceSettings(getOmniVoiceSettings());
     els.settingsSummary.textContent = `${name ? t('$1 voice', [name]) : t('Voice')} · ${getSpeed().toFixed(2)}x`;
     if (els.speedOut) els.speedOut.textContent = `${getSpeed().toFixed(2)}x`;
@@ -326,6 +322,8 @@ export function createPopupApp({
   // follow-up that reads the controls when it runs.
   let settingsSaveInFlight = null;
   let settingsSaveQueued = false;
+  let voiceSelectionDirty = false;
+  let voiceSelectionSaving = false;
 
   function saveSettings() {
     renderSettingsSummary();
@@ -343,24 +341,43 @@ export function createPopupApp({
     return settingsSaveInFlight;
   }
 
+  let engineChosenByUser = false;
+
   async function persistSettingsFromControls() {
-    const voice = selectedVoice();
-    await savePlaybackSettings({
-      ttsEngine: isOmniVoice() ? 'omnivoice' : 'kokoro',
-      omniVoice: getOmniVoiceSettings(),
-      language: els.language.value,
-      ...(!isOmniVoice() ? { voice: voice?.id || null, voicesByLanguage: voice?.id ? { [els.language.value]: voice.id } : {} } : {}),
-      speed: getSpeed(),
-      sectionPauseSeconds: getPause(),
-      ttsPerformanceProfile: els.performanceProfile?.value,
-      ttsBackendPreference: els.backendPreference?.value,
-      idleReleaseEnabled: els.idleRelease?.checked,
-      skipCodeSnippets: els.skipCode?.checked,
-      highlight: {
-        area: { color: els.areaColor?.value, opacity: Number(els.areaOpacity?.value) },
-        word: { color: els.wordColor?.value, opacity: Number(els.wordOpacity?.value) },
-      },
-    }, { storage: chromeApi?.storage?.local });
+    const includeSelection = voiceSelectionDirty;
+    voiceSelectionDirty = false;
+    voiceSelectionSaving = includeSelection;
+    const voice = includeSelection ? selectedVoice() : null;
+    const clearEngineAuto = includeSelection && engineChosenByUser;
+    if (clearEngineAuto) engineChosenByUser = false;
+    try {
+      await savePlaybackSettings({
+        ...(clearEngineAuto ? { ttsEngineAuto: false } : {}),
+        // Unrelated controls must not overwrite a voice chosen by page detection while this save waits for storage.
+        ...(includeSelection ? {
+          ttsEngine: els.ttsEngine?.value || 'kokoro',
+          ...(isCloning() && els.personalVoice?.value ? { personalVoiceId: els.personalVoice.value } : {}),
+          omniVoice: getOmniVoiceSettings(),
+          language: els.language.value,
+          ...(!isOmniVoice() ? { voice: voice?.id || null, voicesByLanguage: voice?.id ? { [els.language.value]: voice.id } : {} } : {}),
+        } : {}),
+        speed: getSpeed(),
+        sectionPauseSeconds: getPause(),
+        ttsPerformanceProfile: els.performanceProfile?.value,
+        ttsBackendPreference: els.backendPreference?.value,
+        idleReleaseEnabled: els.idleRelease?.checked,
+        skipCodeSnippets: els.skipCode?.checked,
+        ...(els.skipPdfEquationsAndTables ? { skipPdfEquationsAndTables: els.skipPdfEquationsAndTables.checked } : {}),
+        highlight: {
+          area: { color: els.areaColor?.value, opacity: Number(els.areaOpacity?.value) },
+          word: { color: els.wordColor?.value, opacity: Number(els.wordOpacity?.value) },
+        },
+      }, { storage: chromeApi?.storage?.local });
+    } catch (error) {
+      voiceSelectionDirty ||= includeSelection;
+      engineChosenByUser ||= clearEngineAuto;
+      throw error;
+    } finally { voiceSelectionSaving = false; }
   }
 
   async function getActiveTab() {
@@ -369,12 +386,14 @@ export function createPopupApp({
     const queryPromise = Promise.resolve(chromeApi?.tabs?.query?.({ active: true, currentWindow: true })).catch(() => []);
     const [currentTab, stored, tabs] = await Promise.all([currentTabPromise, storedPromise, queryPromise]);
     const target = getReadableTabTargetFromStorageValue(stored?.[STORAGE_KEYS.READABLE_TAB_TARGET]);
+    const tab = tabs?.[0];
+    const tabUrl = tab?.url || tab?.pendingUrl || '';
+    if (tabUrl.split(/[?#]/u, 1)[0] === chromeApi?.runtime?.getURL?.('src/pdf-viewer.html')) return tab;
     if (/\/src\/popup\.html(?:[?#].*)?$/i.test(String(currentTab?.url || '')) && target?.id) return target;
     if (currentTab?.openerTabId) {
       if (target?.id === currentTab.openerTabId) return target;
     }
-    const tab = tabs?.[0];
-    if (String(tab?.url || '').startsWith('chrome-extension://') && target?.id) return target;
+    if (tabUrl.startsWith('chrome-extension://') && target?.id) return target;
     return tab || null;
   }
 
@@ -436,7 +455,7 @@ export function createPopupApp({
   }
 
   function languageOptions(selected) {
-    const languages = isOmniVoice() ? getOmniVoiceLanguageOptions(selected) : getLanguageOptions();
+    const languages = isOmniVoice() ? getOmniVoiceLanguageOptions(isCloning() ? '' : selected) : getLanguageOptions();
     return languages.length ? languages : [{ code: 'en', label: 'English' }];
   }
 
@@ -463,6 +482,16 @@ export function createPopupApp({
     renderSettingsSummary();
   }
 
+  async function populatePersonalVoices(selected) {
+    if (!els.personalVoice || !isCloning()) return;
+    const references = await listPersonalVoiceReferences(chromeApi?.storage?.local).catch(() => []);
+    const OptionConstructor = win?.Option || Option;
+    els.personalVoice.replaceChildren(...references.map(reference => new OptionConstructor(reference.name, reference.id)));
+    els.personalVoice.value = references.some(reference => reference.id === selected) ? selected : references[0]?.id || '';
+    els.personalVoice.disabled = !els.personalVoice.value;
+    renderSettingsSummary();
+  }
+
   async function prepareVoice() {
     setPending(els.setupStart, t('Preparing…'));
     try {
@@ -483,6 +512,10 @@ export function createPopupApp({
   }
 
   async function init() {
+    if (els.windowsGpuHelp) {
+      const platform = win?.navigator?.userAgentData?.platform || win?.navigator?.platform || '';
+      els.windowsGpuHelp.hidden = !/^win/i.test(platform);
+    }
     chromeApi?.runtime?.onMessage?.addListener?.((message, sender) => {
       if (!isTrustedExtensionPage(sender, chromeApi?.runtime, 'src/reader-engine.html')) return false;
       if (message?.type === MESSAGE_TYPES.READER_STATE_CHANGED) {
@@ -537,6 +570,7 @@ export function createPopupApp({
     renderOmniVoiceSettings(settings.omniVoice);
     const initialVoice = settings.voicesByLanguage?.[settings.language] || settings.voice;
     populateVoices(initialVoice);
+    await populatePersonalVoices(settings.personalVoiceId);
     if (els.speed) {
       els.speed.max = String(getMaxPlaybackSpeed());
       els.speed.value = String(settings.speed);
@@ -546,28 +580,62 @@ export function createPopupApp({
     if (els.backendPreference) els.backendPreference.value = settings.ttsBackendPreference;
     if (els.idleRelease) els.idleRelease.checked = settings.idleReleaseEnabled;
     if (els.skipCode) els.skipCode.checked = settings.skipCodeSnippets;
+    if (els.skipPdfEquationsAndTables) els.skipPdfEquationsAndTables.checked = settings.skipPdfEquationsAndTables;
     if (els.areaColor) els.areaColor.value = settings.highlight.area.color;
     if (els.areaOpacity) els.areaOpacity.value = String(settings.highlight.area.opacity);
     if (els.wordColor) els.wordColor.value = settings.highlight.word.color;
     if (els.wordOpacity) els.wordOpacity.value = String(settings.highlight.word.opacity);
     renderSettingsSummary();
 
+    // A read can switch engine or language to match the page; stale controls would switch it back on the next save.
+    chromeApi?.storage?.onChanged?.addListener?.((changes, areaName) => {
+      const next = changes?.[STORAGE_KEYS.PLAYBACK_SETTINGS]?.newValue;
+      const previous = changes?.[STORAGE_KEYS.PLAYBACK_SETTINGS]?.oldValue || {};
+      if (areaName !== 'local' || !els.ttsEngine || !els.language) return;
+      const selectionChanged = next && !voiceSelectionDirty && !voiceSelectionSaving
+        && (next.ttsEngine !== previous.ttsEngine || next.language !== previous.language || next.personalVoiceId !== previous.personalVoiceId)
+        && (next.ttsEngine !== els.ttsEngine.value || next.language !== els.language.value || (isCloning() && next.personalVoiceId !== els.personalVoice?.value));
+      if (selectionChanged) {
+        els.ttsEngine.value = isOmniVoiceProfile(next.ttsEngine) ? next.ttsEngine : 'kokoro';
+        populateLanguages(next.language);
+        renderOmniVoiceSettings(next.omniVoice);
+        populateVoices(next.voicesByLanguage?.[els.language.value] || next.voice);
+      }
+      if (selectionChanged || changes?.[STORAGE_KEYS.OMNIVOICE_PERSONAL_REFERENCES]) {
+        void populatePersonalVoices(selectionChanged ? next.personalVoiceId : els.personalVoice?.value);
+      }
+    });
+
     els.ttsEngine?.addEventListener?.('change', async () => {
+      voiceSelectionDirty = true;
+      // The user picked this engine, so detection must not switch it back to Kokoro.
+      engineChosenByUser = true;
       if (els.settings) els.settings.open = true;
       populateLanguages(els.language?.value);
       renderSettingsSummary();
       const currentSettings = await getPlaybackSettings({ storage: chromeApi?.storage?.local }).catch(() => null);
       populateVoices(currentSettings?.voicesByLanguage?.en || currentSettings?.voice);
+      await populatePersonalVoices(currentSettings?.personalVoiceId);
       void saveSettings().catch(suppressError);
     });
     els.language?.addEventListener?.('change', async () => {
+      voiceSelectionDirty = true;
       const currentSettings = await getPlaybackSettings({ storage: chromeApi?.storage?.local }).catch(() => null);
       const storedVoice = currentSettings?.voicesByLanguage?.[els.language.value] || currentSettings?.voice;
       populateVoices(storedVoice);
       void saveSettings().catch(suppressError);
     });
-    els.voice?.addEventListener?.('change', () => { void saveSettings().catch(suppressError); });
-    for (const input of [els.omniVoiceGender, els.omniVoiceVariation, els.omniVoiceWhisper, els.speed, els.sectionPause, els.performanceProfile, els.backendPreference, els.idleRelease, els.skipCode, els.areaColor, els.areaOpacity, els.wordColor, els.wordOpacity]) {
+    for (const input of [els.voice, els.personalVoice]) {
+      input?.addEventListener?.('change', () => { voiceSelectionDirty = true; void saveSettings().catch(suppressError); });
+    }
+    // Registered before the save listeners below, so they save the new pick.
+    for (const input of [els.omniVoiceGender, els.omniVoiceVariation, els.omniVoiceWhisper]) {
+      input?.addEventListener?.('input', () => {
+        voiceSelectionDirty = true;
+        renderOmniVoiceSettings(readOmniVoicePicker(els, omniVoiceSettings, els.language?.value));
+      });
+    }
+    for (const input of [els.omniVoiceGender, els.omniVoiceVariation, els.omniVoiceWhisper, els.speed, els.sectionPause, els.performanceProfile, els.backendPreference, els.idleRelease, els.skipCode, els.skipPdfEquationsAndTables, els.areaColor, els.areaOpacity, els.wordColor, els.wordOpacity]) {
       input?.addEventListener?.('input', () => void saveSettings().catch(suppressError));
     }
     els.start?.addEventListener?.('click', () => startRead({ type: READER_ACTION_TYPES.TOGGLE_PLAYBACK }, els.start));

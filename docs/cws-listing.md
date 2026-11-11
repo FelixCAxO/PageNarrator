@@ -8,14 +8,14 @@ The dashboard has no summary field: it shows the packaged `manifest.json` descri
 
 ## Full description
 
-**Suggested GPU setup: a dedicated GPU with 8 GB+ VRAM (NVIDIA RTX 20 series or newer, or a recent AMD Radeon with WebGPU support) and 8 GB+ system RAM.**
+**A dedicated GPU is recommended for multilingual voices and voice cloning.** These features require WebGPU with fp16 support. Compatible integrated GPUs may work, but performance has not been verified. The suggested 8 GB+ VRAM and 8 GB+ system RAM setup is provisional, not a tested minimum.
 
 For CPU-only Kokoro, aim for a modern 6-core CPU or better and 8 GB+ system RAM. Expect longer startup times and possible pauses between sections. These are suggested starting points, not verified minimums or guarantees of smooth playback.
 
 PageNarrator is a free reader for Google Chrome™. Read webpages, selected text, and PDFs aloud on your device. No account or usage quota.
 
 - Ten English Kokoro voices.
-- Experimental multilingual OmniVoice, with voice variations and whisper mode.
+- 831 OmniVoice voices in 32 languages, with optional whisper. Speech runs on your device.
 - Highlights, transcript navigation, and saved reading position.
 - Playback from 0.5× to 3×, reading cleanup, and section pauses.
 - Scanned PDFs use local English OCR. Accuracy depends on scan quality and layout.
@@ -23,6 +23,8 @@ PageNarrator is a free reader for Google Chrome™. Read webpages, selected text
 Use the toolbar player for setup and playback. Closing it keeps speech running. Access restrictions and paywalls are not bypassed.
 
 Missing voice files download from Hugging Face and its delivery hosts. They receive your IP address and requested file paths, not narration text. OmniVoice's separate download is about 1.35 GB. Cached files work offline for the same voice and processing mode, including after a restart. Changing either, clearing storage, or browser eviction may require another download.
+
+OmniVoice uses k2-fsa's pretrained weights under CC BY-NC (Creative Commons Attribution-NonCommercial). [Model terms](https://huggingface.co/k2-fsa/OmniVoice#license).
 
 PageNarrator does not receive reading content, URLs, or browsing history for narration. Resume saves page and PDF URLs, titles, positions, and a short text excerpt locally. Online PDFs are fetched from their document host.
 

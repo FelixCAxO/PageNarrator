@@ -1,0 +1,21 @@
+NST Swedish recorded references
+
+Source: https://huggingface.co/datasets/KTH/nst
+Source revision: d3c2c6283b824266b4a6fac10b7b9aae3bad4293
+Original distribution: Språkbanken, National Library of Norway
+https://www.nb.no/sprakbanken/ressurskatalog/en/oai-nb-no-sbr-56/ (licence: CC Zero)
+License: CC0 1.0 Universal (public domain dedication).
+https://creativecommons.org/publicdomain/zero/1.0/legalcode
+Attribution (not required by CC0): NST Swedish ASR Database, Nordic Language
+Technology, distributed by Språkbanken at the National Library of Norway.
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Source metadata identifies the dataset revision, shard,
+row, speaker ID, source filename, audio hash, encoder hash and preprocessing.
+
+All recorded references from all sources were cleaned with NVIDIA NemotronLabs
+RE-USE speech enhancement (https://huggingface.co/nvidia/NVIDIA-NemotronLabs-RE-USE,
+OpenMDW-1.1) and trimmed of leading and trailing silence before encoding; each
+reference records the model revision, the input and output audio hashes, and the trim. The enhancement adds no license terms to the
+reference data, which keep their source license.

@@ -124,6 +124,15 @@ it('records the local 1.0.3 preparation without granting public release waivers 
   }
 });
 
+it('waives only the two human gates for v1.0.5, without an accepted numerical limitation', () => {
+  for (const gateId of ['physical-hardware', 'human-listening-reviews']) {
+    expect(releaseGateWaiver(gateId, '1.0.5')).toMatchObject({ version: '1.0.5', authorizedBy: 'user', authorizedOn: '2026-11-10', verification: 'not-performed' });
+    expect(releaseGateWaiver(gateId, '1.0.6')).toBeNull();
+  }
+  expect(releaseAcceptedLimitation('kokoro-duration-pcm-reference-parity', '1.0.5')).toBeNull();
+  for (const id of ['software-functional', 'pdf-quality', 'operator-bounds']) expect(releaseGateWaiver(id, '1.0.5')).toBeNull();
+});
+
 it('stops release verification when the required packaged OmniVoice journeys fail', () => {
   const executed = [];
   const status = runGateCommands(verificationSteps('release', gates.release, '1.0.4'), {

@@ -4,10 +4,11 @@ import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import kokoroModels from '../../tests/fixtures/kokoro-models.json' with { type: 'json' };
 import omniVoiceModels from '../../tests/fixtures/browser-speech-models.json' with { type: 'json' };
+import { OMNIVOICE_ENCODER_DATA } from '../../src/tts/omnivoice/reference-encoder.js';
 import { assertReleasePackage } from './assert-release-package.mjs';
 import { downloadTestModels } from './download-test-models.mjs';
 
-const journeys = ['omnivoice-read.e2e.js', 'omnivoice-settings.e2e.js', 'omnivoice-continuity.e2e.js'];
+const journeys = ['omnivoice-read.e2e.js', 'omnivoice-settings.e2e.js', 'omnivoice-continuity.e2e.js', 'omnivoice-cloning.e2e.js'];
 
 function journeyRoster(report) {
   if (report.errors?.length) throw new Error('OmniVoice browser run reported errors.');
@@ -56,7 +57,8 @@ export async function runOmniVoiceReleaseTests({
 } = {}) {
   await assertPackage(resolve(root, env.PN_E2E_EXTENSION_DIR || 'dist'));
   await prepare({ fixtures: kokoroModels, root: resolve(root, env.PN_KOKORO_FIXTURE_DIR || '.cache/kokoro') });
-  await prepare({ fixtures: omniVoiceModels, root: resolve(root, env.PN_BROWSER_MODEL_DIR || '.cache/engine-models') });
+  await prepare({ fixtures: { ...omniVoiceModels, files: [...omniVoiceModels.files, OMNIVOICE_ENCODER_DATA] },
+    root: resolve(root, env.PN_BROWSER_MODEL_DIR || '.cache/engine-models') });
   const reportPath = join(root, 'artifacts/release-omnivoice/results.json');
   // Keep discovery outside Playwright's output directory, which it clears before execution.
   const rosterPath = join(root, 'artifacts/release-omnivoice-roster.json');
@@ -67,7 +69,7 @@ export async function runOmniVoiceReleaseTests({
     '--project=extension', '--workers=1', '--retries=0', '--forbid-only'];
   const execute = (flags, path, stage) => {
     const result = run(process.execPath, [...args, ...flags], {
-      cwd: root, stdio: 'inherit', env: { ...env, PN_E2E_OMNIVOICE: '1', PLAYWRIGHT_JSON_OUTPUT_FILE: path },
+      cwd: root, stdio: 'inherit', env: { ...env, PN_E2E_OMNIVOICE: '1', PN_E2E_OMNIVOICE_CLONE: '1', PLAYWRIGHT_JSON_OUTPUT_FILE: path },
     });
     if (result.error) throw result.error;
     if (result.signal) throw new Error(`OmniVoice ${stage} run terminated by ${result.signal}.`);

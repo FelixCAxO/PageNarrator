@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Deschide pagina, apasă pictograma PageNarrator și alege „Citește pagina”."
+  },
   "ui_3e8b2a3a": {
     "message": "Se încarcă documentul…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "Anulat."
+  },
+  "ui_9d3f7d31": {
+    "message": "Acțiunea vocii personale a eșuat."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice necesită WebGPU cu suport fp16."
+  },
+  "ui_34c2939b": {
+    "message": "Se elimină zgomotul de fundal…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Se descarcă modelul de reducere a zgomotului… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Poți reda sau salva mostra curățată."
+  },
+  "ui_24b6564c": {
+    "message": "Reducerea zgomotului nu este disponibilă. Poți salva mostra originală."
+  },
+  "ui_f035394f": {
+    "message": "Poți reda sau salva mostra."
+  },
+  "ui_611ed81e": {
+    "message": "Se înregistrează…"
+  },
+  "ui_514244f6": {
+    "message": "Înregistrarea cu microfonul nu este disponibilă."
+  },
+  "ui_a8d5e97d": {
+    "message": "Permite accesul la microfon pentru a înregistra o mostră."
+  },
+  "ui_7bcd5d33": {
+    "message": "Nu a fost găsit niciun microfon."
+  },
+  "ui_f6233044": {
+    "message": "Alege un fișier audio sau înregistrează o mostră."
+  },
+  "ui_b1cbd878": {
+    "message": "Introduceți un nume predefinit și cuvintele vorbite în înregistrare."
+  },
+  "ui_a81b3b51": {
+    "message": "Codificarea eșantionului vocal..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Descărcați codificatorul de voce... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Presetarea vocală a fost salvată."
+  },
+  "ui_3c91213b": {
+    "message": "Selectată pentru citire."
+  },
+  "ui_1113ba39": {
+    "message": "Se pregătește mostra vocală…"
+  },
+  "ui_e0513158": {
+    "message": "Mostra vocală este gata."
+  },
+  "ui_24e89fdd": {
+    "message": "Presetarea vocală a fost ștearsă."
   },
   "ui_c08b976a": {
     "message": "Se procesează…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "Necesită atenție"
+  },
+  "ui_4d1cf041": {
+    "message": "Engleză americană, feminină"
+  },
+  "ui_faf95838": {
+    "message": "Engleză americană, masculină"
+  },
+  "ui_f3768d40": {
+    "message": "Engleză britanică, feminină"
+  },
+  "ui_4139054c": {
+    "message": "Alege o voce Kokoro în engleză. Kokoro nu acceptă alte limbi."
   },
   "ui_c0c171d2": {
     "message": "Acțiunea nu a putut fi finalizată."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Creați o presetare personală a vocii în Setările vocii."
+  },
   "ui_b7e3509c": {
     "message": "Omite fragmentele de cod"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator nu a putut porni."
   },
-  "ui_4d1cf041": {
-    "message": "Engleză americană, feminină"
-  },
-  "ui_faf95838": {
-    "message": "Engleză americană, masculină"
-  },
-  "ui_f3768d40": {
-    "message": "Engleză britanică, feminină"
-  },
-  "ui_4139054c": {
-    "message": "Alege o voce Kokoro în engleză. Kokoro nu acceptă alte limbi."
-  },
   "ui_87d977c4": {
     "message": "Player PageNarrator"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Model vocal"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (implicit)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (experimental)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "Zece voci în engleză. Configurarea inițială: aproximativ 93 MB pentru CPU sau 326 MB pentru GPU. O altă voce necesită aproximativ 0,5 MB. Vocea salvată se păstrează."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "Zece voci în engleză. Celelalte limbi trec la OmniVoice, dacă este acceptat. Configurarea inițială: aproximativ 93 MB pentru CPU sau 326 MB pentru GPU. O altă voce necesită aproximativ 0,5 MB. Vocea salvată se păstrează."
   },
   "ui_2c04fde6": {
     "message": "Setări vocale"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Șoaptă"
+  },
+  "ui_8156f492": {
+    "message": "Presetare pentru voce personală"
+  },
+  "ui_a8cbb251": {
+    "message": "Gestionarea vocii personale"
   },
   "ui_3d7af8ef": {
     "message": "Viteză de redare"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Omite fragmentele de cod"
   },
+  "ui_ce18c7cb": {
+    "message": "Omite ecuațiile și tabelele din PDF-uri"
+  },
   "ui_456ac053": {
     "message": "Culoarea zonei"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "Deschide PageNarrator din pagină"
-  },
-  "ui_94a4b160": {
-    "message": "Deschide pagina, apasă pictograma PageNarrator și alege „Citește pagina”."
   },
   "ui_4be7c01e": {
     "message": "Fișierele vocale lipsă se descarcă de pe Hugging Face la pregătire sau citire. Vorbirea este generată pe acest dispozitiv. Fișierele din cache pot fi reutilizate offline până când sunt șterse."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "Pagini PDF"
   },
+  "ui_328b6bff": {
+    "message": "Eșantioanele vocale și preseturile rămân pe acest dispozitiv."
+  },
+  "ui_fff029e4": {
+    "message": "Creează o voce personală"
+  },
+  "ui_12e7305d": {
+    "message": "Alege un fișier audio sau înregistrează 3–10 secunde de vorbire clară. Fișierele pot avea cel mult 20 MB. Codificatorul descarcă aproximativ 654 MB la prima utilizare."
+  },
+  "ui_a01f1ba6": {
+    "message": "Limba vorbită în înregistrare"
+  },
+  "ui_1ade9af5": {
+    "message": "Fișier audio"
+  },
+  "ui_a4204cfb": {
+    "message": "Citește cu voce tare, pe tonul tău obișnuit."
+  },
+  "ui_75637bc3": {
+    "message": "Înregistrează o mostră"
+  },
+  "ui_523daa03": {
+    "message": "Elimină zgomotul de fundal"
+  },
+  "ui_905bc62f": {
+    "message": "Folosește mostra originală"
+  },
+  "ui_67b9602a": {
+    "message": "Opțional. Rulează pe acest dispozitiv cu WebGPU și descarcă aproximativ 493 MB la prima utilizare."
+  },
+  "ui_026775c1": {
+    "message": "Numele presetării"
+  },
+  "ui_706bbab1": {
+    "message": "Ce se spune în înregistrare"
+  },
+  "ui_b00f8855": {
+    "message": "Salvează presetarea vocală"
+  },
+  "ui_80c87657": {
+    "message": "Voci personale salvate"
+  },
+  "ui_83b7d497": {
+    "message": "Folosește la citire"
+  },
+  "ui_71accaa9": {
+    "message": "Ascultă vocea"
+  },
+  "ui_c348abed": {
+    "message": "Șterge presetarea"
+  },
+  "ui_8313d4fa": {
+    "message": "Oprește înregistrarea"
+  },
+  "ui_35afca3b": {
+    "message": "Anulează"
+  },
   "ui_6b68e4c5": {
     "message": "Experimental. 32 de intrări de limbă; calitatea variază. Necesită WebGPU cu fp16 și descărcări de aproximativ 1,35 GB. Alege o voce, o variantă sau șoapta."
+  },
+  "ui_9e93d684": {
+    "message": "Citiți cu un set de voce personal. eșantioanele vocale și narativul rămân pe acest dispozitiv. Necesită WebGPU cu fp16."
   },
   "ui_35a4186c": {
     "message": "Avertisment: Șoapta poate omite cuvinte în această limbă. Compară lectura cu textul."

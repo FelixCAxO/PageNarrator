@@ -14,14 +14,14 @@ import { selectExecutionPlan } from './onnx-execution-plan.js';
 import { executeMetadataMath } from './onnx-metadata-math.js';
 import { createKokoroKernels } from './kokoro-kernels.js';
 import { METADATA_LIMIT, indexRangeInputNames, metadataInputNames, metadataParameters } from './onnx-metadata-inputs.js';
-import { axisIndex, slicePlan } from './index-shape.js';
+import { axisIndex, slicePlan, transposePlan } from './index-shape.js';
 
 const OPERATORS = new Set([...Object.keys(GPU_BINARY_OPERATIONS), ...Object.keys(GPU_UNARY_OPERATIONS),
   'Constant', 'Conv', 'ConvTranspose', 'GlobalAveragePool', 'ReduceMean', 'ReduceMax', 'ReduceSum', 'MaxPool', 'AveragePool', 'Resize', 'Concat',
-  'BatchNormalization', 'MatMul', 'Shape', 'Slice', 'Gather', 'Reshape', 'Squeeze', 'Unsqueeze', 'Transpose', 'Softmax', 'ArgMax', 'Pad', 'GridSample',
+  'BatchNormalization', 'InstanceNormalization', 'MatMul', 'Shape', 'Slice', 'Gather', 'Reshape', 'Squeeze', 'Unsqueeze', 'Transpose', 'Softmax', 'ArgMax', 'Pad', 'GridSample',
   'Cast', 'Where', 'Equal', 'Expand', 'ConstantOfShape', 'Gemm', 'LayerNormalization', 'LSTM', 'STFT',
   'DynamicQuantizeLinear', 'DequantizeLinear', 'MatMulInteger', 'ConvInteger', 'Split', 'Range', 'Greater', 'GreaterOrEqual', 'Less', 'And',
-  'Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'CumSum', 'NonZero', 'ScatterND']);
+  'Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'CumSum', 'NonZero', 'ScatterND', 'Einsum', 'ReduceL2']);
 const MICROSOFT_OPERATORS = new Set(['DynamicQuantizeLSTM', 'FastGelu', 'SkipLayerNormalization', 'FusedMatMul']);
 const KOKORO_OPERATORS = new Set(['Gemm', 'LayerNormalization', 'LSTM', 'STFT', 'DynamicQuantizeLinear', 'DequantizeLinear',
   'MatMulInteger', 'ConvInteger', 'Round', 'Floor', 'Atan', 'LeakyRelu', 'Clip', 'CumSum', 'ScatterND']);
@@ -49,6 +49,17 @@ function spatialOptions(attrs) {
   return { strides: attrs.strides, dilations: attrs.dilations, pads: attrs.pads, autoPad: attrs.auto_pad ?? 'NOTSET' };
 }
 
+// Use the existing fp32 kernels for operations without a half-precision kernel.
+function computeWithFloat32(batch, operation, ...original) {
+  if (original[0].dataType !== 'float16') return operation(...original);
+  const float = original.map(tensor => tensor?.dataType === 'float16' ? batch.cast(tensor, 1) : tensor);
+  const result = operation(...float);
+  const output = batch.cast(result, 10);
+  float.forEach((tensor, i) => { if (tensor !== original[i]) batch.recycle(tensor); });
+  batch.recycle(result);
+  return output;
+}
+
 function requiresFloat16(graph) {
   return [...graph.initializers, ...graph.inputs, ...graph.outputs, ...graph.values].some(tensor => tensor.dataType === 10)
     || graph.nodes.some(node => (node.opType === 'Cast' && node.attributes.get('to')?.value === 10)
@@ -56,12 +67,33 @@ function requiresFloat16(graph) {
         : attribute.type === 9 && attribute.value.some(tensor => tensor.dataType === 10)));
 }
 
+// The pinned voice encoder export appends two Concat producers after their consumers.
+function orderNodes(nodes) {
+  const producers = new Map(nodes.flatMap(node => node.outputs.filter(Boolean).map(name => [name, node])));
+  const pending = new Set();
+  const ordered = new Set();
+  const visit = node => {
+    if (ordered.has(node)) return;
+    if (pending.has(node)) throw new Error('Cannot order cyclic ONNX graph.');
+    pending.add(node);
+    for (const name of node.inputs) {
+      const producer = producers.get(name);
+      if (producer) visit(producer);
+    }
+    pending.delete(node);
+    ordered.add(node);
+  };
+  nodes.forEach(visit);
+  return [...ordered];
+}
+
 /** An explicit subset of ONNX, with no third-party executable inference code. */
 export class WebGpuOnnxSession {
-  static async create(bytes, { engine = null, maxPlanBytes = 128 * 1024 * 1024, maxCachedPlans = 1, externalData = [], releaseHostWeights = false } = {}) {
+  static async create(bytes, { engine = null, maxPlanBytes = 128 * 1024 * 1024, maxCachedPlans = 1, externalData = [], releaseHostWeights = false, repairNodeOrder = false } = {}) {
     if (!Number.isSafeInteger(maxPlanBytes) || maxPlanBytes < 0) throw new RangeError('Invalid execution-plan memory limit.');
     if (![1, 2].includes(maxCachedPlans)) throw new RangeError('An inference session supports one or two bounded execution plans.');
     const model = bindExternalData(decodeOnnxModel(bytes), externalData);
+    if (repairNodeOrder) model.graph.nodes = orderNodes(model.graph.nodes);
     const unsupported = [...new Set(model.graph.nodes.filter(node => node.domain === 'com.microsoft'
       ? !MICROSOFT_OPERATORS.has(node.opType) : !OPERATORS.has(node.opType) || (node.domain && node.domain !== 'ai.onnx')).map(node => `${node.domain ? `${node.domain}::` : ''}${node.opType}`))];
     if (unsupported.length || model.functions.length) throw new Error(`Unsupported ONNX graph: ${unsupported.join(', ') || 'model-local functions'}.`);
@@ -225,8 +257,8 @@ export class WebGpuOnnxSession {
       return batch.binary(node.opType, asGpu(input), asGpu(value(node.inputs[1])));
     }
     if (Object.hasOwn(GPU_UNARY_OPERATIONS, node.opType)) {
-      rejectUnknown(a, node.opType === 'HardSigmoid' ? ['alpha', 'beta'] : [], node.opType);
-      return batch.unary(node.opType, asGpu(input), a);
+      rejectUnknown(a, node.opType === 'HardSigmoid' ? ['alpha', 'beta'] : node.opType === 'Elu' ? ['alpha'] : [], node.opType);
+      return batch.unary(node.opType, asGpu(input), node.opType === 'Elu' ? { alpha: a.alpha ?? 1 } : a);
     }
     switch (node.opType) {
       case 'FusedHalfScaledMaskedSoftmax': return batch.scaledMaskedSoftmax(input, asGpu(value(node.inputs[1])), asGpu(value(node.inputs[2])));
@@ -243,8 +275,10 @@ export class WebGpuOnnxSession {
       }
       case 'Round': case 'Floor': case 'Atan': case 'LeakyRelu': case 'Clip': {
         rejectUnknown(a, node.opType === 'LeakyRelu' ? ['alpha'] : node.opType === 'Clip' ? ['min', 'max'] : [], node.opType);
-        return this.kokoro.unary(batch, input, node.opType, { alpha: a.alpha,
-          min: node.inputs[1] ? numbers(node.inputs[1])[0] : a.min, max: node.inputs[2] ? numbers(node.inputs[2])[0] : a.max });
+        const min = node.inputs[1] ? numbers(node.inputs[1])[0] : a.min;
+        const max = node.inputs[2] ? numbers(node.inputs[2])[0] : a.max;
+        if (node.opType === 'Clip' && input.dataType === 'int32') return batch.clipInteger(input, min, max);
+        return this.kokoro.unary(batch, input, node.opType, { alpha: a.alpha, min, max });
       }
       case 'CumSum': {
         rejectUnknown(a, ['exclusive', 'reverse'], node.opType);
@@ -295,9 +329,17 @@ export class WebGpuOnnxSession {
         return this.kokoro.fusedMatmul(batch, input, asGpu(value(node.inputs[1])), a);
       }
       case 'Split': {
-        rejectUnknown(a, ['axis', 'split'], node.opType);
+        rejectUnknown(a, ['axis', 'split', 'num_outputs'], node.opType);
         const axis = axisIndex(a.axis ?? 0, input.shape.length), count = node.outputs.length;
-        const sizes = node.inputs[1] ? numbers(node.inputs[1]) : a.split ?? new Array(count).fill(input.shape[axis] / count);
+        if (a.num_outputs !== undefined && (a.num_outputs !== count || node.inputs[1] || a.split)) {
+          throw new RangeError('Split num_outputs must match its outputs and cannot be combined with split sizes.');
+        }
+        const width = input.shape[axis] / count;
+        const sizes = node.inputs[1] ? numbers(node.inputs[1]) : a.split ?? new Array(count).fill(width);
+        if (a.num_outputs !== undefined) {
+          sizes.fill(Math.ceil(width));
+          sizes[count - 1] = input.shape[axis] - (count - 1) * sizes[0];
+        }
         if (sizes.length !== count || sizes.some(size => !Number.isSafeInteger(size) || size < 0)
           || sizes.reduce((sum, size) => sum + size, 0) !== input.shape[axis]) throw new RangeError('Split sizes must exactly partition their axis.');
         let offset = 0;
@@ -310,7 +352,9 @@ export class WebGpuOnnxSession {
       case 'LayerNormalization': {
         rejectUnknown(a, ['axis', 'epsilon', 'stash_type'], node.opType);
         if (a.stash_type !== undefined && a.stash_type !== 1) throw new Error('LayerNormalization requires fp32 statistics.');
-        return this.kokoro.layerNormalization(batch, input, asGpu(value(node.inputs[1])), node.inputs[2] ? asGpu(value(node.inputs[2])) : null, a);
+        const scale = asGpu(value(node.inputs[1]));
+        const bias = node.inputs[2] ? asGpu(value(node.inputs[2])) : null;
+        return computeWithFloat32(batch, (x, w, b) => this.kokoro.layerNormalization(batch, x, w, b, a), input, scale, bias);
       }
       case 'LSTM': {
         rejectUnknown(a, ['hidden_size', 'direction'], node.opType);
@@ -350,22 +394,37 @@ export class WebGpuOnnxSession {
           ...(node.opType === 'FusedZeroInsertConv1d' ? ['zeroInsertStride', 'zeroTail'] : [])], node.opType);
         const weight = asGpu(value(node.inputs[1]));
         if (a.kernel_shape && a.kernel_shape.some((dim, i) => dim !== weight.shape[i + 2])) throw new Error('Convolution kernel_shape does not match its weights.');
-        return batch.convolution(input, weight, node.inputs[2] ? asGpu(value(node.inputs[2])) : null,
-          { ...spatialOptions(a), group: a.group ?? 1, transpose: node.opType === 'ConvTranspose', outputPadding: a.output_padding,
-            ...(node.opType === 'FusedZeroInsertConv1d' ? { zeroInsertStride: a.zeroInsertStride, zeroTail: a.zeroTail } : {}) });
+        const options = { ...spatialOptions(a), group: a.group ?? 1, transpose: node.opType === 'ConvTranspose', outputPadding: a.output_padding,
+          ...(node.opType === 'FusedZeroInsertConv1d' ? { zeroInsertStride: a.zeroInsertStride, zeroTail: a.zeroTail } : {}) };
+        return computeWithFloat32(batch, (x, w, b) => batch.convolution(x, w, b, options),
+          input, weight, node.inputs[2] ? asGpu(value(node.inputs[2])) : null);
       }
       case 'GlobalAveragePool': {
         rejectUnknown(a, [], node.opType);
         return batch.reduce(input, input.shape.slice(2).map((_, i) => i + 2), true);
       }
-      case 'ReduceMean': case 'ReduceMax': case 'ReduceSum': {
+      case 'ReduceMean': case 'ReduceMax': case 'ReduceSum': case 'ReduceL2': {
         rejectUnknown(a, ['axes', 'keepdims', 'noop_with_empty_axes'], node.opType);
         let axes = node.inputs[1] ? numbers(node.inputs[1]) : a.axes;
-        if (!axes?.length) {
-          if (a.noop_with_empty_axes) return input;
-          axes = null;
+        const skipReduction = !axes?.length && Boolean(a.noop_with_empty_axes);
+        if (!axes?.length) axes = null;
+        const keepDims = (a.keepdims ?? 1) !== 0;
+        if (node.opType !== 'ReduceL2') {
+          if (skipReduction) return input;
+          return batch.reduce(input, axes, keepDims, { ReduceMean: 'mean', ReduceMax: 'max', ReduceSum: 'sum' }[node.opType]);
         }
-        return batch.reduce(input, axes, (a.keepdims ?? 1) !== 0, { ReduceMean: 'mean', ReduceMax: 'max', ReduceSum: 'sum' }[node.opType]);
+        // Accumulate weight norms at full precision even for half-weight vocoders.
+        const float = input.dataType === 'float16' ? batch.cast(input, 1) : input;
+        const square = batch.binary('Mul', float, float);
+        const sum = skipReduction ? square : batch.reduce(square, axes, keepDims, 'sum');
+        const norm = batch.unary('Sqrt', sum);
+        if (float !== input) batch.recycle(float);
+        batch.recycle(square);
+        if (sum !== square) batch.recycle(sum);
+        if (float === input) return norm;
+        const output = batch.cast(norm, 10);
+        batch.recycle(norm);
+        return output;
       }
       case 'MaxPool': case 'AveragePool': {
         rejectUnknown(a, ['kernel_shape', 'strides', 'dilations', 'pads', 'auto_pad', 'ceil_mode', 'count_include_pad', 'storage_order'], node.opType);
@@ -389,9 +448,31 @@ export class WebGpuOnnxSession {
         if (a.spatial !== undefined && a.spatial !== 1) throw new Error('Only spatial batch normalization is supported.');
         return batch.batchNorm(input, ...node.inputs.slice(1).map(name => asGpu(value(name))), a.epsilon ?? 1e-5);
       }
+      case 'InstanceNormalization': {
+        rejectUnknown(a, ['epsilon'], node.opType);
+        return batch.instanceNorm(input, asGpu(value(node.inputs[1])), asGpu(value(node.inputs[2])), a.epsilon);
+      }
       case 'MatMul': {
         rejectUnknown(a, [], node.opType);
         return batch.matmul(input, asGpu(value(node.inputs[1])));
+      }
+      case 'Einsum': {
+        rejectUnknown(a, ['equation'], node.opType);
+        const relative = asGpu(value(node.inputs[1]));
+        if (a.equation !== 'bhld,lrd->bhlr' || node.inputs.length !== 2
+          || input.shape.length !== 4 || relative.shape.length !== 3
+          || input.shape[2] !== relative.shape[0] || input.shape[3] !== relative.shape[2]) {
+          throw new Error('Unsupported Einsum attention contraction.');
+        }
+        // Treat each query position as a batch and contract the head width with MatMul.
+        const queries = batch.index(input, transposePlan(input.shape, [2, 0, 1, 3]));
+        const keys = batch.index(relative, transposePlan(relative.shape, [0, 2, 1]));
+        const product = batch.matmul(queries, batch.view(keys, [keys.shape[0], 1, keys.shape[1], keys.shape[2]]));
+        const output = batch.index(product, transposePlan(product.shape, [1, 2, 0, 3]));
+        batch.recycle(queries);
+        batch.recycle(keys);
+        batch.recycle(product);
+        return output;
       }
       case 'Softmax': {
         rejectUnknown(a, ['axis'], node.opType);
@@ -403,7 +484,8 @@ export class WebGpuOnnxSession {
       }
       case 'Pad': {
         rejectUnknown(a, ['mode'], node.opType);
-        return batch.pad(input, numbers(node.inputs[1]), a.mode ?? 'constant', node.inputs[2] ? numbers(node.inputs[2])[0] : 0);
+        const pads = numbers(node.inputs[1]), fill = node.inputs[2] ? numbers(node.inputs[2])[0] : 0;
+        return computeWithFloat32(batch, x => batch.pad(x, pads, a.mode ?? 'constant', fill), input);
       }
       case 'GridSample': {
         rejectUnknown(a, ['mode', 'padding_mode', 'align_corners'], node.opType);

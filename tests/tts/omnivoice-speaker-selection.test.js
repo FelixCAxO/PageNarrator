@@ -104,6 +104,11 @@ it('preserves the share-alike license on recorded references and rejects restric
     source: { ...source, license: 'CC-BY-NC-ND-4.0' } })).toThrow('attribution');
 });
 
+it('keeps the Apache license on the existing AISHELL voices', () => {
+  const attributed = { ...source, dataset: 'AISHELL/AISHELL-3', license: 'Apache-2.0' };
+  expect(toOmniVoiceCatalogEntry({ ...speaker, durationSource: 'recording', source: attributed }).source).toEqual(attributed);
+});
+
 it('keeps the existing generated-reference format', () => {
   expect(toOmniVoiceCatalogEntry({ ...speaker, elapsedMs: 100 })).toEqual(speaker);
 });

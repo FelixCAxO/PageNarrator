@@ -167,7 +167,6 @@ try {
   await cdp.send('Target.closeTarget', { targetId: popupTarget });
   const extensionId = new URL(worker.url()).hostname;
   await article.goto(`chrome-extension://${extensionId}/src/pdf-viewer.html?src=${encodeURIComponent(pdfServer.urlFor(pdfName))}`);
-  await article.waitForFunction(() => (document.querySelector('[data-pagenarrator-id="pdf-page-1"] .textLayer')?.textContent.length || 0) > 200, null, { timeout: 30000 });
   await openPopup(article);
   await waitPopup('document.querySelector("#start-reading:not([disabled])") !== null');
   await popupClick('#start-reading');
@@ -180,7 +179,7 @@ try {
   await waitPopup('document.getElementById("popup-status").textContent !== "Reading"');
   await popupEval('document.getElementById("popup-tts-engine").focus()');
   for (const type of ['keyDown', 'keyUp']) {
-    await popupCommand('Input.dispatchKeyEvent', { type, key: 'End', code: 'End', windowsVirtualKeyCode: 35 });
+    await popupCommand('Input.dispatchKeyEvent', { type, key: 'Home', code: 'Home', windowsVirtualKeyCode: 36 });
   }
   await waitPopup('document.getElementById("popup-tts-engine").value === "omnivoice" && !document.getElementById("popup-omnivoice-settings").hidden');
   if (!(await popupEval('document.getElementById("popup-settings").open'))) await popupClick('#popup-settings > summary');
@@ -254,7 +253,6 @@ async function finalizeMedia() {
   }
   await cp(path.join(outputDir, 'promo-tile-440x280.png'), path.join(storeDir, 'promo-tile-440x280.png'));
   const reading = path.join(websiteDir, 'assets/screenshots/toolbar-player-reading.png');
-  await sharp(reading).webp({ lossless: true, quality: 100, effort: 6, preset: 'text' }).toFile(path.join(websiteDir, 'assets/screenshots/toolbar-player-reading.webp'));
   await sharp(reading).resize(1200, 630, { fit: 'cover', position: 'north' }).jpeg({ quality: 88 }).toFile(path.join(websiteDir, 'og-image.jpg'));
   for (const name of (await readdir(websiteDir)).filter(name => name.endsWith('.html'))) {
     let html = await readFile(path.join(websiteDir, name), 'utf8');

@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 import { writeFile } from 'node:fs/promises';
 import { launchExtensionContext, seedRealTtsFlowFlags, startReadFromToolbarPopup } from './extension-fixture.js';
 import { openRoutedReaderEngine, routeOmniVoiceModelFiles } from './kokoro-download-fixture.js';
-import { getOmniVoicePresetSeed } from '../../src/tts/omnivoice/preset-seeds.js';
+import { getOmniVoicePreset, getOmniVoiceLegacyVoice, getOmniVoiceVoices } from '../../src/tts/omnivoice/preset-seeds.js';
 
 const cases = [
   { language: 'en', gender: 'female', paragraphs: [
@@ -61,14 +61,16 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
     await context.addInitScript(({ recoverStatic }) => {
       globalThis.__continuity = { jobs: [], wavs: [], runtimeDiagnostics: [], injectedStatic: false };
       const NativeWorker = globalThis.Worker;
+      let nextWorker = 0;
       globalThis.Worker = class extends NativeWorker {
         constructor(...args) {
           super(...args);
+          const workerId = ++nextWorker;
           const jobs = new Map();
           const post = this.postMessage.bind(this);
           this.postMessage = (message, ...options) => {
             if (message.method === 'synthesize') {
-              const job = { id: message.id, ...message.request, started: Date.now() };
+              const job = { id: message.id, workerId, ...message.request, started: Date.now() };
               jobs.set(message.id, job);
               globalThis.__continuity.jobs.push(job);
             }
@@ -82,7 +84,7 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
             if (data.result?.pcm) job.pcmSha256 = crypto.subtle.digest('SHA-256', data.result.pcm.slice().buffer)
               .then(bytes => Array.from(new Uint8Array(bytes), value => value.toString(16).padStart(2, '0')).join(''));
             // Corrupt one real worker reply: no static may reach WAV encoding,
-            // and recovery must replace the worker while retaining its fixed speaker reference.
+            // and recovery must keep the worker and fixed speaker reference.
             if (recoverStatic && data.result?.pcm && !globalThis.__continuity.injectedStatic) {
               globalThis.__continuity.injectedStatic = true;
               job.rejectedStaticInjection = true;
@@ -128,20 +130,25 @@ test(`OmniVoice keeps one ${language} ${whisper ? 'whisper ' : ''}speaker throug
     for (let index = 1; index < jobs.length; index++) expect(jobs[index].started).toBeGreaterThanOrEqual(jobs[index - 1].ended);
     const expectedSteps = paragraphs.map(() => 24);
     expect(jobs.map(job => job.numStep)).toEqual(recoverStatic ? [24, ...expectedSteps] : expectedSteps);
-    const selectedSeed = getOmniVoicePresetSeed(language, gender, variation);
+    // A v1.0.4 choice keeps its voice if it still ships, or falls back to the first current voice.
+    const voiceId = getOmniVoiceLegacyVoice(language, gender, variation) ?? getOmniVoiceVoices(language, gender)[0];
+    const preset = getOmniVoicePreset(voiceId), selectedSeed = preset.seed;
     expect(jobs.map(job => job.seed)).toEqual(recoverStatic
       ? [selectedSeed, selectedSeed + 1, ...paragraphs.slice(1).map(() => selectedSeed)]
       : paragraphs.map(() => selectedSeed));
     expect(jobs.every(job => job.lang === language)).toBe(true);
     expect(wavs).toHaveLength(paragraphs.length);
-    if (recoverStatic) expect(jobs[1].speaker.referenceHash).toBe(jobs[0].speaker.referenceHash);
+    if (recoverStatic) {
+      expect(jobs[1].workerId).toBe(jobs[0].workerId);
+      expect(jobs[1].speaker.referenceHash).toBe(jobs[0].speaker.referenceHash);
+    }
     expect(ends).toHaveLength(paragraphs.length);
     expect(jobs.every(job => job.audioSeconds > 1)).toBe(true);
     expect(Math.max(...gaps)).toBeLessThan(500);
     const playedJobs = recoverStatic ? jobs.slice(1) : jobs;
     for (const job of playedJobs) {
       expect(job.speaker?.referenceHash).toBe(playedJobs[0].speaker.anchorHash);
-      expect(job.speaker?.id).toBe(`${gender}-${variation}`);
+      expect(job.speaker?.id).toBe(preset.id);
     }
   } finally {
     await cleanup();

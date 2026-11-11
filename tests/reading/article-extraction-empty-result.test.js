@@ -23,6 +23,7 @@ describe('article extraction empty result contract', () => {
       url: 'https://example.test/empty',
       error: 'No readable article text was found.',
       totalReadableWordCount: 0,
+      pageLanguage: '',
     });
   });
 });

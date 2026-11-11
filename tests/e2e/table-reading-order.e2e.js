@@ -32,6 +32,10 @@ for (const { format, table, cells, pdfItems, width, height = 792, name } of [
       await seedFlowTestFlags(context);
       let page;
       if (format === 'PDF') {
+        // Exercise the opt-in path for narrated tables and their word highlights.
+        await context.serviceWorkers()[0].evaluate(() => chrome.storage.local.set({
+          playbackSettings: { skipPdfEquationsAndTables: false },
+        }));
         const bytes = buildPdfBytes(pdfItems(), { width, height });
         page = await openPdfViewer(context, `data:application/pdf;base64,${Buffer.from(bytes).toString('base64')}`);
         await expect(page.locator('#pdf-status')).toContainText('1 page loaded');

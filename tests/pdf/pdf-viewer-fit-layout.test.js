@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import { afterEach, describe, expect, it, vi } from 'vitest';
+import { requestViewerLoad } from './pdf-viewer-messages.fixtures.js';
 
 function installViewerDom({
   url = 'chrome-extension://test/src/pdf-viewer.html?src=https%3A%2F%2Fexample.test%2Fmixed.pdf',
@@ -47,14 +48,17 @@ function installViewerDom({
 }
 
 function installChromeRuntime() {
+  const listeners = [];
   globalThis.chrome = {
     runtime: {
+      id: 'test',
       getURL: (path) => `chrome-extension://test/${path}`,
       onMessage: {
-        addListener() {},
+        addListener: (listener) => listeners.push(listener),
       },
     },
   };
+  return listeners;
 }
 
 function createMixedSizePdfDocument() {
@@ -179,7 +183,7 @@ describe('PDF viewer fit layout stability', () => {
   ])('keeps %s dimensions stable when mouse scrolling renders mixed-size pages', async (buttonId, expectedSize) => {
     vi.resetModules();
     const dom = installViewerDom();
-    installChromeRuntime();
+    const listeners = installChromeRuntime();
     const observerCallbacks = [];
 
     globalThis.IntersectionObserver = class TestIntersectionObserver {
@@ -201,24 +205,27 @@ describe('PDF viewer fit layout stability', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(dom.window.document.querySelectorAll('[data-page-number]')).toHaveLength(2);
     });
 
+    const pageOne = dom.window.document.querySelector('[data-page-number="1"]');
     const pageTwo = dom.window.document.querySelector('[data-page-number="2"]');
+    pageOne.scrollIntoView.mockClear();
     dom.window.document.getElementById(buttonId)?.click();
 
     await vi.waitFor(() => {
+      expect(pageOne.scrollIntoView).toHaveBeenCalled();
       expect(pageSize(pageTwo)).toEqual(expectedSize);
     });
-    const sizeBeforeScrollRender = pageSize(pageTwo);
 
     observerCallbacks.at(-1)([{ target: pageTwo, isIntersecting: true }]);
     await vi.waitFor(() => {
       expect(pageTwo.querySelector('canvas')).toBeTruthy();
     });
 
-    expect(pageSize(pageTwo)).toEqual(sizeBeforeScrollRender);
+    expect(pageSize(pageTwo)).toEqual(expectedSize);
   });
 
   it('keeps the current page anchored when fit mode changes page heights', async () => {
@@ -226,7 +233,7 @@ describe('PDF viewer fit layout stability', () => {
     const dom = installViewerDom({
       url: 'chrome-extension://test/src/pdf-viewer.html?src=https%3A%2F%2Fexample.test%2Flarge.pdf#page=541',
     });
-    installChromeRuntime();
+    const listeners = installChromeRuntime();
     const observedPages = new Map();
     let observerCallback = null;
 
@@ -252,6 +259,7 @@ describe('PDF viewer fit layout stability', () => {
     }));
 
     await import('../../src/pdf-viewer.js');
+    await requestViewerLoad(listeners[0]);
     await vi.waitFor(() => {
       expect(dom.window.document.getElementById('pdf-page-input').value).toBe('541');
     });

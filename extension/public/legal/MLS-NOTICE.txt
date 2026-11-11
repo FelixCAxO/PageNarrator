@@ -1,0 +1,19 @@
+Multilingual LibriSpeech recorded references
+
+Source: https://huggingface.co/datasets/facebook/multilingual_librispeech
+Source revision: 2e83e61823b4c47dcbcb1980bb88601274127609
+License: Creative Commons Attribution 4.0 International (CC BY 4.0).
+Full license: CC-BY-4.0.txt
+https://creativecommons.org/licenses/by/4.0/legalcode
+Attribution: Vineel Pratap, Qiantong Xu, Anuroop Sriram, Gabriel Synnaeve and
+Ronan Collobert (2020), MLS: A Large-Scale Multilingual Dataset for Speech
+Research. Underlying audiobook recordings by LibriVox volunteers.
+
+PageNarrator modifications: selected complete recordings are converted to mono
+24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
+OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
+identifies the dataset revision, split, speaker ID, source file, audio hash,
+encoder hash and preprocessing for each reference.
+
+The reference data keep their source license, separately from the PageNarrator
+implementation and the OmniVoice model.

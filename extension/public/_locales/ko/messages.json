@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "페이지를 열고 PageNarrator 아이콘을 클릭한 후 ‘페이지 읽기’를 선택하세요."
+  },
   "ui_3e8b2a3a": {
     "message": "문서 불러오는 중…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "취소했습니다."
+  },
+  "ui_9d3f7d31": {
+    "message": "개인적인 목소리 행동은 실패했다."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice은 fp16 지원을 가진 WebGPU를 필요로 합니다."
+  },
+  "ui_34c2939b": {
+    "message": "배경 소음 제거 중…"
+  },
+  "ui_cd4b50fc": {
+    "message": "소음 제거 모델 다운로드 중… $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "소음을 제거한 샘플을 재생하거나 저장할 수 있습니다."
+  },
+  "ui_24b6564c": {
+    "message": "소음 제거를 사용할 수 없습니다. 원본 샘플을 저장할 수 있습니다."
+  },
+  "ui_f035394f": {
+    "message": "샘플을 재생하거나 저장할 수 있습니다."
+  },
+  "ui_611ed81e": {
+    "message": "녹음 중…"
+  },
+  "ui_514244f6": {
+    "message": "마이크 녹음을 사용할 수 없습니다."
+  },
+  "ui_a8d5e97d": {
+    "message": "샘플을 녹음하려면 마이크 액세스를 허용하세요."
+  },
+  "ui_7bcd5d33": {
+    "message": "마이크를 찾을 수 없습니다."
+  },
+  "ui_f6233044": {
+    "message": "오디오 파일을 선택하거나 샘플을 녹음하세요."
+  },
+  "ui_b1cbd878": {
+    "message": "미리 설정된 이름과 녹음에 사용된 단어를 입력합니다.Try in a pre-set name and the words spoken in the recording."
+  },
+  "ui_a81b3b51": {
+    "message": "음성 샘플을 코딩하는 방법..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "다운로드 음성 인코더... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "음성 프리셋을 저장했습니다."
+  },
+  "ui_3c91213b": {
+    "message": "읽기 음성으로 선택했습니다."
+  },
+  "ui_1113ba39": {
+    "message": "음성 미리 듣기 준비 중…"
+  },
+  "ui_e0513158": {
+    "message": "음성 미리 듣기가 준비되었습니다."
+  },
+  "ui_24e89fdd": {
+    "message": "음성 프리셋을 삭제했습니다."
   },
   "ui_c08b976a": {
     "message": "처리 중…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "확인이 필요합니다"
+  },
+  "ui_4d1cf041": {
+    "message": "미국 영어 · 여성"
+  },
+  "ui_faf95838": {
+    "message": "미국 영어 · 남성"
+  },
+  "ui_f3768d40": {
+    "message": "영국 영어 · 여성"
+  },
+  "ui_4139054c": {
+    "message": "영어 Kokoro 음성을 선택하세요. Kokoro는 다른 언어를 지원하지 않습니다."
   },
   "ui_c0c171d2": {
     "message": "이 작업을 완료하지 못했습니다."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Voice 설정에서 개인 음성 미리 설정을 만듭니다.Create a personal voice preset in Voice settings."
+  },
   "ui_b7e3509c": {
     "message": "코드 조각 건너뛰기"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator를 시작하지 못했습니다."
   },
-  "ui_4d1cf041": {
-    "message": "미국 영어 · 여성"
-  },
-  "ui_faf95838": {
-    "message": "미국 영어 · 남성"
-  },
-  "ui_f3768d40": {
-    "message": "영국 영어 · 여성"
-  },
-  "ui_4139054c": {
-    "message": "영어 Kokoro 음성을 선택하세요. Kokoro는 다른 언어를 지원하지 않습니다."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator 플레이어"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "음성 모델"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (기본값)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (실험적)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "영어 음성 10개를 제공합니다. 첫 설정에는 CPU 사용 시 약 93 MB, GPU 사용 시 약 326 MB가 필요합니다. 다른 음성에는 약 0.5 MB가 필요합니다. 저장된 음성 선택은 유지됩니다."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "영어 음성 10개를 제공합니다. 다른 언어는 지원되는 경우 OmniVoice로 전환됩니다. 첫 설정에는 CPU 사용 시 약 93 MB, GPU 사용 시 약 326 MB가 필요합니다. 다른 음성에는 약 0.5 MB가 필요합니다. 저장된 음성 선택은 유지됩니다."
   },
   "ui_2c04fde6": {
     "message": "음성 설정"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "속삭임"
+  },
+  "ui_8156f492": {
+    "message": "개인 음성 프리셋"
+  },
+  "ui_a8cbb251": {
+    "message": "개인 목소리 관리"
   },
   "ui_3d7af8ef": {
     "message": "재생 속도"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "코드 조각 건너뛰기"
   },
+  "ui_ce18c7cb": {
+    "message": "PDF의 수식과 표 건너뛰기"
+  },
   "ui_456ac053": {
     "message": "영역 색상"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "페이지에서 PageNarrator 열기"
-  },
-  "ui_94a4b160": {
-    "message": "페이지를 열고 PageNarrator 아이콘을 클릭한 후 ‘페이지 읽기’를 선택하세요."
   },
   "ui_4be7c01e": {
     "message": "음성을 준비하거나 읽기를 시작할 때 누락된 음성 파일이 Hugging Face에서 다운로드됩니다. 음성은 이 기기에서 생성됩니다. 캐시된 파일은 삭제하기 전까지 오프라인으로 다시 사용할 수 있습니다."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF 페이지"
   },
+  "ui_328b6bff": {
+    "message": "음성 샘플 및 미리 설정은이 장치에 남아 있습니다."
+  },
+  "ui_fff029e4": {
+    "message": "개인적인 목소리 만들기"
+  },
+  "ui_12e7305d": {
+    "message": "오디오 파일을 선택하거나 또렷한 음성을 3~10초 녹음하세요. 파일은 최대 20MB까지 사용할 수 있습니다. 인코더는 처음 사용할 때 약 654MB를 다운로드합니다."
+  },
+  "ui_a01f1ba6": {
+    "message": "녹음에 사용된 언어"
+  },
+  "ui_1ade9af5": {
+    "message": "오디오 파일"
+  },
+  "ui_a4204cfb": {
+    "message": "평소 목소리로 소리 내어 읽어 주세요."
+  },
+  "ui_75637bc3": {
+    "message": "음성 샘플 녹음"
+  },
+  "ui_523daa03": {
+    "message": "배경 소음 제거"
+  },
+  "ui_905bc62f": {
+    "message": "원본 샘플 사용"
+  },
+  "ui_67b9602a": {
+    "message": "선택 기능입니다. 이 기기에서 WebGPU로 실행되며 처음 사용할 때 약 493MB를 다운로드합니다."
+  },
+  "ui_026775c1": {
+    "message": "프리셋 이름"
+  },
+  "ui_706bbab1": {
+    "message": "녹음에 뭐라고 했는지"
+  },
+  "ui_b00f8855": {
+    "message": "음성 프리셋 저장"
+  },
+  "ui_80c87657": {
+    "message": "저장된 개인 음성"
+  },
+  "ui_83b7d497": {
+    "message": "읽기에 사용"
+  },
+  "ui_71accaa9": {
+    "message": "음성 미리 듣기"
+  },
+  "ui_c348abed": {
+    "message": "프리셋 삭제"
+  },
+  "ui_8313d4fa": {
+    "message": "녹음 중지"
+  },
+  "ui_35afca3b": {
+    "message": "취소"
+  },
   "ui_6b68e4c5": {
     "message": "실험적 기능입니다. 언어 항목은 32개이며 품질은 다릅니다. fp16을 지원하는 WebGPU와 약 1.35 GB의 다운로드가 필요합니다. 음성, 변형 또는 속삭임을 선택하세요."
+  },
+  "ui_9e93d684": {
+    "message": "개인 음성 미리 설정으로 읽기.음성 샘플과 이야기는이 장치에 남아 있습니다.WebGPU과 fp16가 필요합니다."
   },
   "ui_35a4186c": {
     "message": "경고: 이 언어의 속삭임은 단어를 누락할 수 있습니다. 원문과 낭독을 비교해 확인하세요."

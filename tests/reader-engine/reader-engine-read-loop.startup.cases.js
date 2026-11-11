@@ -125,26 +125,29 @@ describe('readerEngine read loop', () => {
     expect(order.indexOf('backend-plan-finish')).toBeLessThan(order.indexOf('profile-config'));
   });
 
-  it.each(['en', 'sv', 'de'])('keeps explicitly selected Swedish OmniVoice when detection returns %s', async detected => {
+  it.each([
+    ['en', 'omnivoice', 'en', false], ['sv', null, null, false], ['de', 'omnivoice', 'de', false], ['en', 'kokoro', 'en', true],
+  ])('matches Swedish OmniVoice to a detected %s page', async (detected, engine, code, autoEngine) => {
     const previous = chrome.i18n;
     chrome.i18n = { ...previous, detectLanguage: vi.fn(async () => ({ isReliable: true, languages: [{ language: detected, percentage: 99 }] })) };
     const text = 'Idag läser vi en berättelse om trädgården. Fåglarna sjunger och solen skiner över de gröna träden.';
     const state = { testSilentTtsEnabled: true, selectedLanguageCode: 'sv' };
-    const selectLanguage = vi.fn(code => { state.selectedLanguageCode = code; });
+    const applyDetectedVoice = vi.fn(async choice => { state.selectedLanguageCode = choice.code; });
     const states = [];
     const orchestrator = createReadLoopOrchestrator({
       state, readRunTracker: createRunTracker(),
       readOrchestrator: { fillChunkBuffer: async () => true, getPlaybackTotal: () => 1, getLoadedChunkText: () => text },
       extractActiveTab: async () => ({ tabId: 2, url: 'https://example.test/swedish', source: 'html', text, chunks: [{ speech: text }] }),
-      setReadingState: value => states.push(value), setLanguageSelectValue: selectLanguage,
+      setReadingState: value => states.push(value), applyDetectedVoice, isEngineAuto: async () => autoEngine,
       resolveSelectedVoice: () => ({ id: `omnivoice:${state.selectedLanguageCode}`, engine: 'omnivoice', detectCode: state.selectedLanguageCode }),
       ensureSpeechPreloadWindow: () => Promise.resolve({ result: {} }), readPreloadedSpeech: async preload => (await preload).result,
     });
     try {
       await orchestrator.readPage();
       expect(chrome.i18n.detectLanguage).toHaveBeenCalled();
-      expect(selectLanguage).not.toHaveBeenCalled();
-      expect(state.selectedLanguageCode).toBe('sv');
+      if (engine) expect(applyDetectedVoice).toHaveBeenCalledExactlyOnceWith({ engine, code, autoEngine: false });
+      else expect(applyDetectedVoice).not.toHaveBeenCalled();
+      expect(state.selectedLanguageCode).toBe(code || 'sv');
       expect(states.at(-1)).toBe('finished');
     } finally { chrome.i18n = previous; }
   });

@@ -160,9 +160,9 @@
           <section class="voice-choice" aria-label="Choose voice model" data-i18n-aria-label="ui_9d65bbdb">
             <label class="field">
               <span data-i18n="ui_e6334598">Voice model</span>
-              <select id="tts-engine-select" aria-describedby="voice-model-help"><option value="kokoro" data-i18n="ui_38319e92">Kokoro (default)</option><option value="omnivoice" data-i18n="ui_a476bebf">OmniVoice (experimental)</option></select>
+              <select id="tts-engine-select" aria-describedby="voice-model-help"><option value="omnivoice" data-i18n="ui_3eb00ffe">OmniVoice</option><option value="kokoro" selected data-i18n="ui_ef973d2a">Kokoro</option><option value="omnivoice-clone" data-i18n="ui_ad9033da">OmniVoice Voice Cloning</option></select>
             </label>
-            <p id="voice-model-help" class="language-status" role="status" data-i18n="ui_6c6b4ee0">Ten English voices. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
+            <p id="voice-model-help" class="language-status" role="status" data-i18n="ui_e762d1dd">Ten English voices. Other languages switch to OmniVoice when supported. First setup: about 93 MB on CPU or 326 MB on GPU. Another voice needs about 0.5 MB. Your saved voice is kept.</p>
           </section>
 
           <details id="reader-settings" class="controls settings-section" aria-label="Reader settings" data-i18n-aria-label="ui_dbd1ad47">
@@ -188,6 +188,10 @@
           <label class="field"><span><span data-i18n="ui_a2a40f30">Voice variation </span><output id="omnivoice-variation-out" for="omnivoice-variation">1 / 10</output></span><input id="omnivoice-variation" type="range" min="1" max="10" step="1" value="1" /></label>
           <p class="field-help" data-i18n="ui_16383585">Choose a voice variation. Changes apply at the next section. Set the pace with Playback speed.</p>
                 <label class="field"><span><input id="omnivoice-whisper" type="checkbox" /><span data-i18n="ui_d975568d"> Whisper</span></span></label>
+              </div>
+              <div id="personal-voice-settings" hidden>
+                <label class="field"><span data-i18n="ui_8156f492">Personal voice preset</span><select id="personal-voice-select"></select></label>
+                <a href="./personal-voices.html" target="_blank" rel="noopener" data-i18n="ui_a8cbb251">Manage personal voices</a>
               </div>
               <label class="field">
                 <span><span data-i18n="ui_3d7af8ef">Playback speed </span><output id="speed-out">1.00x</output></span>

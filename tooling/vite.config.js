@@ -78,6 +78,7 @@ export default defineConfig({
         content: 'src/content.js',
         readerEngine: 'src/reader-engine.html',
         pdfViewer: 'src/pdf-viewer.html',
+        personalVoices: 'src/personal-voices.html',
       },
       output: {
         entryFileNames: 'assets/[name].js',

@@ -84,6 +84,9 @@
       }
     }
   },
+  "ui_94a4b160": {
+    "message": "Sayfayı açın, PageNarrator simgesine tıklayın ve “Sayfayı sesli oku” seçeneğini seçin."
+  },
   "ui_3e8b2a3a": {
     "message": "Belge yükleniyor…"
   },
@@ -106,6 +109,79 @@
         "content": "$2"
       }
     }
+  },
+  "ui_27c010d6": {
+    "message": "İptal edildi."
+  },
+  "ui_9d3f7d31": {
+    "message": "Kişisel ses eylemi başarısız oldu."
+  },
+  "ui_5367d8de": {
+    "message": "OmniVoice, fp16 destekli WebGPU gerektirir."
+  },
+  "ui_34c2939b": {
+    "message": "Arka plan gürültüsü gideriliyor…"
+  },
+  "ui_cd4b50fc": {
+    "message": "Gürültü giderme modeli indiriliyor… %$arg1$",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_db322cc7": {
+    "message": "Temizlenen örneği dinleyebilir veya kaydedebilirsiniz."
+  },
+  "ui_24b6564c": {
+    "message": "Gürültü giderme kullanılamıyor. Orijinal örneği kaydedebilirsiniz."
+  },
+  "ui_f035394f": {
+    "message": "Örneği dinleyebilir veya kaydedebilirsiniz."
+  },
+  "ui_611ed81e": {
+    "message": "Kaydediliyor…"
+  },
+  "ui_514244f6": {
+    "message": "Mikrofonla kayıt kullanılamıyor."
+  },
+  "ui_a8d5e97d": {
+    "message": "Örnek kaydetmek için mikrofon erişimine izin verin."
+  },
+  "ui_7bcd5d33": {
+    "message": "Mikrofon bulunamadı."
+  },
+  "ui_f6233044": {
+    "message": "Bir ses dosyası seçin veya örnek kaydedin."
+  },
+  "ui_b1cbd878": {
+    "message": "Önceden ayarlanmış bir isim ve kayıtta konuşulan kelimeler girin."
+  },
+  "ui_a81b3b51": {
+    "message": "Ses numarasını kodlamak..."
+  },
+  "ui_7c9f5f3f": {
+    "message": "Ses Koducu İndir... $arg1$%",
+    "placeholders": {
+      "arg1": {
+        "content": "$1"
+      }
+    }
+  },
+  "ui_ab85ff73": {
+    "message": "Ses ön ayarı kaydedildi."
+  },
+  "ui_3c91213b": {
+    "message": "Okuma için seçildi."
+  },
+  "ui_1113ba39": {
+    "message": "Ses önizlemesi hazırlanıyor…"
+  },
+  "ui_e0513158": {
+    "message": "Ses önizlemesi hazır."
+  },
+  "ui_24e89fdd": {
+    "message": "Ses ön ayarı silindi."
   },
   "ui_c08b976a": {
     "message": "İşleniyor…"
@@ -215,6 +291,18 @@
   },
   "ui_5d640b9c": {
     "message": "İşlem gerekiyor"
+  },
+  "ui_4d1cf041": {
+    "message": "Amerikan İngilizcesi, kadın"
+  },
+  "ui_faf95838": {
+    "message": "Amerikan İngilizcesi, erkek"
+  },
+  "ui_f3768d40": {
+    "message": "Britanya İngilizcesi, kadın"
+  },
+  "ui_4139054c": {
+    "message": "İngilizce bir Kokoro sesi seçin. Kokoro diğer dilleri desteklemez."
   },
   "ui_c0c171d2": {
     "message": "Bu işlem tamamlanamadı."
@@ -748,6 +836,9 @@
       }
     }
   },
+  "ui_3e922f09": {
+    "message": "Ses ayarlarında kişisel bir ses öncesi ayarını oluşturun."
+  },
   "ui_b7e3509c": {
     "message": "Kod parçalarını atla"
   },
@@ -831,18 +922,6 @@
   "ui_1b842ad5": {
     "message": "PageNarrator başlatılamadı."
   },
-  "ui_4d1cf041": {
-    "message": "Amerikan İngilizcesi, kadın"
-  },
-  "ui_faf95838": {
-    "message": "Amerikan İngilizcesi, erkek"
-  },
-  "ui_f3768d40": {
-    "message": "Britanya İngilizcesi, kadın"
-  },
-  "ui_4139054c": {
-    "message": "İngilizce bir Kokoro sesi seçin. Kokoro diğer dilleri desteklemez."
-  },
   "ui_87d977c4": {
     "message": "PageNarrator oynatıcı"
   },
@@ -852,14 +931,17 @@
   "ui_e6334598": {
     "message": "Ses modeli"
   },
-  "ui_38319e92": {
-    "message": "Kokoro (varsayılan)"
+  "ui_3eb00ffe": {
+    "message": "OmniVoice"
   },
-  "ui_a476bebf": {
-    "message": "OmniVoice (deneysel)"
+  "ui_ef973d2a": {
+    "message": "Kokoro"
   },
-  "ui_6c6b4ee0": {
-    "message": "On İngilizce ses. İlk kurulum: CPU için yaklaşık 93 MB veya GPU için 326 MB. Ek bir ses yaklaşık 0,5 MB gerektirir. Kaydedilen ses seçimi korunur."
+  "ui_ad9033da": {
+    "message": "OmniVoice Voice Cloning"
+  },
+  "ui_e762d1dd": {
+    "message": "On İngilizce ses. Diğer diller destekleniyorsa OmniVoice’a geçer. İlk kurulum: CPU için yaklaşık 93 MB veya GPU için 326 MB. Ek bir ses yaklaşık 0,5 MB gerektirir. Kaydedilen ses seçimi korunur."
   },
   "ui_2c04fde6": {
     "message": "Ses ayarları"
@@ -887,6 +969,12 @@
   },
   "ui_d975568d": {
     "message": "Fısıltı"
+  },
+  "ui_8156f492": {
+    "message": "Kişisel ses ön ayarı"
+  },
+  "ui_a8cbb251": {
+    "message": "Kişisel Ses Yönetimi"
   },
   "ui_3d7af8ef": {
     "message": "Oynatma hızı"
@@ -945,6 +1033,9 @@
   "ui_231b3e4b": {
     "message": "Kod parçalarını atla"
   },
+  "ui_ce18c7cb": {
+    "message": "PDF dosyalarındaki denklemleri ve tabloları atla"
+  },
   "ui_456ac053": {
     "message": "Alan rengi"
   },
@@ -992,9 +1083,6 @@
   },
   "ui_5a3d9c47": {
     "message": "PageNarrator’ı sayfadan aç"
-  },
-  "ui_94a4b160": {
-    "message": "Sayfayı açın, PageNarrator simgesine tıklayın ve “Sayfayı sesli oku” seçeneğini seçin."
   },
   "ui_4be7c01e": {
     "message": "Sesi hazırlarken veya okuma sırasında eksik ses dosyaları Hugging Face’ten indirilir. Konuşma bu cihazda üretilir. Önbellekteki dosyalar silinmedikçe çevrimdışı yeniden kullanılabilir."
@@ -1161,8 +1249,68 @@
   "ui_9f9cf525": {
     "message": "PDF sayfaları"
   },
+  "ui_328b6bff": {
+    "message": "Ses örnekleri ve ön ayarlar bu cihazda kalır."
+  },
+  "ui_fff029e4": {
+    "message": "Kişisel Ses Oluşturma"
+  },
+  "ui_12e7305d": {
+    "message": "Bir ses dosyası seçin veya 3–10 saniye anlaşılır konuşma kaydedin. Dosyalar en fazla 20 MB olabilir. Kodlayıcı ilk kullanımda yaklaşık 654 MB indirir."
+  },
+  "ui_a01f1ba6": {
+    "message": "Kayıt sırasında konuşulan dil"
+  },
+  "ui_1ade9af5": {
+    "message": "Ses dosyası"
+  },
+  "ui_a4204cfb": {
+    "message": "Bunu her zamanki sesinizle yüksek sesle okuyun."
+  },
+  "ui_75637bc3": {
+    "message": "Ses örneği kaydet"
+  },
+  "ui_523daa03": {
+    "message": "Arka plan gürültüsünü gider"
+  },
+  "ui_905bc62f": {
+    "message": "Orijinal örneği kullan"
+  },
+  "ui_67b9602a": {
+    "message": "İsteğe bağlı. Bu cihazda WebGPU ile çalışır ve ilk kullanımda yaklaşık 493 MB indirir."
+  },
+  "ui_026775c1": {
+    "message": "Ön ayar adı"
+  },
+  "ui_706bbab1": {
+    "message": "Kayıtta neler söyleniyor"
+  },
+  "ui_b00f8855": {
+    "message": "Ses ön ayarını kaydet"
+  },
+  "ui_80c87657": {
+    "message": "Kayıtlı kişisel sesler"
+  },
+  "ui_83b7d497": {
+    "message": "Okuma için kullan"
+  },
+  "ui_71accaa9": {
+    "message": "Sesi önizle"
+  },
+  "ui_c348abed": {
+    "message": "Ön ayarı sil"
+  },
+  "ui_8313d4fa": {
+    "message": "Kaydı durdur"
+  },
+  "ui_35afca3b": {
+    "message": "İptal et"
+  },
   "ui_6b68e4c5": {
     "message": "Deneysel. 32 dil kaydı; kalite değişir. fp16 destekli WebGPU ve yaklaşık 1,35 GB indirme gerektirir. Ses, varyasyon veya fısıltı seçin."
+  },
+  "ui_9e93d684": {
+    "message": "Ses örnekleri ve anlatım bu cihazda kalır. WebGPU ile fp16 gerektirir."
   },
   "ui_35a4186c": {
     "message": "Uyarı: Fısıltı bu dilde sözcükleri atlayabilir. Okumayı metinle karşılaştırın."

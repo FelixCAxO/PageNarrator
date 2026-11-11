@@ -14,6 +14,8 @@ fn main(@builtin(global_invocation_id) position: vec3<u32>) {
     ai += coord * cfg[16u + u32(axis)]; bi += coord * cfg[24u + u32(axis)];
   }
   if (cfg[3u] == 1u) { dst[index] = lhs[ai] * rhs[bi]; }
+  else if (cfg[3u] == 2u) { dst[index] = lhs[ai] - rhs[bi]; }
+  else if (cfg[3u] == 3u) { dst[index] = clamp(lhs[ai], bitcast<i32>(cfg[4u]), bitcast<i32>(cfg[5u])); }
   else { dst[index] = lhs[ai] + rhs[bi]; }
 }
 `;

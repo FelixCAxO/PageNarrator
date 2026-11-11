@@ -4,6 +4,7 @@ import {
   createFakePdfDocument,
   installChromeRuntime,
   installViewerDom,
+  requestViewerLoad,
   sendViewerMessage,
 } from './pdf-viewer-messages.fixtures.js';
 
@@ -63,6 +64,7 @@ async function openViewer({ hash = '' } = {}) {
   }));
   vi.useFakeTimers();
   await import('../../src/pdf-viewer.js');
+  void requestViewerLoad(listeners[0]);
   return listeners[0];
 }
 

@@ -1,12 +1,16 @@
 import { expect, it, vi } from 'vitest';
 import { createController } from './reader-engine-speech-preload-controller.fixtures.js';
 
-it('fills four upcoming OmniVoice chunks serially and reuses them as playback advances', async () => {
-  const voice = { id: 'omnivoice:en', engine: 'omnivoice', detectCode: 'en' };
+it.each([
+  { id: 'omnivoice:en', engine: 'omnivoice', device: 'webgpu' },
+  { id: 'af_heart', engine: 'kokoro', device: 'wasm' },
+])('fills upcoming $engine chunks serially on $device and reuses them as playback advances', async ({ id, engine, device }) => {
+  const voice = { id, engine, detectCode: 'en' };
   const chunks = Array.from({ length: 6 }, (_, index) => ({ speech: `Read section ${index}.` }));
   const releases = [];
   const generate = vi.fn(() => new Promise(resolve => { releases.push(() => resolve({ audio: new Float32Array(120000), sampling_rate: 24000 })); }));
   const controller = createController({ state: { activeChunks: chunks, tts: { generate } },
+    getSynthesisBackend: () => device,
     getActiveTtsProfileConfig: () => ({ preloadAhead: 4, progressiveSegments: false, speechPreloadTimeoutMs: 60000 }),
     prepareGeneratedAudioForPlayback: async () => ({ readyState: 3 }),
   });
