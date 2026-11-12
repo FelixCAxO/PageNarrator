@@ -1,4 +1,13 @@
-// Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: MPL-2.0 OR GPL-3.0-or-later
+// Copyright 2026 Felix Olsson.
+// Eigen reduction adaptations: Copyright (C) 2008 Gael Guennebaud <gael.guennebaud@inria.fr>
+// Copyright (C) 2006-2008 Benoit Jacob <jacob.benoit.1@gmail.com>
+// This Source Code Form is subject to the terms of the Mozilla
+// Public License v. 2.0. If a copy of the MPL was not distributed
+// with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// Alternatively, this complete file, including PageNarrator's modifications,
+// may be used under the GNU General Public License, version 3 or any later version.
+// Eigen packet reduction order; see extension/public/legal/THIRD_PARTY_NOTICES.txt.
 import{kokoroFloatShader}from'./kokoro-float-shaders.js';
 export const KOKORO_REDUCE_SHADER=`
 ${kokoroFloatShader(7)}

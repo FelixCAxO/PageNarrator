@@ -1,0 +1,44 @@
+Sidon optional personal-voice noise cleanup
+
+PageNarrator downloads the predictor and DAC vocoder ONNX graphs on demand;
+their model weights are not included in the extension or source ZIPs.
+The browser feature extraction and graph execution use PageNarrator's code.
+
+ONNX export: Soniqo Audio, soniqo/Sidon-ONNX
+https://huggingface.co/soniqo/Sidon-ONNX
+Revision: a6dce244cbcd0361ef79c030e246e6f9671770c1
+The pinned export card declares MIT and identifies the Sidon checkpoint,
+w2v-BERT 2.0 predictor and Descript Audio Codec decoder as its sources.
+Pinned card: https://huggingface.co/soniqo/Sidon-ONNX/raw/a6dce244cbcd0361ef79c030e246e6f9671770c1/README.md
+Card SHA-256: ea816a929bf7cbf6fb7bdad57ab66101be59242b08ca66116015909df87edfaa
+
+Sidon: sarulab-speech; contributors Wataru Nakata and Yuki Saito
+Checkpoint: https://huggingface.co/sarulab-speech/sidon-v0.1
+Checkpoint card revision: b3b02d8bbd55fdbc410e6e46e76ef95ace4fbf52
+Checkpoint card SHA-256: 620d684add8cb90d2736ec3f112102488163101223fbd6269964f884aa2fe95f
+The checkpoint card declares MIT. The original Sidon source agreement and
+Copyright (c) 2025 sarulab-speech notice are included in Sidon-MIT.txt.
+License source: https://raw.githubusercontent.com/sarulab-speech/sidon/45210939881b8a38a0752fb33451a79a9d3703ee/LICENSE
+License SHA-256: fc78c2303c7ba55060bc1f16528b9f3efaa9243882ce9567910d57fa27ab276b
+
+Base speech encoder: Meta's w2v-BERT 2.0
+https://huggingface.co/facebook/w2v-bert-2.0
+Publisher card revision: da985ba0987f70aaeb84a80f2851cfac8c697a7b
+Pinned card: https://huggingface.co/facebook/w2v-bert-2.0/raw/da985ba0987f70aaeb84a80f2851cfac8c697a7b/README.md
+Card SHA-256: 478afeacb3b4ce0d86b361f099416d28a7e7673ade31775c0f85f396979b7fc2
+The official model card declares MIT. That model repository supplies no
+separate LICENSE or copyright-notice file at this revision. This records
+the model publisher's declaration; the sarulab-speech and Descript copyright
+notices belong to their respective components, not to Meta's encoder.
+
+Vocoder: Descript Audio Codec (DAC)
+https://github.com/descriptinc/descript-audio-codec
+The original MIT agreement and Copyright (c) 2023-present, Descript notice
+are included unchanged in Descript-Audio-Codec-MIT.txt.
+License source: https://raw.githubusercontent.com/descriptinc/descript-audio-codec/c7cfc5d2647e26471dc394f95846a0830e7bec34/LICENSE
+License SHA-256: 5d7a5f644313f30aad5ef032669ada67efdacefecb2c7d7b875683698bd70e87
+
+Keep the applicable original MIT copyright and permission notices with any
+redistributed model or source materials. These notices do not relicense
+PageNarrator's GPL-covered implementation or the separately licensed
+OmniVoice model and speaker-reference data.

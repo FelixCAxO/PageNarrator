@@ -1,3 +1,5 @@
+Copyright 2002-2019 Adobe (http://www.adobe.com/).
+
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
 met:

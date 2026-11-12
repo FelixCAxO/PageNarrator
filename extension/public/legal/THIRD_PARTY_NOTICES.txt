@@ -27,12 +27,19 @@ Eigen, revision 1d8b82b0740839c0de7f1242a3585e3390ff5f33
 Copyright (C) 2007 Julien Pommier
 Copyright (C) 2014 Pedro Gonnet
 Copyright (C) 2009-2019 Gael Guennebaud
+Copyright (C) 2008 Gael Guennebaud
+Copyright (C) 2006-2008 Benoit Jacob
 Source: https://github.com/eigen-mirror/eigen/tree/1d8b82b0740839c0de7f1242a3585e3390ff5f33
-License: Mozilla Public License 2.0 (see Eigen-MPL-2.0.txt).
+Upstream license: Mozilla Public License 2.0 (see Eigen-MPL-2.0.txt).
 References: packet reduction order, trigonometric range reduction and rational
-arctangent approximation. Corresponding modified source is supplied in
-native/kokoro-engine.cpp, native/ocr-engine.cpp and the src/engines/kokoro-*
-JavaScript/WGSL modules in the source archive.
+arctangent approximation. The complete modified files are available under
+MPL-2.0 or, alternatively, GPL-3.0-or-later (see GPL-3.0.txt), including
+PageNarrator's modifications. The matching source archive supplies:
+engines/native/kokoro-engine.cpp
+engines/native/ocr-engine.cpp
+src/engines/kokoro-trigonometry-shader.js
+src/engines/kokoro-reduction-shaders.js
+Original MIT notices for MLAS material in these files also remain applicable.
 
 PageNarrator OmniVoice browser bridge (new implementation)
 Copyright 2026 Felix Olsson.
@@ -73,12 +80,20 @@ OmniVoice audio encoder and decoder (Boson Higgs Audio 2)
 Built with Higgs Materials licensed from Boson AI USA, Inc., Copyright Boson
 AI USA, Inc., All Rights Reserved and Meta Llama 3 licensed under the Meta
 Llama 3 Community License, Copyright Meta Platforms, Inc., All Right
-Reserved. Based on Meta Llama 3.
+Reserved. Based on Meta Llama 3. Built with Meta Llama 3.
 Meta Llama 3 is licensed under the Meta Llama 3 Community License, Copyright
 © Meta Platforms, Inc. All Rights Reserved.
 Boson Higgs Audio 2 is licensed under the Boson Community License, Copyright
 © Boson AI USA, Inc. All Rights Reserved.
 See Boson-Higgs-Audio-2-LICENSE.txt and Meta-Llama-3-LICENSE.txt.
+
+Sidon optional personal-voice noise cleanup
+Source: https://huggingface.co/soniqo/Sidon-ONNX
+Revision: a6dce244cbcd0361ef79c030e246e6f9671770c1
+License: MIT per the publisher model cards. See Sidon-NOTICE.txt,
+Sidon-MIT.txt and Descript-Audio-Codec-MIT.txt for component-specific sources,
+original agreements and copyright notices, including w2v-BERT 2.0 and DAC.
+Model weights download on demand; they are excluded from both release ZIPs.
 
 Kokoro-82M
 Source: https://huggingface.co/hexgrad/Kokoro-82M
@@ -87,6 +102,18 @@ License: Apache License 2.0
 Kokoro-82M v1.0 ONNX conversion and English voice files
 Source: https://huggingface.co/onnx-community/Kokoro-82M-v1.0-ONNX
 License: Apache License 2.0
+
+Kokoro v1.0 training-source acknowledgements retained from its publisher:
+Koniwa tnc, Japanese readings by Television Nishinippon announcers.
+Source: https://github.com/koniwa/koniwa
+Audio license: CC BY 3.0, https://creativecommons.org/licenses/by/3.0/
+The SIWIS French Speech Synthesis Database, 2016, by Junichi Yamagishi,
+Pierre-Edouard Honnet, Philip Garner and Alexandros Lazaridis (2017),
+University of Edinburgh Centre for Speech Technology Research.
+Source: https://doi.org/10.7488/ds/1705
+License: CC BY 4.0, https://creativecommons.org/licenses/by/4.0/
+These are upstream training-source credits; PageNarrator does not redistribute
+their original recordings. Kokoro model weights retain Apache-2.0.
 
 Kokoro model data and selected English voice files are downloaded without
 modification from revision 1939ad2a8e416c0acfeecc08a694d14ef25f2231 on first use.
@@ -164,8 +191,9 @@ PageNarrator parses these declarative records using its original bounded parser.
 
 Adobe glyph-name and ITC Zapf Dingbats character mappings
 Source: https://github.com/adobe-type-tools/agl-aglfn/tree/4036a9ca80a62f64f9de4f7321a9a045ad0ecfd6
-Copyright Adobe. The original BSD-3-Clause notice is included unchanged in
-Adobe-Glyph-List-LICENSE.txt. The source package retains the data manifest,
+Copyright 2002-2019 Adobe (http://www.adobe.com/).
+The full copyright and BSD-3-Clause conditions from the original data are
+retained in Adobe-Glyph-List-LICENSE.txt. The source package retains the data manifest,
 immutable source URLs/hashes and original importer for 4,281 AGL and 201
 Dingbats name-to-Unicode records. These are font character data; the PDF
 glyph-name parser and executable font handling are PageNarrator's own code.
@@ -190,12 +218,12 @@ upstream executable code is included. See Font-Awesome-LICENSE.txt.
 MarVoSym 3.10: one documented non-Unicode Letter symbol mapping fact is retained
 under SIL Open Font License 1.1. See MarVoSym-OFL.txt and PDF-Symbols-NOTICE.txt.
 The source package retains exact source/output hashes and the original importer
-under vendor/pdf-symbols. Recognized nontext objects preserve selectable source
+under engines/vendor/pdf-symbols. Recognized nontext objects preserve selectable source
 geometry and are identified separately from ordinary narration text.
 
 Vite browser module loading helpers
 The build includes Vite's module-preload polyfill and dynamic-import preload helper.
-Source: https://github.com/vitejs/vite/tree/v7.3.7
+Source: https://github.com/vitejs/vite/tree/v8.3.5
 Copyright (c) 2019-present, VoidZero Inc. and Vite contributors.
 License: MIT; the full core notice is included in Vite-MIT.txt.
 These build-generated browser helpers are separate from the replaced speech,

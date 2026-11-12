@@ -7,6 +7,28 @@ import { getOmniVoiceVoiceId } from '../../src/tts/omnivoice/voice-id.js';
 import voiceScores from '../../tooling/config/omnivoice-voice-scores.json';
 
 describe('current release voice license readiness', () => {
+  it('keeps the bundled Vite helper attribution aligned with the locked build version', () => {
+    const lock = JSON.parse(readFileSync(new URL('../../package-lock.json', import.meta.url), 'utf8'));
+    const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
+    expect(notices).toContain(`https://github.com/vitejs/vite/tree/v${lock.packages['node_modules/vite'].version}`);
+  });
+
+  it('ships the downloaded cleanup model attribution and Kokoro training-source credits', () => {
+    const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
+    const worker = readFileSync(new URL('../../src/tts/omnivoice/reference-cleanup-worker.js', import.meta.url), 'utf8');
+    const exportBase = worker.match(/const BASE = '([^']+)'/u)?.[1];
+    expect(exportBase).toBeTruthy();
+    const [, modelId, revision] = exportBase.match(/^https:\/\/huggingface.co\/(.+)\/resolve\/([a-f0-9]{40})$/u);
+    expect(notices).toContain(`https://huggingface.co/${modelId}`);
+    expect(notices).toContain(revision);
+    for (const file of ['Sidon-NOTICE.txt', 'Sidon-MIT.txt', 'Descript-Audio-Codec-MIT.txt']) {
+      expect(notices).toContain(file);
+      expect(existsSync(new URL(`../../extension/public/legal/${file}`, import.meta.url)), file).toBe(true);
+    }
+    expect(notices).toContain('Koniwa');
+    expect(notices).toContain('SIWIS');
+  });
+
   it('attributes the pinned OmniVoice export and states the upstream weight terms', () => {
     const notices = readFileSync(new URL('../../extension/public/legal/THIRD_PARTY_NOTICES.txt', import.meta.url), 'utf8');
     const modelNotice = notices.split('On-demand voice models')[1].split('Kokoro-82M')[0];

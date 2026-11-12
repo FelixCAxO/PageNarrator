@@ -12,11 +12,14 @@ https://creativecommons.org/publicdomain/zero/1.0/legalcode
 Attribution (not required by CC0): NST Danish and Norwegian ASR databases, Nordic
 Language Technology, distributed by Språkbanken at the National Library of Norway.
 
-PageNarrator modifications: selected complete recordings are converted to mono
-24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
-OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
-identifies the dataset revision, split, speaker ID, source file, audio hash,
-encoder hash and preprocessing for each reference.
+PageNarrator bundles OmniVoice-generated references derived from NST Danish
+and Norwegian parent references. The cards retain generated codec tokens and
+synthesis text, not complete source recordings. Source metadata in
+src/tts/omnivoice/speaker-data.js retain the dataset revision, reader ID,
+source filename, attribution and URL, source-audio and encoder hashes, parent
+reference IDs/hash, and generation settings/output-audio hash. Split and
+parent preprocessing records are not retained in the current catalog; it is
+not a complete source archive.
 
 The reference data keep their source license, separately from the PageNarrator
 implementation and the OmniVoice model.

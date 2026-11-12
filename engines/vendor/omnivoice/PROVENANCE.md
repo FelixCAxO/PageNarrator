@@ -62,7 +62,7 @@ its decoder; duration estimation follows the actual 25-Hz decoder and the
 licensed inference reference's 25-frame fallback instead.
 The vocabulary's MASK class is 1024 and is never decoded as an audio code.
 
-Microsoft ONNX Runtime Web `1.25.0-dev.20260227-dce58e8711`, MIT, remains an
+Microsoft ONNX Runtime Web `1.31.1`, MIT, remains an
 isolated development comparator. Its executable assets are not packaged.
 Model weights, tokenizer, revisions and the seven-file browser cache are unchanged.
 Before main-model session creation, `rmsnorm-correction.js` verifies the exact

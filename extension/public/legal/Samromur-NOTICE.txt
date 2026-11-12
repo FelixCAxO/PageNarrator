@@ -8,11 +8,14 @@ https://creativecommons.org/licenses/by/4.0/legalcode
 Attribution: Samrómur, Language and Voice Lab, Reykjavík University, and the
 Almannarómur Center for Language Technology; Mollberg et al. (2020).
 
-PageNarrator modifications: selected complete recordings are converted to mono
-24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
-OmniVoice codec tokens. Source metadata in src/tts/omnivoice/speaker-data.js
-identifies the dataset revision, split, speaker ID, source file, audio hash,
-encoder hash and preprocessing for each reference.
+PageNarrator bundles OmniVoice-generated references derived from Samromur
+parent references. The cards retain generated codec tokens and synthesis text,
+not complete source recordings. Source metadata in
+src/tts/omnivoice/speaker-data.js retain the dataset revision, reader ID,
+source filename, attribution and URL, source-audio and encoder hashes, parent
+reference IDs/hash, and generation settings/output-audio hash. Split and
+parent preprocessing records are not retained in the current catalog; it is
+not a complete source archive.
 
 The reference data keep their source license, separately from the PageNarrator
 implementation and the OmniVoice model.

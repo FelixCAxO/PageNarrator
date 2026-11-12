@@ -15,7 +15,7 @@
     "-nostdlib",
     "-Wl,-z,stack-size=65536,--no-entry,--export=pn_abi_version,--export=pn_unary,--export=pn_ocr_unary,--export=pn_ocr_binary,--export=pn_ocr_matmul,--export=pn_ocr_conv,--export=pn_ocr_reduce,--export=pn_ocr_pool,--export=pn_ocr_resize,--export=pn_ocr_index,--export=pn_ocr_concat,--export=pn_ocr_gather,--export=pn_ocr_norm,--export=pn_ocr_softmax,--export=pn_ocr_argmax,--export=pn_ocr_copy,--export=__heap_base,--export-memory,--initial-memory=131072,--max-memory=536870912,--strip-all"
   ],
-  "sourceSha256": "0da5a4c9e019ead17fb6ca81344c15701987ede7ed3d48a56262288657c6db5a",
+  "sourceSha256": "a0f1e2e93345b68e9bb774821663940edfcd6ad57756420e1adbfa083d57e616",
   "sharedSourceSha256": "916a235940ba419dc5dcbe73eafafe286d4c2e386d04d53c0594eb9c169d7616",
   "wasmSha256": "cbc8f92ee192c0650ed11ad99ada3797b00708c556fae8dbf508a225de469af5",
   "imports": []

@@ -13,12 +13,16 @@ Nobuyuki Morioka, Michiel Bacchiani, Yu Zhang, Wei Han, and Ankur Bapna,
 Underlying recordings are from LibriVox. LibriTTS-R's publisher applied
 Miipher speech restoration before distributing the recordings.
 
-PageNarrator modifications: selected complete utterances are converted to mono
-24 kHz audio, zero-padded to a 1920-sample boundary when needed, and encoded
-as OmniVoice codec tokens. References generated from a recording retain its
-attribution and the parent reference hash. Per-reference source metadata in
-src/tts/omnivoice/speaker-data.js identifies the reader, recording, source audio,
-archive, encoder, processing, and any subsequent generation.
+PageNarrator bundles OmniVoice-generated references derived from LibriTTS-R
+parent references. The cards retain generated codec tokens and synthesis
+text, not complete source utterances. Source metadata in
+src/tts/omnivoice/speaker-data.js retain the reader ID, dataset attribution
+and URL, source-audio and encoder hashes, parent reference IDs/hash, and
+generation settings/output-audio hash. Seven of the 23 current cards also
+retain an original recording filename and dataset revision; the other 16
+do not. Archive filenames and parent preprocessing records are not retained.
+A parent hash alone does not locate an original corpus utterance; this
+catalog is not a complete source archive.
 
 The recordings and derived reference data retain CC BY 4.0. This does not change
 the separate licenses of PageNarrator's code or the OmniVoice model.

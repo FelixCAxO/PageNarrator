@@ -78,7 +78,7 @@ See [contributing and tests](docs/CONTRIBUTING.md), [architecture](docs/project-
 
 PageNarrator's code is GPL-3.0-or-later. OmniVoice source code is Apache-2.0. The separately downloaded pretrained weights are CC BY-NC. [PageNarrator license](LICENSE) · [OmniVoice source license](https://github.com/k2-fsa/OmniVoice/blob/master/LICENSE) · [Voice licenses](docs/third-party-voice-licenses.md)
 
-**OmniVoice audio codec.** Built with Higgs Materials licensed from Boson AI USA, Inc., Copyright Boson AI USA, Inc., All Rights Reserved and Meta Llama 3 licensed under the Meta Llama 3 Community License, Copyright Meta Platforms, Inc., All Right Reserved. Based on Meta Llama 3. [Boson agreement](extension/public/legal/Boson-Higgs-Audio-2-LICENSE.txt) · [Meta agreement](extension/public/legal/Meta-Llama-3-LICENSE.txt)
+**OmniVoice audio codec.** Built with Higgs Materials licensed from Boson AI USA, Inc., Copyright Boson AI USA, Inc., All Rights Reserved and Meta Llama 3 licensed under the Meta Llama 3 Community License, Copyright Meta Platforms, Inc., All Right Reserved. Based on Meta Llama 3. Built with Meta Llama 3. [Boson agreement](extension/public/legal/Boson-Higgs-Audio-2-LICENSE.txt) · [Meta agreement](extension/public/legal/Meta-Llama-3-LICENSE.txt)
 
 Distribute the matching source ZIP with the extension and keep the [third-party notices](extension/public/legal/THIRD_PARTY_NOTICES.txt). Both ZIPs exclude downloaded speech weights.
 

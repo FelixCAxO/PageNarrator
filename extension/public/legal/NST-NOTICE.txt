@@ -9,13 +9,18 @@ https://creativecommons.org/publicdomain/zero/1.0/legalcode
 Attribution (not required by CC0): NST Swedish ASR Database, Nordic Language
 Technology, distributed by Språkbanken at the National Library of Norway.
 
-PageNarrator modifications: selected complete recordings are converted to mono
-24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
-OmniVoice codec tokens. Source metadata identifies the dataset revision, shard,
-row, speaker ID, source filename, audio hash, encoder hash and preprocessing.
+PageNarrator bundles OmniVoice-generated references derived from NST Swedish
+parent references. The cards retain generated codec tokens and synthesis
+text, not complete source recordings. Source metadata in
+src/tts/omnivoice/speaker-data.js retain the dataset revision/configuration,
+source filename, reader ID, attribution and URL, source-audio and encoder
+hashes, parent reference IDs/hash, and generation settings/output-audio hash.
+Shard/row locations and parent preprocessing records are not retained in the
+current catalog; it is not a complete source archive.
 
-All recorded references from all sources were cleaned with NVIDIA NemotronLabs
-RE-USE speech enhancement (https://huggingface.co/nvidia/NVIDIA-NemotronLabs-RE-USE,
-OpenMDW-1.1) and trimmed of leading and trailing silence before encoding; each
-reference records the model revision, the input and output audio hashes, and the trim. The enhancement adds no license terms to the
-reference data, which keep their source license.
+NVIDIA NemotronLabs RE-USE was used during reference preparation:
+https://huggingface.co/nvidia/NVIDIA-NemotronLabs-RE-USE
+Revision: 31f82f2efad1095034492f236e8dac9239ba713b (OpenMDW-1.1).
+The current cards do not retain per-parent cleanup input/output hashes or
+trim measurements. OpenMDW-1.1 places no restrictions or obligations on model
+outputs; the reference data keep their source license.

@@ -1,6 +1,17 @@
-// Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
+// SPDX-License-Identifier: MPL-2.0 OR GPL-3.0-or-later
+// Copyright 2026 Felix Olsson.
+// Eigen adaptations: Copyright (C) 2007 Julien Pommier
+// Copyright (C) 2014 Pedro Gonnet (pedro.gonnet@gmail.com)
+// Copyright (C) 2009-2019 Gael Guennebaud <gael.guennebaud@inria.fr>
+// This Source Code Form is subject to the terms of the Mozilla
+// Public License v. 2.0. If a copy of the MPL was not distributed
+// with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// Alternatively, this complete file, including PageNarrator's modifications,
+// may be used under the GNU General Public License, version 3 or any later version.
 // The speech kernels reuse PageNarrator's allocator-free SIMD OCR/math kernels.
-// Numerical schedules and constants: MLAS (MIT) and Eigen (MPL-2.0); see public/legal/THIRD_PARTY_NOTICES.txt.
+// Numerical schedules and constants: MLAS (MIT) and Eigen (MPL-2.0).
+// MLAS: Copyright (c) Microsoft Corporation. All rights reserved.
+// See extension/public/legal/THIRD_PARTY_NOTICES.txt for upstream revisions and full licenses.
 #define PN_KOKORO_NUMERICS
 #include "ocr-engine.cpp"
 

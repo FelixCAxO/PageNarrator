@@ -12,13 +12,15 @@ FLEURS: Few-shot Learning Evaluation of Universal Representations of Speech.
 https://arxiv.org/abs/2205.12446
 Attribution: Google FLEURS contributors and the authors above.
 
-PageNarrator modifications: selected complete recordings are converted to mono
-24 kHz, zero-padded to a 1920-sample boundary where required, and encoded as
-OmniVoice codec tokens. Any generated reference derived from a recording retains
-its source and parent reference hash. Source metadata identifies the dataset
-revision, language configuration, split, source filename, audio/metadata/archive
-hashes, encoder hash and preprocessing. Published reference transcripts are also
-used as independent development test text, with source metadata retained.
+PageNarrator bundles OmniVoice-generated references derived from FLEURS parent
+references. The cards retain generated codec tokens and synthesis text, not
+complete source recordings. Source metadata in src/tts/omnivoice/speaker-data.js
+retain the dataset revision, language configuration, source filename,
+attribution and URL, source-audio and encoder hashes, parent reference IDs/hash,
+and generation settings/output-audio hash. Split, metadata/archive hashes and
+parent preprocessing records are not retained in the current catalog; it is
+not a complete source archive. Published reference transcripts are also used
+as independent development test text, with source metadata retained there.
 
 FLEURS recordings, transcripts and derived reference data retain CC BY 4.0.
 The separately licensed PageNarrator implementation and OmniVoice model are

@@ -66,6 +66,13 @@ describe('on-demand voice package policy', () => {
     }),
   );
 
+  it.each(['Sidon-NOTICE.txt', 'Sidon-MIT.txt', 'Descript-Audio-Codec-MIT.txt'])(
+    'requires the cleanup model notice %s', async name => withPackage(async (root) => {
+      rmSync(join(root, 'legal', name), { force: true });
+      await expect(assertReleasePackage(root, { packageVersion: '1.1.1' })).rejects.toThrow(`legal/${name}`);
+    }),
+  );
+
   it.each(['onnx/chatterbox/ort.webgpu.bundle.min.mjs', 'assets/local-voice-package-runtime.js', 'assets/custom-voice-permissions.js'])(
     'rejects a retired voice runtime: %s', async (file) => withPackage(async (root, put) => {
       put(file);

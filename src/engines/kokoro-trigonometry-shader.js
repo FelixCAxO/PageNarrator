@@ -1,5 +1,14 @@
-// Copyright 2026 Felix Olsson. SPDX-License-Identifier: GPL-3.0-or-later
-// Eigen range reduction/polynomials (MPL-2.0); see extension/public/legal/THIRD_PARTY_NOTICES.txt.
+// SPDX-License-Identifier: MPL-2.0 OR GPL-3.0-or-later
+// Copyright 2026 Felix Olsson.
+// Eigen adaptations: Copyright (C) 2007 Julien Pommier
+// Copyright (C) 2014 Pedro Gonnet (pedro.gonnet@gmail.com)
+// Copyright (C) 2009-2019 Gael Guennebaud <gael.guennebaud@inria.fr>
+// This Source Code Form is subject to the terms of the Mozilla
+// Public License v. 2.0. If a copy of the MPL was not distributed
+// with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// Alternatively, this complete file, including PageNarrator's modifications,
+// may be used under the GNU General Public License, version 3 or any later version.
+// Eigen range reduction/polynomials; see extension/public/legal/THIRD_PARTY_NOTICES.txt.
 // Use the same reduction for tails: hardware sin/cos can return zero for large finite angles.
 export const KOKORO_TRIG_SHADER=`
 fn pn_wide_mul(a:u32,b:u32)->vec2<u32>{let a0=a&65535u;let a1=a>>16u;let b0=b&65535u;let b1=b>>16u;let w0=a0*b0;let t=a1*b0+(w0>>16u);let w1=(t&65535u)+a0*b1;return vec2<u32>((w1<<16u)|(w0&65535u),a1*b1+(t>>16u)+(w1>>16u));}

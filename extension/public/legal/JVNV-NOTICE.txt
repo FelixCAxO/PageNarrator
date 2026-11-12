@@ -9,19 +9,18 @@ Paper: https://arxiv.org/abs/2310.06072
 License: Creative Commons Attribution-ShareAlike 4.0 International
 https://creativecommons.org/licenses/by-sa/4.0/
 
-PageNarrator retains complete publisher utterances and their published
-transcripts. The recordings are resampled from mono 48 kHz to mono 24 kHz,
-padded with zeros where needed for codec boundaries, and encoded as voice
-references. The adapted reference data retain CC BY-SA 4.0. These changes
-do not imply endorsement by the original contributors.
+PageNarrator bundles OmniVoice-generated references derived from JVNV parent
+references. The cards retain generated codec tokens and synthesis text,
+not complete publisher utterances. The adapted reference data retain
+CC BY-SA 4.0. These changes do not imply endorsement by the contributors.
 
-Per-reference metadata retain the published reader and archive member IDs,
-member CRC, input audio hash, archive index hash, transcript file and hash,
-publisher page hash, encoder hash and preprocessing description. The index
-hash identifies the archived directory evidence; it is not a claim that the
-whole publisher ZIP was downloaded or hashed. If a generated recording is
-used as a derived reference, its parent reference and generation parameters
-must also be retained.
+The source metadata in src/tts/omnivoice/speaker-data.js retain the published
+reader ID, dataset attribution and URL, source-audio and encoder hashes,
+parent reference IDs/hash, and generation settings/output-audio hash.
+Archive member names/CRCs, archive index hashes, original transcript files/
+hashes, publisher-page hashes and parent preprocessing records are not
+retained in the current catalog. A parent hash alone does not locate an
+original publisher utterance; this catalog is not a complete source archive.
 
 The reference-data license is separate from the model and application-code
 licenses. A release containing these references must include this notice

@@ -10,16 +10,14 @@ https://creativecommons.org/licenses/by/4.0/legalcode
 Attribution: Khia A. Johnson (2021), SpiCE: Speech in Cantonese and English,
 Borealis, V1, DOI:10.5683/SP2/MJOXP3.
 
-PageNarrator modifications: selected complete annotated utterances are extracted
-from the published participant channel, converted to mono 24 kHz, padded to a
-1920-sample boundary where needed, and encoded as OmniVoice codec tokens.
-Where indicated in the per-reference metadata, quiet utterances are raised to
-RMS 0.1 before encoding. The original recording hash, measured input RMS,
-applied gain, preparation-code hash and encoder-input hash are retained.
-Source metadata retains the published reader ID, recording and annotation
-identifiers, source boundaries, source and encoder hashes, and preprocessing.
-Generated references derived from these recordings retain the source attribution,
-parent reference hash and generation settings.
+PageNarrator bundles OmniVoice-generated references derived from SpiCE parent
+references. The cards retain generated codec tokens and synthesis text, not
+complete source utterances. Source metadata in src/tts/omnivoice/speaker-data.js
+retain the dataset revision, reader ID, original-file identifier, attribution
+and URL, source-audio and encoder hashes, parent reference IDs/hash, and
+generation settings/output-audio hash. Annotation identifiers, source-channel
+boundaries, gain/RMS measurements and parent preprocessing records are not
+retained in the current catalog; it is not a complete source archive.
 
 SpiCE recordings, annotations and derived reference data retain CC BY 4.0.
 The separately licensed PageNarrator implementation and OmniVoice model are
